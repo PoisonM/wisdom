@@ -26,8 +26,9 @@
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">领取人<span class="colff66">*</span></p>
-                    <p class="fs14 col999">
-                        <input type="text" placeholder="请输入领取人姓名" ng-model="param.outOperationName" style="width:100%;border:none;text-align: right">
+                    <p class="fs14 col999" ng-click="selReceiver()">
+                        <input type="hidden"  ng-model="param.outOperationVal" id="outOperationVal"  style="width:100%;border:none;text-align: right">
+                        <input type="text"  placeholder="请输入领取人姓名>" id="outOperationName" ng-model="param.outOperationName"  style="width:100%;border:none;text-align: right">
                     </p>
                 </ion-item>
             </div>

@@ -38,17 +38,26 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     // $scope.shopUserProductRelationDTOSPeople= $rootScope.shopUserProductRelationDTOSTemp
     // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
 
-    $scope.goHousekeeper = function(type,index) {
-        $state.go('pad-web.left_nav.housekeeper',{type:type,index:index})
+    $scope.goHousekeeper = function(type,index,clerkIds,clerkNames) {
+        $state.go('pad-web.left_nav.housekeeper',{
+            type:type,
+            index:index,
+            orderId:$scope.orderId,
+            tempAll:$scope.tempAll,
+            clerkIds:clerkIds,
+            clerkNames:clerkNames
+        })
     }
     $scope.goOrderListm = function() {
-        console.log($scope.car)
-
+        if($scope.orderPrice == 0){
+            alert("未选择产品或项目")
+            return false
+        }
         $scope.importData = {
             orderId: $scope.orderId,
-            projectGroupRelRelationDTOS: $scope.projectGroupRelRelationDTOS,
-            shopUserProductRelationDTOS: $scope.shopUserProductRelationDTOS,
-            shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,
+            projectGroupRelRelationDTOS: $scope.projectGroupRelRelationDTOS,//套卡
+            shopUserProductRelationDTOS: $scope.shopUserProductRelationDTOS,//产品
+            shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,//项目
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
@@ -78,102 +87,105 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         GetShopUserRecentlyOrderInfo.get({ sysUserId: $stateParams.userId , orderId: data.responseData }, function(data) {
             if(null != data.responseData){
                 $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
-                /*for (var i = 0; i < $scope.projectGroupRelRelationDTOS.length; i++) {
-                    $scope.projectGroupRelRelationDTOS[i].ng_markPrice = '';
-                }*/
                 $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
-                /*for (var i = 0; i < $scope.shopUserProductRelationDTOS.length; i++) {
-                    $scope.shopUserProductRelationDTOS[i].ng_markPrice = '';
-                }*/
                 $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
-                /*for (var i = 0; i < $scope.shopUserProjectRelationDTOS.length; i++) {
-                    $scope.shopUserProjectRelationDTOS[i].ng_markPrice = $scope.shopUserProjectRelationDTOS[i].sysShopProjectPurchasePrice * $scope.shopUserProjectRelationDTOS[i].discount;
-                    $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
-                }*/
                 $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
-
-                if($rootScope.projectGroupRelRelationDTOS != undefined || $rootScope.shopUserProductRelationDTOS != undefined || $rootScope.shopUserProjectRelationDTOS != undefined){
-                    // return
-                }else {
-                    $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
-                    $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
-                    $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
-                }
-                $scope.myChangeFn()
+                $scope.orderPrice = data.responseData.orderPrice;
             }
         })
     })
-    $scope.deleteClick = function(e, id) {
-        var virtualGoodsOrderInfo = {
-            goodsType: e,
-            operation: 1,
-            orderId: $scope.orderId,
-            shopUserProjectRelationDTOS: [{
-                sysShopProjectId: id,
-            }],
-            shopUserProductRelationDTOS: [{
-                shopProductId: id,
-            }],
-            projectGroupRelRelationDTOS: [{
-                shopProjectGroupId: id,
-            }]
+
+    //删除订单中的虚拟商品
+    $scope.deleteClick = function(type, item) {
+        var shopUserOrderDTO = {
+            orderId : $scope.orderId,
+            goodsType:type,
+            operation:'1',//0添加 1删除
+            shopUserProductRelationDTOS : [],
+            projectGroupRelRelationDTOS : [],
+            shopUserProjectRelationDTOS : [],
         }
-        switch (e) {
-            case 0:
-                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
-                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
-                break;
-            case 1:
-                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
-                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
-                break;
-            case 3:
-                delete virtualGoodsOrderInfo.shopUserProjectRelationDTOS;
-                delete virtualGoodsOrderInfo.shopUserProductRelationDTOS;
-                break;
-            case 4:
-                delete virtualGoodsOrderInfo.shopUserProjectRelationDTOS;
-                delete virtualGoodsOrderInfo.projectGroupRelRelationDTOS;
-                break;
-            default:
+        shopUserOrderDTO.orderId = $scope.orderId;
+        shopUserOrderDTO.operation = '1'
+        if($rootScope.goodsType.product == type){
+            shopUserOrderDTO.shopUserProductRelationDTOS.push(item);
         }
-        UpdateVirtualGoodsOrderInfo.save(virtualGoodsOrderInfo, function(data) {
-            GetShopUserRecentlyOrderInfo.get({ sysUserId: $stateParams.userId  }, function(data) {
-                $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
-                $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
-                $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
-            })
+        if($rootScope.goodsType.timeCard == type){
+            shopUserOrderDTO.shopUserProjectRelationDTOS.push(item);
+        }
+        if($rootScope.goodsType.groupCard == type){
+            shopUserOrderDTO.projectGroupRelRelationDTOS.push(item);
+        }
+        UpdateVirtualGoodsOrderInfo.save(shopUserOrderDTO, function(data) {
+            $scope.reloadOrder();
         })
     }
-    $scope.getTotalPrice = function() {
 
+    $scope.getTotalPrice = function() {}
+
+    $scope.reloadOrder = function(){
+        GetShopUserRecentlyOrderInfo.get({ orderId: $scope.orderId}, function(data) {
+            $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
+            $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
+            $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
+            $scope.orderPrice = data.responseData.orderPrice;
+        })
     }
 
     $scope.tempAll = 0;
-    $scope.myChangeFn = function() {
-        $scope.tempAll = 0
-        var setTimer = setInterval(function() {
-            if ($(".xiaoji").length != 0) {
-                clearInterval(setTimer)
-                //计算小计
-                for (var i = 0; i < $(".xiaoji").length; i++) {
-                    $(".xiaoji").eq(i).find('input').val($(".xiaoji").eq(i).parent().prev().find('input').val() * $(".xiaoji").eq(i).parent().parent().parent().prev().find("input").val())
-                }
-                //计算总额
-                for (var i = 0; i < $(".xiaoji").length; i++) {
-                    if ($(".xiaoji").eq(i).find('input').val() == "") {
-                    } else {
-                        $scope.tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",", ""))
-                    }
-                    $(".allPrice").html("总金额:" + $scope.tempAll)
 
-                }
-            }
-        }, 100)
+    //增加购买数量
+    $scope.goodsInc = function (type,index) {
+        if($rootScope.goodsType.groupCard == type){
+            ++$scope.projectGroupRelRelationDTOS[index].projectInitTimes;
+        }else if($rootScope.goodsType.project == type){
+            ++$scope.shopUserProjectRelationDTOS[index].sysShopProjectInitTimes;
+        }else if($rootScope.goodsType.product == type){
+            ++$scope.shopUserProductRelationDTOS[index].initTimes;
+        }
+        $scope.myChangeFn();
     }
-    $scope.myChangeFn()
+    //降低购买数量
+    $scope.goodsSub = function (type,index) {
+        if($rootScope.goodsType.groupCard == type){
+            if($scope.projectGroupRelRelationDTOS[index].projectInitTimes>1){
+                --$scope.projectGroupRelRelationDTOS[index].projectInitTimes;
+            }else{
+                alert("购买套卡数量最少为1个")
+            }
+        }else if($rootScope.goodsType.project == type){
+            if($scope.shopUserProjectRelationDTOS[index].sysShopProjectInitTimes>1){
+                --$scope.shopUserProjectRelationDTOS[index].sysShopProjectInitTimes;
+            }else{
+                alert("购买项目数量最少为1个")
+            }
+        }else if($rootScope.goodsType.product == type){
+            if($scope.shopUserProductRelationDTOS[index].initTimes>1){
+                --$scope.shopUserProductRelationDTOS[index].initTimes;
+            }else{
+                alert("购买产品数量最少为1个")
+            }
+        }
+        $scope.myChangeFn();
+    }
 
+    //计算订单的价格
+    $scope.myChangeFn = function() {
+        //套卡价格
+        $scope.orderPrice = 0;
+        angular.forEach($scope.projectGroupRelRelationDTOS, function(data){
+            $scope.orderPrice = Number(data.projectInitAmount*data.discount*data.projectInitTimes) + Number($scope.orderPrice)
+        });
+        //项目价格
+        angular.forEach($scope.shopUserProjectRelationDTOS, function(data,index,array){
+            $scope.orderPrice = Number(data.sysShopProjectInitAmount*data.discount*data.sysShopProjectInitTimes)+ Number($scope.orderPrice)
+        });
+        //产品价格
+        angular.forEach($scope.shopUserProductRelationDTOS, function(data,index,array){
+            $scope.orderPrice = Number(data.initAmount*data.discount*data.initTimes)+ Number($scope.orderPrice)
+        });
 
+    }
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-2)

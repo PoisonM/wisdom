@@ -1,6 +1,6 @@
 var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
-var version = "1.0."+Math.random()+""
-// var version = "1.0"
+// var version = "1.0."+Math.random()+""
+var version = "1.0"
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
         PADWeb.controller = $controllerProvider.register;
@@ -260,7 +260,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
 
         .state('pad-web.left_nav.addRecord', {
-            url: '/addRecord',
+            url: '/addRecord/:id',
             templateUrl: root + '/addRecord/addRecord.html',
             controller: 'addRecordCtrl',
             resolve: {
@@ -482,7 +482,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.housekeeper', {
-            url: '/housekeeper/:type/:index',
+            url: '/housekeeper/:type/:index/:orderId/:tempAll/:clerkIds/:clerkNames',
             templateUrl: root + '/cashier/housekeeper.html',
             controller: 'housekeeperCtrl',
             resolve: {
@@ -525,6 +525,9 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "领取产品",
                         files: [root + "cashier/getProductCtrl.js?version=" + version,
                             root + "cashier/getProduct.css?version=" + version,
+                            root + "cashier/flashcanvas.min.js?version=" + version,
+                            root + "cashier/jSignature.min.js?version=" + version,
+                            root + "cashier/flashcanvas.swf?version=" + version,
                         ]
                     })
                 }]

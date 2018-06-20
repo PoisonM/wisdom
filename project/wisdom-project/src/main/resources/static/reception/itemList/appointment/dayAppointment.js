@@ -34,6 +34,14 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     var endIndex
     $scope.param = {
         //新建预约修改预约查询对应每个美容师可用时间
+        checkprojectId:"",
+        //选中的项目名称
+        checkprojectName:"",
+        tempRedgArr : [],
+        checkProjectArr : [],
+        checkprojectDuration:0,
+        chooseTimeList:[],
+        memeda:[],
         mrLeisureTime:"",
         nowTime:new Date().getFullYear()+"-"+(parseInt(new Date().getMonth()+1)<10?"0"+parseInt(new Date().getMonth()+1):parseInt(new Date().getMonth()+1))+"-"+(parseInt(new Date().getDate())<10?"0"+parseInt(new Date().getDate()):parseInt(new Date().getDate())),
         endTime:"",
@@ -145,6 +153,56 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             "23:00": "46",
             "23:30": "47",
         },
+        timeCode: [{
+            "00:00": "0",
+            "00:30": "1",
+            "01:00": "2",
+            "01:30": "3",
+            "02:00": "4",
+            "02:30": "5",
+            "03:00": "6",
+            "03:30": "7",
+            "04:00": "8",
+            "04:30": "9",
+            "05:00": "10",
+            "05:30": "11",
+            "06:00": "12",
+            "06:30": "13",
+            "07:00": "14",
+            "07:30": "15",
+            "08:00": "16",
+            "08:30": "17",
+            "09:00": "18",
+            "09:30": "19",
+            "10:00": "20",
+            "10:30": "21",
+            "11:00": "22",
+            "11:30": "23",
+            "12:00": "24",
+            "12:30": "25",
+            "13:00": "26",
+            "13:30": "27",
+            "14:00": "28",
+            "14:30": "29",
+            "15:00": "30",
+            "15:30": "31",
+            "16:00": "32",
+            "16:30": "33",
+            "17:00": "34",
+            "17:30": "35",
+            "18:00": "36",
+            "18:30": "37",
+            "19:00": "38",
+            "19:30": "39",
+            "20:00": "40",
+            "20:30": "41",
+            "21:00": "42",
+            "21:30": "43",
+            "22:00": "44",
+            "22:30": "45",
+            "23:00": "46",
+            "23:30": "47",
+        }],
         bgBlack: false,
         serachContent: '',
         /*搜索内容*/
@@ -298,7 +356,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             // $scope.$apply(function () {
             //     $scope.memeda = data.responseData;
             // });
-            $scope.memeda = data.responseData;
+            $scope.param.memeda = data.responseData;
             $scope.startTime = data.responseData.startTime;
             $scope.endTime = data.responseData.endTime;
             $scope.meirongshiList = [] //美容师列表
@@ -323,11 +381,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.tswTimeList = $scope.param.tswTimeAll.slice($scope.param.timeLocation[0], $scope.param.timeLocation[1] + 1)//从数组中切分出开始和结束时间段
 
             //计算每一行有多少个美容师
-            delete $scope.memeda.startTime //删除对象中的开始结束时间
-            delete $scope.memeda.endTime
-            for (key in $scope.memeda) {
-                $scope.meirongshiList[$scope.memeda[key].sysClerkDTO.name] = {
-                    appointmentInfo: $scope.memeda[key].appointmentInfo
+            delete $scope.param.memeda.startTime //删除对象中的开始结束时间
+            delete $scope.param.memeda.endTime
+            for (key in $scope.param.memeda) {
+                $scope.meirongshiList[$scope.param.memeda[key].sysClerkDTO.name] = {
+                    appointmentInfo: $scope.param.memeda[key].appointmentInfo
                 }  //美容师以及美容师的资料详情
                 $scope.meirongshiList.length++
             }
@@ -431,25 +489,25 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     //切换日周预约
     $scope.appointmentChange = function(type) {
-     if (type == "week") {
-        $scope.weekAll()
-        // $scope.arrTime = $scope.param.week;
-        $scope.param.btnActive[0] = 'common';
-        $scope.param.btnActive[1] = 'btnActive';
-        $scope.param.dayWeekFlag = false;
-     } else {
-         $scope.param.dayWeekFlag = true;
-        $scope.param.appointmentObject.appointmentDate = [];
-        $scope.param.appointmentObject.beautician = [];
-        $scope.param.appointmentObject.point = [];
-        $scope.param.appointmentObject.list = [];
-        $scope.param.days = [];
-        $scope.dayAll()
-        // $scope.arrTime = $scope.param.day;
-        $scope.param.btnActive[0] = 'btnActive';
-        $scope.param.btnActive[1] = 'common';
-     }
-     };
+        if (type == "week") {
+            $scope.weekAll()
+            // $scope.arrTime = $scope.param.week;
+            $scope.param.btnActive[0] = 'common';
+            $scope.param.btnActive[1] = 'btnActive';
+            $scope.param.dayWeekFlag = false;
+        } else {
+            $scope.param.dayWeekFlag = true;
+            $scope.param.appointmentObject.appointmentDate = [];
+            $scope.param.appointmentObject.beautician = [];
+            $scope.param.appointmentObject.point = [];
+            $scope.param.appointmentObject.list = [];
+            $scope.param.days = [];
+            $scope.dayAll()
+            // $scope.arrTime = $scope.param.day;
+            $scope.param.btnActive[0] = 'btnActive';
+            $scope.param.btnActive[1] = 'common';
+        }
+    };
 
 
     $scope.dayAll();
@@ -485,7 +543,33 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         $scope.param.selectCustomersObject.sysUserPhone = ""
         $scope.param.ModifyAppointmentObject.status = "";
         $scope.param.ModifyAppointmentObject.productNum = "0";
-
+        //初始化页面
+        $scope.param.selectCustomersObject.sysUserName = "";
+        $scope.param.selectCustomersObject.sysUserId = "";
+        $scope.param.selectCustomersObject.sysUserPhone = "";
+        $scope.param.ModifyAppointmentObject.productNum = "0";
+        $scope.falseAll()
+        $scope.param.newProductObject.shopProjectId = '';
+        $scope.param.newProductObject.shopProjectName = ""
+        $scope.param.tempRedgArr= [];
+        $scope.param.checkProjectArr= [];
+        $scope.param.ModifyAppointmentObject.beauticianName =  "";
+        $scope.param.ModifyAppointmentObject.beauticianId = "" ;
+        $scope.param.checkprojectId = ""
+        $scope.param.checkprojectName =""
+        $scope.param.checkprojectDuration = 0;
+        //初始化日期
+        // $scope.param.cancellationFlag = false;
+        // $scope.param.curDate=new Date();
+        // $scope.param.dayTime=[];
+        // $scope.bgf5f5f5 = "bgf5f5f5";
+        $scope.param.selectedTime= [];
+        $scope.param.beauticianIndex = null;
+        // if($scope.param.selectedTime != null){
+        //     for(var i=1;i<=$scope.param.selectedTime.length;i++){
+        //         $scope.param.selectedTime[i] = 0
+        //     }
+        // }
         $scope.newAppointment();
 
         // ngDialog.open({
@@ -613,7 +697,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*修改预约*/
     $scope.shopAppointServiceDTO = {
-        appointStartTime: $scope.param.ModifyAppointmentObject.appointStartTime,
+        appointStartTime: new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
         appointEndTime: $scope.param.ModifyAppointmentObject.appointEndTime,
         appointPeriod: $scope.param.ModifyAppointmentObject.appointPeriod,
         detail: $scope.param.ModifyAppointmentObject.detail,
@@ -637,28 +721,43 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 GetAppointmentInfoById.get({
                     shopAppointServiceId: $scope.appointmentId
                 }, function (data) {
-                    // $scope.param.newProductObject.shopProjectId = data.responseData.shopProjectId,
-                    // $scope.param.ModifyAppointmentObject.beauticianId = data.responseData.sysClerkId,
-                    // $scope.param.ModifyAppointmentObject.appointStartTime = data.responseData.appointStartTime,
-                    // $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
-                    // $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod,
-                    // $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
+                    $scope.param.newProductObject.shopProjectId = data.responseData.shopProjectId,
+                    $scope.param.ModifyAppointmentObject.appointStartTime = data.responseData.appointStartTime,
+                    $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
+                    $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod,
+                    $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
                     $scope.param.ModifyAppointmentObject.beauticianId = data.responseData.sysClerkId
                     $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId
                     $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName
                     $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName
-                    $scope.checkprojectId = data.responseData.shopProjectId,
-                    $scope.checkprojectName = data.responseData.shopProjectName,
-                    $scope.checkprojectDuration = data.responseData.appointPeriod,
+                    $scope.param.checkprojectId = data.responseData.shopProjectId+";",
+                    $scope.param.checkprojectName = data.responseData.shopProjectName,
+                    $scope.param.checkprojectDuration = data.responseData.appointPeriod,
                     $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
-                    $scope.tempRedgArr = data.responseData.shopProjectId.split(";");
-                    $scope.param.dayTime=[];
-                    $scope.param.curDate=new Date();
-                    for(var i=1;i<=6;i++){
-                        nextDate = new Date($scope.param.curDate.getTime() +  24*60*60*1000*i);
-                        //后一天 
-                        $scope.param.dayTime.push(nextDate)
-                    }
+                    $scope.param.tempRedgArr = data.responseData.shopProjectId.split(";");
+                    $scope.param.checkProjectArr = data.responseData.shopProjectInfoDTOS;
+
+                    $scope.chooseTime=0
+                    for (var i = 0; i < $scope.param.timeCode.length; i++) {
+                        for (timeItem in $scope.param.timeCode[i]) {
+                            var index =0;
+                            index++;
+                            var time = data.responseData.appointStartTimeS.substr(11,17);
+                            if(time == timeItem){
+                                $scope.chooseTime=$scope.param.timeCode[i][timeItem];
+                            }
+                        }
+                     }
+                    // console.log($scope.param.chooseTimeList)
+                    // console.log($scope.param.theOtherCode)
+                    // $scope.param.dayTime=[];
+                    // $scope.param.curDate=new Date();
+
+                    // for(var i=1;i<=6;i++){
+                    //     nextDate = new Date($scope.param.curDate.getTime() +  24*60*60*1000*i);
+                    //     //后一天 
+                    //     $scope.param.dayTime.push(nextDate)
+                    // }
 
                     GetClerkScheduleInfo.get({
                         appointmentId:"",
@@ -681,6 +780,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             for(key in $scope.param.code){
                                 $scope.param.codeNum.push(key)
                             }
+
                             $scope.dates.scheduling = diff($scope.param.codeNum,$scope.param.mrLeisureTime.split(",")).join(",")
                             $scope.param.ModifyAppointmentObject.hoursType=[];
                             $scope.param.ModifyAppointmentObject.hoursTime=[];
@@ -702,6 +802,10 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                                     }
                                 }
                             }
+
+                            for (var i = parseInt($scope.chooseTime); i < parseInt($scope.chooseTime)+parseInt($scope.param.checkprojectDuration/60/1/0.5); i++) {
+                                $scope.param.ModifyAppointmentObject.hoursType[i]="2";
+                            }
                             $scope.param.ModifyAppointmentObject.hoursTimeShow=$scope.param.ModifyAppointmentObject.hoursTime.slice(startIndex,endIndex+1);
                             $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
                         }
@@ -714,8 +818,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 }, function (data) {
                     $scope.param.individualTravelerAppointmentObj.individualTravelerAppointment = data.responseData;
                     $scope.param.ModifyAppointmentObject.productNum = data.responseData.consume.length + data.responseData.punchCard.length
-
-
                 });
                 /*选择时间（天为单位）*/
                 $scope.selectDayTime = function(index){
@@ -736,7 +838,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
                         $scope.bgff9b9b = 'bgff9b9b';
                         $scope.index1 = index;
-                        var time=$scope.checkprojectDuration/60/1/0.5;
+                        var time=$scope.param.checkprojectDuration/60/1/0.5;
                         for(var i=index;i<time+index;i++){
                             $scope.param.selectedTime[i] = "2";
                             for(var j=0;j<$scope.param.code.length;j++){
@@ -756,13 +858,13 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     if(status == 1){
                         $scope.importData = {
                             id:$scope.appointmentId,
-                            shopProjectId:$scope.checkprojectId,
+                            shopProjectId:$scope.param.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
                             sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
                             appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
-                            shopProjectName:$scope.checkprojectName,
-                            appointPeriod:$scope.checkprojectDuration,
+                            shopProjectName:$scope.param.checkprojectName,
+                            appointPeriod:$scope.param.checkprojectDuration,
                             detail:$scope.param.ModifyAppointmentObject.detail,
                             status:'0'
                         }
@@ -823,9 +925,9 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.param.selectCustomersObject.sysUserPhone = sysUserPhone;
                     setTimeout(function () {
                         //如果客户已经选择了产品则关闭当前窗口,如果没有选择则跳转到 产品选择页面
-                      if ($scope.tempRedgArr.length == 0) {
-                        $scope.selectNewProduct();
-                      }
+                        if ($scope.param.tempRedgArr.length == 0) {
+                            $scope.selectNewProduct();
+                        }
                         $scope.closeThisDialog();
                     }, 800)
                 }
@@ -882,6 +984,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*选择项目*/
     $scope.selectNewProduct = function () {
+        debugger
         if ($scope.param.selectCustomersObject.sysUserName == "") {
             $scope.selectCustomersCtrl()
         } else {
@@ -893,36 +996,36 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.close = function (status) {
                         if (status == 1) {
                             /*$scope.param.newProductObject.shopProjectIdArr = [];
-                            /!*Id数组*!/
-                            $scope.param.newProductObject.shopProjectNameArr = [];
-                            /!*项目名数组*!/
-                            var timeLength = 0;
-                            /!*项目时长*!/
-                            /!* $scope.param.ModifyAppointmentObject.productNum = 0;/!*项目个数*!/!*!/
-                            for (var i = 0; i < $scope.param.ModifyAppointmentObject.selfProductDataFlag.length; i++) {
-                                if ($scope.param.ModifyAppointmentObject.selfProductDataFlag[i] == true) {
-                                    $scope.param.newProductObject.shopProjectIdArr.push($(".selfProductDataIndex").eq(i).attr('shopProjectId'))
-                                    $scope.param.newProductObject.shopProjectNameArr.push($(".selfProductDataIndex").eq(i).attr('projectName'));
-                                    timeLength += $(".selfProductDataIndex").eq(i).attr('appointPeriod') / 1;
-                                    $scope.param.ModifyAppointmentObject.productNum++;
-                                }
-                            }
-                            for (var i = 0; i < $scope.param.newProductObject.newProjectData.length; i++) {
-                                if ($scope.param.ModifyAppointmentObject.newProjectDataFlag[i] == true) {
-                                    $scope.param.newProductObject.shopProjectIdArr.push($(".newProjectIndex").eq(i).attr('shopProjectId'))
-                                    $scope.param.newProductObject.shopProjectNameArr.push($(".newProjectIndex").eq(i).attr('projectName'));
-                                    timeLength += $(".newProjectIndex").eq(i).attr('appointPeriod') / 1;
-                                    $scope.param.ModifyAppointmentObject.productNum++;
+                             /!*Id数组*!/
+                             $scope.param.newProductObject.shopProjectNameArr = [];
+                             /!*项目名数组*!/
+                             var timeLength = 0;
+                             /!*项目时长*!/
+                             /!* $scope.param.ModifyAppointmentObject.productNum = 0;/!*项目个数*!/!*!/
+                             for (var i = 0; i < $scope.param.ModifyAppointmentObject.selfProductDataFlag.length; i++) {
+                             if ($scope.param.ModifyAppointmentObject.selfProductDataFlag[i] == true) {
+                             $scope.param.newProductObject.shopProjectIdArr.push($(".selfProductDataIndex").eq(i).attr('shopProjectId'))
+                             $scope.param.newProductObject.shopProjectNameArr.push($(".selfProductDataIndex").eq(i).attr('projectName'));
+                             timeLength += $(".selfProductDataIndex").eq(i).attr('appointPeriod') / 1;
+                             $scope.param.ModifyAppointmentObject.productNum++;
+                             }
+                             }
+                             for (var i = 0; i < $scope.param.newProductObject.newProjectData.length; i++) {
+                             if ($scope.param.ModifyAppointmentObject.newProjectDataFlag[i] == true) {
+                             $scope.param.newProductObject.shopProjectIdArr.push($(".newProjectIndex").eq(i).attr('shopProjectId'))
+                             $scope.param.newProductObject.shopProjectNameArr.push($(".newProjectIndex").eq(i).attr('projectName'));
+                             timeLength += $(".newProjectIndex").eq(i).attr('appointPeriod') / 1;
+                             $scope.param.ModifyAppointmentObject.productNum++;
 
-                                }
-                            }
-                            /!*项目ID*!/
-                            $scope.param.newProductObject.shopProjectId = $scope.param.newProductObject.shopProjectIdArr.join(",");
-                            /!*项目名称*!/
-                            $scope.param.newProductObject.shopProjectName = $scope.param.newProductObject.shopProjectNameArr.join(",");
-                            /!*项目时长*!/
-                            $scope.param.ModifyAppointmentObject.appointPeriod = timeLength;
-                            console.log($scope.param.ModifyAppointmentObject.appointPeriod)*/
+                             }
+                             }
+                             /!*项目ID*!/
+                             $scope.param.newProductObject.shopProjectId = $scope.param.newProductObject.shopProjectIdArr.join(",");
+                             /!*项目名称*!/
+                             $scope.param.newProductObject.shopProjectName = $scope.param.newProductObject.shopProjectNameArr.join(",");
+                             /!*项目时长*!/
+                             $scope.param.ModifyAppointmentObject.appointPeriod = timeLength;
+                             console.log($scope.param.ModifyAppointmentObject.appointPeriod)*/
                             ngDialog.close("selectCustomersWrap")
                         } else {
                             $scope.param.ModifyAppointmentObject.productNum = "0";
@@ -963,33 +1066,35 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             }
         }
     }
-    $scope.tempRedgArr = []//控制前台样式
-    $scope.checkProjectArr = []
+    $scope.param.tempRedgArr = []//控制前台样式
+    $scope.param.checkProjectArr = []
     //选择项目包括控制样式
     $scope.selectTheProduct = function (items,parentIndex,index, type) {
+        debugger
         //重构
         $scope.redCorrectFlag = items.id
-        if($scope.tempRedgArr.indexOf(items.id) != -1){
-            $scope.tempRedgArr.remove(items.id)
-            $scope.checkProjectArr.remove(items)
+        if($scope.param.tempRedgArr.indexOf(items.id) != -1){
+            $scope.param.tempRedgArr.remove(items.id)
+            $scope.param.checkProjectArr.removeObj(items)
         }else {
-            $scope.tempRedgArr.push(items.id)
-            $scope.checkProjectArr.push(items)
+            $scope.param.tempRedgArr.push(items.id)
+            $scope.param.checkProjectArr.push(items)
         }
         //计算时长 项目名称 项目id
-        $scope.checkprojectId = ""
-        $scope.checkprojectName = ""
-        $scope.checkprojectDuration = new Number()
-        for(var i = 0; i < $scope.checkProjectArr.length; i++){
-            $scope.checkprojectId += $scope.checkProjectArr[i].id+";"
-            $scope.checkprojectName += $scope.checkProjectArr[i].projectName+";"
-            $scope.checkprojectDuration += parseInt($scope.checkProjectArr[i].projectDuration)
+        $scope.param.checkprojectId = ""
+        $scope.param.checkprojectName = ""
+        $scope.param.checkprojectDuration = new Number()
+        for(var i = 0; i < $scope.param.checkProjectArr.length; i++){
+            $scope.param.checkprojectId += $scope.param.checkProjectArr[i].id+";"
+            $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
+            $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
         }
         /*if (type == "疗程") {
-            $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
-        } else {
-            $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
-        }*/
+         $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
+         } else {
+         $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
+         }*/
+        console.log($scope.param.checkprojectId)
     }
 
     /*选择美容师*/
@@ -998,134 +1103,134 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         //     /*$scope.selectCustomersCtrl()*/
         //
         // } else {
-            ngDialog.open({
-                template: 'selectBeautician',
-                scope: $scope, //这样就可以传递参数
-                controller: ['$scope', '$interval', function ($scope, $interval) {
+        ngDialog.open({
+            template: 'selectBeautician',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function ($scope, $interval) {
 
 
-                    $scope.param.timeLengthIndex = -1;
-                    GetShopClerkList.get({
-                        pageNo: 1,
-                        pageSize: 100
-                    }, function (data) {
-                        $scope.param.timeLength = data.responseData;
+                $scope.param.timeLengthIndex = -1;
+                GetShopClerkList.get({
+                    pageNo: 1,
+                    pageSize: 100
+                }, function (data) {
+                    $scope.param.timeLength = data.responseData;
+                })
+
+
+                //选中美容师并返回
+                $scope.selectbeauticianIndex = function(index,beauticianName,beauticianId){
+                    $scope.param.beauticianIndex = index;
+                    $scope.param.ModifyAppointmentObject.beauticianName =beauticianName;
+                    $scope.param.ModifyAppointmentObject.beauticianId =beauticianId;//美容师id
+
+
+                    /*setTimeout(function(){
+                     ngDialog.close("timeLength");
+                     },600)*/
+
+                    //拿到美容师id调取时间段是否能选中的接口$scope.param.ModifyAppointmentObject.beauticianId
+                    GetClerkScheduleInfo.get({
+                        appointmentId:"",
+                        clerkId:$scope.param.ModifyAppointmentObject.beauticianId,
+                        searchDate:$scope.param.nowTime
+                    },function (data) {
+                        //拿到可用时间
+                        if(data.result == "0x00001"){
+                            //空闲时间
+                            $scope.param.mrLeisureTime = data.responseData
+                            //计算出不可点击时间
+
+                            $scope.param.dayTime=[];
+                            $scope.param.curDate=new Date();
+                            $scope.bgf5f5f5 = "bgf5f5f5";
+                            $scope.param.codeNum = []//所有节点
+                            $scope.param.schedulingArr = []//所有节点
+                            $scope.dates={
+                                startTime: "00:00",
+                                endTime: "23:00",
+                                scheduling:"",
+                            };
+                            for(key in $scope.param.code){
+                                $scope.param.codeNum.push(key)
+                            }
+                            //选择时间
+                            /*选择时间*/
+
+                            $scope.dates.scheduling = diff($scope.param.codeNum,$scope.param.mrLeisureTime.split(",")).join(",")
+
+
+                            /* var a = $filter("date")(Date.parse($scope.param.ModifyAppointmentObject.appointStartTime),"yyyy-MM-dd");
+                             console.log(a);*/
+                            $scope.param.ModifyAppointmentObject.hoursType=[];
+                            $scope.param.ModifyAppointmentObject.hoursTime=[];
+                            for(var i=0;i<$scope.param.code.length;i++){
+                                $scope.param.ModifyAppointmentObject.hoursType[i]="0";
+                                for(key in $scope.param.code[i] ){
+                                    for (var k = 0;k <$scope.dates.scheduling.split(",").length; k++) {
+                                        if($scope.dates.scheduling.split(",")[k]==key){
+                                            $scope.param.ModifyAppointmentObject.hoursType[i]="1";
+                                        }
+                                    }
+
+                                    $scope.param.ModifyAppointmentObject.hoursTime[i] = $scope.param.code[i][key];
+                                    if($scope.param.code[i][key] == $scope.dates.startTime ){
+                                        startIndex= i;
+                                    }
+                                    if($scope.param.code[i][key] == $scope.dates.endTime ){
+                                        endIndex= i;
+                                    }
+                                }
+                            }
+                            $scope.param.ModifyAppointmentObject.hoursTimeShow=$scope.param.ModifyAppointmentObject.hoursTime.slice(startIndex,endIndex+1);
+                            $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
+
+
+                            /*默认选择时间段*/
+                            /*if($scope.param.ModifyAppointmentObject.appointStartTime ==""){
+                             var time=$scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
+                             $scope.timeLength = $scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
+                             var numTime = [];
+                             var timeIntervalArr = [];
+                             for(var i=0;i<$scope.param.selectedTime.length;i++){
+                             if($scope.param.selectedTime[i] !=1){
+                             for(var j=1;j<time;j++){
+                             if($scope.param.selectedTime[i] ==$scope.param.selectedTime[i+j]){
+                             numTime.push(i)
+                             for(var j=0;j<time;j++){
+                             $scope.param.selectedTime[numTime[0]+j] ="2";
+                             for(var i=0;i<$scope.param.code.length;i++){
+                             for(key in $scope.param.code[i] ){
+                             if($scope.param.code[i][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[numTime[0]+j] ){
+                             timeIntervalArr.push($scope.param.code[i][key])
+                             }
+                             }
+                             }
+                             }
+                             }
+                             }
+                             }
+                             }
+                             $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
+                             $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
+                             }*/
+                        }
+
                     })
 
+                    $scope.closeThisDialog();
 
-                    //选中美容师并返回
-                    $scope.selectbeauticianIndex = function(index,beauticianName,beauticianId){
-                        $scope.param.beauticianIndex = index;
-                        $scope.param.ModifyAppointmentObject.beauticianName =beauticianName;
-                        $scope.param.ModifyAppointmentObject.beauticianId =beauticianId;//美容师id
+                }
 
-
-                        /*setTimeout(function(){
-                            ngDialog.close("timeLength");
-                        },600)*/
-
-                        //拿到美容师id调取时间段是否能选中的接口$scope.param.ModifyAppointmentObject.beauticianId
-                        GetClerkScheduleInfo.get({
-                            appointmentId:"",
-                            clerkId:$scope.param.ModifyAppointmentObject.beauticianId,
-                            searchDate:$scope.param.nowTime
-                        },function (data) {
-                            //拿到可用时间
-                            if(data.result == "0x00001"){
-                                //空闲时间
-                                $scope.param.mrLeisureTime = data.responseData
-                                //计算出不可点击时间
-
-                                $scope.param.dayTime=[];
-                                $scope.param.curDate=new Date();
-                                $scope.bgf5f5f5 = "bgf5f5f5";
-                                $scope.param.codeNum = []//所有节点
-                                $scope.param.schedulingArr = []//所有节点
-                                $scope.dates={
-                                    startTime: "00:00",
-                                    endTime: "23:00",
-                                    scheduling:"",
-                                };
-                                for(key in $scope.param.code){
-                                    $scope.param.codeNum.push(key)
-                                }
-                                //选择时间
-                                /*选择时间*/
-
-                                $scope.dates.scheduling = diff($scope.param.codeNum,$scope.param.mrLeisureTime.split(",")).join(",")
-
-
-                                /* var a = $filter("date")(Date.parse($scope.param.ModifyAppointmentObject.appointStartTime),"yyyy-MM-dd");
-                                 console.log(a);*/
-                                $scope.param.ModifyAppointmentObject.hoursType=[];
-                                $scope.param.ModifyAppointmentObject.hoursTime=[];
-                                for(var i=0;i<$scope.param.code.length;i++){
-                                    $scope.param.ModifyAppointmentObject.hoursType[i]="0";
-                                    for(key in $scope.param.code[i] ){
-                                        for (var k = 0;k <$scope.dates.scheduling.split(",").length; k++) {
-                                            if($scope.dates.scheduling.split(",")[k]==key){
-                                                $scope.param.ModifyAppointmentObject.hoursType[i]="1";
-                                            }
-                                        }
-
-                                        $scope.param.ModifyAppointmentObject.hoursTime[i] = $scope.param.code[i][key];
-                                        if($scope.param.code[i][key] == $scope.dates.startTime ){
-                                            startIndex= i;
-                                        }
-                                        if($scope.param.code[i][key] == $scope.dates.endTime ){
-                                            endIndex= i;
-                                        }
-                                    }
-                                }
-                                $scope.param.ModifyAppointmentObject.hoursTimeShow=$scope.param.ModifyAppointmentObject.hoursTime.slice(startIndex,endIndex+1);
-                                $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
-
-
-                                /*默认选择时间段*/
-                                /*if($scope.param.ModifyAppointmentObject.appointStartTime ==""){
-                                    var time=$scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
-                                    $scope.timeLength = $scope.param.ModifyAppointmentObject.appointPeriod/1/0.5;
-                                    var numTime = [];
-                                    var timeIntervalArr = [];
-                                    for(var i=0;i<$scope.param.selectedTime.length;i++){
-                                        if($scope.param.selectedTime[i] !=1){
-                                            for(var j=1;j<time;j++){
-                                                if($scope.param.selectedTime[i] ==$scope.param.selectedTime[i+j]){
-                                                    numTime.push(i)
-                                                    for(var j=0;j<time;j++){
-                                                        $scope.param.selectedTime[numTime[0]+j] ="2";
-                                                        for(var i=0;i<$scope.param.code.length;i++){
-                                                            for(key in $scope.param.code[i] ){
-                                                                if($scope.param.code[i][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[numTime[0]+j] ){
-                                                                    timeIntervalArr.push($scope.param.code[i][key])
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
-                                    $scope.param.ModifyAppointmentObject.appointEndTime=timeIntervalArr[timeIntervalArr.length-1]
-                                }*/
-                            }
-
-                        })
-
-                        $scope.closeThisDialog();
-
+                $scope.close = function (status) {
+                    if (status == 0) {
+                        /* $scope.param.ModifyAppointmentObject.beauticianName =""*/
                     }
-
-                    $scope.close = function (status) {
-                        if (status == 0) {
-                            /* $scope.param.ModifyAppointmentObject.beauticianName =""*/
-                        }
-                        $scope.closeThisDialog();
-                    };
-                }],
-                className: 'selectBeautician ngdialog-theme-custom'
-            });
+                    $scope.closeThisDialog();
+                };
+            }],
+            className: 'selectBeautician ngdialog-theme-custom'
+        });
         // }
     }
     /*选择时长*/
@@ -1189,10 +1294,10 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
                 $scope.selectTime = function(index,NoOrYes){
                     var timeIntervalArr = [];
-                   if(NoOrYes == 1){
-                       //0空闲时间 1非空闲时间
-                       return
-                   }
+                    if(NoOrYes == 1){
+                        //0空闲时间 1非空闲时间
+                        return
+                    }
                     if($scope.param.selectCustomersObject.sysUserName == ""){
                         alert("请先选择顾客")
                         // $scope.selectCustomersCtrl()
@@ -1204,16 +1309,16 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
                         $scope.bgff9b9b = 'bgff9b9b';
                         $scope.index1 = index;
-                        var time=$scope.checkprojectDuration/60/1/0.5;
+                        var time=$scope.param.checkprojectDuration/60/1/0.5;
                         for(var i=index;i<time+index;i++){
                             $scope.param.selectedTime[i] = "2";
                             for(var j=0;j<$scope.param.code.length;j++){
                                 for(key in $scope.param.code[j] ){
                                     if($scope.param.code[j][key] == $scope.param.ModifyAppointmentObject.hoursTimeShow[i] ){
                                         timeIntervalArr.push($scope.param.code[j][key])
-                                        }
                                     }
                                 }
+                            }
                         }
 
                         $scope.param.ModifyAppointmentObject.appointStartTime=timeIntervalArr[0];
@@ -1230,19 +1335,19 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     if(status == 1){
                         //保存预约
                         $scope.importData = {
-                            shopProjectId:$scope.checkprojectId,
+                            shopProjectId:$scope.param.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
                             sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
                             appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
-                            shopProjectName:$scope.checkprojectName,
-                            appointPeriod:$scope.checkprojectDuration,
+                            shopProjectName:$scope.param.checkprojectName,
+                            appointPeriod:$scope.param.checkprojectDuration,
                             detail:$scope.param.ModifyAppointmentObject.detail,
                             status:'0'
                         }
 
-                        if($scope.checkprojectId == ""||$scope.param.ModifyAppointmentObject.beauticianId ==""||$scope.param.selectCustomersObject.sysUserId == ""
-                            ||$scope.checkprojectName == ""||$scope.checkprojectDuration == ""||$scope.param.ModifyAppointmentObject.appointStartTime ==""){
+                        if($scope.param.checkprojectId == ""||$scope.param.ModifyAppointmentObject.beauticianId ==""||$scope.param.selectCustomersObject.sysUserId == ""
+                            ||$scope.param.checkprojectName == ""||$scope.param.checkprojectDuration == ""||$scope.param.ModifyAppointmentObject.appointStartTime ==""){
                             alert("请完善信息")
                             return;
                         }
@@ -1440,5 +1545,13 @@ Array.prototype.remove = function (val) {
     var index = this.indexOf(val);
     if (index > -1) {
         this.splice(index, 1);
+    }
+}
+
+Array.prototype.removeObj = function (val) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i].id == val.id){
+            this.splice(i, 1);
+        };
     }
 }

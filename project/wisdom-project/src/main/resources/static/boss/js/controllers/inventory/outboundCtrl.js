@@ -59,22 +59,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
                        })
                    }
                 }
-               /* if($scope.param.type != type)
-                {
-                    $scope.param.selectProductTypeOneId = "";
-                    $scope.param.multiSelectFlag=false;
-                    $scope.param.type = type;
-                    $scope.param.selectProductList = '';
-                }
-                else
-                {
-                    $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
-                }
-                GetShopProductLevelInfo.get({productType:type},function(data){
-                    $scope.param.detailProductList = data.responseData.detailProductList;
-                    $scope.param.oneLevelList = data.responseData.oneLevelList;
-                    $scope.param.twoLevelList = data.responseData.twoLevelList;
-                })*/
+
             };
 
             $scope.chooseTwoLevelList = function (productTypeOneId) {

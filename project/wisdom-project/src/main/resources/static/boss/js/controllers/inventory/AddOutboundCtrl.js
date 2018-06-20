@@ -4,12 +4,23 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
             $rootScope.title = "新增出库";
             $scope.sum = $stateParams.sum;
-
+            $scope.storeManagerName ="";
+            $scope.outOperationName = $stateParams.names.split(',')[0];
+            $scope.outOperationVal = $stateParams.ids.split(',')[0];
             $scope.param = {
                 shopStock : [],
                 outOperationName : '',
+                outOperationVal : '',
                 detail:''
             };
+
+            //选
+            if($stateParams.ids!=""){
+                $scope.param.outOperationName = $stateParams.names.split(',')[0];
+                $scope.param.outOperationVal = $stateParams.ids.split(',')[0];
+            }
+
+
             angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
                 var value = {
                     detail:"",
@@ -51,15 +62,19 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                     }
                 })
                 $scope.param.shopStock=shopStock;
-                $rootScope.shopInfo.entryShopProductList=shopStock;
                 $scope.sum = $scope.sum-1;
+            }
+
+            $scope.selReceiver = function(){
+
+                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle});
             }
 
             /*确认出库*/
             $scope.successfulInventoryGo = function(){
                 if($scope.sum>0){
                     angular.forEach($scope.param.shopStock,function (val,index) {
-                       val.receiver = $scope.param.outOperationName;
+                       val.receiver = $scope.param.outOperationVal;
                        val.detail = $scope.param.detail;
                     });
                     var list=$scope.param.shopStock;

@@ -2,24 +2,42 @@
  * Created by Administrator on 2018/6/15.
  */
 angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate',
-        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate) {
+    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate,$ionicLoading) {
 
             $rootScope.title = "业绩明细";
             $scope.flag = false;
+            $scope.param={
+                flag:false/*空白页面的显示*/
+            };
             $scope.userConsumeRequest = {
                 pageSize:1000,
                 searchFile:$stateParams.searchFile
-            };
 
+            };
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetClerkPerformanceListClerk.get({pageSize:$scope.userConsumeRequest.pageSize,searchFile:$scope.userConsumeRequest.searchFile},function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
+                        $ionicLoading.hide();
                         $scope.list = data.responseData;
                         $scope.detailedPerformance = data.responseData;
+                        if(data.responseData.length<=0){
+                            $scope.param.flag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.flag=true;
                     }
 
                 });
+
             $scope.expenditureDetailsGo = function(flowNo){
                 $state.go("details",{flowNo:flowNo})
             };
@@ -40,6 +58,10 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                         if($scope.list[i].type==type){
                             $scope.detailedPerformance.push($scope.list[i])
                         }
+                    }
+                    if( $scope.detailedPerformance.length<=0){
+                        $scope.param.flag=true;
+                        console.log(2);
                     }
                 }else{
                     $scope.detailedPerformance=$scope.list

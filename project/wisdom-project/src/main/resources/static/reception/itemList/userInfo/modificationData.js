@@ -18,12 +18,13 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
         GetCurrentLoginUserInfo.get(function (data) {
             if(data.result="0x00001")
             {
-                ClerkInfo.query({
-                    clerkId: data.responseData.id
-                }, function(data) {
-                    $scope.userInfoDataMod = data[0];
-                    console.log($scope.userInfoDataMod);
-                });
+                // ClerkInfo.query({
+                //     clerkId: data.responseData.id
+                // }, function(data) {
+                    $scope.userInfoDataMod = data.responseData;
+                    $scope.param.imgSrc = data.responseData.photo;
+                //     console.log($scope.userInfoDataMod);
+                // });
             }
         })
     }
@@ -67,6 +68,14 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
             sysUserId:$scope.userInfoDataMod.sysUserId,
             sex:$scope.userInfoDataMod.sex,
             photo:$scope.param.imgSrc,
+            name:$scope.userInfoDataMod.name,
+            role:$scope.userInfoDataMod.role,
+            address:$scope.userInfoDataMod.address,
+            workinglife:$scope.userInfoDataMod.workinglife,
+            speciality:$scope.userInfoDataMod.speciality,
+            dream:$scope.userInfoDataMod.dream,
+            wechat:$scope.userInfoDataMod.wechat,
+            qq:$scope.userInfoDataMod.qq
         },function (data) {
             if(data.result == "0x00001"){
                 alert("保存成功")

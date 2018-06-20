@@ -45,9 +45,27 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private String productTypeOneName;
 
 	//二级类别名称
+	private String receiver;
+	//接收人
 	private String productTypeTwoName;
+
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
 
+	public String getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
+	}
+
+	public Integer getOutStockNumber() {
+		return outStockNumber;
+	}
+
+	public void setOutStockNumber(Integer outStockNumber) {
+		this.outStockNumber = outStockNumber;
+	}
 
 	public Date getCreateDate() {
 		return createDate;

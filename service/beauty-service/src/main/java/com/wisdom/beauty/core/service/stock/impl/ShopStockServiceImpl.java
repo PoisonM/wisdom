@@ -188,8 +188,14 @@ public class ShopStockServiceImpl implements ShopStockService {
 			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+		List<SysClerkDTO> sysClerkDTOList = userServiceClient.getClerkInfoByClerkId(list.get(0).getReceiver());
 		ShopStockRecordDTO shopStockRecord = list.get(0);
+
+		if(sysClerkDTOList!=null&&sysClerkDTOList.size()>0){
+
+			shopStockRecord.setReceiver(sysClerkDTOList.get(0).getName());
+		}
+
 		shopStockRecord.setCreateDateTime(sdf.format(list.get(0).getCreateDate()));
 		String id = shopStockRecord.getId();
 		// 根据id查询，shop_stock的入库，出库产品记录
@@ -254,6 +260,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockResponseDTO = new ShopStockResponseDTO();
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
+		shopStockResponseDTO.setReceiver(shopStockRecord.getReceiver());
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setName(shopStockRecord.getName());
 		shopStockResponseDTO.setStockType(shopStockRecord.getStockType());

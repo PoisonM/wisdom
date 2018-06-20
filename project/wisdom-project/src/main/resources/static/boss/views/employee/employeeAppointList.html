@@ -23,6 +23,7 @@
             </ionic-datepicker>
             <span style="margin-left:20px;color:white">{{param.week}}&nbsp;&nbsp;{{param.scheduleDate}}</span>
         </div>
+        <div ng-show="!param.flag">
         <ion-item  class="bgfff row mb10"   ng-click="confirmedGo(item.appointmentInfo.id)" ng-repeat="item in param.appointList">
             <div class="col col-20" style="line-height: 49px;">
                 <img ng-src="{{item.sysClerkInfo.photo}}" style="height:50px;width:50px;border-radius:2em;background:lightgrey">
@@ -47,10 +48,15 @@
                 </p >
             </div>
         </ion-item>
+        </div>
+         <!--页面没有数据显示空数据-->
+        <div style="width:100%;height:100%" ng-show="param.flag">
+            <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
+        </div>
     </ion-content>
-    <!--<div class="tabs " style="padding-top: 0px;background: #eeeeee" ng-click="employeeReservation()">-->
-        <!--<a class="tab-item colff66 fs16">-->
-            <!--已取消的预约-->
-        <!--</a>-->
-    <!--</div>-->
+   <!-- <div class="tabs " style="padding-top: 0px;background: #eeeeee" ng-click="employeeReservation()">
+        <a class="tab-item colff66 fs16">
+            已取消的预约
+        </a>
+    </div>-->
 </ion-view>

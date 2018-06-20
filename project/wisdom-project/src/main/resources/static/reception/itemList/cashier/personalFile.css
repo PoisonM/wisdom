@@ -158,12 +158,17 @@
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardTopName {
     font-family: PingFangSC-Regular;
-    font-size: 16px;
+    font-size: 18px;
     color: #333333;
     letter-spacing: 0;
     margin: 10px 0 0 15px;
     display: block;
     float: left;
+    display: inline-block;
+    /*width: 200px;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardTopPrice {
@@ -179,7 +184,7 @@
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardTopPrice b {
     font-family: PingFangSC-Semibold;
-    font-size: 18px;
+    font-size: 17px;
     color: #FF6666;
     letter-spacing: 0;
 }
@@ -222,12 +227,14 @@
     letter-spacing: 0;
     float: left;
     margin: 13px 0 0 16px;
+    display: inline-block;
+    width: 200px;
 }
 
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardContent .useNub {
     float: left;
-    margin: 8px 0 0 231px;
+    margin: 8px 0 0 100px;
 }
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardContent .useNub .recorderCardContentUsed {
@@ -336,7 +343,7 @@
     color: #999999;
     letter-spacing: 0;
     display: inline-block;
-    margin: 24px 0 0 10px;
+    margin: 24px 0 0 0px;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardNote {
@@ -363,7 +370,7 @@
 }
 
 .personalFile-box .personalFile-content .treatment .singleCard {
-    margin-top: -35px;
+    margin-top: -25px;
     background: #FFFFFF;
 }
 
@@ -379,28 +386,44 @@
     border: 1px solid #E5E5E5;
 }
 
-.personalFile-box .personalFile-content .treatment .singleCard span.time {
-    padding-left: 15px;
+.personalFile-box .personalFile-content .treatment .singleCard div.time {
+    width: 30%;
+    text-align: center;
+    float: left;
 }
 
-.personalFile-box .personalFile-content .treatment .singleCard span.type {
-    margin-left: 24px;
+.personalFile-box .personalFile-content .treatment .singleCard div.type {
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+    float: left;
 }
 
-.personalFile-box .personalFile-content .treatment .singleCard span.name {
-    margin-left: 50px;
+.personalFile-box .personalFile-content .treatment .singleCard div.name {
+    width: 25%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    float: left;
 }
 
-.personalFile-box .personalFile-content .treatment .singleCard span.number {
-    margin-left: 65px;
+.personalFile-box .personalFile-content .treatment .singleCard div.number {
+    width: 10%;
+    display: inline-block;
+    text-align: center;
+    float: left;
 }
 
-.personalFile-box .personalFile-content .treatment .singleCard span.price {
-    margin-left: 45px;
+.personalFile-box .personalFile-content .treatment .singleCard div.price {
+    width: 15%;
+    display: inline-block;
+    text-align: center;
+    float: left;
 }
 
 .personalFile-box .personalFile-content .treatment .productCard {
-    margin-top: -35px;
+    margin-top: -25px;
     background: #FFFFFF;
 }
 

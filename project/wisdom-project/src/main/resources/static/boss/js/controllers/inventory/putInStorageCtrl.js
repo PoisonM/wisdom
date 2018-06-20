@@ -33,7 +33,6 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.type = type;
                     if(!$scope.param.multiSelectFlag){
                        GetShopProductLevelInfo.get({productType:type},function(data){
-
                            $scope.param.oneLevelList = data.responseData.oneLevelList;
                            $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
                            $scope.param.twoLevelList = data.responseData.twoLevelList;
@@ -60,23 +59,6 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                        })
                    }
                 }
-
-            /*
-                if($scope.param.type != type){
-                    $scope.param.selectProductTypeOneId = "";
-                    $scope.param.multiSelectFlag=false;
-                    $scope.param.type = type;
-                    $scope.param.selectProductList = '';
-
-                }else{
-                    $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
-                }
-                GetShopProductLevelInfo.get({productType:type},function(data){
-                    $scope.param.detailProductList = data.responseData.detailProductList;
-                    $scope.param.oneLevelList = data.responseData.oneLevelList;
-                    $scope.param.twoLevelList = data.responseData.twoLevelList;
-                })*/
-
             };
             
             $scope.chooseTwoLevelList = function (productTypeOneId) {
@@ -99,6 +81,9 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
             $scope.selType = function (type) {
                 $scope.param.selType = type;
+
+                //扫码入库
+
             }
 
             $scope.selProduct = function (domIndex) {

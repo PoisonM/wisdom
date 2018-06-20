@@ -2,6 +2,8 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.ChannelCodeEnum;
+import com.wisdom.beauty.api.enums.ChannelEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
@@ -345,9 +347,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
 			userInfoDTO.setCreateDate(new Date());
 			userInfoDTO.setUserType(ConfigConstant.beautySource);
-			userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
-			userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getPhone()) ? ImageEnum.USER_HEAD.getDesc()
-					: shopUserArchivesDTO.getPhone());
+			userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
+			userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getImageUrl()) ? ImageEnum.USER_HEAD.getDesc()
+					: shopUserArchivesDTO.getImageUrl());
 			logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
 			userServiceClient.insertUserInfo(userInfoDTO);
 		} else {
@@ -368,11 +370,12 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			sysClerkId = clerkInfo.getId();
 			SysShopDTO shop = shopService.getShopInfoByPrimaryKey(sysShopId);
 			sysShopName = shop.getName();
-			channel = StringUtils.isBlank(channel) ? "clerk" : channel;
+			channel = StringUtils.isBlank(channel) ? ChannelEnum.UNDEFINED.getCode() : channel;
 		}
 		if (null != bossInfo) {
-			sysShopName = "boss";
-			channel = StringUtils.isBlank(channel) ? "boss" : channel;
+			sysShopName = shopUserArchivesDTO.getSysShopName();
+			sysShopId=shopUserArchivesDTO.getSysShopId();
+			channel = StringUtils.isBlank(channel) ? ChannelEnum.UNDEFINED.getCode() : channel;
 		}
 
 		shopUserArchivesDTO.setChannel(channel);
@@ -384,8 +387,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
 		shopUserArchivesDTO.setCreateDate(new Date());
 		shopUserArchivesDTO
-				.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getPhone()) ? ImageEnum.USER_HEAD.getDesc()
-						: shopUserArchivesDTO.getPhone());
+				.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getImageUrl()) ? ImageEnum.USER_HEAD.getDesc()
+						: shopUserArchivesDTO.getImageUrl());
 		shopUserArchivesDTO.setSysShopId(sysShopId);
 		SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
 		if (null != shopInfoByPrimaryKey) {

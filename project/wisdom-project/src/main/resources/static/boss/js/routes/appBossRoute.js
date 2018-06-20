@@ -1514,6 +1514,22 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+
+                    //领取人
+                    .state('receiver', {
+                        url: '/receiver/:id/:sum/:shopStoreId/:stockStyle',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'receiverCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.receiverCtrl',
+                                    ['js/controllers/inventory/receiverCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/receiver.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
+
                     /* reservoirRunningWater 出入库流水*/
                     .state('reservoirRunningWater', {
                         url: '/reservoirRunningWater',
@@ -1887,7 +1903,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum',
+                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum/:ids/:names',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {

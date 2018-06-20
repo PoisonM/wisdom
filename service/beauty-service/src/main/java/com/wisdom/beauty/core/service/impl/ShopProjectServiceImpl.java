@@ -72,7 +72,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		ShopUserProjectRelationCriteria shopUserProjectRelationCriteria = new ShopUserProjectRelationCriteria();
 		ShopUserProjectRelationCriteria.Criteria criteria = shopUserProjectRelationCriteria.createCriteria();
-
+        //根据创建时间排序
+		shopUserProjectRelationCriteria.setOrderByClause("create_date desc");
 		// 根据预约主键查询用户的预约项目
 		if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getShopAppointmentId())) {
 			criteria.andShopAppointmentIdEqualTo(shopUserProjectRelationDTO.getShopAppointmentId());
@@ -101,7 +102,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		if (null != shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()
 				&& shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() > 0) {
-			criteria.andSysShopProjectSurplusTimesGreaterThan(
+			criteria.andSysShopProjectSurplusTimesGreaterThanOrEqualTo(
 					shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
 		}
 
@@ -247,7 +248,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopUserProjectGroupRelRelationCriteria shopUserProjectGroupRelRelationCriteria = new ShopUserProjectGroupRelRelationCriteria();
 		ShopUserProjectGroupRelRelationCriteria.Criteria criteria = shopUserProjectGroupRelRelationCriteria
 				.createCriteria();
-
+		//根据创建时间排序
+		shopUserProjectGroupRelRelationCriteria.setOrderByClause("create_date");
 		if (StringUtils.isNotBlank(shopUserProjectGroupRelRelationDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopUserProjectGroupRelRelationDTO.getSysShopId());
 		}

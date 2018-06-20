@@ -30,7 +30,7 @@ PADWeb.controller('rechargeCardDetailCtrl', function($scope, $stateParams, $stat
         })
     }else if($stateParams.flowNo != ""){
         //特殊卡
-        ConsumeFlowNo.save({
+        ConsumeFlowNo.get({
             consumeFlowNo:$stateParams.flowNo
         },function (data) {
 

@@ -82,7 +82,7 @@
     <sql id="Base_Column_List" >
         id, sys_boss_code, sys_shop_id, sys_user_id, nickname, name, password, email, identify_number,
         mobile, user_type, user_openid, weixin_attention_status, photo, login_ip, login_date,
-        del_flag, address
+        del_flag, address,working_life,speciality,dream,wechat,qq
     </sql>
     <select id="selectByCriteria" resultMap="BaseResultMap"
             parameterType="com.wisdom.common.dto.user.SysClerkCriteria">

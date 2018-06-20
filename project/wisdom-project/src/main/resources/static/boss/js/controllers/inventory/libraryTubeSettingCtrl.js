@@ -45,6 +45,7 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
 
             $scope.save = function () {
 
+
                 var setStorekeeperRequestDTO = {
                     shopStoreId:$scope.param.id,
                     storeManagerIds:$stateParams.ids.split(','),
@@ -53,9 +54,10 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                 SetStorekeeper.save(setStorekeeperRequestDTO,function (data) {
                     if(data.result=="0x00001"){
                         alert("更新成功");
-                        $state.reload('app.toMenu');
+                        $state.go("chooseWarehouse");
                     }else{
                         alert("更新失败");
+                        $state.reload('app.toMenu');
                     }
                 })
             }

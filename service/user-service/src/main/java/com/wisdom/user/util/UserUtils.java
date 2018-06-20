@@ -149,5 +149,17 @@ public class UserUtils {
         return token;
     }
 
+    /**
+     *获取token信息
+     * @return
+     */
+    public static String getClerkToken() {
+        String token = getUserToken(LoginEnum.CLERK);
+        if (StringUtils.isBlank(token)) {
+            return null;
+        }
+        return token;
+    }
+
 
 }

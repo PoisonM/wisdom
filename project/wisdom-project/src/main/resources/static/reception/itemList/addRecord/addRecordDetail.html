@@ -1,5 +1,5 @@
 <div class="addRecordDetail">
-    <div ng-if = "!param.openSelectFlag" class="addRecordDetail_box">
+    <div ng-if = "!responseData.openSelectFlag" class="addRecordDetail_box">
         <div class="addRecordDetail_header">
             <div class="addRecordDetail_header_box">
                 头像
@@ -13,17 +13,17 @@
                 <ul>
                     <li>
                         <label for="">姓名 <i>*</i></label>
-                        <input value="{{responseData.sysUserName}}" type="text" placeholder="请输入顾客姓名">
+                        <input ng-model="responseData.sysUserName" type="text" placeholder="请输入顾客姓名">
                     </li>
 
                     <li>
                         <label for="">手机 <i>*</i></label>
-                        <input value="{{responseData.phone}}" type="text" placeholder="请输入顾客手机号">
+                        <input ng-model="responseData.phone" type="text" placeholder="请输入顾客手机号">
                     </li>
 
                     <li ng-click="openSelect('sex','性别')">
                         <label for="">性别 </label>
-                        {{param.sex}}
+                        {{responseData.sex}}
                         <span> > </span>
                     </li>
 
@@ -34,17 +34,17 @@
                     </li>
                     <li>
                         <label for="">年龄 </label>
-                        {{responseData.age}}
+                        {{shopUserArchivesDTO.age}}
                         <span> > </span>
                     </li>
                     <li>
                         <label for="">星座 </label>
-                        {{responseData.constellation}}
+                        {{shopUserArchivesDTO.constellation}}
                         <span> > </span>
                     </li>
                     <li>
                         <label for="">血型 </label>
-                        {{responseData.bloodType}}
+                        {{shopUserArchivesDTO.bloodType}}
                         <span> > </span>
                     </li>
                     <li>
@@ -61,8 +61,8 @@
             </div>
         </div>
     </div>
-    <div ng-if = "param.openSelectFlag" class="addRecordDetail_select">
-        <div ng-if="param.select_type == 'sex'" class="sex select_public">
+    <div ng-if = "responseData.openSelectFlag" class="addRecordDetail_select">
+        <div ng-if="responseData.select_type == 'blood'" class="sex select_public">
             <ul>
                 <li ng-click="selectFn('sex','未知')">未知 <i></i> </li>
                 <li ng-click="selectFn('sex','A')">A <i></i> </li>
@@ -71,12 +71,17 @@
                 <li ng-click="selectFn('sex','O')">O <i></i> </li>
             </ul>
         </div>
-
-        <div ng-if="param.select_type == 'birthday'" class="birthday"></div>
-        <div ng-if="param.select_type == 'age'" class="age"></div>
-        <div ng-if="param.select_type == 'constellation'" class="constellation"></div>
-        <div ng-if="param.select_type == 'blood'" class="blood"></div>
-        <div ng-if="param.select_type == 'height'" class="height"></div>
-        <div ng-if="param.select_type == 'source'" class="source"></div>
+        <div ng-if="responseData.select_type == 'sex'" class="sex select_public">
+            <ul>
+                <li ng-click="selectFn('sex','男')">男 <i></i> </li>
+                <li ng-click="selectFn('sex','女')">女 <i></i> </li>
+            </ul>
+        </div>
+        <div ng-if="responseData.select_type == 'birthday'" class="birthday"></div>
+        <div ng-if="responseData.select_type == 'age'" class="age"></div>
+        <div ng-if="responseData.select_type == 'constellation'" class="constellation"></div>
+        <div ng-if="responseData.select_type == 'blood'" class="blood"></div>
+        <div ng-if="responseData.select_type == 'height'" class="height"></div>
+        <div ng-if="responseData.select_type == 'source'" class="source"></div>
     </div>
 </div>
