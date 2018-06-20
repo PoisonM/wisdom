@@ -18,8 +18,8 @@
                     <ul class="bgfff" >
                         <li class="h100 space-between bte5 "  ng-repeat="(index,items) in val" ng-click="selectTheProduct(items,$parent.$index,$index,'本店项目')" >
                             <P class="redCorrectFlag" >
-                                <img ng-if = "tempRedgArr.indexOf(items.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
-                                <img ng-if = "tempRedgArr.indexOf(items.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
+                                <img ng-if = "param.tempRedgArr.indexOf(items.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
+                                <img ng-if = "param.tempRedgArr.indexOf(items.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
                                 <span class="fs30 color333 selfProductDataIndex" id="selfProductDataIndex" projectName="{{items.projectName}}" shopProjectId="{{items.id}}" appointPeriod="{{items.projectDuration}}">{{items.projectName}}</span>
                             </P>
                             <P ng-if="param.newProductObject.content"><span class="colff6666 fs28 mr30">剩余{{items.maxContainTimes}}次</span></P>

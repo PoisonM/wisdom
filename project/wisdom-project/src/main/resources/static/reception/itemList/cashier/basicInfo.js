@@ -40,7 +40,7 @@ function basicInfo($scope, $state,$stateParams,Archives, ArchivesDetail,$rootSco
         });
     };
     $scope.goAddRecordDetail = function() {
-        $state.go("pad-web.left_nav.addRecordDetail", {
+        $state.go("pad-web.left_nav.addRecord", {
             id: $state.params.id
         })
     }
