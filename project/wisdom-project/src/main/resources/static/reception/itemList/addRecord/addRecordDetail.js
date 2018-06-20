@@ -51,13 +51,13 @@ PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,Arc
 
     //打开选择页面
     $scope.openSelect = function (type,content) {
-        $scope.flagFn("添加档案",content,false)
+        // $scope.flagFn("添加档案",content,false)
         $scope.responseData.openSelectFlag = true
         $scope.responseData.select_type = type
     }
     //选择完成
     $scope.selectFn = function (type,content) {
-        $scope.flagFn("","添加档案",false)
+        // $scope.flagFn("","添加档案",false)
         $scope.responseData.openSelectFlag = false
         if(type == "sex"){
             $scope.responseData.sex = content
@@ -81,7 +81,7 @@ PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,Arc
 
     $scope.$parent.$parent.leftTipFn = function () {
         UpdateArchiveInfo.save($scope.responseData,function (data) {
-            if(Global.SUCCESS=data.result){
+            if("0x00001"==data.result){
                 alert("更新成功");
             }
         });

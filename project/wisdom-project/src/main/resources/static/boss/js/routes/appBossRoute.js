@@ -1517,7 +1517,7 @@ define(['appBoss'], function(app){
 
                     //领取人
                     .state('receiver', {
-                        url: '/receiver/:id/:sum',
+                        url: '/receiver/:id/:sum/:shopStoreId/:stockStyle',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'receiverCtrl',
                         resolve: {

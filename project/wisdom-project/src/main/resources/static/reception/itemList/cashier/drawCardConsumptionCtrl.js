@@ -133,6 +133,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
                         $rootScope.staffListNames=[]//保存清除关联员工
                         $rootScope.staffListIds=[]
                         alert("保存成功")
+                        window.history.go(-1)
                     }else{
                         alert(data.errorInfo);
                     }

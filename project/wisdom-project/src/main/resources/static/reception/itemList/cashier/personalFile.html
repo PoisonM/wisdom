@@ -19,21 +19,21 @@
                     </div>
                     <button ng-click="goConsumptionList('1',item0.id)">划卡</button>
                 </div>
-                <div class="treatmentCardBottom">
+                <!--<div class="treatmentCardBottom">
                     <span>备注：</span>
                     <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
-                </div>
+                </div>-->
             </div>
             <div class=" clearfix" ng-if="select=='1'">
                 <div ng-click="goCompleteCardRecords(item1.consumeRecordId,item1.projectList)" class="recorderCard " ng-repeat="item1 in projectGroupList">
                     <div class="recorderCardTop clearfix">
                         <span class="recorderCardTopName">{{item1.projectGroupName}}</span>
-                        <span class="recorderCardTopPrice">金额:<b>{{item1.marketPrice}}</b></span>
+                        <span class="recorderCardTopPrice">金额:   <b>{{item1.marketPrice}}</b></span>
                     </div>
-                    <div class="recorderCardNote clearfix">
+                    <!--<div class="recorderCardNote clearfix">
                         <span>备注：</span>
                         <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
-                    </div>
+                    </div>-->
                     <div>
                         <div ng-repeat="item1Sm in item1.projectList" class="recorderCardContent clearfix">
                             <span class="recorderCardContentName">{{item1Sm.shopProjectInfoName}}</span>
@@ -55,22 +55,24 @@
                     <div class="prepaidCardInfo clearfix">
                         <span class="prepaidCardName">{{item2.shopRechargeCardName}}</span>
                         <span class="prepaidCardRAName">剩余金额：<b>￥{{item2.surplusAmount}}</b></span>
-                        <span class="prepaidCardTAName">充值金额：<b>￥{{item2.initAmount}}</b></span>
+                        <span class="prepaidCardTAName">充值金额：
+                            <b>￥{{item2.initAmount==null?0:item2.initAmount}}</b>
+                        </span>
                     </div>
-                    <div class="prepaidCardNote clearfix">
+                    <!--<div class="prepaidCardNote clearfix">
                         <span>备注：</span>
                         <span>点击编辑图标可对该疗程卡做备注，最多不超过50字！</span>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div class="singleCard clearfix" ng-if="select=='3'">
                 <ul>
                     <li ng-repeat="item3 in courseProjectList1">
-                        <span class="time">{{item3.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</span>
-                        <span class="type">单次消费</span>
-                        <span class="name ov_dian">{{item3.sysShopProjectName}}</span>
-                        <span class="number">{{item3.sysShopProjectInitTimes}}</span>
-                        <span class="price">{{item3.sysShopProjectInitAmount}}</span>
+                        <div class="time">{{item3.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</div>
+                        <div class="type">单次消费</div>
+                        <div class="name ov_dian">{{item3.sysShopProjectName}}</div>
+                        <div class="number">{{item3.sysShopProjectInitTimes}}</div>
+                        <div class="price">{{item3.sysShopProjectInitAmount}}</div>
                     </li>
                 </ul>
             </div>

@@ -196,4 +196,24 @@ public class ClerkServiceController {
 		logger.info("getBossClerkInfoList获取店员列表信息耗时{}毫秒", (System.currentTimeMillis() - time));
 		return clerkInfo;
 	}
+	/**
+	*@Author:zhanghuan
+	*@Param:
+	*@Return:
+	*@Description:
+	*@Date:2018/6/20 14:32
+	*/
+	@RequestMapping(value = "/getClerkInfoListByClerkIds", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	ResponseDTO<List<SysClerkDTO>> getClerkInfoListByClerkIds(@RequestParam List<String> clerkIds) {
+
+		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfoListByClerkIds(pageParamVoDTO,clerkIds);
+
+		listResponseDTO.setResponseData(clerkInfo);
+		listResponseDTO.setResult(StatusConstant.SUCCESS);
+
+		return listResponseDTO;
+	}
 }

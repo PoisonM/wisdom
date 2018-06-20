@@ -41,4 +41,12 @@ public interface ClerkInfoService {
     *@Date:2018/6/5 11:10
     */
     List<SysClerkDTO> getClerkBySearchFile(SysClerkDTO sysClerkDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  分页根据多个店员id查询结果
+    *@Date:2018/6/20 14:18
+    */
+    List<SysClerkDTO> getClerkInfoListByClerkIds(PageParamVoDTO<SysClerkDTO> pageParamVoDTO,List<String> clerkIds);
 }

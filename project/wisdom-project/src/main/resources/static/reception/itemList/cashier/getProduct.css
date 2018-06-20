@@ -166,13 +166,14 @@
 }
 
 .stillOwedBox .height100Num  ul li{
-    height: 0.65625rem;
+    /*height: 0.65625rem;*/
     line-height: 0.65625rem;
     font-size: 0.25rem;
     color: #333333;
     letter-spacing: 0.45px;
     padding-left: 0.265625rem;
     position: relative;
+    overflow: hidden;
 }
 
 .stillOwedBox .go_set {
@@ -183,4 +184,7 @@
     background-size: 100%;
     width: 0.1171875rem;
     height: 0.2109375rem;
+}
+.stillOwedBox .cccc{
+    color: #CCCCCC;
 }

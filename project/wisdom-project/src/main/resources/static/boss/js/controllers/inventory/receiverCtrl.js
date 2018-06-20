@@ -81,7 +81,7 @@ angular.module('controllers',[]).controller('receiverCtrl',
             }
 
            $scope.save = function () {
-                  $state.go('AddOutbound',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),sum:$stateParams.sum})
+                  $state.go('AddOutbound',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),sum:$stateParams.sum,shopStoreId:$stateParams.id,stockStyle:$stateParams.stockStyle})
             }
 
         }])

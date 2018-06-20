@@ -1,9 +1,10 @@
-PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDialog, Archives, GetUserProductInfo, ConsumesUserProduct) {
+PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDialog, Archives
+    , GetUserProductInfo, ConsumesUserProduct,ImageBase64UploadToOSS) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.$parent.param.headerCash.backContent = "充值记录";
+    $scope.$parent.$parent.param.headerCash.backContent = "返回";
     $scope.$parent.$parent.param.headerCash.leftTip = "保存";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
@@ -24,6 +25,10 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
+
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
@@ -36,24 +41,59 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
         consumePrice: ''
     }
 
+    var $signature = $("#signConfirmRight").jSignature({
+        'height': 400,
+    });
+    $signature.jSignature('reset')
+
+    //获取数据
+    var data = $signature.jSignature('getData', 'default')
+    //图片展示
+    var img = new Image()
+    img.src = data
+    $(img).appendTo($('#signimg'))
+    //将数据显示在文本框
+    $('#text').val(data)
+
+    ImageBase64UploadToOSS.save({
+        imageStr: $("#signConfirmRight").jSignature("getData")
+    }, function(data) {
+       /* UpdateConsumeRecord.get({
+            consumeId: $state.params.consumeId,
+            image: data.responseData,
+        }, function(data) {
+            $state.go("pad-web.left_nav.personalFile");
+        })*/
+
+    })
+
     $scope.goConfirmations = function() {
-        ConsumesUserProduct.save(
-            $scope.shopUserConsumeDTO
-        , function(data) {
-            if(data.result == '0x00001'){
-                $state.go('pad-web.confirmations', { consumeId: data.responseData, shopProjectInfoName: $scope.getproduct.shopProductName })
-            }
-            else{
-                alert(data.errorInfo);
-            }
+        ImageBase64UploadToOSS.save({
+            imageStr: $("#signConfirmRight").jSignature("getData")
+        }, function(data) {
+            $scope.shopUserConsumeDTO.imageUrl = data.responseData
+            ConsumesUserProduct.save(
+                $scope.shopUserConsumeDTO
+                , function(data) {
+                    if(data.result == '0x00001'){
+                        alert("领取成功")
+                        window.history.go(-1)
+                    }
+                    else{
+                        alert(data.errorInfo);
+                    }
+                })
         })
+
+
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
     }
 
     $scope.productNumSub = function () {
-        if($scope.shopUserConsumeDTO.consumeNum<=0){
+        if($scope.shopUserConsumeDTO.consumeNum<=1){
+            $scope.cccFlag = true
             alert("领取数量不能小于0");
             return;
         }
