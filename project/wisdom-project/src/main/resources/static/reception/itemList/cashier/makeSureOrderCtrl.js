@@ -164,6 +164,41 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     }
 
     $scope.tempAll = 0;
+
+    //增加购买数量
+    $scope.goodsInc = function (type,index) {
+        if('group' == type){
+            ++$scope.projectGroupRelRelationDTOS[index].projectInitTimes;
+        }else if('project' == type){
+            ++$scope.shopUserProjectRelationDTOS[index].sysShopProjectInitTimes;
+        }else if('product' == type){
+            ++$scope.shopUserProductRelationDTOS[index].initTimes;
+        }
+    }
+    //降低购买数量
+    $scope.goodsSub = function (type,index) {
+        if('group' == type){
+            if($scope.projectGroupRelRelationDTOS[index].projectInitTimes>1){
+                --$scope.projectGroupRelRelationDTOS[index].projectInitTimes;
+            }else{
+                alert("购买套卡数量最少为1个")
+            }
+        }else if('project' == type){
+            if($scope.shopUserProjectRelationDTOS[index].sysShopProjectInitTimes>1){
+                --$scope.shopUserProjectRelationDTOS[index].sysShopProjectInitTimes;
+            }else{
+                alert("购买项目数量最少为1个")
+            }
+        }else if('product' == type){
+            if($scope.shopUserProductRelationDTOS[index].initTimes>1){
+                --$scope.shopUserProductRelationDTOS[index].initTimes;
+            }else{
+                alert("购买产品数量最少为1个")
+            }
+        }
+    }
+
+
     $scope.myChangeFn = function() {
         $scope.tempAll = 0
         var setTimer = setInterval(function() {
@@ -180,7 +215,6 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                         $scope.tempAll += parseInt($(".xiaoji").eq(i).find('input').val().replace(",", ""))
                     }
                     $(".allPrice").html("总金额:" + $scope.tempAll)
-
                 }
             }
         }, 100)
