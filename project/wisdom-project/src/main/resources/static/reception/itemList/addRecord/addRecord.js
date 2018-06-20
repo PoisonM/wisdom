@@ -1,5 +1,5 @@
-PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchiveInfo
-    ,DeleteArchiveInfo,ImageBase64UploadToOSS,ImageBase64UploadToOSS) {
+PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$state,SaveArchiveInfo
+    ,DeleteArchiveInfo,ImageBase64UploadToOSS,ImageBase64UploadToOSS,ArchivesDetail,UpdateArchiveInfo) {
     console.log($scope);
 /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
@@ -26,8 +26,6 @@ PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchive
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
-
-
 /*----------------------------------初始化参数------------------------------------------*/
     $scope.param = {
         imgSrc:"",
@@ -43,6 +41,22 @@ PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchive
         selectContentHeight:"",
         selectContentSource:"",
     }
+
+    if($stateParams.id != ""){
+        ArchivesDetail.get({id:$stateParams.id},function (data) {
+            $scope.responseData = data.responseData
+            $scope.param.imgSrc = data.responseData.imageUrl;
+            $scope.param.selectContentName = data.responseData.sysUserName;
+            $scope.param.selectContentSex = data.responseData.sex;
+            $scope.param.selectContentPhone = data.responseData.phone;
+            $scope.param.selectContentBirthday = data.responseData.birthday;
+            $scope.param.selectContentAge = data.responseData.age;
+            $scope.param.selectContentConstellation = data.responseData.constellation;
+            $scope.param.selectContentBlood = data.responseData.bloodType;
+            $scope.param.selectContentHeight = data.responseData.height;
+        })
+    }
+
 
     /*---------------------------------方法-----------------------------------*/
     $scope.flagFn = function (backContent,title,bool) {
@@ -67,10 +81,10 @@ PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchive
             imageUrl:$scope.param.imgSrc,//头像地址
             phone:$scope.param.selectContentPhone,//手机号
             sex:$scope.param.selectContentSex,//性别
-            sysClerkId:'',
-            sysClerkName:"",
-            sysShopId:'11',
-            sysShopName:'汉方美容院',
+            // sysClerkId:'',
+            // sysClerkName:"",
+            // sysShopId:'11',
+            // sysShopName:'汉方美容院',
             sysUserName:$scope.param.selectContentName,
         }
         if($scope.param.selectContentName == ""){
@@ -87,14 +101,25 @@ PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchive
             alert("请输入正确手机号")
             return
         }
-        SaveArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
-            if(data.result == "0x00001"){
-                alert("保存成功")
-                $state.go("pad-web.left_nav.blankPage")
-            }else if(data.result == "0x00002"){
-                alert(data.responseData)
-            }
-        })
+        if($stateParams.id == ""){
+            SaveArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
+                if(data.result == "0x00001"){
+                    alert("保存成功")
+                    $state.go("pad-web.left_nav.blankPage")
+                }else if(data.result == "0x00002"){
+                    alert(data.responseData)
+                }
+            })
+        }else{
+            $scope.ShopUserArchivesDTO.id = $stateParams.id
+            UpdateArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
+                if("0x00001"==data.result){
+                    alert("更新成功");
+                    $state.go("pad-web.left_nav.blankPage")
+                }
+            });
+        }
+
     }
 
 
@@ -150,28 +175,5 @@ PADWeb.controller('addRecordCtrl', function($scope,$rootScope,$state,SaveArchive
             }*/
             $scope.param.imgSrc = data.responseData//图片地址
         })
-
-
     };
-
-   /* $scope.img_del = function(key) {    //删除，删除的时候thumb和form里面的图片数据都要删除，避免提交不必要的
-        var guidArr = [];
-        for(var p in $scope.thumb){
-            guidArr.push(p);
-        }
-        delete $scope.thumb[guidArr[key]];
-        delete $scope.form.image[guidArr[key]];
-    };
-    $scope.submit_form = function(){    //图片选择完毕后的提交，这个提交并没有提交前面的图片数据，只是提交用户操作完毕后，
-        // 到底要上传哪些，通过提交键名或者链接，后台来判断最终用户的选择,整个思路也是如此
-        $http({
-            method: 'post',
-            url: '/comm/test.php',
-            data:$scope.form,
-        }).success(function(data) {
-            console.log(data);
-        })
-    };*/
-
-
 });

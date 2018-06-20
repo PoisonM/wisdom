@@ -345,9 +345,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
 			userInfoDTO.setCreateDate(new Date());
 			userInfoDTO.setUserType(ConfigConstant.beautySource);
-			userInfoDTO.setPhoto(shopUserArchivesDTO.getPhone());
-			userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getPhone()) ? ImageEnum.USER_HEAD.getDesc()
-					: shopUserArchivesDTO.getPhone());
+			userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
+			userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getImageUrl()) ? ImageEnum.USER_HEAD.getDesc()
+					: shopUserArchivesDTO.getImageUrl());
 			logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
 			userServiceClient.insertUserInfo(userInfoDTO);
 		} else {
@@ -384,8 +384,8 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
 		shopUserArchivesDTO.setCreateDate(new Date());
 		shopUserArchivesDTO
-				.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getPhone()) ? ImageEnum.USER_HEAD.getDesc()
-						: shopUserArchivesDTO.getPhone());
+				.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getImageUrl()) ? ImageEnum.USER_HEAD.getDesc()
+						: shopUserArchivesDTO.getImageUrl());
 		shopUserArchivesDTO.setSysShopId(sysShopId);
 		SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
 		if (null != shopInfoByPrimaryKey) {
