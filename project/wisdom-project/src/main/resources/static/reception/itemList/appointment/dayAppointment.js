@@ -40,6 +40,8 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         tempRedgArr : [],
         checkProjectArr : [],
         checkprojectDuration:0,
+        chooseTimeList:[],
+        memeda:[],
         mrLeisureTime:"",
         nowTime:new Date().getFullYear()+"-"+(parseInt(new Date().getMonth()+1)<10?"0"+parseInt(new Date().getMonth()+1):parseInt(new Date().getMonth()+1))+"-"+(parseInt(new Date().getDate())<10?"0"+parseInt(new Date().getDate()):parseInt(new Date().getDate())),
         endTime:"",
@@ -151,6 +153,56 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             "23:00": "46",
             "23:30": "47",
         },
+        timeCode: [{
+            "00:00": "0",
+            "00:30": "1",
+            "01:00": "2",
+            "01:30": "3",
+            "02:00": "4",
+            "02:30": "5",
+            "03:00": "6",
+            "03:30": "7",
+            "04:00": "8",
+            "04:30": "9",
+            "05:00": "10",
+            "05:30": "11",
+            "06:00": "12",
+            "06:30": "13",
+            "07:00": "14",
+            "07:30": "15",
+            "08:00": "16",
+            "08:30": "17",
+            "09:00": "18",
+            "09:30": "19",
+            "10:00": "20",
+            "10:30": "21",
+            "11:00": "22",
+            "11:30": "23",
+            "12:00": "24",
+            "12:30": "25",
+            "13:00": "26",
+            "13:30": "27",
+            "14:00": "28",
+            "14:30": "29",
+            "15:00": "30",
+            "15:30": "31",
+            "16:00": "32",
+            "16:30": "33",
+            "17:00": "34",
+            "17:30": "35",
+            "18:00": "36",
+            "18:30": "37",
+            "19:00": "38",
+            "19:30": "39",
+            "20:00": "40",
+            "20:30": "41",
+            "21:00": "42",
+            "21:30": "43",
+            "22:00": "44",
+            "22:30": "45",
+            "23:00": "46",
+            "23:30": "47",
+        }],
         bgBlack: false,
         serachContent: '',
         /*搜索内容*/
@@ -304,7 +356,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             // $scope.$apply(function () {
             //     $scope.memeda = data.responseData;
             // });
-            $scope.memeda = data.responseData;
+            $scope.param.memeda = data.responseData;
             $scope.startTime = data.responseData.startTime;
             $scope.endTime = data.responseData.endTime;
             $scope.meirongshiList = [] //美容师列表
@@ -329,11 +381,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.tswTimeList = $scope.param.tswTimeAll.slice($scope.param.timeLocation[0], $scope.param.timeLocation[1] + 1)//从数组中切分出开始和结束时间段
 
             //计算每一行有多少个美容师
-            delete $scope.memeda.startTime //删除对象中的开始结束时间
-            delete $scope.memeda.endTime
-            for (key in $scope.memeda) {
-                $scope.meirongshiList[$scope.memeda[key].sysClerkDTO.name] = {
-                    appointmentInfo: $scope.memeda[key].appointmentInfo
+            delete $scope.param.memeda.startTime //删除对象中的开始结束时间
+            delete $scope.param.memeda.endTime
+            for (key in $scope.param.memeda) {
+                $scope.meirongshiList[$scope.param.memeda[key].sysClerkDTO.name] = {
+                    appointmentInfo: $scope.param.memeda[key].appointmentInfo
                 }  //美容师以及美容师的资料详情
                 $scope.meirongshiList.length++
             }
@@ -669,7 +721,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 GetAppointmentInfoById.get({
                     shopAppointServiceId: $scope.appointmentId
                 }, function (data) {
-                    debugger
                     $scope.param.newProductObject.shopProjectId = data.responseData.shopProjectId,
                     $scope.param.ModifyAppointmentObject.appointStartTime = data.responseData.appointStartTime,
                     $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
@@ -685,6 +736,20 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
                     $scope.param.tempRedgArr = data.responseData.shopProjectId.split(";");
                     $scope.param.checkProjectArr = data.responseData.shopProjectInfoDTOS;
+
+                    $scope.chooseTime=0
+                    for (var i = 0; i < $scope.param.timeCode.length; i++) {
+                        for (timeItem in $scope.param.timeCode[i]) {
+                            var index =0;
+                            index++;
+                            var time = data.responseData.appointStartTimeS.substr(11,17);
+                            if(time == timeItem){
+                                $scope.chooseTime=$scope.param.timeCode[i][timeItem];
+                            }
+                        }
+                     }
+                    // console.log($scope.param.chooseTimeList)
+                    // console.log($scope.param.theOtherCode)
                     // $scope.param.dayTime=[];
                     // $scope.param.curDate=new Date();
 
@@ -736,6 +801,10 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                                         endIndex= i;
                                     }
                                 }
+                            }
+
+                            for (var i = parseInt($scope.chooseTime); i < parseInt($scope.chooseTime)+parseInt($scope.param.checkprojectDuration/60/1/0.5); i++) {
+                                $scope.param.ModifyAppointmentObject.hoursType[i]="2";
                             }
                             $scope.param.ModifyAppointmentObject.hoursTimeShow=$scope.param.ModifyAppointmentObject.hoursTime.slice(startIndex,endIndex+1);
                             $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
