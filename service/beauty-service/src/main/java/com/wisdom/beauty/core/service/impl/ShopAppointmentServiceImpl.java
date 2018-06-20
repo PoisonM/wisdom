@@ -272,9 +272,8 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         shopAppointServiceDTO.setUpdateDate(new Date());
         int info = updateAppointmentInfo(shopAppointServiceDTO);
         logger.debug("修改用户的预约信息执行结果， {}", info > 0 ? "成功" : "失败");
-
-        redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
-
+        ShopAppointServiceDTO shopAppoint = shopAppointServiceMapper.selectByPrimaryKey(shopAppointServiceDTO.getId());
+        redisUtils.saveShopAppointInfoToRedis(shopAppoint);
         ShopUserProjectRelationDTO deleteRelationDTO = new ShopUserProjectRelationDTO();
         deleteRelationDTO.setShopAppointmentId(shopAppointServiceDTO.getId());
         //删除用户与项目的关系
