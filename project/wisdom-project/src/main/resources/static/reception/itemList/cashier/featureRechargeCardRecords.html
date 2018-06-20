@@ -5,7 +5,7 @@
             <ul>
                 <li ng-repeat="item in featureData" ng-click="goRechargeCardDetail(item.flowNo)">
                     <div>
-                        <span>{{item.createDate}}</span>
+                        <span>{{item.createDate | date:"yyyy-MM-dd HH:MM:ss"}}</span>
                         <span ng-if="item.goodsType == 2">店内充值</span>
                         <span ng-if="item.goodsType != 2">充值</span>
                         <span><e class="color_red">{{item.sumAmount}}</e></span>

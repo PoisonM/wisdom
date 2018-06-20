@@ -49,6 +49,18 @@
                         <label for="">身高 </label>
                         <input ng-model="param.selectContentHeight" type="text" placeholder="请输入顾客身高">
                     </li>
+
+                    <li ng-click="openSelect('channel','渠道')">
+                        <label for="">来源渠道 </label>
+                        <!--{{param.selectContentChannel}}-->
+                        <span ng-if="param.selectContentChannel == '0' ">美团</span>
+                        <span ng-if="param.selectContentChannel == '1' ">大众点评</span>
+                        <span ng-if="param.selectContentChannel == '2' ">百度糯米</span>
+                        <span ng-if="param.selectContentChannel == '3' ">朋友推荐</span>
+                        <span ng-if="param.selectContentChannel == '4' ">高德地图</span>
+                        <span ng-if="param.selectContentChannel == '5' ">自己过来</span>
+                        <span> > </span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -68,6 +80,17 @@
                 <li ng-click="selectFn('bloodType','B')">B <i></i> </li>
                 <li ng-click="selectFn('bloodType','AB')">AB <i></i> </li>
                 <li ng-click="selectFn('bloodType','O')">O <i></i> </li>
+            </ul>
+        </div>
+        <div ng-if="param.select_type == 'channel'" class="sex select_public">
+            <ul>
+                <!--0 美团  1大众点评  2 百度糯米 3 朋友推荐 4 高德地图  5 自己过来-->
+                <li ng-click="selectFn('channel','0')">美团 <i></i> </li>
+                <li ng-click="selectFn('channel','1')">大众点评 <i></i> </li>
+                <li ng-click="selectFn('channel','2')">百度糯米 <i></i> </li>
+                <li ng-click="selectFn('channel','3')">朋友推荐 <i></i> </li>
+                <li ng-click="selectFn('channel','4')">高德地图 <i></i> </li>
+                <li ng-click="selectFn('channel','5')">自己过来 <i></i> </li>
             </ul>
         </div>
 
