@@ -525,6 +525,9 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "领取产品",
                         files: [root + "cashier/getProductCtrl.js?version=" + version,
                             root + "cashier/getProduct.css?version=" + version,
+                            root + "cashier/flashcanvas.min.js?version=" + version,
+                            root + "cashier/jSignature.min.js?version=" + version,
+                            root + "cashier/flashcanvas.swf?version=" + version,
                         ]
                     })
                 }]
