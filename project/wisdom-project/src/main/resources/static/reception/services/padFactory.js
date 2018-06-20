@@ -75,6 +75,9 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('ArchivesDetail', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/detail/:id', { id: '@id' })
     }])
+    .factory('UpdateArchiveInfo',['$resource',function ($resource){
+        return $resource(beautyIP+"archives/updateArchiveInfo")
+    }])
     //查询某用户档案信息
     .factory('GetShopUserArchivesInfoByUserId', ['$resource', function($resource) {
         return $resource(beautyIP + 'archives/getShopUserArchivesInfoByUserId')
