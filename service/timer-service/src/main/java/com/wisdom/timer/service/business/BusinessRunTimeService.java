@@ -132,10 +132,10 @@ public class BusinessRunTimeService {
             mongoTemplate.insert(monthlyIncomeSignalDTO,"monthlyIncomeSignal");
 
             this.MTMonthlyIncomeCalc(ConfigConstant.businessA1,DateUtils.StrToDate(startDate,"datetime"),
-                    DateUtils.StrToDate(endDate,"datetime"),null,null);
+                    DateUtils.StrToDate(endDate,"datetime"),"0",UUID.randomUUID().toString());
 
             this.MTMonthlyIncomeCalc(ConfigConstant.businessB1,DateUtils.StrToDate(startDate,"datetime"),
-                    DateUtils.StrToDate(endDate,"datetime"),null,null);
+                    DateUtils.StrToDate(endDate,"datetime"),"0",UUID.randomUUID().toString());
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -145,10 +145,10 @@ public class BusinessRunTimeService {
         else if(monthlyIncomeSignalDTO.getOnTimeFinish().equals("false"))
         {
             this.MTMonthlyIncomeCalc(ConfigConstant.businessA1,DateUtils.StrToDate(startDate,"datetime"),
-                    DateUtils.StrToDate(endDate,"datetime"),null,null);
+                    DateUtils.StrToDate(endDate,"datetime"),"0",UUID.randomUUID().toString());
 
             this.MTMonthlyIncomeCalc(ConfigConstant.businessB1,DateUtils.StrToDate(startDate,"datetime"),
-                    DateUtils.StrToDate(endDate,"datetime"),null,null);
+                    DateUtils.StrToDate(endDate,"datetime"),"0",UUID.randomUUID().toString());
 
             //操作完毕后，关闭信号量
             Update update = new Update();
