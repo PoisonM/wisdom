@@ -187,6 +187,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 projectSurplusTimes: '',
                 shopProjectGroupId: res.id,
                 shopProjectGroupName: res.projectGroupName,
+                projectInitAmount:res.marketPrice,
+                discount:'1',
                 sysUserId: $stateParams.userId,
             }]
         }
