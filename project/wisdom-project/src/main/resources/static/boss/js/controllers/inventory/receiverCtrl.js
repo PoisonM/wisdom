@@ -12,9 +12,6 @@ angular.module('controllers',[]).controller('receiverCtrl',
                 addFamily:[]
             };
 
-           /* if($stateParams.storeManagerId!=''){
-                $scope.param.ids = $stateParams.storeManagerId.split(",")
-            }*/
 
             $scope.getInfo=function(){
                 GetClerkInfoList.get({
@@ -37,6 +34,14 @@ angular.module('controllers',[]).controller('receiverCtrl',
                     }
                 })
             }
+
+            $scope.selShopTrue = function(sysShopId){
+                $scope.param.flag = false;
+                $scope.param.sysShopId=sysShopId;
+                $scope.getInfo()
+            }
+
+
             $scope.selShopTrue = function(sysShopId){
                 $scope.param.flag = false;
                 $scope.param.sysShopId=sysShopId;
@@ -49,10 +54,8 @@ angular.module('controllers',[]).controller('receiverCtrl',
 
 
             $scope.selFilamy = function (domIndex,name) {
-
                 if ($scope.param.ids.indexOf(domIndex) != -1) {
                     var key = 0;
-
                     angular.forEach( $scope.param.ids, function (val, index) {
                         if (val == domIndex) {
                             $scope.param.ids.splice(key, 1);
@@ -61,7 +64,9 @@ angular.module('controllers',[]).controller('receiverCtrl',
                         key++;
                     })
                 } else {
-                    if($scope.param.ids.length>=3)return
+                    $scope.param.ids = [];
+                    $scope.param.names =[];
+                    if($scope.param.ids.length>=1)return
                     $scope.param.ids.push(domIndex);
                     $scope.param.names.push(name);
                 }
