@@ -38,17 +38,21 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     // $scope.shopUserProductRelationDTOSPeople= $rootScope.shopUserProductRelationDTOSTemp
     // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
 
-    $scope.goHousekeeper = function(type,index) {
+    $scope.goHousekeeper = function(type,index,clerkIds,clerkNames) {
         $state.go('pad-web.left_nav.housekeeper',{
             type:type,
             index:index,
             orderId:$scope.orderId,
-            tempAll:$scope.tempAll
+            tempAll:$scope.tempAll,
+            clerkIds:clerkIds,
+            clerkNames:clerkNames
         })
     }
     $scope.goOrderListm = function() {
-        console.log($scope.car)
-
+        if($rootScope.projectGroupRelRelationDTOS == null && $rootScope.shopUserProductRelationDTOS == null && $rootScope.shopUserProjectRelationDTOS == null){
+            return false
+            alert("未选择产品或项目")
+        }
         $scope.importData = {
             orderId: $scope.orderId,
             projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOS,//套卡
@@ -150,6 +154,8 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
                 $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
                 $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
+
+                $scope.myChangeFn()//重新计算金额
             })
         })
     }
@@ -179,7 +185,6 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
             }
         }, 100)
     }
-    $scope.myChangeFn()
 
 
 

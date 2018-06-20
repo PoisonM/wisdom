@@ -4,10 +4,8 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ChannelEnum;
 import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
-import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
-import com.wisdom.beauty.api.responseDto.ShopChannelResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
-import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
+import com.wisdom.beauty.api.requestDto.ShopClerkWorkRecordRequestDTO;
+import com.wisdom.beauty.api.responseDto.*;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.service.*;
@@ -21,6 +19,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +43,14 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
 	@Autowired
 	private ShopUerConsumeRecordService shopUerConsumeRecordService;
-	@Autowired
-	private ShopCardService shopCardService;
+
 	@Resource
 	private UserServiceClient userServiceClient;
 	@Autowired
 	private ShopBossService shopBossService;
+
+	@Autowired
+	private ShopClerkWorkService shopClerkWorkService;
 
 	@Override
 	public BigDecimal getPerformance(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
@@ -657,114 +658,86 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	public List<ExpenditureAndIncomeResponseDTO> getClerkAchievementList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		ResponseDTO<List<SysClerkDTO>> listResponseDTO = userServiceClient.getClerkInfoList(
-				userConsumeRequest.getSysBossCode(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(),
-				pageParamVoDTO.getPageSize());
-		List<SysClerkDTO> sysClerkList = listResponseDTO.getResponseData();
-		if (CollectionUtils.isEmpty(sysClerkList)) {
+		//查询时间段的店员
+		PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParam=new PageParamVoDTO();
+		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO=new ShopClerkWorkRecordRequestDTO();
+		shopClerkWorkRecordRequestDTO.setSysShopId(userConsumeRequest.getSysShopId());
+		pageParam.setRequestData(shopClerkWorkRecordRequestDTO);
+		pageParam.setStartTime(pageParamVoDTO.getStartTime());
+		pageParam.setEndTime(pageParamVoDTO.getEndTime());
+		List<ShopClerkWorkRecordDTO> shopClerkWorkRecordDTOs = shopClerkWorkService
+				.getClerkWorkRecordList(pageParam);
+
+		if (CollectionUtils.isEmpty(shopClerkWorkRecordDTOs)) {
 			logger.info("查询店员的结果为空");
 			return null;
 		}
-		// 通过用户美容院id查询出来消费记录
-		List<ExpenditureAndIncomeResponseDTO> incomeResponse = this.getIncomeList(pageParamVoDTO);
-		// 计算业绩
-		Map<String, ExpenditureAndIncomeResponseDTO> map = new HashMap<>(16);
+		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO=null;
+		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponseDTOs=new ArrayList<>();
+		for (ShopClerkWorkRecordDTO shopClerkWorkRecord : shopClerkWorkRecordDTOs) {
+			expenditureAndIncomeResponseDTO=new ExpenditureAndIncomeResponseDTO();
 
-		// 循环消费记录，将店员id作为key值
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse : incomeResponse) {
-			if (map.get(expenditureAndIncomeResponse.getSysShopClerkId()) == null) {
-				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncomeResponse);
-			} else {
-				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map
-						.get(expenditureAndIncomeResponse.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getTotalPrice()
-						.add(expenditureAndIncomeResponse.getTotalPrice());
-				expenditureAndIncome.setTotalPrice(prices);
-				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncome);
-			}
-		}
-		// 耗卡和服务次数
-		List<ExpenditureAndIncomeResponseDTO> list2 = this.getExpenditureList(pageParamVoDTO);
-		if (CollectionUtils.isEmpty(list2)) {
-			logger.info("list结果为空");
-			return null;
-		}
-
-		Map<String, ExpenditureAndIncomeResponseDTO> map2 = new HashMap<>(16);
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse : list2) {
-			if (map2.get(expenditureAndIncomeResponse.getSysShopClerkId()) == null) {
-				expenditureAndIncomeResponse.setServiceNumber(1);
-				map2.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncomeResponse);
-			} else {
-				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map2
-						.get(expenditureAndIncomeResponse.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getTotalPrice()
-						.add(expenditureAndIncomeResponse.getTotalPrice());
-				expenditureAndIncome.setTotalPrice(prices);
-				expenditureAndIncome.setServiceNumber(expenditureAndIncome.getServiceNumber() + 1);
-				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncome);
-			}
-
-		}
-		// 卡耗 的查询条件
-		ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
-		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
-		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
-		criteria.andGoodsTypeEqualTo(GoodsTypeEnum.RECHARGE_CARD.getCode());
-		List<ExpenditureAndIncomeResponseDTO> kahaoList = extShopUserConsumeRecordMapper
-				.selectPriceListByCriteria(recordCriteria);
-		Map<String, ExpenditureAndIncomeResponseDTO> map3 = new HashMap<>(16);
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : kahaoList) {
-			if (map3.get(expenditureAndIncomeResponseDTO.getSysShopClerkId()) == null) {
-				map3.put(expenditureAndIncomeResponseDTO.getSysShopClerkId(), expenditureAndIncomeResponseDTO);
-			} else {
-				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map3
-						.get(expenditureAndIncomeResponseDTO.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getTotalPrice()
-						.add(expenditureAndIncomeResponseDTO.getTotalPrice());
-				expenditureAndIncome.setTotalPrice(prices);
-				map3.put(expenditureAndIncomeResponseDTO.getSysShopClerkId(), expenditureAndIncome);
-			}
-		}
-		// 人次数
-		ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
-		List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
-				.selectPriceListByCriteria(timeCriteria);
-		Map<String, Integer> map4 = new HashMap<>(16);
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
-			if (map4.get(expenditureAndIncomeResponseDTO.getSysShopClerkId()) == null) {
-				map4.put(expenditureAndIncomeResponseDTO.getSysShopClerkId(), 1);
-			} else {
-				Integer consumeTime = map4.get(expenditureAndIncomeResponseDTO.getSysShopClerkId());
-				map4.put(expenditureAndIncomeResponseDTO.getSysShopClerkId(), consumeTime + 1);
-			}
-		}
-		// 循环店员集合
-		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponses = new ArrayList<>();
-		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = null;
-		for (SysClerkDTO sysClerkDTO : sysClerkList) {
-			expenditureAndIncomeResponse = new ExpenditureAndIncomeResponseDTO();
-			if (map.get(sysClerkDTO.getId()) != null) {
-				if (map.get(sysClerkDTO.getId()).getTotalPrice() != null) {
-					expenditureAndIncomeResponse.setIncome(map.get(sysClerkDTO.getId()).getTotalPrice());
+			expenditureAndIncomeResponseDTO.setSysShopClerkId(shopClerkWorkRecord.getSysClerkId());
+			expenditureAndIncomeResponseDTO.setSysShopClerkName(shopClerkWorkRecord.getSysClerkName());
+			// 业绩 ---充值金额
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecord.getConsumeType())
+					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecord.getGoodsType())) {
+				if(shopClerkWorkRecord.getPrice()!=null){
+					expenditureAndIncomeResponseDTO.setIncome(expenditureAndIncomeResponseDTO.getIncome().add(shopClerkWorkRecord.getPrice()));
 				}
 			}
-			if (map2.get(sysClerkDTO.getId()) != null) {
-				if (map2.get(sysClerkDTO.getId()).getTotalPrice() != null) {
-					expenditureAndIncomeResponse.setExpenditure(map2.get(sysClerkDTO.getId()).getTotalPrice());
+			// 业绩 ---消费金额
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecord.getConsumeType())
+					&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecord.getGoodsType())) {
+				if(shopClerkWorkRecord.getPrice()!=null){
+					expenditureAndIncomeResponseDTO.setIncome(expenditureAndIncomeResponseDTO.getIncome().add(shopClerkWorkRecord.getPrice()));
 				}
-				expenditureAndIncomeResponse.setServiceNumber(map2.get(sysClerkDTO.getId()).getServiceNumber());
 			}
-			if (map3.get(sysClerkDTO.getId()) != null) {
-				expenditureAndIncomeResponse.setKahao(map3.get(sysClerkDTO.getId()).getTotalPrice());
+			// 耗卡 --- 划卡金额(疗程卡和套卡)
+			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecord.getConsumeType())) {
+				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopClerkWorkRecord.getGoodsType())
+						|| GoodsTypeEnum.COLLECTION_CARD.getCode()
+						.equals(shopClerkWorkRecord.getGoodsType())) {
+					if(shopClerkWorkRecord.getPrice()!=null){
+						expenditureAndIncomeResponseDTO.setExpenditure(expenditureAndIncomeResponseDTO.getExpenditure().add(shopClerkWorkRecord.getPrice()));
+					}
+				}
 			}
-			if (map4.get(sysClerkDTO.getId()) != null) {
-				expenditureAndIncomeResponse.setConsumeTime(map4.get(sysClerkDTO.getId()));
+			// 耗卡 --- 单次消费
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecord.getConsumeType())
+					&& GoodsTypeEnum.TIME_CARD.getCode().equals(shopClerkWorkRecord.getGoodsType())) {
+				if(shopClerkWorkRecord.getPrice()!=null){
+					expenditureAndIncomeResponseDTO.setExpenditure(expenditureAndIncomeResponseDTO.getExpenditure().add(shopClerkWorkRecord.getPrice()));
+				}
 			}
-			expenditureAndIncomeResponse.setSysShopClerkName(sysClerkDTO.getName());
-			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
+			// 卡耗 --- 单次消费
+			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecord.getConsumeType())
+					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecord.getGoodsType())) {
+				if(shopClerkWorkRecord.getPrice()!=null){
+					expenditureAndIncomeResponseDTO.setKahao(expenditureAndIncomeResponseDTO.getKahao().add(shopClerkWorkRecord.getPrice()));
+				}
+			}
+			expenditureAndIncomeResponseDTOs.add(expenditureAndIncomeResponseDTO);
 		}
-		return expenditureAndIncomeResponses;
+		//处理下expenditureAndIncomeResponseDTOs，相同的店员
+		Map<String,ExpenditureAndIncomeResponseDTO> map=new HashMap<>();
+		for (ExpenditureAndIncomeResponseDTO dto:expenditureAndIncomeResponseDTOs){
+			if(map.containsKey(dto.getSysShopClerkId())){
+				ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse=map.get(dto.getSysShopClerkId());
+				expenditureAndIncomeResponse.setExpenditure(expenditureAndIncomeResponse.getExpenditure().add(dto.getExpenditure()));
+				expenditureAndIncomeResponse.setIncome(expenditureAndIncomeResponse.getIncome().add(dto.getIncome()));
+				expenditureAndIncomeResponse.setKahao(expenditureAndIncomeResponse.getKahao().add(dto.getKahao()));
+			}else {
+                map.put(dto.getSysShopClerkId(),dto);
+			}
+
+		}
+		//遍历map
+		List<ExpenditureAndIncomeResponseDTO> reponseList=new ArrayList<>();
+		for(Map.Entry<String,ExpenditureAndIncomeResponseDTO> entry:map.entrySet()){
+			reponseList.add(entry.getValue());
+		}
+		return reponseList;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,ArchivesDetail) {
+PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,ArchivesDetail,UpdateArchiveInfo) {
     console.log($scope);
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
@@ -32,16 +32,60 @@ PADWeb.controller('addRecordDetailCtrl', function($scope,$state,$stateParams,Arc
         window.history.go(-1)
     }
 
+    /*----------------------------------初始化参数------------------------------------------*/
     //档案详情
     ArchivesDetail.get({id:$stateParams.id},function (data) {
         $scope.responseData = data.responseData
+        $scope.responseData.select_type=""
+        $scope.responseData.openSelectFlag=""
+        $scope.responseData.selectContentName=""
+        $scope.responseData.selectContentPhone=""
+        $scope.responseData.selectContentSex=""
+        $scope.responseData.selectContentBirthday=""
+        $scope.responseData.selectContentAge=""
+        $scope.responseData.selectContentConstellation=""
+        $scope.responseData.selectContentBlood=""
+        $scope.responseData.selectContentHeight=""
+        $scope.responseData.selectContentSource=""
     })
 
+    //打开选择页面
+    $scope.openSelect = function (type,content) {
+        $scope.flagFn("添加档案",content,false)
+        $scope.responseData.openSelectFlag = true
+        $scope.responseData.select_type = type
+    }
+    //选择完成
+    $scope.selectFn = function (type,content) {
+        $scope.flagFn("","添加档案",false)
+        $scope.responseData.openSelectFlag = false
+        if(type == "sex"){
+            $scope.responseData.sex = content
+        }else if(type == "birthday"){
+            $scope.responseData.sex = content
+        }else if(type == "age"){
+            $scope.responseData.selectContentAge = content
+        }else if(type == "constellation"){
+            $scope.responseData.selectContentConstellation = content
+        }else if(type == "bloodType"){
+            $scope.responseData.selectContentBlood = content
+        }else if(type == "height"){
+            $scope.responseData.selectContentHeight = content
+        }else if(type == "source"){
+            $scope.responseData.selectContentSource = content
+        }
+    }
 
-    /*----------------------------------初始化参数------------------------------------------*/
 
     /*---------------------------------方法-----------------------------------*/
 
+    $scope.$parent.$parent.leftTipFn = function () {
+        UpdateArchiveInfo.save($scope.responseData,function (data) {
+            if(Global.SUCCESS=data.result){
+                alert("更新成功");
+            }
+        });
+    }
 
 
 
