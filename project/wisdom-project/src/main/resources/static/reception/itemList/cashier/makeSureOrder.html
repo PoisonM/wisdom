@@ -26,9 +26,9 @@
                         <li>
                             <div>购买数量</div>
                             <span>
-                                <b ng-click="">-</b>
+                                <b ng-click="goodsSub('group',$index)">-</b>
                                 <input ng-change="myChangeFn()" type="text" value="" ng-model="item.projectInitTimes">
-                                <b ng-click="">＋</b>
+                                <b ng-click="goodsInc('group',$index)">＋</b>
                             </span>
                         </li>
                         <li>
@@ -69,9 +69,9 @@
                         <li>
                             <div>购买数量</div>
                             <span>
-                                <b>-</b>
+                                <b ng-click="goodsSub('product',$index)">-</b>
                                 <input ng-change="myChangeFn()" type="text" value="" ng-model="item.initTimes">
-                                <b>＋</b>
+                                <b ng-click="goodsInc('product',$index)">+</b>
                             </span>
                         </li>
                         <li>
@@ -111,9 +111,9 @@
                         <li>
                             <div>购买数量</div>
                             <span>
-                                <b>-</b>
+                                <b ng-click="goodsSub('project',$index)">-</b>
                                 <input  ng-change="myChangeFn()" type="text" value="" ng-model="item.sysShopProjectInitTimes">
-                                <b>＋</b>
+                                <b ng-click="goodsInc('project',$index)">+</b>
                             </span>
                         </li>
                         <li>
