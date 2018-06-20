@@ -73,6 +73,9 @@ public class ShopCardServiceImpl implements ShopCardService {
         ShopUserRechargeCardCriteria shopUserRechargeCardCriteria = new ShopUserRechargeCardCriteria();
         ShopUserRechargeCardCriteria.Criteria criteria = shopUserRechargeCardCriteria.createCriteria();
 
+        //根据创建时间排序
+        shopUserRechargeCardCriteria.setOrderByClause("create_date desc");
+
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysUserId())) {
             criteria.andSysUserIdEqualTo(shopUserRechargeCardDTO.getSysUserId());
         }
