@@ -35,7 +35,7 @@ public class ProcessUserScanEventService {
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
-    public void processUserScanEvent(ReceiveXmlEntity xmlEntity)
+    public String processUserScanEvent(ReceiveXmlEntity xmlEntity)
     {
         logger.info("已关注公众号的情况下扫描" );
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
@@ -46,6 +46,10 @@ public class ProcessUserScanEventService {
         logger.info("开启线程，给关注的用户token={}推送微信消息",token);
         Runnable sendSubscribeMessageThread = new SendScanMessageThread(token, xmlEntity);
         threadExecutorCached.execute(sendSubscribeMessageThread);
+
+        String url = "http://mx99test1.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=http://mx99test1.kpbeauty.com.cn/weixin/customer/getUserWeixinMenuId?url=shopHome";
+
+        return url;
     }
 
     private class SendScanMessageThread extends Thread {

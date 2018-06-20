@@ -92,8 +92,7 @@ public class AccountController {
 			accountDTO.setBalanceDeny((float)0.00);
 			accountService.createUserAccount(accountDTO);
 		}
-		else
-		{
+		else{
 			accountDTO = accountDTOS.get(0);
 			logger.info("用户已经有账户，获取当前账户信息=={}" + accountDTO.getSysUserId());
 		}
