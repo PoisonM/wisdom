@@ -1,4 +1,4 @@
-PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
+PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) {
     console.log("top")
 
     /*------------------------------------初始化参数-----------------------------------------------*/
@@ -20,6 +20,16 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             saveContent:"确认"
         }
     }
+
+    //虚拟商品类型
+    $rootScope.goodsType = {
+        product : '4',
+        periodCard :'1',
+        timeCard :'0',
+        groupCard:'3',
+        project:'8'
+    }
+
     //公共部分开关管理
     $scope.mainSwitch = {
         //头部总开关
