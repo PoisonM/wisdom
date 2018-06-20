@@ -24,17 +24,17 @@ public class BusinessMessageQueueConfiguration {
 	}
 
 	@Bean
-	public Queue handleInstanceReturnMoney(){
+	public Queue handleInstanceReturnMoneyQueue(){
 		return new Queue("handleInstanceReturnMoney");
 	}
 
 	@Bean
-	public Queue recordMonthTransaction(){
+	public Queue recordMonthTransactionQueue(){
 		return new Queue("recordMonthTransaction");
 	}
 
 	@Bean
-	public Queue handleUserLevelPromotion(){
+	public Queue handleUserLevelPromotionQueue(){
 		return new Queue("handleUserLevelPromotion");
 	}
 

@@ -46,7 +46,7 @@ public class BusinessMessageQueueSender {
 
     public void sendNotifySpecialShopBossCustomerTransaction(BusinessOrderDTO businessOrderDTO) {
         String businessOrderStr = gson.toJson(businessOrderDTO);
-        System.out.println("Sender : " + businessOrderStr);
+        logger.info("Sender : " + businessOrderStr);
         this.rabbitTemplate.convertAndSend("notifySpecialShopBossCustomerTransaction", businessOrderStr);
     }
 
