@@ -28,14 +28,14 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
         window.history.go(-1)
     }
 
-    //处理
-    // $rootScope.projectGroupRelRelationDTOSTemp = $rootScope.projectGroupRelRelationDTOS
-    // $rootScope.shopUserProductRelationDTOSTemp = $rootScope.shopUserProductRelationDTOS
-    // $rootScope.shopUserProjectRelationDTOSTemp = $rootScope.shopUserProjectRelationDTOS
 
 
     $rootScope.staffListIds = []
     $rootScope.staffListNames = []
+    for(var i = 0; i < $stateParams.clerkIds.split(";").length; i++){
+        $rootScope.staffListIds.push($stateParams.clerkIds.split(";")[i])
+        $rootScope.staffListNames.push($stateParams.clerkNames.split(";")[i])
+    }
     $scope.housekeeperCheck = function(index,id,name) {
         // $scope.select = index;
         if($rootScope.staffListIds.indexOf(id) != -1){
@@ -83,13 +83,7 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
             sysClerkId:"",
             sysClerkName:""
         }
-        if($scope.staffListIds == undefined){
-            $scope.importData.sysClerkId = "";
-            $scope.importData.sysClerkName = ""
-        }else {
-            $scope.importData.sysClerkId = $scope.staffListIds.join(";");
-            $scope.importData.sysClerkName = $scope.staffListNames.join(";");
-        }
+
         UpdateShopUserOrderInfo.save($scope.importData, function(data) {
             if(data.result == "0x00001"){
                 window.history.go(-1)
@@ -115,7 +109,7 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
  */
 Array.prototype.remove=function(dx)
 {
-    if(isNaN(dx)||dx>this.length){return false;}
+    // if(isNaN(dx)||dx>this.length){return false;}
     for(var i=0,n=0;i<this.length;i++)
     {
         if(this[i]!=this[dx])
