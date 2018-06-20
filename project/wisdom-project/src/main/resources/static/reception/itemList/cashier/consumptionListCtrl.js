@@ -13,8 +13,12 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     };
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
-    //获取订单ID
+    $scope.$parent.priceListBlackFn = function () {
+        window.history.go(-1)
+    }
 
+
+    //获取订单ID
     SaveShopUserOrderInfo.save({
         userId: $stateParams.userId
     }, function(data) {
@@ -187,6 +191,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 projectSurplusTimes: '',
                 shopProjectGroupId: res.id,
                 shopProjectGroupName: res.projectGroupName,
+                projectInitAmount:res.marketPrice,
+                discount:'1',
                 sysUserId: $stateParams.userId,
             }]
         }

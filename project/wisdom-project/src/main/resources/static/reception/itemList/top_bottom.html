@@ -1,6 +1,5 @@
 <div ng-class="{'header_top_nor':!mainSwitch.headerBoxFlag,'header_bottom_nor':!mainSwitch.footerBoxFlag}" class="top_bottom">
     <div ng-if="mainSwitch.headerBoxFlag" class="header">
-
         <!--预约头部-->
         <div ng-if="mainSwitch.headerReservationAllFlag" class="header_box">
             <div ng-if = "mainSwitch.headerReservationFlag.headerReservationLeftFlag" class="header_reservation_left">
@@ -16,7 +15,6 @@
                 排班
             </div>
         </div>
-
         <!--收银头部/档案头部/我的头部-->
         <div ng-if="mainSwitch.headerCashAllFlag" class="header_box">
             <div class="header_cash_left">
@@ -31,13 +29,10 @@
                 <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag" class="save" ng-click="leftTipFn()">{{param.headerCash.leftTip}}</span>
             </div>
         </div>
-
-
         <!--登录头部-->
         <div ng-if="mainSwitch.headerLoginFlag" class="header_box">
             <div class="header_login">登录</div>
         </div>
-
         <!--价目表头部-->
         <div ng-if = "mainSwitch.headerPriceListAllFlag" class="header_box">
             <div ng-if = "!mainSwitch.headerPriceListBlackFlag" class="header_price_box">
@@ -53,9 +48,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
     <!--中心切换区域-->
     <div ui-view style="height: 100%"></div>
     <div ng-if = "mainSwitch.footerBoxFlag" class="footer">
@@ -69,4 +62,5 @@
             </ul>
         </div>
     </div>
+
 </div>
