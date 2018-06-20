@@ -99,7 +99,8 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		ShopUserProductRelationCriteria shopUserProductRelationCriteria = new ShopUserProductRelationCriteria();
 		ShopUserProductRelationCriteria.Criteria criteria = shopUserProductRelationCriteria.createCriteria();
-
+        //根据创建时间排序
+		shopUserProductRelationCriteria.setOrderByClause("create_date desc");
 		if (StringUtils.isNotBlank(shopUserProductRelationDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopUserProductRelationDTO.getSysShopId());
 		}
