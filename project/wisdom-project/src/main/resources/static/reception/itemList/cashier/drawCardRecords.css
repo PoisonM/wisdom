@@ -20,6 +20,7 @@
 .drawCardRecords .prepaidRecordsUl li {
     height: 70px;
     border-bottom: 1px solid #E5E5E5;
+    position: relative;
 }
 
 .drawCardRecords .prepaidRecordsUl li div {
@@ -45,4 +46,20 @@
     font-size: 16px;
     color: #FF6666;
     letter-spacing: 0;
+}
+
+.drawCardRecords .prepaidRecordsUl li .go_detail{
+    float: right;
+    margin-top: 20px;
+    padding-right: 35px;
+}
+
+.drawCardRecords li .go_set {
+    position: absolute;
+    top: 7%;
+    right: 0rem;
+    background: url(../../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
 }
