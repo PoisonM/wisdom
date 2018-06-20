@@ -366,7 +366,6 @@ public class BusinessOrderController {
                     {"订单编号","用户id","用户名","用户手机号", "付款时间", "商品品牌","商品编号", "商品名称", "商品规格", "商品数量"
                             ,"订单状态", "收货人姓名", "收货人电话",
                             "收货人详细地址", "订单金额", "是否要发票", "发票抬头", "纳税人识别号"};
-            //ByteArrayInputStream in = ex.getWorkbookIn("代发货订单EXCEL文档",headers, list,"yyy-MM-dd");
             ByteArrayInputStream in = ex.getWorkbookIn("订单EXCEL文档",headers,list);//JXL
             String url = CommonUtils.orderExcelToOSS(in);
             logger.info("待发货导出Url=={}到OSS并修改状态为已发货",url);
@@ -383,25 +382,6 @@ public class BusinessOrderController {
         logger.info("删除用户订单,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
-
-    /**
-     * 查询所有订单
-     * @return
-     */
-    /*@RequestMapping(value = "queryAllBusinessOrders", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
-    public
-    @ResponseBody
-    ResponseDTO<PageParamDTO<List<BusinessOrderDTO>>>  queryAllBusinessOrders(@RequestBody PageParamVoDTO<BusinessOrderDTO> pageParamVoDTO) {
-        long startTime = System.currentTimeMillis();
-        logger.info("查询所有订单==={}开始" , startTime);
-        ResponseDTO<PageParamDTO<List<BusinessOrderDTO>>> responseDTO = new ResponseDTO<>();
-        PageParamDTO<List<BusinessOrderDTO>> page = transactionService.queryAllBusinessOrders(pageParamVoDTO);
-        responseDTO.setResponseData(page);
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        logger.info("查询所有订单,耗时{}毫秒", (System.currentTimeMillis() - startTime));
-        return responseDTO;
-    }*/
 
     /**
      * 条件查询查询订单
