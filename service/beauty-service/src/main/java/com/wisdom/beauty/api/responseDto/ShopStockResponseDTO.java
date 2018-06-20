@@ -49,6 +49,14 @@ public class ShopStockResponseDTO extends ShopStockDTO {
 	private List<ShopStockResponseDTO> shopStockResponseDTO;
 
 
+	public Integer getOutStockNumber() {
+		return outStockNumber;
+	}
+
+	public void setOutStockNumber(Integer outStockNumber) {
+		this.outStockNumber = outStockNumber;
+	}
+
 	public Date getCreateDate() {
 		return createDate;
 	}

@@ -14,7 +14,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                 detail:''
             };
 
-            //选择领取人
+            //选
             if($stateParams.ids!=""){
                 $scope.param.outOperationName = $stateParams.names.split(',')[0];
                 $scope.param.outOperationVal = $stateParams.ids.split(',')[0];
@@ -67,7 +67,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
             $scope.selReceiver = function(){
 
-                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId});
+                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle});
             }
 
             /*确认出库*/

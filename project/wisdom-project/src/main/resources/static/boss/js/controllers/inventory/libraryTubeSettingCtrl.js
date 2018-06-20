@@ -8,7 +8,7 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                 $state.go('warehousePeople')
             };
             $scope.param = {
-               id:$stateParams.shopStoreId
+               id:$rootScope.shopInfo.shopStoreId
             }
             console.log( $scope.param.id)
 
