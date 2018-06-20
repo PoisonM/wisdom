@@ -16,6 +16,9 @@ public class LoginDTO {
     @JSONField(name = "code")
     private String code;
 
+    @JSONField(name = "openId")
+    private String openId;
+
     public String getUserPhone() {
         return userPhone;
     }
@@ -38,5 +41,13 @@ public class LoginDTO {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

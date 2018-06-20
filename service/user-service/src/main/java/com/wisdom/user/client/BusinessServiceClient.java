@@ -1,5 +1,6 @@
 package com.wisdom.user.client;
 
+import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -18,5 +19,11 @@ public interface BusinessServiceClient {
 
     @RequestMapping(value = "/queryOrderDetailsById",method=RequestMethod.GET)
     BusinessOrderDTO queryOrderDetailsById(@RequestParam(value="orderId") String orderId);
+
+    @RequestMapping(value = "/createUserAccount",method=RequestMethod.POST)
+    void createUserAccount(@RequestBody AccountDTO accountDTO);
+
+    @RequestMapping(value = "/insertUserBusinessType",method=RequestMethod.POST)
+    void insertUserBusinessType(@RequestBody UserBusinessTypeDTO userBusinessTypeDTO);
 
 }

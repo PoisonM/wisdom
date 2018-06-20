@@ -322,32 +322,6 @@ define(['appManagement'], function(app){
                                 }
                             }
                         })
-
-                      .state('homePageEditor', {
-                           url: '/homePageEditor',
-                           templateProvider: function() { return lazyDeferred.promise; },
-                           controller: 'homePageEditorCtrl',
-                           resolve: {
-                               load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                   loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homePageEditorCtrl',
-                                       ['js/controllers/homePageEditorCtrl.js?ver=' + managementVersion],
-                                       'js/views/homePageEditor.html?ver=' + managementVersion);
-                               }
-                           }
-                       })
-
-                       .state('homeImageUpload', {
-                           url: '/homePageEditor/:bannerId',
-                           templateProvider: function() { return lazyDeferred.promise; },
-                           controller: 'homeImageUploadCtrl',
-                           resolve: {
-                               load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                   loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeImageUploadCtrl',
-                                       ['js/controllers/homeImageUploadCtrl.js?ver=' + managementVersion],
-                                       'js/views/homeImageUpload.html?ver=' + managementVersion);
-                               }
-                           }
-                       })
                 $urlRouterProvider.otherwise('home/%EF%BC%8F///')
             }])
 })

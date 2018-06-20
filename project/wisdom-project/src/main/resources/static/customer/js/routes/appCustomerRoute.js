@@ -74,7 +74,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('sharePage', {
-                        url: '/sharePage/:reload',
+                        url: '/sharePage/:reload,:userPhone',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'sharePageCtrl',
                         resolve: {

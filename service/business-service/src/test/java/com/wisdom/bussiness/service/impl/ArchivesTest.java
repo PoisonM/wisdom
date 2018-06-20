@@ -1,7 +1,11 @@
 package com.wisdom.bussiness.service.impl;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.business.BusinessServiceApplication;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.JedisUtils;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,6 +40,7 @@ public class ArchivesTest {
 
 
     }
+
 
 
 }

@@ -97,9 +97,8 @@ public class IncomeService {
 
     public List<IncomeRecordDTO> getIncomeRecordByPageParam(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         logger.info("根据条件查询用户佣金奖励");
-        String orderStatus ="2";
-        String orderId ="";
-        String orderAmount ="0";
+
+
 
         //获取审核状态条件
         String CheckStatus =pageParamVoDTO.getRequestData().getCheckStatus();
@@ -140,6 +139,9 @@ public class IncomeService {
         IncomeRecordManagementDTO incomeRecordManagementDTO =new IncomeRecordManagementDTO();
         Iterator<IncomeRecordDTO> iterator = incomeRecordDTOS.iterator();
         while (iterator.hasNext()){
+            String orderStatus ="2";
+            String orderId ="";
+            String orderAmount ="0";
             IncomeRecordDTO incomeRecordDTO = iterator.next();
             try {
                 //查詢审核信息
@@ -193,41 +195,51 @@ public class IncomeService {
                     //没有数据,则说明没有被审核,标记为未审核
                     incomeRecordDTO.setSecondCheckStatus(ConfigConstant.INCOME_UNAUDITED);
                 }
+
                 if(!"".equals(incomeRecordDTO.getNickName()) && incomeRecordDTO.getNickName() != null)
                 {
-                    String nickNameW = incomeRecordDTO.getNickName().replaceAll("%", "%25");
-                    while(true){
-                        if(nickNameW!=null&&nickNameW!=""){
-                            if(nickNameW.contains("%25")){
-                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                    try {
+                        String nickNameW = incomeRecordDTO.getNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
                             }else{
-                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                                 break;
                             }
-                        }else{
-                            break;
                         }
-
+                        incomeRecordDTO.setNickName(nickNameW);
+                    } catch(Throwable e){
+                        logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                        incomeRecordDTO.setNickName("特殊符号用户");
                     }
-                    incomeRecordDTO.setNickName(nickNameW);
                 }
                 if(!"".equals(incomeRecordDTO.getNextUserNickName()) && incomeRecordDTO.getNextUserNickName() != null)
                 {
-                    String nickNameW = incomeRecordDTO.getNextUserNickName().replaceAll("%", "%25");
-                    while(true){
-                        if(nickNameW!=null&&nickNameW!=""){
-                            if(nickNameW.contains("%25")){
-                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                    try {
+                        String nickNameW = incomeRecordDTO.getNextUserNickName().replaceAll("%", "%25");
+                        while(true){
+                            if(nickNameW!=null&&nickNameW!=""){
+                                if(nickNameW.contains("%25")){
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                }else{
+                                    nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                    break;
+                                }
                             }else{
-                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                                 break;
                             }
-                        }else{
-                            break;
-                        }
 
+                        }
+                        incomeRecordDTO.setNextUserNickName(nickNameW);
+                    } catch(Throwable e){
+                        logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                        incomeRecordDTO.setNextUserNickName("特殊符号用户");
                     }
-                    incomeRecordDTO.setNextUserNickName(nickNameW);
                 }
             } catch (UnsupportedEncodingException e) {
                 logger.info("service -- 根据条件查询佣金奖励getIncomeRecordByPageParam方法转换nickName失败" );
@@ -358,16 +370,11 @@ public class IncomeService {
         logger.info("service -- 月度奖励详情queryMonthRecordByParentRelation方法" );
         List<MonthTransactionRecordDTO> monthTransactionRecordDTOS = incomeMapper.queryMonthRecordByParentRelation(pageParamVoDTO);
         for (MonthTransactionRecordDTO monthTransactionRecordDTO: monthTransactionRecordDTOS) {
-            try {
-                if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNickName())) {
-                    monthTransactionRecordDTO.setNickName(URLDecoder.decode(monthTransactionRecordDTO.getNickName(),"utf-8"));
-                }
-                if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNextUserNickName())) {
-                    monthTransactionRecordDTO.setNextUserNickName(URLDecoder.decode(monthTransactionRecordDTO.getNextUserNickName(),"utf-8"));
-                }
-            } catch (UnsupportedEncodingException e) {
-                logger.info("service -- 月度奖励详情queryMonthRecordByParentRelation方法转换nickName失败" );
-                e.printStackTrace();
+            if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNickName())) {
+                monthTransactionRecordDTO.setNickName(CommonUtils.nameDecoder(monthTransactionRecordDTO.getNickName()));
+            }
+            if (StringUtils.isNotBlank(monthTransactionRecordDTO.getNextUserNickName())) {
+                monthTransactionRecordDTO.setNextUserNickName(CommonUtils.nameDecoder(monthTransactionRecordDTO.getNextUserNickName()));
             }
             IncomeRecordDTO incomeRecord = new IncomeRecordDTO();
             incomeRecord.setTransactionId(monthTransactionRecordDTO.getTransactionId());

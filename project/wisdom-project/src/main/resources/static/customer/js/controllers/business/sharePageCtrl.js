@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('sharePageCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetQRCodeURL','BusinessUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetQRCodeURL,BusinessUtil) {
+    ['$scope','$rootScope','$stateParams','$state','GetCustomerQRCode','BusinessUtil','$location',
+        function ($scope,$rootScope,$stateParams,$state,GetCustomerQRCode,BusinessUtil,$location) {
 
             $rootScope.title = "分享赚钱";
 
@@ -48,37 +48,83 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 }
             }
 
-            // $scope.$on('$ionicView.enter', function(){
-                GetQRCodeURL.get(function (data) {
-                    BusinessUtil.checkResponseData(data,'sharePage');
-                    $scope.param.weixinShareInfo = data.responseData;
+            GetCustomerQRCode.get({userPhone:$stateParams.userPhone},function (data) {
 
-                    //获取$scope.param.canvas
-                    $scope.param.canvas = document.getElementById('canvas');
+                $scope.param.weixinShareInfo = data.responseData;
 
-                    //设置宽高
-                    //想获取高清图请*2，一般的直接等于Width就行
-                    var Height = 1102;
-                    var Width = 750;
+                //获取$scope.param.canvas
+                $scope.param.canvas = document.getElementById('canvas');
 
-                    //$scope.param.canvas绘制需要的对象
-                    $scope.param.ctx = $scope.param.canvas.getContext("2d");
-                    $scope.param.canvas.width = Width;
-                    $scope.param.canvas.height = Height;
+                //设置宽高
+                //想获取高清图请*2，一般的直接等于Width就行
+                var Height = 1102;
+                var Width = 750;
 
-                    //获取图片
-                    $scope.param.mainImg = document.getElementById('mainImg');
+                //$scope.param.canvas绘制需要的对象
+                $scope.param.ctx = $scope.param.canvas.getContext("2d");
+                $scope.param.canvas.width = Width;
+                $scope.param.canvas.height = Height;
 
-                    //获取图片
-                    $scope.param.imgs = {
-                        bg: 'images/sharePage/bgs.png', //大背景
-                        via:  $scope.param.weixinShareInfo.userImage, //'img/people.jpg', //头像
-                        qrCode: $scope.param.weixinShareInfo.qrCodeURL //.shareCode //二维码
-                    };
+                //获取图片
+                $scope.param.mainImg = document.getElementById('mainImg');
 
-                    //载入图片
-                    drawInto();
-                })
+                //获取图片
+                $scope.param.imgs = {
+                    bg: 'images/sharePage/bgs.png', //大背景
+                    via:  $scope.param.weixinShareInfo.userImage, //'img/people.jpg', //头像
+                    qrCode: $scope.param.weixinShareInfo.qrCodeURL //.shareCode //二维码
+                };
 
-            // })
+                //载入图片
+                drawInto();
+            })
+
+            $.ajax({
+                url:"/weixin/customer/getConfig",// 跳转到 action
+                async:true,
+                type:'get',
+                data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                cache:false,
+                dataType:'json',
+                success:function(data) {
+                    var configValue = data.responseData;
+                    console.log(configValue);
+                    if(configValue!=null ){
+                        timestamp = configValue.timestamp;//得到时间戳
+                        nonceStr = configValue.nonceStr;//得到随机字符串
+                        signature = configValue.signature;//得到签名
+                        appid = configValue.appid;//appid
+
+                        //微信配置
+                        wx.config({
+                            debug: false,
+                            appId: appid,
+                            timestamp:timestamp,
+                            nonceStr: nonceStr,
+                            signature: signature,
+                            jsApiList: [
+                                'onMenuShareTimeline'
+                            ] // 功能列表
+                        });
+                        wx.ready(function () {
+                            // config信息验证后会执行ready方法，
+                            // 所有接口调用都必须在config接口获得结果之后，
+                            // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
+                            // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+                            // 则可以直接调用，不需要放在ready函数中。
+                        })
+                    }else{
+                    }
+                },
+                error : function() {
+                }
+            });
+
+            wx.onMenuShareTimeline({
+                title: '一个可以分享赚钱的美妆商城', // 分享标题
+                imgUrl: 'https://mximage.oss-cn-beijing.aliyuncs.com/viewPicture/585854756758332547.jpg', // 分享图标
+                link: $location.absUrl(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                success: function () {
+                }
+            })
         }])

@@ -40,10 +40,34 @@ public class AccountService {
         Page<AccountDTO> pageData = accountMapper.queryAllUserBalance(page);
         for(AccountDTO accountDTO : pageData.getList()){
             try {
+                if(accountDTO.getNickName() != null &&accountDTO.getNickName() != ""){
+                    String nickNameW = accountDTO.getNickName().replaceAll("%", "%25");
+                    while(true){
+                        if(nickNameW!=null&&nickNameW!=""){
+                            if(nickNameW.contains("%25")){
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                            }else{
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+                                break;
+                            }
+                        }else{
+                            break;
+                        }
+
+                    }
+                    accountDTO.setNickName(nickNameW);
+                }else{
+                    accountDTO.setNickName("未知用户");
+                }
+            } catch(Throwable e){
+                logger.error("获取昵称异常，异常信息为，{}"+e.getMessage(),e);
+                accountDTO.setNickName("特殊符号用户");
+            }
+          /*  try {
                 accountDTO.setNickName(URLDecoder.decode(accountDTO.getNickName(),"utf-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
         pageParamDTO.setTotalCount(pageParamDTO.getPageSize()*pageData.getTotalPage());
         pageParamDTO.setResponseData(pageData.getList());

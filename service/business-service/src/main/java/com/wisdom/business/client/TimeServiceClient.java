@@ -11,6 +11,6 @@ import java.util.Date;
 public interface TimeServiceClient {
 
     @RequestMapping(value = "/MTMonthlyIncomeCalc",method=RequestMethod.POST)
-    void MTMonthlyIncomeCalc(@RequestParam("businessType") String businessType, @RequestParam("startDateM") Date startDateM, @RequestParam("endDateM") Date endDateM, @RequestParam("isPullMessage") String isPullMessage);
+    void MTMonthlyIncomeCalc(@RequestParam("businessType") String businessType, @RequestParam("startDateM") Date startDateM, @RequestParam("endDateM") Date endDateM, @RequestParam("isPullMessage") String isPullMessage,@RequestParam("key") String key);
 
 }

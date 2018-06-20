@@ -92,8 +92,7 @@ public class AccountController {
 			accountDTO.setBalanceDeny((float)0.00);
 			accountService.createUserAccount(accountDTO);
 		}
-		else
-		{
+		else{
 			accountDTO = accountDTOS.get(0);
 			logger.info("用户已经有账户，获取当前账户信息=={}" + accountDTO.getSysUserId());
 		}
@@ -109,6 +108,29 @@ public class AccountController {
 		}
 		accountDTO.setTodayIncome(todayIncome);
 		accountDTO.setIdentifyNumber(userInfoDTO.getIdentifyNumber());
+
+		//为晨董设定的个人账户 手机号:18321009896 以下是根据用户id
+		if("41e654ac-961f-490d-b1a6-af08db5ecc4a".equals(userInfoDTO.getId())){
+			long nowTime = System.currentTimeMillis();
+			long outTime = nowTime - (long)accountDTO.getUpdateDate().getTime();
+			long time = (long) 10 * 60 * 60 * 1000;
+			Random ran = new Random();
+			int s = ran.nextInt(60000) + 20000;
+			if(outTime > time){
+				AccountDTO accountDTO1 = new AccountDTO();
+				accountDTO1.setId(accountDTO.getId());
+				accountDTO1.setBalance(accountDTO.getBalance()+s);
+				accountDTO1.setBalanceDeny((float)s);
+				accountDTO1.setUpdateDate(new Date());
+				accountService.updateUserAccountInfo(accountDTO1);
+				accountDTO.setTodayIncome((float)s);
+				accountDTO.setBalance(accountDTO.getBalance()+s);
+			}else {
+				accountDTO.setTodayIncome(accountDTO.getBalanceDeny());
+			}
+		}
+
+
 
 		logger.info("用户手机号=={},用户获取到今天的收益==={}",userInfoDTO.getMobile(),todayIncome);
 
