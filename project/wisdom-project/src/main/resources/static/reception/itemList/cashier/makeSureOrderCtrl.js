@@ -49,9 +49,9 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         })
     }
     $scope.goOrderListm = function() {
-        if($rootScope.projectGroupRelRelationDTOS == null && $rootScope.shopUserProductRelationDTOS == null && $rootScope.shopUserProjectRelationDTOS == null){
-            return false
+        if($rootScope.projectGroupRelRelationDTOS == null && $rootScope.shopUserProductRelationDTOS == null && $rootScope.shopUserProjectRelationDTOS == ''){
             alert("未选择产品或项目")
+            return false
         }
         $scope.importData = {
             orderId: $scope.orderId,
@@ -178,10 +178,8 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
 
 
     $scope.myChangeFn = function() {
-        if('' == $scope.shopUserProductRelationDTOS && null == $scope.shopUserProjectRelationDTOS && null == $scope.projectGroupRelRelationDTOS){
-            $scope.tempAll = 0
-        }else{
-            $scope.tempAll = 0
+        $scope.tempAll = 0
+        if('' != $scope.shopUserProductRelationDTOS && '' != $scope.shopUserProjectRelationDTOS && '' != $scope.projectGroupRelRelationDTOS){
             var setTimer = setInterval(function() {
                 if ($(".xiaoji").length != 0) {
                     clearInterval(setTimer)
