@@ -66,7 +66,7 @@ public class WeixinUserCoreService {
             {
                 //已关注公众号的情况下扫描
                 logger.info("已关注公众号的情况下扫描");
-                respMessage = processUserScanEventService.processUserScanEvent(xmlEntity);
+                processUserScanEventService.processUserScanEvent(xmlEntity);
             }
             else if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE))
             {
