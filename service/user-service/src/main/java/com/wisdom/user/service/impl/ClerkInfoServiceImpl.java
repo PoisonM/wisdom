@@ -11,6 +11,7 @@ import com.wisdom.common.util.*;
 import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.service.UserInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,5 +161,25 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		sysClerkCriteria.or(or);
 		return sysClerkMapper.selectByCriteria(sysClerkCriteria);
 
+	}
+
+	@Override
+	public List<SysClerkDTO> getClerkInfoListByClerkIds(PageParamVoDTO<SysClerkDTO> pageParamVoDTO, List<String> clerkIds) {
+
+		SysClerkCriteria sysClerkCriteria = new SysClerkCriteria();
+		SysClerkCriteria.Criteria criteria = sysClerkCriteria.createCriteria();
+
+		if (CollectionUtils.isNotEmpty(clerkIds)) {
+			criteria.andIdIn(clerkIds);
+		}
+		// 排序
+		sysClerkCriteria.setOrderByClause("create_date");
+		// 分页
+		if (pageParamVoDTO.getPaging()) {
+			sysClerkCriteria.setLimitStart(pageParamVoDTO.getPageNo());
+			sysClerkCriteria.setPageSize(pageParamVoDTO.getPageSize());
+		}
+		// 时间
+		return sysClerkMapper.selectByCriteria(sysClerkCriteria);
 	}
 }

@@ -99,6 +99,16 @@ public interface UserServiceClient {
 	List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
 			                                    @RequestParam(required = false, value = "searchFile") String searchFile);
 
+	/**
+	 * @Author:zhanghuan
+	 * @Param:
+	 * @Return:
+	 * @Description: 根据条件获取店员信息
+	 * @Date:2018/4/25 18:32
+	 */
+	@RequestMapping(value = "/getClerkInfoListByClerkIds", method = RequestMethod.GET)
+	ResponseDTO<List<SysClerkDTO>>   getClerkInfoListByClerkIds(@RequestParam(value = "clerkIds") List<String> clerkIds);
+
 
 
 
