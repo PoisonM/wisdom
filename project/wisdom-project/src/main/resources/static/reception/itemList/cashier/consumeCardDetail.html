@@ -29,10 +29,10 @@
         </div>
         <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList">
             <div class="basic">
-                <p ng-if="listItem.goodsType == '0'">单次</p>
-                <p ng-if="listItem.goodsType == '1'">疗程卡</p>
-                <p ng-if="listItem.goodsType == '2'">充值卡</p>
-                <p ng-if="listItem.goodsType == '3'">套卡</p>
+                <p ng-if="dataInfo.goodsType == '0'">单次</p>
+                <p ng-if="dataInfo.goodsType == '1'">疗程卡</p>
+                <p ng-if="dataInfo.goodsType == '2'">充值卡</p>
+                <p ng-if="dataInfo.goodsType == '3'">套卡</p>
                 <ul>
                     <li>
                         <label for="">{{listItem.flowName}}</label>
@@ -62,6 +62,14 @@
                         <label for="">员工业绩</label>
                         <span>店内消费</span>
                     </li>-->
+                </ul>
+            </div>
+            <div class="basic">
+                <p>总金额</p>
+                <ul>
+                    <li>
+                        <span>{{dataInfo.sumAmount}}</span>
+                    </li>
                 </ul>
             </div>
             <div class="basic">
