@@ -36,6 +36,7 @@ import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REW
 
 @Service
 public class BusinessRunTimeService {
+
     Logger logger = LoggerFactory.getLogger(BusinessRunTimeService.class);
 
     @Autowired
@@ -96,9 +97,29 @@ public class BusinessRunTimeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void autoMonthlyIncomeCalc() throws UnsupportedEncodingException {
+    public void autoMonthlyIncomeCalc() throws Exception {
         long startTime = System.currentTimeMillis();
         logger.info("月度提成计算==={}开始" , startTime);
+
+        String startDate = "";
+        String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
+        if(DateUtils.getMonth().equals("01"))
+        {
+            int month = 11;
+            int year = Integer.parseInt(DateUtils.getYear()) - 1;
+            startDate = year + "-" + month + "-15";
+        }
+        else if(DateUtils.getMonth().equals("02"))
+        {
+            int month = 12;
+            int year = Integer.parseInt(DateUtils.getYear()) - 1;
+            startDate = year + "-" + month + "-15";
+        }
+        else{
+            int month = Integer.parseInt(DateUtils.getMonth()) - 1;
+            startDate = DateUtils.getYear() + "-" + month + "-15";
+        }
+
         //加入开关量，证明本月已经完成过月度提成了，不用再次计算
         Query query = new Query(Criteria.where("year").is(DateUtils.getYear())).addCriteria(Criteria.where("month").is(DateUtils.getMonth()));
         MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query,MonthlyIncomeSignalDTO.class,"monthlyIncomeSignal");
@@ -110,9 +131,11 @@ public class BusinessRunTimeService {
             monthlyIncomeSignalDTO.setOnTimeFinish("false");
             mongoTemplate.insert(monthlyIncomeSignalDTO,"monthlyIncomeSignal");
 
-            this.monthlyIncomeCalc(ConfigConstant.businessA1);
+            this.MTMonthlyIncomeCalc(ConfigConstant.businessA1,DateUtils.StrToDate(startDate,"datetime"),
+                    DateUtils.StrToDate(endDate,"datetime"),null,null);
 
-            this.monthlyIncomeCalc(ConfigConstant.businessB1);
+            this.MTMonthlyIncomeCalc(ConfigConstant.businessB1,DateUtils.StrToDate(startDate,"datetime"),
+                    DateUtils.StrToDate(endDate,"datetime"),null,null);
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -121,9 +144,11 @@ public class BusinessRunTimeService {
         }
         else if(monthlyIncomeSignalDTO.getOnTimeFinish().equals("false"))
         {
-            this.monthlyIncomeCalc(ConfigConstant.businessA1);
+            this.MTMonthlyIncomeCalc(ConfigConstant.businessA1,DateUtils.StrToDate(startDate,"datetime"),
+                    DateUtils.StrToDate(endDate,"datetime"),null,null);
 
-            this.monthlyIncomeCalc(ConfigConstant.businessB1);
+            this.MTMonthlyIncomeCalc(ConfigConstant.businessB1,DateUtils.StrToDate(startDate,"datetime"),
+                    DateUtils.StrToDate(endDate,"datetime"),null,null);
 
             //操作完毕后，关闭信号量
             Update update = new Update();
@@ -254,94 +279,6 @@ public class BusinessRunTimeService {
             }
         }
         logger.info("完成用户的状态冻结的自动化操作,耗时{}毫秒", (System.currentTimeMillis() - startTime));
-    }
-
-    public void monthlyIncomeCalc(String businessType) throws UnsupportedEncodingException {
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setUserType(businessType);
-        userInfoDTO.setDelFlag("0");
-        List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-        String token = WeixinUtil.getUserToken();
-        for(UserInfoDTO userInfo:userInfoDTOList)
-        {
-            float returnMonthlyMoney = 0;
-            float returnMonthlyMoney_A = 0;
-            float returnMonthlyMoney_B = 0;
-
-           /* String startDate = "";
-            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
-            if(DateUtils.getMonth().equals("01"))
-            {
-                int month = 11;
-                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-15";
-            }
-            else if(DateUtils.getMonth().equals("02"))
-            {
-                int month = 12;
-                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-                startDate = year + "-" + month + "-15";
-            }
-            else{
-                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
-                startDate = DateUtils.getYear() + "-" + month + "-15";
-            }
-*/
-
-            String startDate ="2018-05-15 00:00:00";
-            String endDate ="2018-06-09 23:59:59";
-
-            List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
-
-            for(MonthTransactionRecordDTO monthTransactionRecordDTO:monthTransactionRecordDTOList)
-            {
-                if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessA1))
-                {
-                    returnMonthlyMoney_A = returnMonthlyMoney_A + monthTransactionRecordDTO.getAmount();
-                }
-                else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
-                {
-                    returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
-                }
-            }
-
-            //计算当前用户本月的消费金额
-            if(returnMonthlyMoney_A>0||returnMonthlyMoney_B>0)
-            {
-                returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-
-                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
-                float balance = accountDTO.getBalance() + returnMonthlyMoney;
-                float balanceDeny = accountDTO.getBalanceDeny() + returnMonthlyMoney;
-                accountDTO.setBalance(balance);
-                accountDTO.setBalanceDeny(balanceDeny);
-                accountDTO.setUpdateDate(new Date());
-                businessServiceClient.updateUserAccountInfo(accountDTO);
-
-                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                incomeRecordDTO.setId(UUID.randomUUID().toString());
-                incomeRecordDTO.setSysUserId(userInfo.getId());
-                incomeRecordDTO.setUserType(userInfo.getUserType());
-                incomeRecordDTO.setNextUserId("");
-                incomeRecordDTO.setNextUserType("");
-                incomeRecordDTO.setAmount(returnMonthlyMoney);
-                incomeRecordDTO.setTransactionAmount(0);
-                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                incomeRecordDTO.setUpdateDate(new Date());
-                incomeRecordDTO.setCreateDate(new Date());
-                incomeRecordDTO.setStatus("0");
-                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                incomeRecordDTO.setNextUserIdentifyNumber("");
-                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                incomeRecordDTO.setNextUserNickName("");
-                incomeRecordDTO.setIncomeType("month");
-                incomeRecordDTO.setMobile(userInfo.getMobile());
-                incomeRecordDTO.setNextUserMobile("");
-                incomeRecordDTO.setParentRelation("");
-                businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-                WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
-            }
-        }
     }
 
     public void promoteUserBusinessTypeForRecommend() throws UnsupportedEncodingException {
@@ -799,9 +736,7 @@ public class BusinessRunTimeService {
 
     /**
      * 插入出错信息
-     *
      * */
-
     public void insertMonthlyIncomeError(Date date,UserInfoDTO userInfo ,String businessType){
 
         SimpleDateFormat sdfYear  = new SimpleDateFormat("yyyy");
@@ -819,7 +754,6 @@ public class BusinessRunTimeService {
         mongoTemplate.insert(monthlyIncomeError, "MonthlyIncomeError");
 
     }
-
 
     /**
      * 发送微信消息

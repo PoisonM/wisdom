@@ -36,7 +36,7 @@ public class RunTimeTaskForBusiness {
     }
 
     @Scheduled(cron = "0 0 3 * * ?")
-    public void autoTaskEveryDayInMorning() throws UnsupportedEncodingException {
+    public void autoTaskEveryDayInMorning() throws Exception {
 
         //用户15天后，自动转为收到货物
         transactionRunTimeService.autoConfirmReceiveProduct();
