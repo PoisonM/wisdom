@@ -165,7 +165,7 @@
     display: block;
     float: left;
     display: inline-block;
-    width: 200px;
+    /*width: 200px;*/
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -184,7 +184,7 @@
 
 .personalFile-box .personalFile-content .treatment .recorderCard .recorderCardTopPrice b {
     font-family: PingFangSC-Semibold;
-    font-size: 18px;
+    font-size: 17px;
     color: #FF6666;
     letter-spacing: 0;
 }

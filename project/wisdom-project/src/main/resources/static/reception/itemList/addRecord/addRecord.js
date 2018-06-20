@@ -33,13 +33,14 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
         openSelectFlag:false,//选择页面开关
         selectContentName:"",
         selectContentPhone:"",
-        selectContentSex:"",
+        selectContentSex:"女",
         selectContentBirthday:"",
         selectContentAge:"",
         selectContentConstellation:"",
         selectContentBlood:"",
         selectContentHeight:"",
         selectContentSource:"",
+        selectContentChannel:"",//来源渠道
     }
 
     if($stateParams.id != ""){
@@ -54,6 +55,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
             $scope.param.selectContentConstellation = data.responseData.constellation;
             $scope.param.selectContentBlood = data.responseData.bloodType;
             $scope.param.selectContentHeight = data.responseData.height;
+            $scope.param.selectContentChannel = data.responseData.channel;
         })
     }
 
@@ -86,6 +88,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
             // sysShopId:'11',
             // sysShopName:'汉方美容院',
             sysUserName:$scope.param.selectContentName,
+            channel:$scope.param.selectContentChannel
         }
         if($scope.param.selectContentName == ""){
             alert("请输入姓名")
@@ -148,6 +151,8 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
             $scope.param.selectContentHeight = content
         }else if(type == "source"){
             $scope.param.selectContentSource = content
+        }else if(type == "channel"){
+            $scope.param.selectContentChannel = content
         }
     }
 
