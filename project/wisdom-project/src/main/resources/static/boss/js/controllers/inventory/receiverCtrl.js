@@ -1,7 +1,7 @@
-angular.module('controllers',[]).controller('kuTubeCtrl',
+angular.module('controllers',[]).controller('receiverCtrl',
     ['$scope','$rootScope','$stateParams','$state',"BossUtil",'Global','$filter','GetClerkInfoList','GetBossShopList','GetClerkBySearchFile',
         function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetClerkInfoList,GetBossShopList,GetClerkBySearchFile) {
-            $rootScope.title = "添加家人";
+            $rootScope.title = "添加领取人";
             $scope.param={
                 index:0,
                 flag:false,
@@ -11,9 +11,11 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                 searchFile:'',
                 addFamily:[]
             };
-            if($stateParams.storeManagerId!=''){
+
+           /* if($stateParams.storeManagerId!=''){
                 $scope.param.ids = $stateParams.storeManagerId.split(",")
-            }
+            }*/
+
             $scope.getInfo=function(){
                 GetClerkInfoList.get({
                     sysBossId:"",
@@ -78,8 +80,8 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                 })
             }
 
-            $scope.save = function () {
-                  $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),shopStoreId:$stateParams.id})
+           $scope.save = function () {
+                  $state.go('AddOutbound',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),sum:$stateParams.sum})
             }
 
         }])
