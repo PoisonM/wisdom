@@ -49,7 +49,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         })
     }
     $scope.goOrderListm = function() {
-        if($scope.tempAll == 0){
+        if($scope.orderPrice == 0){
             alert("未选择产品或项目")
             return false
         }
