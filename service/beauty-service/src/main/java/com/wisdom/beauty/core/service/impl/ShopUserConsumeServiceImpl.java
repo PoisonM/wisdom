@@ -258,7 +258,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             recordDTO.setPrice(new BigDecimal(balancePay));
             recordDTO.setConsumeNumber(1);
             recordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
-                shopUerConsumeRecordService.saveCustomerConsumeRecord(recordDTO);
+            shopUerConsumeRecordService.saveCustomerConsumeRecord(recordDTO);
             logger.info("扣减余额账户={}",info);
         }
         return false;

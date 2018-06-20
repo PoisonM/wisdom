@@ -29,7 +29,8 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
         if (type == 0) { //疗程卡
             GetUserCourseProjectList.get({
                 sysUserId: $stateParams.sysUserId,
-                cardStyle: 1
+                cardStyle: 1,
+                surplusTimes:1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("疗程卡:" + data)

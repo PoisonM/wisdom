@@ -38,10 +38,10 @@
                                 <input readonly>
                             </span>
                         </li>
-                        <li ng-click="goHousekeeper('group',$index)">
+                        <li data-item = "{{item}}" ng-click="goHousekeeper('group',$index,item.sysClerkId,item.sysClerkName)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in projectGroupRelRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 >
                             </span>
                         </li>
@@ -81,10 +81,10 @@
                                 <input readonly >
                             </span>
                         </li>
-                        <li ng-click="goHousekeeper('product',$index)">
+                        <li data-item = "{{item}}" ng-click="goHousekeeper('product',$index,item.sysClerkId,item.sysClerkName)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in shopUserProductRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
                         </li>
                     </ul>
@@ -123,10 +123,10 @@
                                 <input readonly  >
                             </span>
                         </li>
-                        <li ng-click="goHousekeeper('project',$index)">
+                        <li ng-click="goHousekeeper('project',$index,item.sysClerkId,item.sysClerkName)">
                             <div>关联员工</div>
                             <span>
-                                <e ng-repeat="staffItem in shopUserProjectRelationDTOSTemp[$index].sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
+                                <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
                         </li>
                     </ul>

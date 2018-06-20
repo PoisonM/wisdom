@@ -2,21 +2,29 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',["ionic-datepicker"]).controller('sevenDayChartsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetExpenditureAndIncome','BossUtil','Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetExpenditureAndIncome,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetExpenditureAndIncome','BossUtil','Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetExpenditureAndIncome,BossUtil,Global,$filter,$ionicLoading) {
 
             $rootScope.title = "7日收益趋势图";
 
-            
+
 
 
 
             $scope.getInfo=function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 if($stateParams.id!='a'){
                     GetExpenditureAndIncome.get({sysShopId:$stateParams.id},function (data) {
                         if(data.result==Global.SUCCESS&&data.responseData!=null){
                             $scope.sevenDayCharts = data.responseData
                             $scope.HPic()
+                            $ionicLoading.hide()
                         }
 
 
@@ -26,13 +34,14 @@ angular.module('controllers',["ionic-datepicker"]).controller('sevenDayChartsCtr
                         if(data.result==Global.SUCCESS&&data.responseData!=null){
                             $scope.sevenDayCharts = data.responseData
                             $scope.HPic()
+                            $ionicLoading.hide()
                         }
 
 
                     })
                 }
-
             }
+            $scope.getInfo()
 
             $scope.HPic =function(){
                 $scope.cardSeries = [
@@ -80,6 +89,7 @@ angular.module('controllers',["ionic-datepicker"]).controller('sevenDayChartsCtr
                     $scope.cardOptions.xAxis.categories[i] =  $scope.sevenDayCharts[i].formateDate
                 }
             }
-            $scope.getInfo()
+
+
 
 }]);

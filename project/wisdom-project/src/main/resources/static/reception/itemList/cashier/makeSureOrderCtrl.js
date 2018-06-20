@@ -38,17 +38,26 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     // $scope.shopUserProductRelationDTOSPeople= $rootScope.shopUserProductRelationDTOSTemp
     // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
 
-    $scope.goHousekeeper = function(type,index) {
-        $state.go('pad-web.left_nav.housekeeper',{type:type,index:index})
+    $scope.goHousekeeper = function(type,index,clerkIds,clerkNames) {
+        $state.go('pad-web.left_nav.housekeeper',{
+            type:type,
+            index:index,
+            orderId:$scope.orderId,
+            tempAll:$scope.tempAll,
+            clerkIds:clerkIds,
+            clerkNames:clerkNames
+        })
     }
     $scope.goOrderListm = function() {
-        console.log($scope.car)
-
+        if($rootScope.projectGroupRelRelationDTOS == null && $rootScope.shopUserProductRelationDTOS == null && $rootScope.shopUserProjectRelationDTOS == null){
+            return false
+            alert("未选择产品或项目")
+        }
         $scope.importData = {
             orderId: $scope.orderId,
-            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOSTemp,//套卡
-            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOSTemp,//产品
-            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOSTemp,//项目
+            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOS,//套卡
+            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOS,//产品
+            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOS,//项目
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.tempAll, //总金额
@@ -91,14 +100,17 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                     $scope.shopUserProjectRelationDTOS[i].totalPrice = $scope.shopUserProjectRelationDTOS[i].ng_markPrice * $scope.shopUserProjectRelationDTOS[i].sysShopProjectInitTimes;
                 }*/
                 $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
-
-                if($rootScope.projectGroupRelRelationDTOS != undefined){
+                $rootScope.shopUserRechargeCardDTO = $scope.shopUserRechargeCardDTO
+                if($rootScope.projectGroupRelRelationDTOS != undefined || $rootScope.shopUserProductRelationDTOS != undefined || $rootScope.shopUserProjectRelationDTOS != undefined){
                     // return
                 }else {
                     $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
                     $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
                     $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
                 }
+                // $rootScope.projectGroupRelRelationDTOS = $scope.projectGroupRelRelationDTOS
+                // $rootScope.shopUserProductRelationDTOS = $scope.shopUserProductRelationDTOS
+                // $rootScope.shopUserProjectRelationDTOS = $scope.shopUserProjectRelationDTOS
                 $scope.myChangeFn()
             }
         })
@@ -142,6 +154,8 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 $scope.projectGroupRelRelationDTOS = data.responseData.projectGroupRelRelationDTOS;
                 $scope.shopUserProductRelationDTOS = data.responseData.shopUserProductRelationDTOS;
                 $scope.shopUserProjectRelationDTOS = data.responseData.shopUserProjectRelationDTOS;
+
+                $scope.myChangeFn()//重新计算金额
             })
         })
     }
@@ -171,7 +185,6 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
             }
         }, 100)
     }
-    $scope.myChangeFn()
 
 
 

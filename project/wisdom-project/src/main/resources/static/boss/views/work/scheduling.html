@@ -9,6 +9,7 @@
             <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
                 <thead>
                     <tr class="listHead">
+
                         <td ng-repeat="item1 in tempWeek">
                             <div>
                                 {{item1[0]}}
@@ -19,9 +20,13 @@
                 </thead>
                 <tbody >
                     <tr ng-repeat="item4 in tempUser" class="list">
+                        <td>
+                            <div>
+                                {{item4.clerkInfo.name}}
+                            </div>
+                        </td>
                         <td ng-repeat="infoItem in item4.clerkSchInfo">
-                            <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
-                            <div ng-if="$index != 0">
+                               <div >
                                 <img ng-if="infoItem.scheduleType == 0" src="images/work/morning.png">
                                 <img ng-if="infoItem.scheduleType == 1" src="images/work/middle.png">
                                 <img ng-if="infoItem.scheduleType == 2" src="images/work/night.png">

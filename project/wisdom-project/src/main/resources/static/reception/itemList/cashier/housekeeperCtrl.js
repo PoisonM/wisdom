@@ -1,4 +1,5 @@
-PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$stateParams, ngDialog, GetShopClerkList) {
+PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$stateParams, ngDialog
+    , GetShopClerkList,UpdateShopUserOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -27,14 +28,14 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
         window.history.go(-1)
     }
 
-    //处理
-    $rootScope.projectGroupRelRelationDTOSTemp = $rootScope.projectGroupRelRelationDTOS
-    $rootScope.shopUserProductRelationDTOSTemp = $rootScope.shopUserProductRelationDTOS
-    $rootScope.shopUserProjectRelationDTOSTemp = $rootScope.shopUserProjectRelationDTOS
 
 
     $rootScope.staffListIds = []
     $rootScope.staffListNames = []
+    for(var i = 0; i < $stateParams.clerkIds.split(";").length; i++){
+        $rootScope.staffListIds.push($stateParams.clerkIds.split(";")[i])
+        $rootScope.staffListNames.push($stateParams.clerkNames.split(";")[i])
+    }
     $scope.housekeeperCheck = function(index,id,name) {
         // $scope.select = index;
         if($rootScope.staffListIds.indexOf(id) != -1){
@@ -45,16 +46,16 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
             $rootScope.staffListNames.push(name)
         }
         if($stateParams.type == "group"){
-            $rootScope.projectGroupRelRelationDTOSTemp[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
-            $rootScope.projectGroupRelRelationDTOSTemp[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
+            $rootScope.projectGroupRelRelationDTOS[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
+            $rootScope.projectGroupRelRelationDTOS[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
         }
         if($stateParams.type == "product"){
-            $rootScope.shopUserProductRelationDTOSTemp[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
-            $rootScope.shopUserProductRelationDTOSTemp[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
+            $rootScope.shopUserProductRelationDTOS[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
+            $rootScope.shopUserProductRelationDTOS[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
         }
         if($stateParams.type == "project"){
-            $rootScope.shopUserProjectRelationDTOSTemp[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
-            $rootScope.shopUserProjectRelationDTOSTemp[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
+            $rootScope.shopUserProjectRelationDTOS[$stateParams.index].sysClerkId = $rootScope.staffListIds.join(";")
+            $rootScope.shopUserProjectRelationDTOS[$stateParams.index].sysClerkName = $rootScope.staffListNames.join(";")
         }
     }
 
@@ -68,7 +69,34 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
     })
     
     $scope.$parent.$parent.leftTipFn = function () {
-        window.history.go(-1)
+
+        console.log($scope.car)
+
+        $scope.importData = {
+            orderId: $stateParams.orderId,
+            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOS,//套卡
+            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOS,//产品
+            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOS,//项目
+            status: 1,
+            shopUserRechargeCardDTO: $rootScope.shopUserRechargeCardDTO,
+            orderPrice: $stateParams.tempAll, //总金额
+            sysClerkId:"",
+            sysClerkName:""
+        }
+
+        UpdateShopUserOrderInfo.save($scope.importData, function(data) {
+            if(data.result == "0x00001"){
+                window.history.go(-1)
+            }
+        })
+
+    }
+
+
+
+    //点击完成更新数据
+    $scope.saveData = function() {
+
     }
     
 });
@@ -81,7 +109,7 @@ PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$statePa
  */
 Array.prototype.remove=function(dx)
 {
-    if(isNaN(dx)||dx>this.length){return false;}
+    // if(isNaN(dx)||dx>this.length){return false;}
     for(var i=0,n=0;i<this.length;i++)
     {
         if(this[i]!=this[dx])

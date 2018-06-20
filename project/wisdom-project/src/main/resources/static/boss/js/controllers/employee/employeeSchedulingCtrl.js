@@ -2,20 +2,26 @@
  * Created by Administrator on 2018/5/31.
  */
 angular.module('controllers',[]).controller('employeeSchedulingCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopClerkScheduleListForClerk','Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetShopClerkScheduleListForClerk,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkScheduleListForClerk','Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkScheduleListForClerk,Global,$filter,$ionicLoading) {
             $rootScope.title = "排班";
             $scope.param={
                 nowdate:new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月",//初始化时间
                 compileDateFlag:true
             };
-
             $scope.queryScheduleList = function (searchDate) {
-               /* console.log(searchDate);*/
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetShopClerkScheduleListForClerk.get({
                     searchDate:searchDate
                 },function (data) {
                     if(data.result == Global.SUCCESS){
+                        $ionicLoading.hide();
                         $scope.tempWeek = data.responseData.dateDetail;
                         for(var i = 0; i < $scope.tempWeek.length; i++){
                             $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")

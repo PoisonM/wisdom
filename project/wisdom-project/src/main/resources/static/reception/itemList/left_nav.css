@@ -129,11 +129,12 @@
 
 .left_nav .people_list .list .user_info .user_more {
     position: absolute;
-    right: 0.234375rem;
-    top: 0.390625rem;
-    background-color: #8dbdf1;
-    width: 0.09375rem;
-    height: 0.1875rem;
+    top: 40%;
+    right: 0.3125rem;
+    background: url(../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
 }
 
 

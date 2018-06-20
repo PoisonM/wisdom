@@ -101,7 +101,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		if (null != shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()
 				&& shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() > 0) {
-			criteria.andSysShopProjectSurplusTimesGreaterThan(
+			criteria.andSysShopProjectSurplusTimesGreaterThanOrEqualTo(
 					shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
 		}
 

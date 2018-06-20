@@ -987,7 +987,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			// 查询出来新客列表
 			archivesList = shopCustomerArchivesService.getArchivesList(shopCustomerArchivesDTO);
 			// 遍历新客列表，将渠道作为key ,计算出每个渠道的人数
-			// TODO: 2018/5/18
 			List<ShopChannelResponseDTO> shopChannelResponseList = new ArrayList<>();
 			Map<String, ShopChannelResponseDTO> channelMap = new HashMap<>();
 			ShopChannelResponseDTO shopChannelResponseDTO = null;
@@ -995,20 +994,20 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				if (channelMap.containsKey(dto.getChannel())) {
 					shopChannelResponseDTO = channelMap.get(dto.getChannel());
 					shopChannelResponseDTO.setChannelPeopleNumber(1 + shopChannelResponseDTO.getChannelPeopleNumber());
-					DecimalFormat fnum  =   new  DecimalFormat("##0.00");
-					String   dd=fnum.format(Float.valueOf(shopChannelResponseDTO.getChannelPeopleNumber())/Float.valueOf(archivesList.size()));
+					DecimalFormat fnum  =   new  DecimalFormat("##0");
+					String   dd=fnum.format(Float.valueOf(shopChannelResponseDTO.getChannelPeopleNumber())/Float.valueOf(archivesList.size())*100);
 					shopChannelResponseDTO
-							.setChannelPeopleProportionr(Float.valueOf(dd)*100 +"%");
+							.setChannelPeopleProportionr(Integer.valueOf(dd));
 					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 
 				} else {
 					shopChannelResponseDTO = new ShopChannelResponseDTO();
 					shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
 					shopChannelResponseDTO.setChannelPeopleNumber(1);
-					DecimalFormat fnum  =   new  DecimalFormat("##0.00");
-					String   dd=fnum.format(1f/Float.valueOf(archivesList.size()));
+					DecimalFormat fnum  =   new  DecimalFormat("##0");
+					String   dd=fnum.format(1f/Float.valueOf(archivesList.size())*100);
 					shopChannelResponseDTO
-							.setChannelPeopleProportionr(Float.valueOf(dd)*100 +"%");
+							.setChannelPeopleProportionr(Integer.valueOf(dd));
 					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 				}
 			}
@@ -1068,12 +1067,4 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		return responseMap;
 	}
 
-	public static void main(String[] args) {
-		DecimalFormat fnum  =   new  DecimalFormat("##0.00");
-		String   dd=fnum.format(Float.valueOf(1)/Float.valueOf(5));
-		System.out.println(dd);
-		NumberFormat nf = NumberFormat.getPercentInstance();
-		nf.setMaximumFractionDigits(1);
-		System.out.println(dd);
-	}
 }

@@ -123,6 +123,46 @@ public class CommonUtils {
 		return null;
 	}
 
+	/**
+	 * add 得良
+	 * @param unicodeStr
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String convertUnicode(String unicodeStr) throws UnsupportedEncodingException
+	{
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(unicodeStr) && unicodeStr.startsWith("%"))
+		{
+			while(unicodeStr.contains("%25"))
+			{
+				unicodeStr = unicodeStr.replaceAll("%25", "%");
+			}
+
+			if(unicodeStr.length() == 3)
+			{
+				unicodeStr = URLDecoder.decode(unicodeStr, "utf-8");
+			}
+			else
+			{
+				boolean flag = true;
+				for(int i = -1; i < 10 && (i + 3) < unicodeStr.length(); i += 3)
+				{
+					if(unicodeStr.indexOf("%", i) != (i + 1))
+						flag = false;
+				}
+				if(flag)
+				{
+					unicodeStr = URLDecoder.decode(unicodeStr, "utf-8");
+				}
+			}
+			return unicodeStr;
+		}
+		else
+		{
+			return unicodeStr;
+		}
+	}
+
 
 	/**
 	 * 根据开始时间、结束时间返回数组编号
