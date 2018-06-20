@@ -34,6 +34,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     var endIndex
     $scope.param = {
         //新建预约修改预约查询对应每个美容师可用时间
+        checkprojectId:"",
         mrLeisureTime:"",
         nowTime:new Date().getFullYear()+"-"+(parseInt(new Date().getMonth()+1)<10?"0"+parseInt(new Date().getMonth()+1):parseInt(new Date().getMonth()+1))+"-"+(parseInt(new Date().getDate())<10?"0"+parseInt(new Date().getDate()):parseInt(new Date().getDate())),
         endTime:"",
@@ -497,7 +498,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         $scope.checkProjectArr= [];
         $scope.param.ModifyAppointmentObject.beauticianName =  "";
         $scope.param.ModifyAppointmentObject.beauticianId = "" ;
-        $scope.checkprojectId = ""
+        $scope.param.checkprojectId = ""
         $scope.checkprojectName =""
         $scope.checkprojectDuration = 0;
         //初始化日期
@@ -663,6 +664,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 GetAppointmentInfoById.get({
                     shopAppointServiceId: $scope.appointmentId
                 }, function (data) {
+                    debugger
                     $scope.param.newProductObject.shopProjectId = data.responseData.shopProjectId,
                     $scope.param.ModifyAppointmentObject.appointStartTime = data.responseData.appointStartTime,
                     $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
@@ -672,7 +674,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId
                     $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName
                     $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName
-                    $scope.checkprojectId = data.responseData.shopProjectId+";",
+                    $scope.param.checkprojectId = data.responseData.shopProjectId+";",
                     $scope.checkprojectName = data.responseData.shopProjectName,
                     $scope.checkprojectDuration = data.responseData.appointPeriod,
                     $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
@@ -782,7 +784,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     if(status == 1){
                         $scope.importData = {
                             id:$scope.appointmentId,
-                            shopProjectId:$scope.checkprojectId,
+                            shopProjectId:$scope.param.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
                             sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
@@ -908,6 +910,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*选择项目*/
     $scope.selectNewProduct = function () {
+        debugger
         if ($scope.param.selectCustomersObject.sysUserName == "") {
             $scope.selectCustomersCtrl()
         } else {
@@ -994,6 +997,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.checkProjectArr = []
     //选择项目包括控制样式
     $scope.selectTheProduct = function (items,parentIndex,index, type) {
+        debugger
         //重构
         $scope.redCorrectFlag = items.id
         if($scope.tempRedgArr.indexOf(items.id) != -1){
@@ -1004,11 +1008,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.checkProjectArr.push(items)
         }
         //计算时长 项目名称 项目id
-        $scope.checkprojectId = ""
+        // $scope.checkprojectId = ""
         $scope.checkprojectName = ""
         $scope.checkprojectDuration = new Number()
         for(var i = 0; i < $scope.checkProjectArr.length; i++){
-            $scope.checkprojectId += $scope.checkProjectArr[i].id+";"
+            $scope.param.checkprojectId += $scope.checkProjectArr[i].id+";"
             $scope.checkprojectName += $scope.checkProjectArr[i].projectName+";"
             $scope.checkprojectDuration += parseInt($scope.checkProjectArr[i].projectDuration)
         }
@@ -1017,7 +1021,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
          } else {
          $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
          }*/
-        console.log($scope.checkprojectId)
+        console.log($scope.param.checkprojectId)
         console.log($scope.checkprojectName)
         console.log($scope.checkprojectDuration)
         console.log($scope.tempRedgArr)
@@ -1262,7 +1266,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     if(status == 1){
                         //保存预约
                         $scope.importData = {
-                            shopProjectId:$scope.checkprojectId,
+                            shopProjectId:$scope.param.checkprojectId,
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
                             sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
@@ -1273,7 +1277,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             status:'0'
                         }
 
-                        if($scope.checkprojectId == ""||$scope.param.ModifyAppointmentObject.beauticianId ==""||$scope.param.selectCustomersObject.sysUserId == ""
+                        if($scope.param.checkprojectId == ""||$scope.param.ModifyAppointmentObject.beauticianId ==""||$scope.param.selectCustomersObject.sysUserId == ""
                             ||$scope.checkprojectName == ""||$scope.checkprojectDuration == ""||$scope.param.ModifyAppointmentObject.appointStartTime ==""){
                             alert("请完善信息")
                             return;
