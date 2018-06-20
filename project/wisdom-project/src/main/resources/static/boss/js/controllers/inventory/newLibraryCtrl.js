@@ -98,7 +98,6 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                     }
                 });
                 $scope.param.shopStock = shopStock;
-                $rootScope.shopInfo.entryShopProductList = shopStock;
                 $scope.sum = $scope.sum-1;
             }
 
