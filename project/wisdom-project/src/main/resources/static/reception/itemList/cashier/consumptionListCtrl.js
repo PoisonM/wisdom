@@ -100,12 +100,14 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                     firstkey = key;
                     break
                 }
-                var second = first[firstkey];
-                for (var key in second) {
-                    secondkey = key;
-                    break
+                if(''!=first && undefined != first){
+                    var second = first[firstkey];
+                    for (var key in second) {
+                        secondkey = key;
+                        break
+                    }
+                    $scope.getProductInfoThreeLevelProject(second[secondkey].productTypeOneId, second[secondkey].productTypeTwoId);
                 }
-                $scope.getProductInfoThreeLevelProject(second[secondkey].productTypeOneId, second[secondkey].productTypeTwoId);
             })
         } else if (e == 3) {
             GetShopProjectGroups.get({
