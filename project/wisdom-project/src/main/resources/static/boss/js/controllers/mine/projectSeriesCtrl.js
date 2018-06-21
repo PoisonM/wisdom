@@ -1,16 +1,35 @@
 angular.module('controllers',[]).controller('projectSeriesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType','$ionicPopup','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType,$ionicPopup,$timeout) {
             $rootScope.title = "添加系列";
             $scope.param = {
                 selTrue:[]
             };
             $scope.projectBrandGo = function () {
+                for(var i=0;i<$scope.requestList.length;i++){
+                    if($scope.requestList[i].projectTypeName==''&&$scope.requestList[i].status=='0'){
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">系列名不能为空</span>',
+                            /*okText:'确定'*/
+                        });
+                        $timeout(function () {
+                            alertPopup.close()
+                        },1000)
+                        return
+                    }
+                }
                 var requestList = {
                     requestList:$scope.requestList
                 };
                 UpdateTwoLevelProjectType.save(requestList,function(data){
                     if(data.result == '0x00001'){
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">保存成功</span>',
+                            /*okText:'确定'*/
+                        });
+                        $timeout(function () {
+                            alertPopup.close()
+                        },500);
                         $state.go("projectBrand")
                     }
                 })
@@ -46,7 +65,6 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.requestList[index].status = '1'
             };
             $scope.addSeriesLis = function(){
-
                 var obj = {
                     status:"0",
                     projectTypeName:"",

@@ -1,17 +1,36 @@
 angular.module('controllers',[]).controller('addSeriesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProduct','Global','UpdateTwoLevelTypeInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProduct,Global,UpdateTwoLevelTypeInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProduct','Global','UpdateTwoLevelTypeInfo','$ionicPopup','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProduct,Global,UpdateTwoLevelTypeInfo,$ionicPopup,$timeout) {
             $rootScope.title = "添加系列";
             $scope.param = {
                 selTrue:[]
             };
 
             $scope.productBrandGo = function () {
+                for(var i=0;i<$scope.requestList.length;i++){
+                    if($scope.requestList[i].productTypeName==''&&$scope.requestList[i].status=='0'){
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">系列名不能为空</span>',
+                            /*okText:'确定'*/
+                        });
+                        $timeout(function () {
+                            alertPopup.close()
+                        },1000)
+                        return
+                    }
+                }
                 var requestList = {
                     requestList:$scope.requestList
                 };
                 UpdateTwoLevelTypeInfo.save(requestList,function(data){
-                    if(data.result == '0x00002'||data.result == '0x00001'){
+                    if(data.result == '0x00001'){
+                        var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">保存成功</span>',
+                            /*okText:'确定'*/
+                        });
+                        $timeout(function () {
+                            alertPopup.close()
+                        },500)
                          $state.go("productBrand")
                     }
                 })

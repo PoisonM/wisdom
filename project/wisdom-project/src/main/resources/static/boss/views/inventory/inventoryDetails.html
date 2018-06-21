@@ -28,7 +28,7 @@
             <ion-list>
                 <ion-item style="width:100%;text-align:center;padding: 10px 20px"
                           ng-click="chooseTwoLevelList(item.productTypeOneId)"
-                          ng-repeat="item in param.oneLevelList">
+                          ng-repeat="item in param.oneLevelList" ng-class="{'bgf6':param.selectProductTypeOneId==item.productTypeOneId}">
                     {{item.productTypeOneName}}
                 </ion-item>
             </ion-list>

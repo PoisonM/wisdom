@@ -107,10 +107,10 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
 
             $scope.detailedPerformanceGo = function(type){
                 if ($scope.param.sysClerkId != "") {
-                    $state.go("detailedPerformance",{sysClerkId:$stateParams.sysClerkId,searchFile:type})
+                    $state.go("detailedPerformance",{sysClerkId:$stateParams.sysClerkId,searchFile:type,date:$scope.param.date})
                 }
                 if ($scope.param.sysShopId != "") {
-                    $state.go("detailedPerformance",{sysShopId:$stateParams.sysShopId,searchFile:type})
+                    $state.go("detailedPerformance",{sysShopId:$stateParams.sysShopId,searchFile:type,date:$scope.param.date})
                 }
 
             }

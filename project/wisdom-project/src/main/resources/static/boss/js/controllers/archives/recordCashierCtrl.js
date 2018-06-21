@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('recordCashierCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','$ionicPopup','Consumes','Global','BossUtil','$filter',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,$ionicPopup,Consumes,Global,BossUtil,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','$ionicPopup','Consumes','Global','BossUtil','$filter','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,$ionicPopup,Consumes,Global,BossUtil,$filter,$ionicScrollDelegate) {
             $rootScope.title = "收银记录";
 
              $scope.param={
@@ -69,6 +69,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
             };
 
            $scope.sel = function(){
+               $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                $scope.param.flag = true;
 
            };

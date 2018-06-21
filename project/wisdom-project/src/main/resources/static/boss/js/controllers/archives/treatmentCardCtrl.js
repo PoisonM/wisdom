@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('treatmentCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserCourseProjectList','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserCourseProjectList,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserCourseProjectList','Global','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserCourseProjectList,Global,$ionicScrollDelegate) {
             $rootScope.title = "疗程卡";
             $scope.param={
                 flag:false,
@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
             };
             /*点击筛选*/
             $scope.sel = function(){
+                $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                 $scope.param.flag = true;
             };
             /*点击关闭*/
@@ -58,6 +59,11 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
                         if($scope.arr[i].overdue ==$scope.param.overdue){
                             $scope.treatmentCard.push($scope.arr[i])
                         }
+                    }
+                    if($scope.treatmentCard.length<=0){
+                        $scope.param.picFlag=true;
+                    }else{
+                        $scope.param.picFlag=false;
                     }
                 }
 
