@@ -67,7 +67,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		ShopProductInfoCriteria.Criteria criteria = shopProductInfoCriteria.createCriteria();
 
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductCode())) {
-			criteria.andSysShopIdEqualTo(shopProductInfoDTO.getProductCode());
+			criteria.andProductCodeEqualTo(shopProductInfoDTO.getProductCode());
 		}
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopProductInfoDTO.getSysShopId());
