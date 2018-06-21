@@ -213,7 +213,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			}
 		}else {
 			if (StringUtils.isNotBlank(extShopProjectInfoDTO.getProjectName())) {
-				criteria.andProjectNameLike(extShopProjectInfoDTO.getProjectName());
+				criteria.andProjectNameLike("%"+extShopProjectInfoDTO.getProjectName()+"%");
 			}
 		}
 

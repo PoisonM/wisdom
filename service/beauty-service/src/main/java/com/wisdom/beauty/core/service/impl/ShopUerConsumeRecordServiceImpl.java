@@ -165,6 +165,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
 			userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 			if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
+				userConsumeRecordResponseDTO.setId(shopUserConsumeRecord.getId());
+				userConsumeRecordResponseDTO.setFlowId(shopUserConsumeRecord.getFlowId());
+				userConsumeRecordResponseDTO.setSysUserId(shopUserConsumeRecord.getSysUserId());
 				userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
 				userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
 				userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());

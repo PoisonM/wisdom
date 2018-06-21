@@ -311,7 +311,7 @@ public class CardController {
 	@ResponseBody
 	ResponseDTO<Object> searchRechargeConfirm(@RequestParam String transactionId) {
 		Query query = new Query(Criteria.where("transactionId").is(transactionId));
-		ShopRechargeCardOrderDTO shopUserRechargeCardDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "extShopUserRechargeCardDTO");
+		ShopRechargeCardOrderDTO shopUserRechargeCardDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "shopRechargeCardOrderDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);

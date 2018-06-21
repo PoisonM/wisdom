@@ -181,7 +181,9 @@ public class ProjectController {
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);
-			levelList.add(helperMap);
+			if(twoLevelMap.size()>0){
+				levelList.add(helperMap);
+			}
 			oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
 			oneAndTwoHelperMap.put("levelOneDetail", shopProjectTypeDTO);
 			oneAndTwoLevelList.add(oneAndTwoHelperMap);

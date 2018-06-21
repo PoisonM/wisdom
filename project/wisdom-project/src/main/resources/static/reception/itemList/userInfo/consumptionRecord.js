@@ -14,9 +14,7 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     },function (data) {
         $scope.dataList = data.responseData
     })
-    
-    
-    /*$scope.$parent.$parent.backHeaderCashFn = function () {
-        $state.go("pad-web.userInfo.todayPerformance")
-    }*/
+    $scope.goRecordDetail = function (item) {
+        $state.go('pad-web.left_nav.consumeCardDetail',{type:"cp",id:item.flowId,userId:item.sysUserId})
+    }
 });
