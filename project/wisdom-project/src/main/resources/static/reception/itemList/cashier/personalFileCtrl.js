@@ -77,7 +77,8 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
             })
         } else if (type == 4) { //产品
             GetUserProductList.get({
-                sysUserId: $stateParams.sysUserId
+                sysUserId: $stateParams.sysUserId,
+                surplusTimes :'1'
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("产品:" + data)

@@ -41,7 +41,8 @@ PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $s
         consumeId: '',
         consumeNum: 1,
         imageUrl:'',
-        consumePrice: ''
+        consumePrice: '',
+        sysUserId: ''
     }
 
     var $signature = $("#signConfirmRight").jSignature({
@@ -75,8 +76,13 @@ PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $s
             imageStr: $("#signConfirmRight").jSignature("getData")
         }, function(data) {
             $scope.shopUserConsumeDTO.imageUrl = data.responseData;
-            $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
-            $scope.shopUserConsumeDTO.sysClerkName = $scope.staffListNames.join(";");
+            if($scope.staffListIds == undefined){
+                $scope.shopUserConsumeDTO.sysClerkId = "";
+                $scope.shopUserConsumeDTO.sysClerkName = ""
+            }else {
+                $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
+                $scope.shopUserConsumeDTO.sysClerkName = $scope.staffListNames.join(";");
+            }
             ConsumesUserProduct.save(
                 $scope.shopUserConsumeDTO
                 , function(data) {
@@ -121,6 +127,8 @@ PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $s
     }, function(data) {
         $scope.productInfo = data.responseData;
         $scope.shopUserConsumeDTO.consumeId = data.id;
+        $scope.shopUserConsumeDTO.shopProductId = $scope.productInfo.shopProductId;
+        $scope.shopUserConsumeDTO.sysUserId = $scope.productInfo.sysUserId;
         $scope.shopUserConsumeDTO.consumeId = $state.params.id;
     })
     
