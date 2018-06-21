@@ -756,7 +756,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         }
         shopStockRequestDTO.setShopStoreId(clerkInfo.getSysShopId());
         shopStockRequestDTO.setShopProcId(consumeDTO.getShopProductId());
-        shopStockRequestDTO.setStockNumber(consumeDTO.getConsumeNum());
+        shopStockRequestDTO.setStockOutNumber(consumeDTO.getConsumeNum());
         shopStockRequestDTO.setStockType(StockTypeEnum.DEPOSIT_OUT_STORAGE.getCode());
         shopStockRequestDTO.setStockStyle(StockStyleEnum.MANUAL_OUT_STORAGE.getCode());
 
