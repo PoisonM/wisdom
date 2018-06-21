@@ -226,6 +226,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
             $scope.shopUserProjectRelationDTOS[$scope.paramIndex].sysClerkName = $scope.userNameList.join(";")
         }
         $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
         $scope.userIdList = []
         $scope.userNameList = []
     }
