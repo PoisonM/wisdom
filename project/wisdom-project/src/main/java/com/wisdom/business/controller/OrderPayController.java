@@ -38,14 +38,11 @@ public class OrderPayController {
             model.addAttribute("specialShopId", specialShopId);
             return "native/orderPay";
         }
-        else if(productType.equals("trainingProduct"))
-        {
+        else if(productType.equals("trainingProduct")){
             model.addAttribute("productType", productType);
             model.addAttribute("productId", productId);
             return "native/orderPay";
-        }
-        else
-        {
+        }else{
             return null;
         }
     }

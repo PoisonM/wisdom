@@ -9,7 +9,7 @@
     </div>
     <div class="stampCardRecord_content">
         <ul>
-            <li ng-repeat="item in dataList">
+            <li ng-repeat="item in dataList" ng-click="goDrawCardRecordsDetail(item.flowNo,item.sysUserId)">
                 <div class="ifo">
                     <span>{{item.createDate|date:'yyyy-MM-dd'}}</span>
                     <span>{{item.sysUserName}}</span>
