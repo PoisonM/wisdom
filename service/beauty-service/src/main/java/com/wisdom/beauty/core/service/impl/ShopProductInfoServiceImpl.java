@@ -112,6 +112,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (StringUtils.isNotBlank(shopUserProductRelationDTO.getId())) {
 			criteria.andIdEqualTo(shopUserProductRelationDTO.getId());
 		}
+		if(shopUserProductRelationDTO.getSurplusTimes() > 0){
+			criteria.andSurplusTimesGreaterThanOrEqualTo(shopUserProductRelationDTO.getSurplusTimes());
+		}
 
 		List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = shopUserProductRelationMapper
 				.selectByCriteria(shopUserProductRelationCriteria);
