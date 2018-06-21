@@ -10,21 +10,15 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = false
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
-    $scope.flagFn = function (bool) {
-        //左
-        $scope.$parent.mainLeftSwitch.peopleListFlag = bool
-        $scope.$parent.mainLeftSwitch.priceListFlag = !bool
-        //头
-        $scope.$parent.$parent.mainSwitch.headerReservationAllFlag = !bool
-        $scope.$parent.$parent.mainSwitch.headerCashAllFlag = bool
-        $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = !bool
-        $scope.$parent.$parent.mainSwitch.headerLoginFlag = !bool
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = bool,
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = bool,
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = bool
-    }
-    /*打开收银头部/档案头部/我的头部*/
-    $scope.flagFn(true)
+    $scope.$parent.$parent.mainSwitch.headerReservationAllFlag = false;
+    $scope.$parent.$parent.mainSwitch.headerCashAllFlag = true;
+    $scope.$parent.$parent.mainSwitch.headerPriceListAllFlag = false;
+    $scope.$parent.$parent.mainSwitch.headerLoginFlag = false;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.leftFlag = true;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.middleFlag = true;
+    $scope.$parent.$parent.mainSwitch.headerCashFlag.rightFlag = true;
+    $scope.$parent.mainLeftSwitch.peopleListFlag = true;
+    $scope.$parent.mainLeftSwitch.priceListFlag = false;
 
 /*----------------------------------初始化参数------------------------------------------*/
     $scope.param = {
@@ -42,8 +36,15 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
         selectContentSource:"",
         selectContentChannel:"",//来源渠道
     }
+    $scope.flagFn = function (backContent,title,backBool,saveBool) {
+        $scope.$parent.$parent.param.headerCash.backContent = backContent
+        $scope.$parent.$parent.param.headerCash.title = title
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = backBool//关闭返回
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = saveBool//保存
+    }
 
     if($stateParams.id != ""){
+        $scope.flagFn("","编辑档案",true)
         ArchivesDetail.get({id:$stateParams.id},function (data) {
             $scope.responseData = data.responseData
             $scope.param.imgSrc = data.responseData.imageUrl;
@@ -61,13 +62,9 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
 
 
     /*---------------------------------方法-----------------------------------*/
-    $scope.flagFn = function (backContent,title,bool) {
-        $scope.$parent.$parent.param.headerCash.backContent = backContent
-        $scope.$parent.$parent.param.headerCash.title = title
-        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = bool//关闭返回
-    }
 
-    $scope.flagFn("","添加档案",false)
+
+    $scope.flagFn("","添加档案",false,true)
 
    
 
@@ -118,7 +115,8 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
             UpdateArchiveInfo.save($scope.ShopUserArchivesDTO,function (data) {
                 if("0x00001"==data.result){
                     alert("更新成功");
-                    $state.go("pad-web.left_nav.blankPage")
+                    // $state.go("pad-web.left_nav.blankPage")
+                    window.history.go(-1)
                 }
             });
         }
@@ -128,14 +126,25 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
 
     //打开选择页面
     $scope.openSelect = function (type,content) {
-        $scope.flagFn("添加档案",content,false)
+        if($stateParams.id != ""){
+            $scope.flagFn("编辑档案",content,false,false)
+        }else{
+            $scope.flagFn("添加档案",content,false,false)
+        }
         $scope.param.openSelectFlag = true
         $scope.param.select_type = type
     }
     
     //选择完成
     $scope.selectFn = function (type,content) {
-        $scope.flagFn("","添加档案",false)
+        if($stateParams.id != ""){
+            $scope.flagFn("","添加档案",false,true)
+        }else{
+            $scope.flagFn("","编辑档案",false,true)
+        }
+
+
+        $scope.flagFn("","添加档案",false,true)
         $scope.param.openSelectFlag = false
         if(type == "sex"){
             $scope.param.selectContentSex = content

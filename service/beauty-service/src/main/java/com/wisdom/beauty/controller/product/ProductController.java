@@ -67,7 +67,7 @@ public class ProductController {
 //    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
+    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId,@RequestParam(required = false) String surplusTimes) {
         String sysShopId=null;
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if(clerkInfo!=null){
@@ -86,6 +86,9 @@ public class ProductController {
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setSysShopId(sysShopId);
         shopUserProductRelationDTO.setSysUserId(sysUserId);
+        if(StringUtils.isNotBlank(surplusTimes)){
+            shopUserProductRelationDTO.setSurplusTimes(Integer.parseInt(surplusTimes));
+        }
         List<ShopUserProductRelationDTO> userProductInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
 
         responseDTO.setResponseData(userProductInfoList);
