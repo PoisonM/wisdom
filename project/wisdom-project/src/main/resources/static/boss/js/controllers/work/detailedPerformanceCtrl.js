@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                     showDelay: 0
                 });
                 $scope.param={
-                    flag:false
+                    picFlag:false
                 }
                 if ($stateParams.sysClerkId != "") {
                     $scope.userConsumeRequest.sysClerkId = $stateParams.sysClerkId
@@ -31,11 +31,11 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                             $scope.list = data.responseData;
                             $scope.detailedPerformance = data.responseData;
                             if(data.responseData.length<=0){
-                                $scope.param.flag=true;
+                                $scope.param.picFlag=true;
                             }
                         }else {
                             $ionicLoading.hide();
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
 
                     })
@@ -48,11 +48,11 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                             $scope.list = data.responseData;
                             $scope.detailedPerformance = data.responseData;
                             if(data.responseData.length<=0){
-                                $scope.param.flag=true;
+                                $scope.param.picFlag=true;
                             }
                         }else {
                             $ionicLoading.hide();
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
 
                     })
@@ -82,8 +82,7 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                         }
                     }
                     if( $scope.detailedPerformance.length<=0){
-                        $scope.param.flag=true;
-                        console.log(2);
+                        $scope.picFlag.flag=true;
                     }
                 }else{
                     $scope.detailedPerformance=$scope.list

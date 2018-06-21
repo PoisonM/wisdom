@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
             $scope.param = {
                 startDate : $stateParams.date,
                 date:$stateParams.date,
-                flag:false
+                picFlag:false
             };
             $scope.param.date=$scope.param.date.replace(/00/g,'')
             $scope.param.date=$scope.param.date.replace(/:/g,'')
@@ -76,13 +76,13 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.allFamily = data.responseData
-                        $scope.param.flag=false;
+                        $scope.param.picFlag=false;
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else if(data.result==Global.SUCCESS&&data.responseData==null){
                         $ionicLoading.hide();
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                     }
                 })
             };

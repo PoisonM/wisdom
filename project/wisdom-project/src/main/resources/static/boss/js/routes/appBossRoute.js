@@ -561,7 +561,7 @@ define(['appBoss'], function(app){
                     })
                 /*基础资料设置*/
                     .state('basicSetting', {
-                        url: '/basicSetting',
+                        url: '/basicSetting,:sysShopName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'basicSettingCtrl',
                         resolve: {
@@ -600,7 +600,7 @@ define(['appBoss'], function(app){
                     })
                 /*提醒设置*/
                     .state('reminder', {
-                        url: '/reminder',
+                        url: '/reminder/:sysShopName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'reminderCtrl',
                         resolve: {

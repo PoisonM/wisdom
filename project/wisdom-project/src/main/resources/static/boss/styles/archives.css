@@ -71,7 +71,7 @@ body{background: #f6f6f6; color: #333333;font-size: 16px;}
 img {display: inline-block}
 .pane{background: content-box;!important;}
 .partialFiles .item{padding:0;}
-.partialFiles .item p {color:#333;font-size: 16px;}
+/*.partialFiles .item p {color:#333;font-size: 16px;}*/
 .partialFiles .item-input-wrapper{background: #ffffff}
 .partialFiles .changeArchivesBtn{margin-right: 0.5rem;}
 
@@ -139,5 +139,8 @@ img {display: inline-block}
 .Htab-head-item{-webkit-box-flex:1;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;color:#333333;font-size: 0.3rem;}
 
 .active{border:none;background: none; }
+
+ .hidden{  overflow-y: hidden;height:100% }
+
 
 

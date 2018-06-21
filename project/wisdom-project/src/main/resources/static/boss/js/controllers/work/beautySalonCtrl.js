@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('beautySalonCtrl',
-    ['$scope','$rootScope','$stateParams','$state','ShopDayAppointmentInfoByDate',"BossUtil",'Global','$filter','Global',
-        function ($scope,$rootScope,$stateParams,$state,ShopDayAppointmentInfoByDate,BossUtil,Global,$filter,Global) {
+    ['$scope','$rootScope','$stateParams','$state','ShopDayAppointmentInfoByDate',"BossUtil",'Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,ShopDayAppointmentInfoByDate,BossUtil,Global,$filter,$ionicLoading) {
             $rootScope.title = $stateParams.shopName;
 
             $scope.param = {
@@ -66,6 +66,7 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
                     startDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, ""),sysShopId:$stateParams.sysShopId
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide()
                         $scope.beautySalon = data.responseData;
                         delete $scope.beautySalon.startTime;
                         delete $scope.beautySalon.endTime;
@@ -73,7 +74,17 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
 
                 })
             }
-            $scope.getInfo()
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.getInfo()
+            })
+
             $scope.canceledGo = function(sysClerkId){
                 $state.go("canceled",{sysShopId:$stateParams.sysShopId,sysClerkId:sysClerkId,date:$scope.param.date})
             }

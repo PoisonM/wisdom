@@ -10,8 +10,8 @@
         </div>
         <ion-item  class=" bgfff row" ng-repeat="(key,val) in beautySalon"  ng-click="canceledGo(val.sysClerkDTO.id)">
             <div class="col col-15" style="line-height: 49px;">
-                <p style="height:42px;width:42px;background: gainsboro;border-radius: 50%;">
-                    <img ng-src="{{val.sysClerkDTO.photo}}">
+                <p style="height:42px;width:42px;">
+                    <img ng-src="{{val.sysClerkDTO.photo}}" style="height:42px;width:42px;border-radius: 50%;">
                 </p >
             </div>
 

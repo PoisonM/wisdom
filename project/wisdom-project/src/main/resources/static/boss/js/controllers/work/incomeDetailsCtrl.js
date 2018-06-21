@@ -7,8 +7,8 @@ angular.module('controllers',[]).controller('incomeDetailsCtrl',
 
             $rootScope.title = "收入明细";
             $scope.param={
-                pageSize:2,
-                flag:false
+                pageSize:1000,
+                picFlag:false
             };
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
@@ -22,13 +22,13 @@ angular.module('controllers',[]).controller('incomeDetailsCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.incomeDetails=data.responseData;
-                        $scope.param.flag=false;
+                        $scope.param.picFlag=false;
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else {
                         $ionicLoading.hide();
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                     }
                 })
             })

@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
-                flag:false
+                picFlag:false
             }
             $scope.param.date=$stateParams.date;
 
@@ -75,7 +75,7 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                     showDelay: 0
                 });
                 GetShopAppointmentInfoByStatus.get({
-                    searchDate:$scope.param.date,
+                    searchDate:$scope.param.date.replace(/(^\s*)|(\s*$)/g, ""),
                     sysClerkId:$stateParams.sysClerkId,/*$stateParams.sysClerkId*/
                     sysShopId:$stateParams.sysShopId,
                     status:"4"
@@ -83,13 +83,13 @@ angular.module('controllers',[]).controller('cancelReservationCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.cancelReservation = data.responseData
-                        $scope.param.flag=false;
+                        $scope.param.picFlag=false;
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else {
                         $ionicLoading.hide();
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                     }
                 })
             }

@@ -10,7 +10,8 @@ angular.module('controllers',[]).controller('reminderCtrl',
                 settingStatus:true,
                 statusArr:[],
                 displayShopBox:false,
-                sysShopId:''
+                sysShopId:'',
+                sysShopName:$stateParams.sysShopName
             }
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({

@@ -1,14 +1,14 @@
 <ion-view class="bg">
     <ion-content>
         <div ng-repeat="item in shopList " ng-if="item.type=='0'">
-            <div class="tc">
+            <div class="tc mt10">
                 <img ng-src="{{item.shopImageUrl}}" style="width:60%;height: 125px;margin: auto">
             </div>
             <!--门店信息-->
-            <div style="width: 345px;height: 103px;margin: auto;background: #ffffff;border-radius: 5px">
+            <div style="width: 345px;margin: auto;background: #ffffff;border-radius: 5px;" class="mt20">
                 <p class="ph ml17"><img src="images/mine/shop.png" style="width: 25px;height: 25px;display: inline-block;"><span></span><span class="ml16 col33">{{item.name}}</span><span style="width: 55px;height: 20px;border: 1px solid #FF6666;border-radius: 2px;display: inline-block;float: right;font-size: 12px;color: #FF6666;text-align: center;line-height: 20px;margin: 10px" ng-show="false">支持上门</span></p>
                 <p class="ph ml17"><img src="images/mine/shoPhone.png" style="width: 12px;height: 12px;display: inline-block"><span></span><span class="ml16  col99">{{item.phone}}</span></p>
-                <p class="ph ml17"><img src="images/mine/postionb.png" style="width: 9px;height: 15px;display: inline-block"><span></span><span class="ml16 col99">{{item.province+item.city+item.address}}</span></p>
+                <div class=" ml17" style="display: flex" ><img src="images/mine/postionb.png" style="width: 9px;height: 15px;display: inline-block;margin-top:5px;"><span></span><div class="ml16 col99" style="display: inline-block">{{item.province + item.city + item.address}}</div></div>
             </div>
         <!--价目表-->
        <div class="list fs15 mt20" ng-show="false">
