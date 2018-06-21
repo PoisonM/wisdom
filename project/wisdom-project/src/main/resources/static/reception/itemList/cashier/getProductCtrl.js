@@ -77,7 +77,7 @@ PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $s
         }, function(data) {
             $scope.shopUserConsumeDTO.imageUrl = data.responseData;
             if($scope.staffListIds == undefined){
-                $scope.shopUserConsumeDTO.sysClerkId.sysClerkId = "";
+                $scope.shopUserConsumeDTO.sysClerkId = "";
                 $scope.shopUserConsumeDTO.sysClerkName = ""
             }else {
                 $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
