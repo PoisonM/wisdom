@@ -406,13 +406,16 @@ public class ProductController {
     /**
      * 获取产品详情
      *
-     * @param shopProductInfoDTO
+     * @param productCode
      *
      * @return
      * */
     @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+    ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
+
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        shopProductInfoDTO.setProductCode(productCode);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
         responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);

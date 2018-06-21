@@ -470,7 +470,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 
 		// 根据产品查询
-		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getShopStockNumberBy(productIds);
+		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getStockNumberList(shopStockDto.getShopStoreId(),productIds);
 		// 需要更新的List集合
 		List<ShopStockNumberDTO> updateShopStockNumber = new ArrayList<>();
 

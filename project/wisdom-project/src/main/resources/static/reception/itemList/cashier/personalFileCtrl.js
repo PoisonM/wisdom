@@ -88,13 +88,15 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
         }
 
     }
-
-    $scope.select = 4;
+    //记录tab点击
+    $scope.select = (localStorage.getItem('tabType'));
+    $scope.queruList(localStorage.getItem('tabType'))
     $scope.tabclick = function(e) {
-        $scope.select = e;
+        localStorage.setItem('tabType', JSON.stringify(e))
+        $scope.select = localStorage.getItem('tabType');
         $scope.queruList(e)
     }
-    $scope.tabclick(0);
+    // $scope.tabclick(0);
 
     $scope.goConsumptionList = function(type, id) {
         $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });

@@ -25,7 +25,7 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 week:'',
                 scheduleDate:'',
                 appointList : [],
-                flag:false/*空白页面的展示 */
+                picFlag:false/*空白页面的展示 */
             };
                 GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
                     $scope.param.week = data.responseData.week;
@@ -33,12 +33,12 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                     GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
                         if(data.result==Global.SUCCESS&&data.responseData!=null) {
                             $scope.param.appointList = data.responseData;
-                            $scope.param.flag=false;
+                            $scope.param.picFlag=false;
                             if(data.responseData.length<=0){
-                                $scope.param.flag=true;
+                                $scope.param.picFlag=true;
                             }
                         }else {
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                         console.log($scope.param.appointList);
                     })
@@ -67,7 +67,15 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                         $scope.param.week = data.responseData.week;
                         $scope.param.scheduleDate = data.responseData.scheduleDate;
                         GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
-                            $scope.param.appointList = data.responseData;
+                            if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                                $scope.param.appointList = data.responseData;
+                                $scope.param.picFlag=false;
+                                if(data.responseData.length<=0){
+                                    $scope.param.picFlag=true;
+                                }
+                            }else {
+                                $scope.param.picFlag=true;
+                            }
                             console.log($scope.param.appointList);
                         })
                     })
