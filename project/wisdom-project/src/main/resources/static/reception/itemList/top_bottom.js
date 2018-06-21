@@ -30,11 +30,11 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
         project:'8'
     }
     //支付方式
-    $rootScope.payType = {
-        we_chat_pay : "0",
-        ali_pay :'1',
-        bank_pay :"2",
-        cash_pay:'3',
+    $rootScope.goodsType = {
+        weChatPay : "0",
+        aliPay :'1',
+        bankPay :"2",
+        cashPay:'3',
         all:"4"//包括所有支付方式
     }
 
