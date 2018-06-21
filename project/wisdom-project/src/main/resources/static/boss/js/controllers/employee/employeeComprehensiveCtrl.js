@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/31.
  */
 angular.module('controllers',["ionic-datepicker"]).controller('employeeComprehensiveCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetClerkWorkDetail','BossUtil','Global','$filter',
-        function ($scope,$rootScope,$stateParams,$state,GetClerkWorkDetail,BossUtil,Global,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','GetClerkWorkDetail','BossUtil','Global','$filter','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetClerkWorkDetail,BossUtil,Global,$filter,$ionicLoading) {
 
             $rootScope.title = "综合分析";
 
@@ -65,14 +65,24 @@ angular.module('controllers',["ionic-datepicker"]).controller('employeeComprehen
             };
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetClerkWorkDetail.get({startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+" 23:59:59"},function (data) {
                     console.log(data);
+                    $ionicLoading.hide();
                     $scope.comList=data.responseData;
                 });
             };
-            $scope.getInfo();
+            $scope.$on('$ionicView.enter', function() {
+                $scope.getInfo();
+            });
            $scope.detailedPerformanceGo=function (type) {
-               $state.go("employeeDetailedPerformance",{searchFile:type})
+               $state.go("employeeDetailedPerformance",{searchFile:type,date:$scope.param.date})
            }
             
         }]);

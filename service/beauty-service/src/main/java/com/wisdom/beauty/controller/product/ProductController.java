@@ -412,7 +412,7 @@ public class ProductController {
      * */
     @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getProductInfo(@RequestBody String  productCode) {
+    ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
 
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
         shopProductInfoDTO.setProductCode(productCode);

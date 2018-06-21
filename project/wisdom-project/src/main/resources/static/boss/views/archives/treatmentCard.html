@@ -2,7 +2,7 @@
     <p class="h45 bgfff fs16 colff66">
         <span ng-click="sel()"><img src="images/screening.png" class="screeningPic ml10 mr10">筛选</span>
     </p>
-    <ion-content class="partialFiles bgf6" ng-scroll="{{!param.flag}}" style="margin-top:45px;">
+    <ion-content class="partialFiles bgf6"  style="margin-top:45px;" delegate-handle="dashboard" >
         <div class="colfff" ng-show="!param.picFlag" ng-class="{'hidden':param.flag==true}">
             <ion-list class="colfff" >
                 <ion-item style="height:100px;width:90%;background: url('images/treatmentCardRed.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;"  ng-click="goTreatmentCard(item.id)" ng-repeat="item in treatmentCard" ng-if="item.overdue=='0'&&(item.sysShopProjectInitTimes/1) != (item.sysShopProjectSurplusTimes/1)">

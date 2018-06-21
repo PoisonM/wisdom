@@ -1,6 +1,9 @@
 <ion-view class="bg">
-    <ion-content delegate-handle="dashboard" srcoll='false' >
-        <div ng-show="!param.flag">
+    <p class="h45 bgfff fs16 colff66">
+        <span ng-click="sel()"><img src="images/screening.png" class="screeningPic ml10 mr10">筛选</span>
+    </p>
+    <ion-content delegate-handle="dashboard" srcoll='false' style="margin-top: 46px">
+        <div ng-show="!param.picFlag" ng-class="{'hidden':param.flag==true}">
         <!--消费 充值 还欠款-->
         <div class="list"  >
             <p class="item p8 fs15" ng-repeat="item in detailedPerformance track by $index" ng-click="expenditureDetailsGo(item.flowNo)">
@@ -14,9 +17,9 @@
             </p>
         </div>
         <!--筛选按钮-->
-        <div  class="tc">
+        <!--<div  class="tc">
             <button class="button " style="width: 3.16rem;height: 0.78rem;background: rgb(255,102,102);color: white;font-size: 20px;border-radius: 13px" ng-click="sel()">筛选</button>
-        </div>
+        </div>-->
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100" ng-show="flag" ng-click="all()"></div>
         <div  >
             <div style="position: absolute;top:0;z-index: 101;width:100%;" class="bgfff pd15" ng-show="flag==true&&userConsumeRequest.searchFile=='1'">
@@ -36,8 +39,6 @@
         </div>
         </div>
         <!--空白页面-->
-        <div style="width:100%;height:100%" ng-show="param.flag">
-            <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
-        </div>
+        <void-pic></void-pic>
     </ion-content>
 </ion-view>
