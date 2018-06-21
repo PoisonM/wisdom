@@ -160,6 +160,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         }else{
             imageUrls = new ArrayList<>();
             imageUrls.add(ImageEnum.COMMON_CARD.getDesc());
+            extShopRechargeCardDTO.setImageUrl(ImageEnum.COMMON_CARD.getDesc());
         }
         //保存图片信息
         mongoUtils.saveImageUrl(imageUrls, rechargeCardId);
