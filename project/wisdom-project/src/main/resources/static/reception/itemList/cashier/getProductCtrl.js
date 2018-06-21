@@ -1,4 +1,4 @@
-PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDialog, Archives
+PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $state, ngDialog, Archives
     , GetUserProductInfo, ConsumesUserProduct,ImageBase64UploadToOSS) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
@@ -32,6 +32,8 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
+    $scope.staffListNames = $rootScope.staffListNames//关联员工
+    $scope.staffListIds = $rootScope.staffListIds
 
     $scope.shopUserConsumeDTO ={
         clerkId: '',
@@ -71,13 +73,17 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
         ImageBase64UploadToOSS.save({
             imageStr: $("#signConfirmRight").jSignature("getData")
         }, function(data) {
-            $scope.shopUserConsumeDTO.imageUrl = data.responseData
+            $scope.shopUserConsumeDTO.imageUrl = data.responseData;
+            $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
+            $scope.shopUserConsumeDTO.sysClerkName = $scope.staffListNames.join(";");
             ConsumesUserProduct.save(
                 $scope.shopUserConsumeDTO
                 , function(data) {
                     if(data.result == '0x00001'){
                         alert("领取成功")
                         window.history.go(-1)
+                        $rootScope.staffListNames=[]//保存清除关联员工
+                        $rootScope.staffListIds=[]
                     }
                     else{
                         alert(data.errorInfo);
@@ -94,7 +100,7 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     $scope.productNumSub = function () {
         if($scope.shopUserConsumeDTO.consumeNum<=1){
             $scope.cccFlag = true
-            alert("领取数量不能小于0");
+            alert("领取数量不能小于1");
             return;
         }
         $scope.shopUserConsumeDTO.consumeNum = $scope.shopUserConsumeDTO.consumeNum -1;
@@ -116,4 +122,8 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
         $scope.shopUserConsumeDTO.consumeId = data.id;
         $scope.shopUserConsumeDTO.consumeId = $state.params.id;
     })
+    
+    $scope.goHousekeeper = function () {
+        $state.go("pad-web.left_nav.housekeeper")
+    }
 });
