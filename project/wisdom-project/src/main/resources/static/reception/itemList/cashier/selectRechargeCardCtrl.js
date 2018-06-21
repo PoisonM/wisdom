@@ -48,7 +48,6 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         }
         $scope.responseData.sysUserId = $stateParams.userId;
 
-
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){
                 $rootScope.staffListNames=[]//保存清除关联员工
