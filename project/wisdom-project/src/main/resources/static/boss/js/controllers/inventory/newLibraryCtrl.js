@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('newLibraryCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global','GetProductInfo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global,GetProductInfo) {
             $rootScope.title = "新增入库";
             $scope.sum = $stateParams.sum;
             $scope.param = {
@@ -9,6 +9,17 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 index:"",
                 shopStock:[]
             };
+
+            if($stateParams.stockStyle=='1'){
+                 $scope.sum = 1;
+                 GetProductInfo.get({
+                    productCode:$stateParams.productCode
+                },function(data){
+                    if(data.result == "0x00001"){
+                        $rootScope.shopInfo.entryShopProductList = data.responseData;
+                    }
+                })
+            }
 
             angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
 

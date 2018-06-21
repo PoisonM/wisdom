@@ -400,4 +400,21 @@ public class ProductController {
         return responseDTO;
     }
 
+    /**
+     * 获取产品详情
+     *
+     * @param shopProductInfoDTO
+     *
+     * @return
+     * */
+    @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+        responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(shopProductInfos);
+        return responseDTO;
+    }
+
 }
