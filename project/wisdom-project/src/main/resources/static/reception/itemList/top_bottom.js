@@ -29,6 +29,14 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
         groupCard:'3',
         project:'8'
     }
+    //支付方式
+    $rootScope.payType = {
+        we_chat_pay : "0",
+        ali_pay :'1',
+        bank_pay :"2",
+        cash_pay:'3',
+        all:"4"//包括所有支付方式
+    }
 
     //公共部分开关管理
     $scope.mainSwitch = {
