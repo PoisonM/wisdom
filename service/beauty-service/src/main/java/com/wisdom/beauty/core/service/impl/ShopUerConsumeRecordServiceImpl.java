@@ -664,7 +664,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())
-						|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
+						|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())
+						|| GoodsTypeEnum.PRODUCT.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
 					userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 					userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
 					userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());
