@@ -477,6 +477,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
 			c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
 		}
+		criteria.setOrderByClause(" create_date desc");
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
 				.selectByCriteria(criteria);
 

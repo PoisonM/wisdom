@@ -67,7 +67,7 @@ public class ProductController {
 //    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
+    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId,@RequestParam(required = false) String surplusTimes) {
         String sysShopId=null;
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if(clerkInfo!=null){
@@ -86,6 +86,9 @@ public class ProductController {
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setSysShopId(sysShopId);
         shopUserProductRelationDTO.setSysUserId(sysUserId);
+        if(StringUtils.isNotBlank(surplusTimes)){
+            shopUserProductRelationDTO.setSurplusTimes(Integer.parseInt(surplusTimes));
+        }
         List<ShopUserProductRelationDTO> userProductInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
 
         responseDTO.setResponseData(userProductInfoList);
@@ -397,6 +400,23 @@ public class ProductController {
         int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
         responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData(productInfo);
+        return responseDTO;
+    }
+
+    /**
+     * 获取产品详情
+     *
+     * @param shopProductInfoDTO
+     *
+     * @return
+     * */
+    @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+        responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(shopProductInfos);
         return responseDTO;
     }
 

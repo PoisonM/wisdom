@@ -628,13 +628,17 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     })
                 };
                 /*去划卡*/
-                $scope.personalFile = function () {
+                $scope.personalFile = function (value) {
                     /*调取套卡列表*/
-                    GetShopUserArchivesInfoByUserId.get({sysUserId:sysUserId},function (data) {
-                        $state.go('pad-web.left_nav.personalFile',{id:data.responseData[0].id,shopid:"",sysShopId:sysShopId,sysUserId:sysUserId})
+                    if('xf'==value){
+                        $state.go('pad-web.consumptionList',{userId:sysUserId});
                         ngDialog.closeAll()
-                    });
-
+                    }else{
+                        GetShopUserArchivesInfoByUserId.get({sysUserId:sysUserId},function (data) {
+                            $state.go('pad-web.left_nav.personalFile',{id:data.responseData[0].id,shopid:"",sysShopId:sysShopId,sysUserId:sysUserId})
+                            ngDialog.closeAll()
+                        });
+                    }
                 };
                 /*开始服务*/
                 $scope.startSevier = function () {

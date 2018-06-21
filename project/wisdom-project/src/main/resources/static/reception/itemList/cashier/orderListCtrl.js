@@ -47,8 +47,8 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
         })
     }
 
-    $scope.checkBoxChek = function(e) {
-        $scope.payType = e;
+    $scope.checkBoxCheck = function(payType) {
+        $scope.payType = payType;
     }
 
     GetShopUserRecentlyOrderInfo.get({

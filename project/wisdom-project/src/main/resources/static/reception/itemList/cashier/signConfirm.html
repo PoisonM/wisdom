@@ -52,15 +52,15 @@
                     <span class="name">余额</span>
                     <span class="type">{{responseData.balancePay}}</span>
                 </li>
-                <li ng-if="responseData.payType==0">
+                <li ng-if="responseData.payType==rootScopePayType.bankPay">
                     <span class="name">银行卡支付</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="responseData.payType==1">
+                <li ng-if="responseData.payType==rootScopePayType.aliPay">
                     <span class="name">支付宝</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="responseData.payType==2">
+                <li ng-if="responseData.payType==rootScopePayType.weChatPay">
                     <span class="name">微信支付</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
                 </li>
@@ -205,19 +205,20 @@
                     <span class="name">余额</span>
                     <span class="type">{{shopUserPayDTO.balancePay}}</span>
                 </li>
-                <li ng-if="shopUserPayDTO.payType==0">
+
+                <li ng-if="shopUserPayDTO.payType==rootScopePayType.bankPay">
                     <span class="name">银行卡支付</span>
                     <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="shopUserPayDTO.payType==1">
+                <li ng-if="shopUserPayDTO.payType==rootScopePayType.aliPay">
                     <span class="name">支付宝</span>
                     <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="shopUserPayDTO.payType==2">
+                <li ng-if="shopUserPayDTO.payType==rootScopePayType.weChatPay">
                     <span class="name">微信支付</span>
                     <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="shopUserPayDTO.payType==3">
+                <li ng-if="shopUserPayDTO.payType==rootScopePayType.cashPay">
                     <span class="name">现金支付</span>
                     <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
                 </li>
