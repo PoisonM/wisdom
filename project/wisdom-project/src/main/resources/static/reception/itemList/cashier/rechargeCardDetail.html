@@ -38,8 +38,16 @@
                     <span>{{listItem.price}}</span>
                 </li>
                 <li>
-                    <label for="">折扣</label>
-                    <span>{{listItem.discount}}</span>
+                    <label for="">单次</label>
+                    <span>{{listItem.timeDiscount=='1'?'无折扣':item2.timeDiscount}}</span>
+                </li>
+                <li>
+                    <label for="">疗程卡</label>
+                    <span>{{listItem.periodDiscount=='1'?'无折扣':item2.periodDiscount}}</span>
+                </li>
+                <li>
+                    <label for="">产品</label>
+                    <span>{{listItem.productDiscount=='1'?'无折扣':item2.productDiscount}}</span>
                 </li>
                 <!--<li>
                     <label for="">员工业绩</label>
