@@ -33,8 +33,8 @@
     </div>
     <div class="consumptionListUl" ng-if="consumptionListUlShow">
         <div class="search">
-            <input placeholder="请输入名称" type="text">
-            <span>搜索</span>
+            <input placeholder="请输入名称" ng-keyup="fastSearch()" value="searchInfo" ng-model="searchInfo.info" type="text">
+            <span ng-click="fastSearch()">搜索</span>
         </div>
         <div style="overflow: scroll;height: 100%;">
             <ul>
