@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('inventorySettingCtrl',
             $rootScope.title = "设置";
  /*库管设置*/
             $scope.libraryTubeSettingGo = function () {
-                $state.go("libraryTubeSetting")
+                $state.go("libraryTubeSetting",shopStoreId:$rootScope.shopInfo.shopStoreId)
             }
 
 /*产品品牌设置*/
