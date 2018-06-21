@@ -38,7 +38,8 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
         consumeId: '',
         consumeNum: 1,
         imageUrl:'',
-        consumePrice: ''
+        consumePrice: '',
+        sysUserId: ''
     }
 
     var $signature = $("#signConfirmRight").jSignature({
@@ -114,6 +115,8 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     }, function(data) {
         $scope.productInfo = data.responseData;
         $scope.shopUserConsumeDTO.consumeId = data.id;
+        $scope.shopUserConsumeDTO.shopProductId = $scope.productInfo.shopProductId;
+        $scope.shopUserConsumeDTO.sysUserId = $scope.productInfo.sysUserId;
         $scope.shopUserConsumeDTO.consumeId = $state.params.id;
     })
 });
