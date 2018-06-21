@@ -8,15 +8,13 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     console.log("消费记录");
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
-        goodsType:7,
-        consumeType:0,
+        goodsType:4,
+        consumeType:1,
         pageSize:12
     },function (data) {
         $scope.dataList = data.responseData
     })
-    
-    
-    /*$scope.$parent.$parent.backHeaderCashFn = function () {
-        $state.go("pad-web.userInfo.todayPerformance")
-    }*/
+    $scope.goRecordDetail = function (item) {
+        $state.go('pad-web.left_nav.consumeCardDetail',{type:"cp",id:item.flowId,userId:item.sysUserId})
+    }
 });

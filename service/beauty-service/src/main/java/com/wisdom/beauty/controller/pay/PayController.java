@@ -70,7 +70,8 @@ public class PayController {
             Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
             ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
             //用户为待支付的状态才能执行签字确认操作
-            if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
+            if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus()) ||
+                    OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
                 Update update = new Update();
                 update.set("status", OrderStatusEnum.WAIT_SIGN.getCode());
                 update.set("statusDesc",OrderStatusEnum.WAIT_SIGN.getDesc());

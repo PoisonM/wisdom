@@ -131,6 +131,7 @@
     padding: 0;
     border-bottom-left-radius: 0.01563rem;
     border-top-left-radius: 0.01563rem;
+    background-color: #ffffff;
 }
 
 .drawCardConsumption_box .add_btn{
@@ -142,6 +143,7 @@
     height: 0.42188rem;
     border: solid 1px #cccccc;
     padding: 0;
+    background-color: #ffffff;
 }
 
 .drawCardConsumption_box .sub_add_num{

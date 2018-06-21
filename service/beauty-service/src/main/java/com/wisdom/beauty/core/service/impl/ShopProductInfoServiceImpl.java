@@ -10,6 +10,7 @@ import com.wisdom.beauty.core.mapper.ShopProductTypeMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -45,6 +46,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
     @Autowired
     private MongoUtils mongoUtils;
 
+	@Autowired
+	private ShopStockService shopStockService;
+
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -62,6 +66,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		ShopProductInfoCriteria shopProductInfoCriteria = new ShopProductInfoCriteria();
 		ShopProductInfoCriteria.Criteria criteria = shopProductInfoCriteria.createCriteria();
 
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductCode())) {
+			criteria.andProductCodeEqualTo(shopProductInfoDTO.getProductCode());
+		}
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopProductInfoDTO.getSysShopId());
 		}
@@ -111,6 +118,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 		if (StringUtils.isNotBlank(shopUserProductRelationDTO.getId())) {
 			criteria.andIdEqualTo(shopUserProductRelationDTO.getId());
+		}
+		if(null != shopUserProductRelationDTO.getSurplusTimes() && shopUserProductRelationDTO.getSurplusTimes() > 0){
+			criteria.andSurplusTimesGreaterThanOrEqualTo(shopUserProductRelationDTO.getSurplusTimes());
 		}
 
 		List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = shopUserProductRelationMapper
@@ -220,10 +230,24 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
 
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
+		List<String> shopProcIds=new ArrayList<>();
 		for (ShopProductInfoDTO shopProductInfo : list) {
+			shopProcIds.add(shopProductInfo.getId());
+		}
+		//获取产品的库存量
+		List<ShopStockNumberDTO> shopStockNumberList= shopStockService.getStockNumberList(shopProductInfoDTO.getSysShopId(), shopProcIds);
+		Map<String,Integer> shopStockNumberMap=new HashMap<>();
+		if(CollectionUtils.isNotEmpty(shopStockNumberList)){
+			for (ShopStockNumberDTO dto:shopStockNumberList){
+				shopStockNumberMap.put(dto.getShopProcId(),dto.getStockNumber());
+			}
+		}
+		for (ShopProductInfoDTO shopProductInfo : list) {
+			shopProcIds.add(shopProductInfo.getId());
 			ShopProductInfoResponseDTO shopProductInfoResponseDTO = new ShopProductInfoResponseDTO();
 			BeanUtils.copyProperties(shopProductInfo, shopProductInfoResponseDTO);
-            shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
+			shopProductInfoResponseDTO.setImageList(mongoUtils.getImageUrl(shopProductInfo.getId()));
+			shopProductInfoResponseDTO.setStockNumber(shopStockNumberMap.get(shopProductInfo.getId())==null?0:shopStockNumberMap.get(shopProductInfo.getId()));
 			respon.add(shopProductInfoResponseDTO);
 		}
 		return respon;

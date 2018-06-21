@@ -85,7 +85,7 @@
     </sql>
     <!--查询用户未领取数量-->
     <select id="getWaitReceiveNumber" resultType="com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO" parameterType="map">
-     SELECT SUM(s.`wait_receive_number`) waitReceiveNumber, s.sys_user_id sysUserId,t.sys_user_name nickname,t.phone mobile FROM
+     SELECT SUM(s.`surplus_times`) waitReceiveNumber, s.sys_user_id sysUserId,t.sys_user_name nickname,t.phone mobile FROM
         shop_user_product_relation s LEFT JOIN shop_user_archives t ON s.sys_user_id=t.sys_user_id WHERE
           s.sys_shop_id=#{sysShopId}
         <if test="searchFile != null" >

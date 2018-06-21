@@ -16,7 +16,9 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     $scope.$parent.priceListBlackFn = function () {
         window.history.go(-1)
     }
-
+    $scope.searchInfo = {
+        info :''
+    };
 
     //获取订单ID
     SaveShopUserOrderInfo.save({
@@ -67,22 +69,28 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         $scope.select = e;
         if (e == 0 || e == 1) {
             SearchShopProjectList.get({
-                filterStr: '',
+                filterStr: $scope.searchInfo.info,
                 useStyle: e,
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 //默认展示第一个
-                $scope.timeInt = setInterval(function () {
-                    if($(".two_project_cla").length != 0){
-                        $(".two_project_cla").eq(0).trigger('click')
-                        clearInterval($scope.timeInt)
+                if(''!=$scope.secondCategory){
+                    var levelTwoList = $scope.secondCategory[0].levelTwoDetail;
+                    var count = 0;
+                    for(var k in levelTwoList){
+                        if(count>0){
+                            break;
+                        }
+                        ++count;
+                        var levelTwoDetail=levelTwoList[k];
+                        $scope.getThreeCategories(levelTwoDetail.projectTypeOneId,levelTwoDetail.projectTypeTwoId,levelTwoDetail.id);
                     }
-                },100)
+                }
             })
         } else if (e == 2) {
             SearchShopProductList.get({
                 pageSize: "100",
-                filterStr: '',
+                filterStr: $scope.searchInfo.info,
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 var first = data.responseData.detailLevel[0];
@@ -92,12 +100,14 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                     firstkey = key;
                     break
                 }
-                var second = first[firstkey];
-                for (var key in second) {
-                    secondkey = key;
-                    break
+                if(''!=first && undefined != first){
+                    var second = first[firstkey];
+                    for (var key in second) {
+                        secondkey = key;
+                        break
+                    }
+                    $scope.getProductInfoThreeLevelProject(second[secondkey].productTypeOneId, second[secondkey].productTypeTwoId);
                 }
-                $scope.getProductInfoThreeLevelProject(second[secondkey].productTypeOneId, second[secondkey].productTypeTwoId);
             })
         } else if (e == 3) {
             GetShopProjectGroups.get({
@@ -121,6 +131,10 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });
+    }
+
+    $scope.fastSearch = function () {
+        $scope.tabclick($scope.select);
     }
     $scope.getProductInfoThreeLevelProject = function(one, two ,index) {
         $scope.redFontFlag = index

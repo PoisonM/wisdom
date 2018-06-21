@@ -7,11 +7,13 @@ import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.service.*;
+import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
@@ -22,6 +24,8 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
+import net.sf.json.JSONArray;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +93,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
     @Autowired
     private CashService cashService;
+
+    @Autowired
+    private ShopStockService shopStockService;
 
 
     /**
@@ -736,6 +744,27 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         relationDTO.setSurplusTimes(relationDTO.getSurplusTimes() - consumeDTO.getConsumeNum());
         shopProductInfoService.updateShopUserProductRelation(relationDTO);
 
+        //更新库存
+        List<ShopStockRequestDTO> stockList = new ArrayList<>();
+        ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
+        //根据sysUserId查询领取人名称
+        ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(consumeDTO.getSysUserId());
+        List<ShopUserArchivesDTO> shopUserArchivesDTOs=shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+        if(CollectionUtils.isNotEmpty(shopUserArchivesDTOs)){
+            shopStockRequestDTO.setReceiver(shopUserArchivesDTOs.get(0).getSysUserName());//领取人,前端显示档案
+        }
+        shopStockRequestDTO.setShopStoreId(clerkInfo.getSysShopId());
+        shopStockRequestDTO.setShopProcId(consumeDTO.getShopProductId());
+        shopStockRequestDTO.setStockOutNumber(consumeDTO.getConsumeNum());
+        shopStockRequestDTO.setStockType(StockTypeEnum.DEPOSIT_OUT_STORAGE.getCode());
+        shopStockRequestDTO.setStockStyle(StockStyleEnum.MANUAL_OUT_STORAGE.getCode());
+
+        stockList.add(shopStockRequestDTO);
+
+        JSONArray json = JSONArray.fromObject(stockList);
+        String toJSONString = json.toString();//把json转换为String
+        shopStockService.insertShopStockDTO(toJSONString);
         consumeDTO.setSysUserId(relationDTO.getSysUserId());
         consumeDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
         consumeDTO.setFlowId(relationDTO.getId());

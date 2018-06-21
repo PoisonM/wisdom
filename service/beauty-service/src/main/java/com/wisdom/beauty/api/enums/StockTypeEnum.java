@@ -2,6 +2,7 @@ package com.wisdom.beauty.api.enums;
 
 /**
  * Created by zhanghuan on 2018/5/10.
+ *
  */
 public enum StockTypeEnum {
 
@@ -12,7 +13,8 @@ public enum StockTypeEnum {
     scrap("4", "报废"),
     hospital_use("5", "院用"),
     RETURN_TO_SUPPLIER("6", "退回供货商"),
-    ISSUED_TO_SHOP("7", "下发到店");
+    ISSUED_TO_SHOP("7", "下发到店"),
+    DEPOSIT_OUT_STORAGE("8", "寄存出库");
 
     StockTypeEnum(String code, String desc) {
         this.code = code;

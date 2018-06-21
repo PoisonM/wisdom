@@ -67,7 +67,7 @@ public class ProductController {
 //    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
+    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId,@RequestParam(required = false) String surplusTimes) {
         String sysShopId=null;
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if(clerkInfo!=null){
@@ -86,6 +86,9 @@ public class ProductController {
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setSysShopId(sysShopId);
         shopUserProductRelationDTO.setSysUserId(sysUserId);
+        if(StringUtils.isNotBlank(surplusTimes)){
+            shopUserProductRelationDTO.setSurplusTimes(Integer.parseInt(surplusTimes));
+        }
         List<ShopUserProductRelationDTO> userProductInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
 
         responseDTO.setResponseData(userProductInfoList);
@@ -321,7 +324,9 @@ public class ProductController {
             }
             helperMap.put("levelTwoDetail", twoLevelMap);
             helperMap.put("levelOneDetail", shopProductTypeDTO);
-            levelList.add(helperMap);
+            if(twoLevelMap.size()>0){
+                levelList.add(helperMap);
+            }
 
             oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
             oneAndTwoHelperMap.put("levelOneDetail", shopProductTypeDTO);
@@ -395,6 +400,26 @@ public class ProductController {
         int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
         responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData(productInfo);
+        return responseDTO;
+    }
+
+    /**
+     * 获取产品详情
+     *
+     * @param productCode
+     *
+     * @return
+     * */
+    @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
+
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        shopProductInfoDTO.setProductCode(productCode);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+        responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(shopProductInfos);
         return responseDTO;
     }
 

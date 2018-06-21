@@ -6,15 +6,16 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate,$ionicLoading) {
 
             $rootScope.title = "业绩明细";
-            $scope.flag = false;
+            $scope.flag = false;/*点击筛选出现的数据div*/
             $scope.param={
-                flag:false/*空白页面的显示*/
+                picFlag:false,/*空白页面的显示*/
+                date:$stateParams.date
             };
             $scope.userConsumeRequest = {
                 pageSize:1000,
                 searchFile:$stateParams.searchFile
-
             };
+            $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -22,21 +23,23 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetClerkPerformanceListClerk.get({pageSize:$scope.userConsumeRequest.pageSize,searchFile:$scope.userConsumeRequest.searchFile},function(data){
+                GetClerkPerformanceListClerk.get({pageSize:$scope.userConsumeRequest.pageSize,searchFile:$scope.userConsumeRequest.searchFile, startTime:$scope.param.date+" 00:00:00", endTime:$scope.param.date+" 23:59:59"},function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
                         $ionicLoading.hide();
                         $scope.list = data.responseData;
                         $scope.detailedPerformance = data.responseData;
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else {
                         $ionicLoading.hide();
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                     }
 
-                });
+                })
+            });
+
 
             $scope.expenditureDetailsGo = function(flowNo){
                 $state.go("details",{flowNo:flowNo})
@@ -60,8 +63,10 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                         }
                     }
                     if( $scope.detailedPerformance.length<=0){
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                         console.log(2);
+                    }else {
+                        $scope.param.picFlag=false;
                     }
                 }else{
                     $scope.detailedPerformance=$scope.list

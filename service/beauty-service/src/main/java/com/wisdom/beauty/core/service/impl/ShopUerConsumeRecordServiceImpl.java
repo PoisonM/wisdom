@@ -165,6 +165,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
 			userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 			if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
+				userConsumeRecordResponseDTO.setId(shopUserConsumeRecord.getId());
+				userConsumeRecordResponseDTO.setFlowId(shopUserConsumeRecord.getFlowId());
+				userConsumeRecordResponseDTO.setSysUserId(shopUserConsumeRecord.getSysUserId());
 				userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
 				userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
 				userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
@@ -474,6 +477,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
 			c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
 		}
+		criteria.setOrderByClause(" create_date desc");
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
 				.selectByCriteria(criteria);
 
@@ -660,7 +664,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())
-						|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
+						|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())
+						|| GoodsTypeEnum.PRODUCT.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
 					userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 					userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
 					userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());

@@ -26,6 +26,9 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     private String flowId;
 
     private String imageUrl;
+    //产品id
+    private String shopProductId;
+
 
     public String getImageUrl() {
         return imageUrl;
@@ -110,5 +113,13 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
     public void setConsumePrice(BigDecimal consumePrice) {
         this.consumePrice = consumePrice;
+    }
+
+    public String getShopProductId() {
+        return shopProductId;
+    }
+
+    public void setShopProductId(String shopProductId) {
+        this.shopProductId = shopProductId;
     }
 }

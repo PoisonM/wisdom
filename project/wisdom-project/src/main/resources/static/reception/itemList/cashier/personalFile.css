@@ -294,7 +294,7 @@
     width: 166px;
     height: 95px;
     border-radius: 10px;
-    margin: 22px 0 13px 36px;
+    margin: 35px 0 13px 36px;
     float: left;
 }
 
@@ -318,7 +318,7 @@
     color: #FF6666;
     letter-spacing: 0;
     display: inline-block;
-    margin: 24px 0 0 10px;
+    margin: 0px 0 0 10px;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardRAName b {
@@ -334,7 +334,7 @@
     color: #999999;
     letter-spacing: 0;
     display: inline-block;
-    margin: 24px 0 0 41px;
+    margin: 0px 0 0 41px;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardTAName b {
@@ -344,6 +344,21 @@
     letter-spacing: 0;
     display: inline-block;
     margin: 24px 0 0 0px;
+}
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardDiscount{
+    margin-top: 5px;
+    margin-left: 10px;
+    font-family: PingFangSC-Regular;
+    color: #999999;
+}
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardDiscount e{
+    padding-right: 3px;
+}
+.personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardContent .prepaidCardTime{
+    margin-top: 5px;
+    margin-left: 10px;
+    font-family: PingFangSC-Regular;
+    color: #999999;
 }
 
 .personalFile-box .personalFile-content .treatment .prepaidCard .prepaidCardNote {

@@ -51,6 +51,6 @@ angular.module('controllers',[]).controller('employeeTreatmentCardDtailsCtrl',
             };
 
             $scope.drawCardRecordsDetailGO=function (flowNo) {
-                $state.go("employeeDrawCardRecordsDetail",{flowNo:flowNo})
+                $state.go("employeeDrawCardRecordsDetailemployeeDrawCardRecordsDetail",{flowNo:flowNo})
             }
         }]);

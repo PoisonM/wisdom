@@ -117,7 +117,9 @@ public class ClerkWorkRecordController {
      */
     @RequestMapping(value = "/getClerkPerformanceList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getClerkPerformanceList(@RequestParam(required = false) String sysClerkId,
+    ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getClerkPerformanceList(@RequestParam String startTime,
+                                                                              @RequestParam String endTime,
+                                                                              @RequestParam(required = false) String sysClerkId,
                                                                               @RequestParam String searchFile,
                                                                               int pageSize) {
         String clerkId=null;
@@ -176,6 +178,8 @@ public class ClerkWorkRecordController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
 
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
         List<ShopClerkWorkRecordResponseDTO> shopClerkWorkRecordResponseDTOs = shopClerkWorkService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
