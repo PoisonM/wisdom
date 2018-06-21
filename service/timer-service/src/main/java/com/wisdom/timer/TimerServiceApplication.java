@@ -39,29 +39,6 @@ public class TimerServiceApplication {
 		weixinServiceClient.updateUserWeixinToken();
 
 		weixinServiceClient.updateBeautyWeixinToken();
-
-		try{
-			businessRunTimeService.autoMonthlyIncomeCalc();
-		}catch (Exception e){
-
-		}
-		/*boolean month = true;
-		while(month){
-			Date startDate = new Date();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH");
-			String startDateString = sdf.format(startDate);
-			String time = "2018-06-14 17:00:00";
-			try{
-				startDate = sdf.parse(startDateString);
-				Date timeCheck = sdf.parse(time);
-				if(startDate.getTime()==timeCheck.getTime()){
-					businessRunTimeService.autoMonthlyIncomeCalc();
-					month=false;
-				}
-			}catch (Exception e){
-
-			}
-		}*/
 	}
 
 }

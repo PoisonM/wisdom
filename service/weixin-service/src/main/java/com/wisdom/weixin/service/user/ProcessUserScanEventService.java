@@ -88,11 +88,10 @@ public class ProcessUserScanEventService {
                 //判断用户所扫描的二维码是否是A店或者B店的二维码
                 if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxbusinessshare_")!=-1){
                     //todo 此处要考虑，未来完善，不仅仅只有mxbusinessshare_一种类型的扩展二维码
-                    List<Article> articleList = new ArrayList<>();
-                    Article article = new Article();
-                    article.setTitle("你已经是美享的用户啦， 此次扫码不产生效果哦~~");
-                    articleList.add(article);
-                    WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                    String content = "尊敬的用户，你好，因你已成为商城用户（店主），已无需再次扫码，" +
+                            "现在可以去做店主、拿返利、狂血拼，" +
+                            "<a href='http://mx99.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=http://mx99.kpbeauty.com.cn/weixin/customer/getUserWeixinMenuId?url=shopHome'>放肆go!</a>";
+                    WeixinUtil.sendMsgToWeixin(token,xmlEntity.getFromUserName(),content);
                 }
                 else
                 {
