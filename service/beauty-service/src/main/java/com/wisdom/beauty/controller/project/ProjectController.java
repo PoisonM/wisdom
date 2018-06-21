@@ -112,7 +112,7 @@ public class ProjectController {
 	@RequestMapping(value = "searchShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
 
 	public @ResponseBody ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle,
-			@RequestParam String filterStr) {
+			@RequestParam(required = false) String filterStr) {
         String sysShopId = redisUtils.getShopId();
 
 		logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");

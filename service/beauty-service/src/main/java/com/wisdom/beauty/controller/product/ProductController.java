@@ -321,7 +321,9 @@ public class ProductController {
             }
             helperMap.put("levelTwoDetail", twoLevelMap);
             helperMap.put("levelOneDetail", shopProductTypeDTO);
-            levelList.add(helperMap);
+            if(twoLevelMap.size()>0){
+                levelList.add(helperMap);
+            }
 
             oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
             oneAndTwoHelperMap.put("levelOneDetail", shopProductTypeDTO);

@@ -188,12 +188,14 @@ public class ShopStockServiceImpl implements ShopStockService {
 			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		List<SysClerkDTO> sysClerkDTOList = userServiceClient.getClerkInfoByClerkId(list.get(0).getReceiver());
+
 		ShopStockRecordDTO shopStockRecord = list.get(0);
 
-		if(sysClerkDTOList!=null&&sysClerkDTOList.size()>0){
-
-			shopStockRecord.setReceiver(sysClerkDTOList.get(0).getName());
+		if(list.get(0).getReceiver()!=null){
+			List<SysClerkDTO> sysClerkDTOList = userServiceClient.getClerkInfoByClerkId(list.get(0).getReceiver());
+			if(sysClerkDTOList!=null&&sysClerkDTOList.size()>0){
+				shopStockRecord.setReceiver(sysClerkDTOList.get(0).getName());
+			}
 		}
 
 		shopStockRecord.setCreateDateTime(sdf.format(list.get(0).getCreateDate()));
