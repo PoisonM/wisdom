@@ -121,9 +121,9 @@
                 <div>
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml10"  ng-if="info.payMap.payType=='0'"> 微信</p>
-                            <p class="ml10"  ng-if="info.payMap.payType=='1'"> 支付宝</p>
-                            <p class="ml10"  ng-if="info.payMap.payType=='2'"> 银行卡</p>
+                            <p class="ml10"  ng-if="info.payMap.payType==rootScopePayType.weChatPay"> 微信</p>
+                            <p class="ml10"  ng-if="info.payMap.payType==rootScopePayType.aliPay"> 支付宝</p>
+                            <p class="ml10"  ng-if="info.payMap.payType==rootScopePayType.bankPay"> 银行卡</p>
                             <p class="mr10 col888">
                                 ￥{{info.payMap.payTypeAmount}}
                             </p>
