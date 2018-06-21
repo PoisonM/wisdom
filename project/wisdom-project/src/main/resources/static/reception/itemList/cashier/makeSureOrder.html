@@ -1,139 +1,153 @@
-<div class="stillOwedBox clearfix">
-    <ul class="stillOwedUl mt10" ng-click="goSelectRechargeType()">
-        <li>
-            <div>折扣类型</div>
-            <br/>
-            <br/>
-            <p>此处可以选择不同的充值卡，用于不同的商品折扣</p>
-            <span>{{shopUserRechargeCardDTO.shopRechargeCardName}}></span>
-        </li>
-    </ul>
-    <div class="stillOwedTitle" ng-if="projectGroupRelRelationDTOS.length>0">套卡</div>
-    <div ng-repeat="item in projectGroupRelRelationDTOS">
-        <ul class="stillOwedContent">
+<div class="stillOwedBox">
+    <div ng-if="!housekeeperFlag"  class="clearfix">
+        <ul class="stillOwedUl mt10" ng-click="goSelectRechargeType()">
             <li>
-                <div class="contentBox">
-                    <span class="name">{{item.shopProjectGroupName}}</span>
-                    <span class="discount"><s>原价 {{item.shopGroupPuchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
-                    <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input ng-change="myChangeFn()" type="text" ng-value="(item.projectInitAmount*item.discount|number:2)" ng-model="item.projectInitAmount">
-                    <!-- <label for="" class="serviceTimes">服务次数</label>
-                    <input type="text" ng-model="item.projectInitTimes"> -->
-                    <div class="delete" ng-click="deleteClick(goodsType.groupCard,item)">删除</div>
-                </div>
-                <div class="otherOperation">
-                    <ul>
-                        <li>
-                            <div>购买数量</div>
-                            <span>
+                <div>折扣类型</div>
+                <br/>
+                <br/>
+                <p>此处可以选择不同的充值卡，用于不同的商品折扣</p>
+                <span>{{shopUserRechargeCardDTO.shopRechargeCardName}}></span>
+            </li>
+        </ul>
+        <div class="stillOwedTitle" ng-if="projectGroupRelRelationDTOS.length>0">套卡</div>
+        <div ng-repeat="item in projectGroupRelRelationDTOS">
+            <ul class="stillOwedContent">
+                <li>
+                    <div class="contentBox">
+                        <span class="name">{{item.shopProjectGroupName}}</span>
+                        <span class="discount"><s>原价 {{item.shopGroupPuchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
+                        <label for="" class="discountPrice">折扣价 ¥</label>
+                        <input ng-change="myChangeFn()" type="text" ng-value="(item.projectInitAmount*item.discount|number:2)" ng-model="item.projectInitAmount">
+                        <!-- <label for="" class="serviceTimes">服务次数</label>
+                        <input type="text" ng-model="item.projectInitTimes"> -->
+                        <div class="delete" ng-click="deleteClick(goodsType.groupCard,item)">删除</div>
+                    </div>
+                    <div class="otherOperation">
+                        <ul>
+                            <li>
+                                <div>购买数量</div>
+                                <span>
                                 <b ng-click="goodsSub(goodsType.groupCard,$index)">-</b>
                                 <input ng-change="myChangeFn()" type="text" value="" ng-model="item.projectInitTimes">
                                 <b ng-click="goodsInc(goodsType.groupCard,$index)">＋</b>
                             </span>
-                        </li>
-                        <li>
+                            </li>
+                            <li>
                             <span class="subtotal xiaoji">
                                 <e style="float: left">小计{{(item.projectInitAmount*item.discount*item.projectInitTimes)|number:2}}¥</e>
                                 <input readonly>
                             </span>
-                        </li>
-                        <li data-item = "{{item}}" ng-click="goHousekeeper('group',$index,item.sysClerkId,item.sysClerkName)">
-                            <div>关联员工</div>
-                            <span>
+                            </li>
+                            <li data-item = "{{item}}" ng-click="goHousekeeper('group',$index)">
+                                <div>关联员工</div>
+                                <span>
                                 <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 >
                             </span>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-    <div class="stillOwedTitle" ng-if="shopUserProductRelationDTOS.length>0">产品</div>
-    <div ng-repeat="item in shopUserProductRelationDTOS">
-        <ul class="stillOwedContent">
-            <li>
-                <div class="contentBox">
-                    <span class="name">{{item.shopProductName}}</span>
-                    <span class="discount"><s>原价 {{item.initAmount}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
-                    <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input ng-change="myChangeFn()" type="text" ng-model="item.initAmount" ng-value="(item.initAmount*item.discount|number:2)">
-                    <!-- <label for="" class="serviceTimes">服务次数</label>
-                    <input type="text" ng-model="item.initTimes"> -->
-                    <div class="delete" ng-click="deleteClick(goodsType.product,item)">删除</div>
-                </div>
-                <div class="otherOperation">
-                    <ul>
-                        <li>
-                            <div>购买数量</div>
-                            <span>
+        <div class="stillOwedTitle" ng-if="shopUserProductRelationDTOS.length>0">产品</div>
+        <div ng-repeat="item in shopUserProductRelationDTOS">
+            <ul class="stillOwedContent">
+                <li>
+                    <div class="contentBox">
+                        <span class="name">{{item.shopProductName}}</span>
+                        <span class="discount"><s>原价 {{item.initAmount}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
+                        <label for="" class="discountPrice">折扣价 ¥</label>
+                        <input ng-change="myChangeFn()" type="text" ng-model="item.initAmount" ng-value="(item.initAmount*item.discount|number:2)">
+                        <!-- <label for="" class="serviceTimes">服务次数</label>
+                        <input type="text" ng-model="item.initTimes"> -->
+                        <div class="delete" ng-click="deleteClick(goodsType.product,item)">删除</div>
+                    </div>
+                    <div class="otherOperation">
+                        <ul>
+                            <li>
+                                <div>购买数量</div>
+                                <span>
                                 <b ng-click="goodsSub(goodsType.product,$index)">-</b>
                                 <input ng-change="myChangeFn()" type="text" value="" ng-model="item.initTimes">
                                 <b ng-click="goodsInc(goodsType.product,$index)">+</b>
                             </span>
-                        </li>
-                        <li>
+                            </li>
+                            <li>
                             <span class="subtotal xiaoji">
                                 <e style="float: left">小计¥{{(item.initAmount*item.discount*item.initTimes)|number:2}}</e>
                                 <input readonly >
                             </span>
-                        </li>
-                        <li data-item = "{{item}}" ng-click="goHousekeeper('product',$index,item.sysClerkId,item.sysClerkName)">
-                            <div>关联员工</div>
-                            <span>
+                            </li>
+                            <li data-item = "{{item}}" ng-click="goHousekeeper('product',$index)">
+                                <div>关联员工</div>
+                                <span>
                                 <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-    <div class="stillOwedTitle" ng-if="shopUserProjectRelationDTOS.length>0">项目</div>
-    <div ng-repeat="item in shopUserProjectRelationDTOS">
-        <ul class="stillOwedContent">
-            <li>
-                <div class="contentBox">
-                    <span class="name">{{item.sysShopProjectName}}</span>
-                    <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}.00</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
-                    <label for="" class="discountPrice">折扣价 ¥</label>
-                    <input ng-change="myChangeFn()" type="text" ng-model="item.sysShopProjectInitAmount" ng-value="item.sysShopProjectInitAmount*item.discount">
-                    <!-- <label for="" class="serviceTimes">服务次数</label>
-                    <input type="text">-->
-                    <div class="delete" ng-click="deleteClick(goodsType.timeCard,item)">删除</div>
-                </div>
-                <div class="otherOperation">
-                    <ul>
-                        <li>
-                            <div>购买数量</div>
-                            <span>
+        <div class="stillOwedTitle" ng-if="shopUserProjectRelationDTOS.length>0">项目</div>
+        <div ng-repeat="item in shopUserProjectRelationDTOS">
+            <ul class="stillOwedContent">
+                <li>
+                    <div class="contentBox">
+                        <span class="name">{{item.sysShopProjectName}}</span>
+                        <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}.00</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
+                        <label for="" class="discountPrice">折扣价 ¥</label>
+                        <input ng-change="myChangeFn()" type="text" ng-model="item.sysShopProjectInitAmount" ng-value="item.sysShopProjectInitAmount*item.discount">
+                        <!-- <label for="" class="serviceTimes">服务次数</label>
+                        <input type="text">-->
+                        <div class="delete" ng-click="deleteClick(goodsType.timeCard,item)">删除</div>
+                    </div>
+                    <div class="otherOperation">
+                        <ul>
+                            <li>
+                                <div>购买数量</div>
+                                <span>
                                 <b ng-click="goodsSub(goodsType.project,$index)">-</b>
                                 <input  ng-change="myChangeFn()" type="text" value="" ng-model="item.sysShopProjectInitTimes">
                                 <b ng-click="goodsInc(goodsType.project,$index)">+</b>
                             </span>
-                        </li>
-                        <li>
+                            </li>
+                            <li>
                             <span class="subtotal xiaoji">
                                 <e style="float: left">小计¥{{(item.sysShopProjectInitAmount*item.discount*item.sysShopProjectInitTimes)|number:2}}</e>
                                 <input readonly >
                             </span>
-                        </li>
-                        <li ng-click="goHousekeeper('project',$index,item.sysClerkId,item.sysClerkName)">
-                            <div>关联员工</div>
-                            <span>
+                            </li>
+                            <li ng-click="goHousekeeper('project',$index)">
+                                <div>关联员工</div>
+                                <span>
                                 <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 ></span>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="stillOwedTitle">备注</div>
+        <textarea name="" rows="10"></textarea>
+        <span class="allPrice">{{orderPrice}}</span>
+        <button ng-click="goOrderListm()">确认</button>
+    </div>
+    <div ng-if="housekeeperFlag" class="housekeeper">
+        <ul class="sourcesUl">
+            <li ng-repeat="item in UserList" ng-click="housekeeperCheck($index,item.id,item.name)">
+                <div>
+                    <!--check-->
+                    <b class="checkRadio" ng-class="{check:userIdList.indexOf(item.id)!= -1}"></b>{{item.name}}({{item.mobile}}）
                 </div>
             </li>
         </ul>
     </div>
-
-    <div class="stillOwedTitle">备注</div>
-    <textarea name="" rows="10"></textarea>
-    <span class="allPrice">{{orderPrice}}</span>
-    <button ng-click="goOrderListm()">确认</button>
 </div>
+
+

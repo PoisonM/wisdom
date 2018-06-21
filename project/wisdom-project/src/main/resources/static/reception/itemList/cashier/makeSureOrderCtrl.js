@@ -1,10 +1,12 @@
-PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, $state, ngDialog, Archives, SaveShopUserOrderInfo, GetShopUserRecentlyOrderInfo, UpdateVirtualGoodsOrderInfo, UpdateShopUserOrderInfo) {
+PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, $state
+    , ngDialog, Archives, SaveShopUserOrderInfo, GetShopUserRecentlyOrderInfo
+    , UpdateVirtualGoodsOrderInfo, UpdateShopUserOrderInfo,GetShopClerkList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
-    $scope.$parent.$parent.param.headerCash.leftTip = "添加更多";
+    $scope.$parent.$parent.param.headerCash.leftTip = "保存";
     $scope.$parent.$parent.param.headerCash.title = "消费"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
@@ -27,27 +29,11 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
     $scope.staffListNames = $rootScope.staffListNames//关联员工
     $scope.staffListIds = $rootScope.staffListIds
+    $scope.housekeeperFlag = false
 
     $scope.car = 1;
-    $scope.$parent.$parent.leftTipFn = function() {
-        $state.go('pad-web.consumptionList');
-    }
 
-    //回显关联员工
-    // $scope.projectGroupRelRelationDTOSPeople= $rootScope.projectGroupRelRelationDTOSTemp
-    // $scope.shopUserProductRelationDTOSPeople= $rootScope.shopUserProductRelationDTOSTemp
-    // $scope.shopUserProjectRelationDTOSPeople= $rootScope.shopUserProjectRelationDTOSTemp
 
-    $scope.goHousekeeper = function(type,index,clerkIds,clerkNames) {
-        $state.go('pad-web.left_nav.housekeeper',{
-            type:type,
-            index:index,
-            orderId:$scope.orderId,
-            tempAll:$scope.tempAll,
-            clerkIds:clerkIds,
-            clerkNames:clerkNames
-        })
-    }
     $scope.goOrderListm = function() {
         if($scope.orderPrice == 0){
             alert("未选择产品或项目")
@@ -60,7 +46,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
             shopUserProjectRelationDTOS: $scope.shopUserProjectRelationDTOS,//项目
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
-            orderPrice: $scope.tempAll, //总金额
+            orderPrice: $scope.orderPrice, //总金额
             sysClerkId:"",
             sysClerkName:""
         }
@@ -189,5 +175,58 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-2)
+    }
+
+
+
+
+    //获取员工列表
+    GetShopClerkList.get({
+        pageNo: "1",
+        pageSize: "100"
+    }, function(data) {
+        if (data.result == "0x00001") {
+            $scope.UserList = data.responseData
+        }
+    })
+
+    $scope.userIdList = []
+    $scope.userNameList = []
+    $scope.housekeeperCheck = function (index,userId,name) {
+        if($scope.userIdList.indexOf(userId) != -1){
+            $scope.userIdList.remove(userId)
+            $scope.userNameList.remove(name)
+        }else {
+            $scope.userIdList.push(userId)
+            $scope.userNameList.push(name)
+        }
+    }
+
+
+    $scope.goHousekeeper = function(type,index) {
+        $scope.housekeeperFlag = true;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = false;
+        $scope.paramType = type
+        $scope.paramIndex = index
+
+    }
+
+    //保存关联员工
+    $scope.$parent.$parent.leftTipFn = function() {
+        $scope.housekeeperFlag = false
+        if($scope.paramType == "group"){
+            $scope.projectGroupRelRelationDTOS[$scope.paramIndex].sysClerkId = $scope.userIdList.join(";")
+            $scope.projectGroupRelRelationDTOS[$scope.paramIndex].sysClerkName = $scope.userNameList.join(";")
+        }else if($scope.paramType == "product"){
+            $scope.shopUserProductRelationDTOS[$scope.paramIndex].sysClerkId = $scope.userIdList.join(";")
+            $scope.shopUserProductRelationDTOS[$scope.paramIndex].sysClerkName = $scope.userNameList.join(";")
+        }else if($scope.paramType == "project"){
+            $scope.shopUserProjectRelationDTOS[$scope.paramIndex].sysClerkId = $scope.userIdList.join(";")
+            $scope.shopUserProjectRelationDTOS[$scope.paramIndex].sysClerkName = $scope.userNameList.join(";")
+        }
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+        $scope.userIdList = []
+        $scope.userNameList = []
     }
 });
