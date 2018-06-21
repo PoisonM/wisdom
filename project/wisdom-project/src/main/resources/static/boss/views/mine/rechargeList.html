@@ -1,7 +1,7 @@
 <ion-view class="bg">
     <ion-content>
         <div class="list">
-            <ion-item  class="row " ng-repeat="item in rechargeList" ng-click="editedRechargeGo(item.id)">
+            <ion-item  class="row " ng-repeat="item in rechargeList" ng-click="editedRechargeGo(item.id)" ng-if="item.rechargeCardType !='0'">
                 <div class="col col-25" style="line-height: 49px;background: url('{{item.imageUrl}}');background-size: contain;background-position: center center;background-repeat: no-repeat" >
 
                 </div>

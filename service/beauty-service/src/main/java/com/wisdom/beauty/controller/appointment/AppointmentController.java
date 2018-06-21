@@ -271,6 +271,7 @@ public class AppointmentController {
 			SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(extShopAppointServiceDTO.getSysClerkId());
 			extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
 			extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
+			extShopAppointServiceDTO.setAppointStartTimeS(DateUtils.DateToStr(extShopAppointServiceDTO.getAppointStartTime(), "time"));
 			extShopAppointServiceDTO.setAppointEndTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getAppointEndTime(), "datetime"));
 			extShopAppointServiceDTO.setClerkImage(sysClerkDTO.getPhoto());
 			String[] split = extShopAppointServiceDTO.getShopProjectId().split(";");

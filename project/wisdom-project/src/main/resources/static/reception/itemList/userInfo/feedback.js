@@ -1,4 +1,4 @@
-PADWeb.controller('feedbackCtrl', function($scope, $stateParams,SuggestionDetail) {
+PADWeb.controller('feedbackCtrl', function($scope,$state, $stateParams,SuggestionDetail) {
 
     /*-------------------------------------------定义头部信息----------------------------------------------*/
     $scope.$parent.param.headerCash.title="意见反馈"
@@ -21,6 +21,7 @@ PADWeb.controller('feedbackCtrl', function($scope, $stateParams,SuggestionDetail
                 if('0x00001'==data.result)
                 {
                     alert("提交成功");
+                    $state.go("pad-web.userInfo.todayPerformance")
                 }
             })
         }else{

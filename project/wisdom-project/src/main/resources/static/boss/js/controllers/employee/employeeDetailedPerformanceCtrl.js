@@ -8,7 +8,7 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
             $rootScope.title = "业绩明细";
             $scope.flag = false;
             $scope.param={
-                flag:false
+                flag:false/*空白页面的显示*/
             };
             $scope.userConsumeRequest = {
                 pageSize:1000,
@@ -58,6 +58,10 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                         if($scope.list[i].type==type){
                             $scope.detailedPerformance.push($scope.list[i])
                         }
+                    }
+                    if( $scope.detailedPerformance.length<=0){
+                        $scope.param.flag=true;
+                        console.log(2);
                     }
                 }else{
                     $scope.detailedPerformance=$scope.list

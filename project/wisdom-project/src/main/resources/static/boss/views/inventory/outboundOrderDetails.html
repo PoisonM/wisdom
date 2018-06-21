@@ -30,6 +30,10 @@
                     <span class="col col-75 fs14 col333">{{param.shopOutboundDetails.applayUser}}</span>
                 </p>
                 <p class="row">
+                    <span class="col col-30 fs14 col888">人</span>
+                    <span class="col col-75 fs14 col333">{{param.shopOutboundDetails.applayUser}}</span>
+                </p>
+                <p class="row">
                     <span class="col col-30 fs14 col888">状态</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockStatus=='5'">已入库</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockStatus=='6'">已出库</span>
@@ -47,7 +51,7 @@
                     <ion-item style="height:90px;border-radius:6px 6px 0 0" class="sb">
                         <div style="display: flex">
                             <p style="height:70px;border:solid 1px #f6f6f6;width:75px;" class="mt10 ml10">
-                                <img ng-src="{{item.imageUrl}}">
+                                <img style="height:70px;width:75px;" ng-src="{{item.imageUrl[0]}}">
                             </p>
                             <div class="ml10 mt10">
                                 <P class="fs14 col333 ">{{item.shopProcName}}</P>

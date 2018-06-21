@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('canceledCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
-                flag:false
+                picFlag:false
             }
             $scope.param.date=$stateParams.date;
 
@@ -78,13 +78,13 @@ angular.module('controllers',[]).controller('canceledCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.canceled = data.responseData
-                        $scope.param.flag=false;
+                        $scope.param.picFlag=false;
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else {
                         $ionicLoading.hide();
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                     }
                 })
             }

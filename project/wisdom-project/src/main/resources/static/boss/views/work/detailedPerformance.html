@@ -1,6 +1,6 @@
 <ion-view class="bg">
     <ion-content delegate-handle="dashboard" srcoll='false' >
-        <div ng-show="!param.flag">
+        <div ng-show="!param.picFlag" ng-class="{'hidden':param.flag==true}">
             <!--消费 充值 还欠款-->
             <div class="list"  >
                 <p class="item p8 fs15" ng-repeat="item in detailedPerformance track by $index" ng-click="expenditureDetailsGo(item.flowNo)">
@@ -38,8 +38,6 @@
                 </div>
             </div>
         </div>
-        <div style="width:100%;height:100%" ng-show="param.flag">
-            <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
-        </div>
+        <void-pic></void-pic>
     </ion-content>
 </ion-view>

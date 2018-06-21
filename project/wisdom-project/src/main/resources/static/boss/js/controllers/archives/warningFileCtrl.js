@@ -3,9 +3,6 @@ angular.module('controllers',[]).controller('warningFileCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetEarlyWarningList,Global) {
             $rootScope.title = "预警档案";
             $scope.queryType = "one";
-
-
-
             $scope.chooseTab = function(type){
                 $scope.queryType = type;
                 $scope.getInfo()
@@ -26,17 +23,20 @@ angular.module('controllers',[]).controller('warningFileCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide()
                         $scope.warningFile = data.responseData
+                        $scope.param.picFlag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else if(data.result==Global.SUCCESS&&data.responseData==null){
+                        $ionicLoading.hide();
+                        $scope.param.picFlag=true;
                     }
                 })
             };
             $scope.$on('$ionicView.enter', function() {
-                $ionicLoading.show({
-                    content: 'Loading',
-                    animation: 'fade-in',
-                    showBackdrop: true,
-                    maxWidth: 200,
-                    showDelay: 0
-                });
+                $scope.param={
+                    picFlag:false
+                }
                 $scope.getInfo()
             })
 

@@ -24,8 +24,8 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                     });
                     GetShopCustomerArriveList.get({
                         condition: $scope.param.current,
-                        startTime: $scope.param.date + ' 00:00:00',
-                        endTime: $scope.param.date + ' 23:59:59',
+                        startTime: $scope.param.date.replace(/(^\s*)|(\s*$)/g, "") + ' 00:00:00',
+                        endTime: $scope.param.date.replace(/(^\s*)|(\s*$)/g, "") + ' 23:59:59',
                         sysShopId: $stateParams.sysShopId
                     }, function (data) {
                         $scope.beautyBranch = data.responseData

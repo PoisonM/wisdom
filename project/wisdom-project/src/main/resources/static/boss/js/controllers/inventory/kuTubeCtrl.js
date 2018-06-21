@@ -59,7 +59,9 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                         key++;
                     })
                 } else {
-                    if($scope.param.ids.length>=3)return
+                    $scope.param.ids = [];
+                    $scope.param.names =[];
+                    if($scope.param.ids.length>=1)return
                     $scope.param.ids.push(domIndex);
                     $scope.param.names.push(name);
                 }

@@ -33,7 +33,6 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                     $scope.param.type = type;
                     if(!$scope.param.multiSelectFlag){
                        GetShopProductLevelInfo.get({productType:type},function(data){
-
                            $scope.param.oneLevelList = data.responseData.oneLevelList;
                            $scope.param.selectProductTypeOneId = $scope.param.oneLevelList[0].productTypeOneId;
                            $scope.param.twoLevelList = data.responseData.twoLevelList;

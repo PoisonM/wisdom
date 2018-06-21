@@ -2,13 +2,7 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetClerkInfoList','Global','GetBossShopList','GetClerkBySearchFile',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetClerkInfoList,Global,GetBossShopList,GetClerkBySearchFile) {
             $rootScope.title = "添加家人";
-            $scope.param={
-                index:0,
-                flag:false,
-                sysShopId:'',
-                searchFile:''
 
-            };
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -17,6 +11,13 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+                $scope.param={
+                    index:0,
+                    flag:false,
+                    sysShopId:'',
+                    searchFile:''
+
+                };
                 $scope.getInfo()
             })
             $scope.getInfo=function(){

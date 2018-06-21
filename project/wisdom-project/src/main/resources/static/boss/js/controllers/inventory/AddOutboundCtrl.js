@@ -74,7 +74,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
             $scope.successfulInventoryGo = function(){
                 if($scope.sum>0){
                     angular.forEach($scope.param.shopStock,function (val,index) {
-                       val.receiver = $scope.param.outOperationName;
+                       val.receiver = $scope.param.outOperationVal;
                        val.detail = $scope.param.detail;
                     });
                     var list=$scope.param.shopStock;
