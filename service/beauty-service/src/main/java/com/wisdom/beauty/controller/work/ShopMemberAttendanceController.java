@@ -213,8 +213,7 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponse = shopStatisticsAnalysisService
-				.getClerkExpenditureAndIncomeList(pageParamVoDTO);
+		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponse = shopStatisticsAnalysisService.getClerkAchievementList(pageParamVoDTO);
 
 		ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
 		response.setResponseData(expenditureAndIncomeResponse);

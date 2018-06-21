@@ -90,15 +90,6 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/25 14:54
      */
     BigDecimal getShopConsumeAndRecharge(String shopId, String goodType, String consumeType, Boolean isCardConsume, Date startDate, Date endDate);
-
-    /**
-     * @Author:zhanghuan
-     * @Param:
-     * @Return:
-     * @Description: 查看全部家人中店员信息和业绩情况
-     * @Date:2018/4/25 19:21
-     */
-    List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
     /**
     *@Author:zhanghuan
     *@Param:

@@ -414,78 +414,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 
 		return bigDecimal;
 	}
-
-	@Override
-	public List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(
-			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
-		UserConsumeRequestDTO userConsumeRequest = pageParamVoDTO.getRequestData();
-		ResponseDTO<List<SysClerkDTO>> listResponseDTO = userServiceClient.getClerkInfoList(
-				userConsumeRequest.getSysBossCode(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime(),
-				pageParamVoDTO.getPageSize());
-		List<SysClerkDTO> sysClerkList = listResponseDTO.getResponseData();
-		if (CollectionUtils.isEmpty(sysClerkList)) {
-			logger.info("查询店员的结果为空");
-			return null;
-		}
-		// 通过用户美容院id查询出来消费记录
-		List<ExpenditureAndIncomeResponseDTO> incomeResponse = this.getIncomeList(pageParamVoDTO);
-		// 计算业绩
-		Map<String, ExpenditureAndIncomeResponseDTO> map = new HashMap<>(16);
-		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
-		// 循环消费记录，将店员id作为key值
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse : incomeResponse) {
-			if (map.get(expenditureAndIncomeResponse.getSysShopClerkId()) == null) {
-				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncomeResponseDTO);
-			} else {
-				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map
-						.get(expenditureAndIncomeResponse.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getTotalPrice()
-						.add(expenditureAndIncomeResponse.getTotalPrice());
-				expenditureAndIncome.setIncome(prices);
-				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncome);
-			}
-		}
-		// 耗卡
-		List<ExpenditureAndIncomeResponseDTO> list2 = this.getExpenditureList(pageParamVoDTO);
-		if (CollectionUtils.isEmpty(list2)) {
-			logger.info("list结果为空");
-			return null;
-		}
-
-		Map<String, ExpenditureAndIncomeResponseDTO> map2 = new HashMap<>(16);
-		for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse : list2) {
-			if (map2.get(expenditureAndIncomeResponse.getSysShopClerkId()) == null) {
-				map2.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncomeResponse);
-			} else {
-				ExpenditureAndIncomeResponseDTO expenditureAndIncome = map2
-						.get(expenditureAndIncomeResponse.getSysShopClerkId());
-				BigDecimal prices = expenditureAndIncome.getTotalPrice()
-						.add(expenditureAndIncomeResponse.getTotalPrice());
-				expenditureAndIncome.setExpenditure(prices);
-				map.put(expenditureAndIncomeResponse.getSysShopClerkId(), expenditureAndIncome);
-			}
-
-		}
-		// 循环店员集合
-		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponses = new ArrayList<>();
-		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = null;
-		for (SysClerkDTO sysClerkDTO : sysClerkList) {
-			expenditureAndIncomeResponse = new ExpenditureAndIncomeResponseDTO();
-			if (map.get(sysClerkDTO.getId()) != null) {
-				expenditureAndIncomeResponse.setIncome(map.get(sysClerkDTO.getId()).getIncome());
-			}
-			if (map2.get(sysClerkDTO.getId()) != null) {
-				expenditureAndIncomeResponse.setExpenditure(map2.get(sysClerkDTO.getId()).getExpenditure());
-			}
-			expenditureAndIncomeResponse.setPhoto(sysClerkDTO.getPhoto());
-			expenditureAndIncomeResponse.setSysShopClerkName(sysClerkDTO.getName());
-			expenditureAndIncomeResponse.setRole(sysClerkDTO.getRole());
-			expenditureAndIncomeResponse.setSysShopClerkId(sysClerkDTO.getId());
-			expenditureAndIncomeResponses.add(expenditureAndIncomeResponse);
-		}
-		return expenditureAndIncomeResponses;
-	}
-
 	/**
 	 * @Author:zhanghuan
 	 * @Param:
@@ -737,17 +665,21 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		// 根据多个clerkId查询
 		ResponseDTO<List<SysClerkDTO>> responseDTO = userServiceClient.getClerkInfoListByClerkIds(clerkIds);
-		Map<String, String> clerkMap = new HashMap<>();
+		Map<String, SysClerkDTO> clerkMap = new HashMap<>();
 		if (responseDTO != null && CollectionUtils.isNotEmpty(responseDTO.getResponseData())) {
 			for (SysClerkDTO sysClerkDTO : responseDTO.getResponseData()) {
-				clerkMap.put(sysClerkDTO.getId(), sysClerkDTO.getName());
+				clerkMap.put(sysClerkDTO.getId(), sysClerkDTO);
 			}
 		}
 		// 遍历map
 		List<ExpenditureAndIncomeResponseDTO> reponseList = new ArrayList<>();
 		for (Map.Entry<String, ExpenditureAndIncomeResponseDTO> entry : map.entrySet()) {
 			ExpenditureAndIncomeResponseDTO dto = entry.getValue();
-			dto.setSysShopClerkName(clerkMap.get(dto.getSysShopClerkId()));
+			if(clerkMap.get(dto.getSysShopClerkId())!=null){
+				dto.setSysShopClerkName(clerkMap.get(dto.getSysShopClerkId()).getName());
+				dto.setRole(clerkMap.get(dto.getSysShopClerkId()).getRole());
+				dto.setPhoto(clerkMap.get(dto.getSysShopClerkId()).getPhoto());
+			}
 			reponseList.add(dto);
 		}
 		return reponseList;
