@@ -1916,7 +1916,7 @@ define(['appBoss'], function(app){
                     })
                 /* newLibrary  新增入库*/
                     .state('newLibrary', {
-                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name',
+                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newLibraryCtrl',
                         resolve: {

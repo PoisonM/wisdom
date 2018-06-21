@@ -542,4 +542,19 @@ define(['appBoss'], function (app) {
         }])
 
 
+        //获取产品详细信息根据扫描编码
+        .factory('GetProductInfoByScanCode',['$resource',function ($resource){
+            return $resource(productInfo + "getProductInfoByScanCode")
+        }])
+
+
+        //获取产品详细信息根据扫描编码
+        .factory('GetProductInfo',['$resource',function ($resource){
+            return $resource(productInfo + "getProductInfo")
+        }])
+
+
+
+
+
 });
