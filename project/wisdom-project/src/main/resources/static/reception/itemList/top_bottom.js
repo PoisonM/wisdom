@@ -30,7 +30,7 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
         project:'8'
     }
     //支付方式
-    $rootScope.goodsType = {
+    $rootScope.payType = {
         weChatPay : "0",
         aliPay :'1',
         bankPay :"2",
