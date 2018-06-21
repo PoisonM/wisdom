@@ -234,8 +234,10 @@ public class ShopMemberAttendanceController {
 	 */
 	@RequestMapping(value = "/getBossPerformanceList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String searchFile,
-			@RequestParam String sysShopId, int pageSize) {
+	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String startTime,
+																			 @RequestParam String endTime,
+																			 @RequestParam String searchFile,
+																			 @RequestParam String sysShopId, int pageSize) {
 		ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
 
 		shopClerkWorkRecordRequestDTO.setSysShopId(sysShopId);
@@ -279,7 +281,8 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setPageSize(pageSize);
-
+		pageParamVoDTO.setStartTime(startTime);
+		pageParamVoDTO.setEndTime(endTime);
 		List<ShopClerkWorkRecordResponseDTO> shopClerkWorkRecordResponseDTOs = shopClerkWorkService
 				.getShopCustomerConsumeRecordList(pageParamVoDTO);
 
