@@ -721,33 +721,31 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 GetAppointmentInfoById.get({
                     shopAppointServiceId: $scope.appointmentId
                 }, function (data) {
-                    $scope.param.newProductObject.shopProjectId = data.responseData.shopProjectId,
-                    $scope.param.ModifyAppointmentObject.appointStartTime = data.responseData.appointStartTime,
-                    $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName,
-                    $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod,
-                    $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
-                    $scope.param.ModifyAppointmentObject.beauticianId = data.responseData.sysClerkId
-                    $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId
-                    $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName
-                    $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName
-                    $scope.param.checkprojectId = data.responseData.shopProjectId+";",
-                    $scope.param.checkprojectName = data.responseData.shopProjectName,
-                    $scope.param.checkprojectDuration = data.responseData.appointPeriod,
-                    $scope.param.ModifyAppointmentObject.detail = data.responseData.detail
+                    $scope.param.newProductObject.shopProjectId = data.responseData.shopProjectId;
+                    $scope.param.newProductObject.shopProjectName = data.responseData.shopProjectName;
+                    $scope.param.ModifyAppointmentObject.appointPeriod = data.responseData.appointPeriod;
+                    $scope.param.ModifyAppointmentObject.detail = data.responseData.detail;
+                    $scope.param.ModifyAppointmentObject.beauticianId = data.responseData.sysClerkId;
+                    $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId;
+                    $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName;
+                    $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName;
+                    $scope.param.checkprojectId = data.responseData.shopProjectId+";";
+                    $scope.param.checkprojectName = data.responseData.shopProjectName;
+                    $scope.param.checkprojectDuration = data.responseData.appointPeriod;
+                    $scope.param.ModifyAppointmentObject.detail = data.responseData.detail;
                     $scope.param.tempRedgArr = data.responseData.shopProjectId.split(";");
                     $scope.param.checkProjectArr = data.responseData.shopProjectInfoDTOS;
-
                     $scope.chooseTime=0
                     for (var i = 0; i < $scope.param.timeCode.length; i++) {
                         for (timeItem in $scope.param.timeCode[i]) {
                             var index =0;
                             index++;
-                            var time = data.responseData.appointStartTimeS.substr(11,17);
-                            if(time == timeItem){
+                            if(data.responseData.appointStartTimeS == timeItem){
                                 $scope.chooseTime=$scope.param.timeCode[i][timeItem];
                             }
                         }
                      }
+                    $scope.param.ModifyAppointmentObject.appointStartTime = data.responseData.appointStartTimeS;
                     // console.log($scope.param.chooseTimeList)
                     // console.log($scope.param.theOtherCode)
                     // $scope.param.dayTime=[];
