@@ -122,6 +122,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
              });
             $scope.selType = function (type) {
                 $scope.param.selType = type;
+                alert(type);
                 if(type=='1'){
                     //扫码入库
                     wx.scanQRCode({
