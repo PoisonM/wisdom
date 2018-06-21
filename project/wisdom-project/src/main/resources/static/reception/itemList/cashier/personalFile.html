@@ -58,12 +58,15 @@
                         <span class="prepaidCardTAName">充值金额：
                             <b>￥{{item2.initAmount==null?0:item2.initAmount}}</b>
                         </span>
-                        </br>
-                        <span >单次：{{item2.timeDiscount=='1'?'无折扣':item2.timeDiscount}}折||
-                            疗程卡：{{item2.periodDiscount=='1'?'无折扣':item2.periodDiscount}}折||
-                            单次：{{item2.productDiscount=='1'?'无折扣':item2.productDiscount}}折</span>
-                        </br>
-                        <span>充值时间：￥{{item2.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                        <div class="prepaidCardDiscount">
+                            <e>单次：{{item2.timeDiscount=='1'?'无折扣':item2.timeDiscount*10+'折'}}</e>
+                            <e>疗程卡：{{item2.periodDiscount=='1'?'无折扣':item2.periodDiscount*10+'折'}}</e>
+                            <e>单次：{{item2.productDiscount=='1'?'无折扣':item2.productDiscount*10+'折'}}</e>
+
+                        </div>
+                        <div class="prepaidCardTime">
+                            <e>充值时间：￥{{item2.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</e>
+                        </div>
                     </div>
                     <!--<div class="prepaidCardNote clearfix">
                         <span>备注：</span>
