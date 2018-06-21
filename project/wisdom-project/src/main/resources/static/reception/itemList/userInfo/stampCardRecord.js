@@ -1,4 +1,4 @@
-PADWeb.controller('stampCardRecordCtrl', function($scope, $stateParams, ngDialog,Consumes) {
+PADWeb.controller('stampCardRecordCtrl', function($scope,$state, $stateParams, ngDialog,Consumes) {
     /*-------------------------------------------定义头部信息----------------------------------------------*/
     $scope.$parent.$parent.param.headerCash.title="划卡记录"
     $scope.$parent.$parent.param.headerCash.backContent = "今日收银记录"
@@ -14,5 +14,11 @@ PADWeb.controller('stampCardRecordCtrl', function($scope, $stateParams, ngDialog
         $scope.dataList = data.responseData;
         console.log($scope.dataList);
     })
+    $scope.goDrawCardRecordsDetail = function (flowNo,sysUserId) {
+        $state.go("pad-web.left_nav.drawCardRecordsDetail",{
+            userId:sysUserId,
+            flowNo:flowNo
+        })
+    }
 
 });
