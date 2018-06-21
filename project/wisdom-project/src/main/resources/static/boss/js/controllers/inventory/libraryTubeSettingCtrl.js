@@ -7,11 +7,10 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
             $scope.warehousePeopleGo = function () {
                 $state.go('warehousePeople')
             };
+
             $scope.param = {
                id:$stateParams.shopStoreId
             }
-            console.log( $scope.param.id)
-
             FindStoreList.get({},function(data){
 
                 if(data.result =="0x00001"){
@@ -44,10 +43,8 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
             $scope.kuTube();
 
             $scope.save = function () {
-
-
                 var setStorekeeperRequestDTO = {
-                    shopStoreId:$scope.param.id,
+                    shopStoreId:$stateParams.shopStoreId,
                     storeManagerIds:$stateParams.ids.split(','),
                     storeManagerNames:$stateParams.names.split(',')
                 }
@@ -55,6 +52,7 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                     if(data.result=="0x00001"){
                         alert("更新成功");
                         $state.go("chooseWarehouse");
+
                     }else{
                         alert("更新失败");
                         $state.reload('app.toMenu');
