@@ -407,7 +407,7 @@ public class ProductController {
      *
      * @return
      * */
-    @RequestMapping(value = "/getProductInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
     @ResponseBody
     ResponseDTO<Object> getProductInfo(@RequestBody ShopProductInfoDTO shopProductInfoDTO) {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
