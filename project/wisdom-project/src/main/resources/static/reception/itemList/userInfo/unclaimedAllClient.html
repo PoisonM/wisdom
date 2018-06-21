@@ -3,20 +3,20 @@
         <table>
             <thead>
                 <tr>
-                    <td>名称</td>
-                    <td>品牌</td>
-                    <td>系列</td>
-                    <td>规格</td>
+                    <td>时间</td>
+                    <td>顾客</td>
+                    <td>店面</td>
+                    <td>产品</td>
                     <td class="lastCol">数量</td>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="item in dataList">
-                    <td>{{item.productName}}</td>
-                    <td>{{item.productTypeOneName}}</td>
-                    <td>{{item.productTypeTwoName}}</td>
-                    <td>{{item.productSpec}}</td>
-                    <td class="lastCol">{{item.waitReceiveNumber}}</td>
+                    <td>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{item.sysUserName}}</td>
+                    <td>{{item.sysShopName}}</td>
+                    <td>{{item.title}}</td>
+                    <td class="lastCol">{{item.consumeNumber}}</td>
                 </tr>
             </tbody>
         </table>
