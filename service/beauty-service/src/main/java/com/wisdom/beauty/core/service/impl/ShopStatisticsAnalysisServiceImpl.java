@@ -918,6 +918,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				numberC.andCreateDateBetween(startTime, endTime);
 			}
 			numberC.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
+			numberC.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
 			// 根据时间排序，降序
 			numberCriteria.setOrderByClause("create_date  desc");
 			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(numberCriteria);
@@ -942,6 +943,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 				timeC.andCreateDateBetween(startTime, endTime);
 			}
+			timeC.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
 			timeC.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(timeCriteria);
 
