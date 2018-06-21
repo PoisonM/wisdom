@@ -2,7 +2,6 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
@@ -13,6 +12,7 @@ import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
@@ -26,6 +26,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -372,7 +373,8 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             relationDTO.setShopProjectGroupId(groupId);
             relationDTO.setShopProjectInfoId(shopProjectInfoDTO.getId());
             relationDTO.setShopProjectInfoName(shopProjectInfoDTO.getProjectName());
-            relationDTO.setShopProjectPrice(shopProjectInfoDTO.getMarketPrice());
+            //每个项目的价格 = 套卡的折扣价格/项目的数量
+            relationDTO.setShopProjectPrice(extShopProjectGroupDTO.getDiscountPrice().divide(new BigDecimal(shopProjectIds.size())));
             relationDTO.setShopProjectServiceTimes(shopProjectInfoDTO.getServiceTimes());
             shopProjectInfoGroupRelationMapper.insertSelective(relationDTO);
         }

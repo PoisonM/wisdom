@@ -29,20 +29,20 @@
     </ul>
     <div class="orderListTitle">其他支付方式</div>
     <ul class="orderListUl mt10">
-        <li ng-click="checkBoxChek(0)">
-            <div class="checkBox" ng-class="{bgF6:(payType===0)}">
+        <li ng-click="checkBoxCheck(rootScopePayType.bankPay)">
+            <div class="checkBox" ng-class="{bgF6:(payType===rootScopePayType.bankPay)}">
                 <img src="images/checkImg.png" alt="">
             </div>
             <div>银联支付</div>
         </li>
-        <li ng-click="checkBoxChek(1)">
-            <div class="checkBox" ng-class="{bgF6:(payType===1)}">
+        <li ng-click="checkBoxCheck(rootScopePayType.weChatPay)">
+            <div class="checkBox" ng-class="{bgF6:(payType===rootScopePayType.weChatPay)}">
                 <img src="images/checkImg.png" alt="">
             </div>
             <div>微信支付</div>
         </li>
-        <li ng-click="checkBoxChek(2)">
-            <div class="checkBox" ng-class="{bgF6:(payType===2)}">
+        <li ng-click="checkBoxCheck(rootScopePayType.aliPay)">
+            <div class="checkBox" ng-class="{bgF6:(payType===rootScopePayType.aliPay)}">
                 <img src="images/checkImg.png" alt="">
             </div>
             <div>支付宝支付</div>

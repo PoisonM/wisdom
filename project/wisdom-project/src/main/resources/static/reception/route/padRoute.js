@@ -506,7 +506,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "划卡消费",
                         files: [root + "cashier/drawCardConsumptionCtrl.js?version=" + version,
                             root + "cashier/drawCardConsumption.css?version=" + version,
-                            root + "appointment/style.css?version=" + version,
+                            // root + "appointment/style.css?version=" + version,
                             root + "cashier/flashcanvas.min.js?version=" + version,
                             root + "cashier/jSignature.min.js?version=" + version,
                             root + "cashier/flashcanvas.swf?version=" + version,
