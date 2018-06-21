@@ -76,8 +76,13 @@ PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $s
             imageStr: $("#signConfirmRight").jSignature("getData")
         }, function(data) {
             $scope.shopUserConsumeDTO.imageUrl = data.responseData;
-            $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
-            $scope.shopUserConsumeDTO.sysClerkName = $scope.staffListNames.join(";");
+            if($scope.staffListIds == undefined){
+                $scope.shopUserConsumeDTO.sysClerkId.sysClerkId = "";
+                $scope.shopUserConsumeDTO.sysClerkName = ""
+            }else {
+                $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
+                $scope.shopUserConsumeDTO.sysClerkName = $scope.staffListNames.join(";");
+            }
             ConsumesUserProduct.save(
                 $scope.shopUserConsumeDTO
                 , function(data) {
