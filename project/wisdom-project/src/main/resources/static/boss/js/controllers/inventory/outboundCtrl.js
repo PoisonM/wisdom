@@ -151,18 +151,15 @@ angular.module('controllers',[]).controller('outboundCtrl',
             $scope.selProduct = function (domIndex,id) {
                 if($scope.sum<30){
                     $rootScope.shopInfo.entryShopProductList = [];
-                    if($scope.param.type=='0')
-                    {
+
+                    if($scope.param.type=='0'){
                         $scope.param.selectProductList = '客装产品';
-                    }
-                    else if($scope.param.type=='1')
-                    {
+                    } else if($scope.param.type=='1'){
                         $scope.param.selectProductList = '院装产品';
-                    }
-                    else if($scope.param.type=='2')
-                    {
+                    } else if($scope.param.type=='2'){
                         $scope.param.selectProductList = '易耗品';
                     }
+
                     if ($scope.param.indexs.indexOf(domIndex) != -1) {
                         var key = 0;
                         angular.forEach($scope.param.indexs, function (val, index) {
@@ -176,7 +173,9 @@ angular.module('controllers',[]).controller('outboundCtrl',
                         $scope.param.indexs.push(domIndex);
                         $scope.param.ids.push(id);
                     }
+
                     var key1 = 0;
+
                     angular.forEach($scope.param.indexs,function (val,index) {
                         angular.forEach($scope.param.detailProductList,function (val1,index1) {
                             if(val==index1)
@@ -225,6 +224,8 @@ angular.module('controllers',[]).controller('outboundCtrl',
             }
 
             $scope.chooseProductList = function (productTypeTwoId) {
+                $scope.param.indexs = [];
+                $scope.param.ids=[];
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;

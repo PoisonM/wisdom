@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.enums.ExtCardTypeEnum;
 import com.wisdom.beauty.api.enums.IsUseUpEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
@@ -91,7 +92,7 @@ public class ProjectController {
 				shopUserProjectRelationDTO = projectList.get(0);
 			}
 
-			if(CardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
+			if(ExtCardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
 				consume.add(shopUserProjectRelationDTO);
 			}else{
 				punchCard.add(shopUserProjectRelationDTO);
@@ -121,7 +122,7 @@ public class ProjectController {
 		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
 		extShopProjectInfoDTO.setSysShopId(sysShopId);
 		extShopProjectInfoDTO.setProjectName(filterStr);
-		if (StringUtils.isNotBlank(useStyle) && (!CardTypeEnum.ALL.getCode().equals(useStyle))) {
+		if (StringUtils.isNotBlank(useStyle) && (!ExtCardTypeEnum.ALL.getCode().equals(useStyle))) {
 			extShopProjectInfoDTO.setUseStyle(useStyle);
 		}
 
@@ -660,8 +661,8 @@ public class ProjectController {
 		}
 		extShopProjectInfoDTO.setSysShopId(bossInfo.getCurrentShopId());
 		extShopProjectInfoDTO.setCreateDate(new Date());
-		if (!CardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
-			extShopProjectInfoDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
+		if (!ExtCardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
+			extShopProjectInfoDTO.setUseStyle(ExtCardTypeEnum.TREATMENT_CARD.getCode());
 		}
 		extShopProjectInfoDTO.setMarketPrice(
 				extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
