@@ -1,6 +1,5 @@
 package com.wisdom.beauty.core.service;
 
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -16,15 +15,6 @@ import java.util.List;
  * Description: 用户消费相关
  */
 public interface ShopUserConsumeService {
-
-
-    /**
-     * 用户消费充值卡信息
-     *
-     * @param userRechargeCardDTO
-     * @return
-     */
-    int userConsumeRechargeCard(ShopUserRechargeCardDTO userRechargeCardDTO);
 
     /**
      * 用户充值操作

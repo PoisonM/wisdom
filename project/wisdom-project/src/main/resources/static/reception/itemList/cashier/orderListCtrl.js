@@ -91,8 +91,23 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             }
             rechargePrice = Number(date.consumePrice) + rechargePrice;
         })
+        //计算余额支付
+        $scope.balancePay = $scope.responseData.orderPrice - rechargePrice;
         //计算剩余支付
-        $scope.surplusPrice = $scope.responseData.orderPrice - (parseInt($scope.balancePay) + parseInt($scope.cashPayPrice)) - rechargePrice;
+        $scope.surplusPrice = $scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice;
+    }
+
+    $scope.changeBalance = function () {
+        //计算充值卡抵扣的总金额
+        var rechargePrice = 0;
+        angular.forEach($scope.responseData.userPayRechargeCardList,function (date) {
+            if (!(/(^[0-9]\d*$)/.test(date.consumePrice))) {
+                alert('输入的不是正整数');
+            }
+            rechargePrice = Number(date.consumePrice) + rechargePrice;
+        })
+        //计算剩余支付
+        $scope.surplusPrice = $scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice;
     }
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
