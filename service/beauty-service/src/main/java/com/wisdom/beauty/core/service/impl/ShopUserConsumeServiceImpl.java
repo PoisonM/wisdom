@@ -3,10 +3,7 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.*;
-import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
-import com.wisdom.beauty.api.extDto.ShopUserConsumeDTO;
-import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
-import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.extDto.*;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
@@ -180,7 +177,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             purchaseProjectGroup(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, groupRelRelationDTOS);
 
             //充值卡列表相关操作
-            List<ShopUserRechargeCardDTO> rechargeCardDTOS = shopUserPayDTO.getShopUserRechargeCardDTOS();
+            List<ExtShopUserRechargeCardDTO> rechargeCardDTOS = shopUserOrderDTO.getUserPayRechargeCardList();
             BigDecimal totalAmount = useRechargeCard(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, rechargeCardDTOS);
 
             //更改账户金额
@@ -318,7 +315,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      * @param archivesInfo
      * @param rechargeCardDTOS
      */
-    private BigDecimal useRechargeCard(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ShopUserRechargeCardDTO> rechargeCardDTOS) {
+    private BigDecimal useRechargeCard(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserRechargeCardDTO> rechargeCardDTOS) {
         BigDecimal totalAmount = new BigDecimal(0);
         if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
             for (ShopUserRechargeCardDTO dto : rechargeCardDTOS) {

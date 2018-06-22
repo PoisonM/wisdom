@@ -94,9 +94,7 @@ public class OrderController {
             shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         } else if(StringUtils.isNotBlank(sysShopId) && StringUtils.isNotBlank(sysUserId)){
             logger.info("根据用户id和shopId查询用户最近一次订单记录={}");
-            Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").is(sysUserId));
-            query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-            shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
+            shopUserOrderDTO = getUserRecentlyOrder(shopUserOrderDTO);
         }
         if (null != shopUserOrderDTO) {
             //查询用户账户总余额
@@ -140,6 +138,11 @@ public class OrderController {
                 shopUserOrderDTO.setShopUserRechargeCardDTO(rechargeCardDTO);
             }
         }
+        //保持订单10分钟之内有效
+        Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
+        Update update = new Update();
+        update.set("updateDate",new Date());
+        mongoTemplate.upsert(query, update, "shopUserOrderDTO");
 
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -164,26 +167,34 @@ public class OrderController {
             responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
-        String sysShopId = redisUtils.getShopId();
+        shopUserOrderDTO = getUserRecentlyOrder(shopUserOrderDTO);
+        responseDTO.setResponseData(shopUserOrderDTO.getOrderId());
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
 
+    /**
+     * 获取用户最近一笔订单信息
+     * @param shopUserOrderDTO
+     * @return
+     */
+    public ShopUserOrderDTO getUserRecentlyOrder(ShopUserOrderDTO shopUserOrderDTO){
         //先查询最后一次未支付的订单信息
         Criteria notPay = new Criteria().and("status").is(OrderStatusEnum.NOT_PAY.getCode());
         Criteria waitPay = new Criteria().and("status").is(OrderStatusEnum.WAIT_PAY.getCode());
         Criteria waitSign = new Criteria().and("status").is(OrderStatusEnum.WAIT_SIGN.getCode());
-
-        Query query = new Query(Criteria.where("shopId").is(sysShopId)).addCriteria(Criteria.where("userId").
+        String shopId = redisUtils.getShopId();
+        Query query = new Query(Criteria.where("shopId").is(shopId)).addCriteria(Criteria.where("userId").
                 is(shopUserOrderDTO.getUserId())).addCriteria(new Criteria().orOperator(notPay,waitPay,waitSign));
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
         ShopUserOrderDTO searchOrderInfo = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
         //最近一笔未支付的订单不为空，并且在10分钟以内，则认为有效订单
         if (null != searchOrderInfo && null!= searchOrderInfo.getUpdateDate() && DateUtils.pastMinutes(searchOrderInfo.getUpdateDate())<orderOutTime) {
-            responseDTO.setResponseData(searchOrderInfo.getOrderId());
-            responseDTO.setResult(StatusConstant.SUCCESS);
-            return responseDTO;
+            return searchOrderInfo;
         }
         //如果最后一次订单为空则需初始化插入
         searchOrderInfo = new ShopUserOrderDTO();
-        searchOrderInfo.setShopId(sysShopId);
+        searchOrderInfo.setShopId(shopId);
         searchOrderInfo.setOrderId(DateUtils.DateToStr(new Date(), "dateMillisecond"));
         searchOrderInfo.setStatus(OrderStatusEnum.NOT_PAY.getCode());
         searchOrderInfo.setCreateDate(new Date());
@@ -191,12 +202,8 @@ public class OrderController {
         searchOrderInfo.setStatusDesc(OrderStatusEnum.NOT_PAY.getDesc());
         searchOrderInfo.setUserId(shopUserOrderDTO.getUserId());
         mongoTemplate.save(searchOrderInfo, "shopUserOrderDTO");
-
-        responseDTO.setResponseData(searchOrderInfo.getOrderId());
-        responseDTO.setResult(StatusConstant.SUCCESS);
-        return responseDTO;
+        return searchOrderInfo;
     }
-
     /**
      * 用户下单接口，消费界面选完待消费物品点击确认按钮
      *

@@ -5,9 +5,9 @@ import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
@@ -123,20 +123,20 @@ public class OrderTest {
 //        projectGroupRelRelationDTOS.add(groupRelRelationDTO);
 //        shopUserOrderDTO.setProjectGroupRelRelationDTOS(projectGroupRelRelationDTOS);
 
-        ShopUserRechargeCardDTO userRechargeCardDTO = new ShopUserRechargeCardDTO();
+        ExtShopUserRechargeCardDTO userRechargeCardDTO = new ExtShopUserRechargeCardDTO();
         userRechargeCardDTO.setId("用户的充值卡id");
         userRechargeCardDTO.setInitAmount(new BigDecimal(1000));
         userRechargeCardDTO.setShopRechargeCardName("开门红");
         userRechargeCardDTO.setSurplusAmount(new BigDecimal(10));
 
-        ShopUserRechargeCardDTO userRechargeCardDTO2 = new ShopUserRechargeCardDTO();
+        ExtShopUserRechargeCardDTO userRechargeCardDTO2 = new ExtShopUserRechargeCardDTO();
         userRechargeCardDTO2.setId("用户的充值卡id");
         userRechargeCardDTO2.setInitAmount(new BigDecimal(1002));
         userRechargeCardDTO2.setShopRechargeCardName("至尊");
         userRechargeCardDTO2.setSurplusAmount(new BigDecimal(10));
 
 
-        List<ShopUserRechargeCardDTO> objects = new ArrayList<>();
+        List<ExtShopUserRechargeCardDTO> objects = new ArrayList<>();
         objects.add(userRechargeCardDTO);
         objects.add(userRechargeCardDTO2);
         shopUserOrderDTO.setUserPayRechargeCardList(objects);
