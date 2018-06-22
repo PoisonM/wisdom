@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('addProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','getProductInfoByScanCode',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,getProductInfoByScanCode) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','GetProductInfoByScanCode',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
             $rootScope.title = "添加产品";
             $scope.selFlag =true
             $rootScope.settingAddsome.product ={
