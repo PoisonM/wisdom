@@ -50,7 +50,7 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.requestList = data.responseData;
-                        /*$ionicLoading.hide();*/
+                        $ionicLoading.hide();
                         for(var i=0;i<$scope.requestList.length;i++){
                             $scope.requestList[i].parentId = $stateParams.id;
                             $scope.param.selTrue.push(false)
