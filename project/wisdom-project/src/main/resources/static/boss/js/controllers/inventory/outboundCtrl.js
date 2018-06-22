@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('outboundCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetShopProductLevelInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetShopProductLevelInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetShopProductLevelInfo','GetProductInfo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetShopProductLevelInfo,GetProductInfo) {
             $rootScope.title = "出库";
             $scope.sum = 0;
             $scope.param = {
