@@ -353,37 +353,43 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> getProductInfoByScanCode(@RequestParam String code) {
 
+        String[] codeArray =code.split(",");
         ResponseDTO responseDTO = new ResponseDTO();
-        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(code);
+        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(codeArray[1]);
         logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
         ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
         if (null != extShopScanProductInfoDTO) {
-            //查询出来的信息转换为产品对象
-            ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
-            productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
-            productInfoDTO.setManuName(extShopScanProductInfoDTO.getManuName());
-            productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
-            productInfoDTO.setProductUrl(extShopScanProductInfoDTO.getImg());
-            productInfoDTO.setNote(extShopScanProductInfoDTO.getNote());
-            productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
-            String price = extShopScanProductInfoDTO.getPrice();
-            if (StringUtils.isNotBlank(price)) {
-                productInfoDTO.setMarketPrice(new BigDecimal(price));
+            if(extShopScanProductInfoDTO.getFlag().equals("true")){
+                //查询出来的信息转换为产品对象
+                ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
+                productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
+                productInfoDTO.setManuName(extShopScanProductInfoDTO.getManuName());
+                productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
+                productInfoDTO.setProductUrl(extShopScanProductInfoDTO.getImg());
+                productInfoDTO.setNote(extShopScanProductInfoDTO.getNote());
+                productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
+                String price = extShopScanProductInfoDTO.getPrice();
+                if (StringUtils.isNotBlank(price)) {
+                    productInfoDTO.setMarketPrice(new BigDecimal(price));
+                }
+                String spec = extShopScanProductInfoDTO.getSpec();
+                if (StringUtils.isNotBlank(spec)) {
+                    String regEx = "[^0-9]";
+                    Pattern p = Pattern.compile(regEx);
+                    Matcher m = p.matcher(spec);
+                    productInfoDTO.setProductSpec(m.replaceAll("").trim());
+                    productInfoDTO.setProductSpecUnit(spec.replaceAll("\\d+", ""));
+                }
+                List<String> imageList = new ArrayList<>();
+                imageList.add(extShopScanProductInfoDTO.getImg());
+                productInfoDTO.setImageList(imageList);
+                responseDTO.setResponseData(productInfoDTO);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
             }
-            String spec = extShopScanProductInfoDTO.getSpec();
-            if (StringUtils.isNotBlank(spec)) {
-                String regEx = "[^0-9]";
-                Pattern p = Pattern.compile(regEx);
-                Matcher m = p.matcher(spec);
-                productInfoDTO.setProductSpec(m.replaceAll("").trim());
-                productInfoDTO.setProductSpecUnit(spec.replaceAll("\\d+", ""));
-            }
-            List<String> imageList = new ArrayList<>();
-            imageList.add(extShopScanProductInfoDTO.getImg());
-            productInfoDTO.setImageList(imageList);
-            responseDTO.setResponseData(productInfoDTO);
         }
-        responseDTO.setResult(StatusConstant.SUCCESS);
+
         return responseDTO;
     }
 
