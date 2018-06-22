@@ -530,6 +530,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
                     userConsumeRecordDTO.setFlowId(dto.getId());
                     userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
+                    userConsumeRecordDTO.setSysClerkId(dto.getSysClerkId());
                     //更新用户的账户信息
                     sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().add(userConsumeRecordDTO.getPrice()));
                     //生成充值记录
@@ -1019,6 +1020,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         rechargeCardDTO.setRechargeCardType(rechargeCardTypeEnum.getCode());
 
         rechargeCardDTO.setSysUserName(userInfoDTO.getNickname());
+        rechargeCardDTO.setCreateDate(new Date());
         int updateRechargeCard = shopRechargeCardService.saveShopUserRechargeCardInfo(rechargeCardDTO);
         logger.info("充值卡充值操作传入参数执行结果={}", updateRechargeCard > 0 ? "成功" : "失败");
         return rechargeCardDTO;
