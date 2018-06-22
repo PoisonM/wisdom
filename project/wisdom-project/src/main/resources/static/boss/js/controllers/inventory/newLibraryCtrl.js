@@ -7,38 +7,54 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 startDate : BossUtil.getNowFormatDate(),
                 date: [],
                 index:"",
-                shopStock:[]
+                shopStock:[],
+                productInfoDate:[]
             };
 
             if($stateParams.stockStyle=='1'){
-                 $scope.sum = 1;
-                 GetProductInfo.get({
+                $scope.sum = 1;
+                GetProductInfo.get({
                     productCode:$stateParams.productCode
                 },function(data){
                     if(data.result == "0x00001"){
-                        $rootScope.shopInfo.entryShopProductList = data.responseData;
+                        $scope.param.productInfoDate = data.responseData;
+                        angular.forEach($scope.param.productInfoDate,function (val,index) {
+                            var value = {
+                                detail:"",
+                                productDate:val.effectDate,
+                                stockPrice:val.marketPrice,/*进货单价*/
+                                shopProcId:val.id,/*产品id*/
+                                shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                                stockNumber: "",
+                                productUrl : val.productUrl,
+                                productName: val.productName,
+                                productUnit: val.productUnit,
+                                productSpec: val.productSpec,
+                                stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                            }
+                            $scope.param.shopStock.push(value);
+                        })
                     }
                 })
+            }else{
+                angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
+
+                    var value = {
+                        detail:"",
+                        productDate:val.effectDate,
+                        stockPrice:val.marketPrice,/*进货单价*/
+                        shopProcId:val.id,/*产品id*/
+                        shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                        stockNumber: "",
+                        productUrl : val.productUrl,
+                        productName: val.productName,
+                        productUnit: val.productUnit,
+                        productSpec: val.productSpec,
+                        stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                    }
+                    $scope.param.shopStock.push(value);
+                })
             }
-
-            angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
-
-                var value = {
-                    detail:"",
-                    productDate:val.effectDate,
-                    stockPrice:val.marketPrice,/*进货单价*/
-                    shopProcId:val.id,/*产品id*/
-                    shopStoreId:$stateParams.shopStoreId,/*仓库id*/
-                    stockNumber: "",
-                    productUrl : val.productUrl,
-                    productName: val.productName,
-                    productUnit: val.productUnit,
-                    productSpec: val.productSpec,
-                    stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
-                }
-                $scope.param.shopStock.push(value);
-            })
-
             var disabledDates = [
                 new Date(1437719836326),
                 new Date(),
