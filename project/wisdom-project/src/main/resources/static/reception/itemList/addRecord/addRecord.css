@@ -111,14 +111,16 @@
     font-size: 16px;
     color: #333333;
     letter-spacing: 0.45px;
+    position: relative;
 }
 
 
-.addRecord .addRecord_select .select_public li i{
-    float: right;
-    display: block;
-    width: 6px;
-    height: 12px;
-    background-color: #FF0000;
-    margin-top: 15px;
+.addRecord .addRecord_select .select_public li .go_set{
+    position: absolute;
+    top: 40%;
+    right: 0.3125rem;
+    background: url(../../images/userInfo/bt_more.png) no-repeat;
+    background-size: 100%;
+    width: 0.1171875rem;
+    height: 0.2109375rem;
 }
