@@ -3,7 +3,7 @@
     <div class="orderListTitle" ng-click="goSelectRechargeType(2)">充值卡支付</div>
     <ul class="orderListUl">
         <li ng-repeat="item in responseData.userPayRechargeCardList">
-            <div>{{item.shopRechargeCardName}}（可用余额：¥{{item.initAmount}}）</div>
+            <div>{{item.shopRechargeCardName}}（可用余额：¥{{item.surplusAmount}}）</div>
             <span><b class="fl">¥</b><input type="text" ng-model="item.surplusAmount"></span>
         </li>
     </ul>

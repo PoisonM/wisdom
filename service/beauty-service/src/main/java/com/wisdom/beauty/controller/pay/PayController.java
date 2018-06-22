@@ -1,13 +1,16 @@
 package com.wisdom.beauty.controller.pay;
 
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -23,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * FileName: OrderController
@@ -41,6 +46,9 @@ public class PayController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private ShopRechargeCardService shopRechargeCardService;
 
     @Resource
     private ShopUerConsumeRecordService shopUerConsumeRecordService;
@@ -148,10 +156,19 @@ public class PayController {
 
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
+        List<ShopUserRechargeCardDTO> userPayRechargeCardList = shopUserOrderDTO.getUserPayRechargeCardList();
+        List<ShopUserRechargeCardDTO> filterList = new ArrayList<>();
+        if(CommonUtils.objectIsNotEmpty(userPayRechargeCardList)){
+            userPayRechargeCardList.forEach(e->{
+                ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(e);
+                filterList.add(shopUserRechargeInfo);
+            });
+        }
         //mongodb中更新订单的状态
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
-        update.set("userPayRechargeCardList", shopUserOrderDTO.getUserPayRechargeCardList());
+        update.set("userPayRechargeCardList", filterList);
+        update.set("updateDate",new Date());
         mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);

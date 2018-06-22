@@ -25,6 +25,7 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
     $rootScope.goodsType = {
         product : '4',
         periodCard :'1',
+        rechargeCard :'2',
         timeCard :'0',
         groupCard:'3',
         project:'8'

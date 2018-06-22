@@ -13,9 +13,10 @@
         <span>{{RechargeCardListAll[0].name}}</span>
             <p>折扣：单次{{RechargeCardListAll[0].timeDiscount*10}}折 疗程卡{{RechargeCardListAll[0].periodDiscount*10}}折 产品{{RechargeCardListAll[0].productDiscount*10}}折</p>
     </div>
+    <!--获取我的充值卡-->
     <ul class="selectRechargeTypeUl" ng-if="RechargeCardList!=undefined">
         <li ng-repeat="item in RechargeCardList" ng-if="$index > 0" ng-click="goSelectRechargeCard(item.shopRechargeCardId,item.id,item.shopRechargeCardName,item.initAmount)">
-            <div class="checkBox">
+            <div class="checkBox" ng-class="{bgF6:(userPayRechargeCardListCheck.indexOf(item.id)!='-1')}">
                 <img src="images/checkImg.png" alt="">
             </div>
             <img ng-src="{{item.imageUrl}}" alt="">

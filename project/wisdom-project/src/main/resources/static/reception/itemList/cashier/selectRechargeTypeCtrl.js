@@ -40,53 +40,53 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
     };
 
     //获得订单号
-    SaveShopUserOrderInfo.save({
-        userId: $stateParams.userId
-    }, function(data) {
-        $scope.orderId = data.responseData;
-        if ($state.params.type == 1) {
-            GetUserRechargeCardList.get({
-                sysUserId: $stateParams.userId
-            }, function(data) {
-                $scope.totalBalance = data.responseData.totalBalance
-                $scope.RechargeCardList = data.responseData.userRechargeCardList;
-            })
-        } else if ($state.params.type == 2) {
-            $scope.type = $state.params.type;
-            $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
-            GetShopUserRecentlyOrderInfo.get({
-                orderId: $scope.orderId,
-                sysUserId: $stateParams.userId
-            }, function(data) {
-                $scope.userPayRechargeCardList = data.responseData.userPayRechargeCardList;
-                $scope.userPayRechargeCardListCheck = [];
+    $scope.orderId = $state.params.orderId;
+    if ($state.params.type == 1) {
+        GetUserRechargeCardList.get({
+            sysUserId: $stateParams.userId
+        }, function(data) {
+            $scope.totalBalance = data.responseData.totalBalance
+            $scope.RechargeCardList = data.responseData.userRechargeCardList;
+        })
+    } else if ($state.params.type == 2) {
+        $scope.type = $state.params.type;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
+        GetShopUserRecentlyOrderInfo.get({
+            orderId: $scope.orderId,
+            sysUserId: $stateParams.userId
+        }, function(data) {
+            $scope.userPayRechargeCardList = data.responseData.userPayRechargeCardList;
+            if(null == $scope.userPayRechargeCardList){
+                $scope.userPayRechargeCardList = [];
+            }
+            $scope.userPayRechargeCardListCheck = [];
+            if(null != $scope.userPayRechargeCardList){
                 for (var i = 0; i < $scope.userPayRechargeCardList.length; i++) {
                     $scope.userPayRechargeCardListCheck.push($scope.userPayRechargeCardList[i].id);
                 }
-            })
-            GetUserRechargeCardList.get({
-                sysUserId: $stateParams.userId
-            }, function(data) {
-                $scope.RechargeCardList = data.responseData.userRechargeCardList;
-            })
-            $scope.$parent.$parent.leftTipFn = function() {
-                UpdateShopUserOrderPayInfo.save({
-                    orderId: $scope.orderId,
-                    userPayRechargeCardList: $scope.userPayRechargeCardList,
-                }, function(data) {
-                    $state.go('pad-web.left_nav.orderList')
-                })
             }
-
-        } else {
-            GetRechargeCardList.get({
-                pageSize: 100,
+        })
+        GetUserRechargeCardList.get({
+            sysUserId: $stateParams.userId
+        }, function(data) {
+            $scope.RechargeCardList = data.responseData.userRechargeCardList;
+        })
+        $scope.$parent.$parent.leftTipFn = function() {
+            UpdateShopUserOrderPayInfo.save({
+                orderId: $scope.orderId,
+                userPayRechargeCardList: $scope.userPayRechargeCardList,
             }, function(data) {
-                $scope.RechargeCardListAll = data.responseData;
+                $state.go('pad-web.left_nav.orderList', { orderId: $scope.orderId,userId:$stateParams.userId })
             })
         }
-    })
 
+    } else {
+        GetRechargeCardList.get({
+            pageSize: 100,
+        }, function(data) {
+            $scope.RechargeCardListAll = data.responseData;
+        })
+    }
 
     $scope.goSelectRechargeCard = function(id, eid, name, price) {
         //控制样式
@@ -123,7 +123,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             },
         }, function(data) {
             console.log(data)
-            callback && callback();
+            // callback && callback();
         })
     }
     
