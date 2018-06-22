@@ -48,10 +48,6 @@
             </ul>
             <div class="signConfirmLeftContentTitle">支付明细</div>
             <ul>
-                <li>
-                    <span class="name">余额</span>
-                    <span class="type">{{responseData.balancePay}}</span>
-                </li>
                 <li ng-if="responseData.payType==rootScopePayType.bankPay">
                     <span class="name">银行卡支付</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
@@ -63,6 +59,10 @@
                 <li ng-if="responseData.payType==rootScopePayType.weChatPay">
                     <span class="name">微信支付</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
+                </li>
+                <li>
+                    <span class="name">现金支付</span>
+                    <span class="type">¥{{responseData.cashPay==null?'0':responseData.cashPay}}</span>
                 </li>
             </ul>
         </div>
