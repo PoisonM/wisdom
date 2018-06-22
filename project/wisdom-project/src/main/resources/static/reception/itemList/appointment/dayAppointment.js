@@ -632,6 +632,17 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         }
                     })
                 };
+                /*开始服务*/
+                $scope.endSevier = function () {
+                    if($scope.param.changeYuyueFlag != 2) return;
+                    UpdateAppointmentInfoById.get({shopAppointServiceId: id, status: "3"}, function (data) {
+                        if (data.result == "0x00001") {
+                            $scope.param.changeYuyueFlag = "3"
+                            indexItem.status = "3"
+                        }
+                    })
+                };
+
             }],
             className: 'ngdialog-theme-default',
 
