@@ -318,10 +318,17 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     private BigDecimal useRechargeCard(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserRechargeCardDTO> rechargeCardDTOS) {
         BigDecimal totalAmount = new BigDecimal(0);
         if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
-            for (ShopUserRechargeCardDTO dto : rechargeCardDTOS) {
-                //更新用户的充值卡记录
-                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+            for (ExtShopUserRechargeCardDTO dto : rechargeCardDTOS) {
+                int consumePrice = Integer.parseInt(dto.getConsumePrice());
+                if(StringUtils.isBlank(dto.getConsumePrice()) || consumePrice ==0){
+                    continue;
+                }
+                //更新用户的充值卡记录,先查询再更新
+                ShopUserRechargeCardDTO shopUserRechargeCardDTOById = shopRechargeCardService.getShopUserRechargeCardDTOById(dto.getId());
+                shopUserRechargeCardDTOById.setSurplusAmount(shopUserRechargeCardDTOById.getSurplusAmount().subtract(new BigDecimal(consumePrice)));
+                shopRechargeCardService.updateRechargeCard(shopUserRechargeCardDTOById);
 
+                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
                 userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
                 userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
                 userConsumeRecordDTO.setCreateDate(new Date());

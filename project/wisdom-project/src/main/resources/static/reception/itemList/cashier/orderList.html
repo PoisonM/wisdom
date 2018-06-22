@@ -2,16 +2,16 @@
     <div class="orderListTotalAmount">总金额：¥{{responseData.orderPrice}}</div>
     <div class="orderListTitle" ng-click="goSelectRechargeType(2)">充值卡支付</div>
     <ul class="orderListUl">
-        <li ng-repeat="item in responseData.userPayRechargeCardList">
+        <li ng-repeat="item in userPayRechargeCardList">
             <div>{{item.shopRechargeCardName}}（可用余额：¥{{item.surplusAmount}}）</div>
-            <span><b class="fl">¥</b><input type="text" value="" ng-model="item.consumePrice"></span>
+            <span><b class="fl">¥</b><input ng-change="changeRechargeCard()" type="text" value="" ng-model="item.consumePrice"></span>
         </li>
     </ul>
     <div class="orderListTitle"></div>
     <ul class="orderListUl">
         <li>
             <div>余额（可用余额：¥{{responseData.availableBalance}}）</div>
-            <span><b class="fl">¥</b><input ng-change="countPrice()" type="text" ng-model="balancePay"></span>
+            <span><b class="fl">¥</b><input ng-change="changeRechargeCard()" type="text" ng-model="balancePay"></span>
         </li>
         <!-- <li>
             <div>其中欠款</div>
@@ -19,7 +19,7 @@
         </li> -->
         <li>
             <div>现金支付</div>
-            <span><b class="fl">¥</b><input ng-change="countPrice()" type="text" ng-model="cashPayPrice"></span>
+            <span><b class="fl">¥</b><input ng-change="changeRechargeCard()" type="text" ng-model="cashPayPrice"></span>
         </li>
 
         <li>
