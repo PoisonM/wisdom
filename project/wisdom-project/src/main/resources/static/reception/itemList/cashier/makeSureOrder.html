@@ -57,7 +57,7 @@
                 <li>
                     <div class="contentBox">
                         <span class="name">{{item.shopProductName}}</span>
-                        <span class="discount"><s>原价 {{item.initAmount}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
+                        <span class="discount"><s>原价 {{item.purchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
                         <label for="" class="discountPrice">折扣价 ¥</label>
                         <input ng-change="myChangeFn()" type="text" ng-model="item.initAmount" ng-value="(item.initAmount*item.discount|number:2)">
                         <!-- <label for="" class="serviceTimes">服务次数</label>
