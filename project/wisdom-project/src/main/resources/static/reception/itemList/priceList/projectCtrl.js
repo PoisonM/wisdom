@@ -38,8 +38,20 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     OneLevelProject.get(function (data) {
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
-        $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
+        // $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
         $scope.loading = false;
+        // 加载第一项的全部商品
+        ThreeLevelProject.get({
+            ProjectTypeTwoId:"",
+            projectTypeOneId: $scope.selectSingleList[0].id,
+            pageSize:$scope.param.pageSize
+        },function (data) {
+            $scope.threeList=data.responseData;
+            $scope.loading = false;
+            $scope.param.projectAppear = false;
+            $scope.param.chooseProjectItem = '';
+            console.log($scope.threeList);
+        })
     });
 
     //点击二级列表调取三级项目列表产品数据方法
