@@ -60,11 +60,15 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
 
         })
     }
+    // localStorage.setItem("payType","11")
+
     $scope.checkBoxChek = function(e) {
-        $scope.responseData.payType = e;
+        localStorage.setItem("payType",e)
+        $scope.responseData.payType = localStorage.getItem("payType");
     }
     CardInfo.get({ id: $state.params.type }, function(data) {
         $scope.responseData = data.responseData;
+        $scope.responseData.payType = localStorage.getItem("payType");
     })
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
