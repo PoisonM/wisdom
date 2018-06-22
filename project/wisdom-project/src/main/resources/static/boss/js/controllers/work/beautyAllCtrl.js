@@ -115,7 +115,7 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
 
             }
             $scope.allFamilyGo = function(){
-                $state.go("allFamily",{date:$scope.param.date})
+                $state.go("allFamily",{date:$scope.param.date,sysShopId:$stateParams.sysShopId})
             }
 
         }]);
