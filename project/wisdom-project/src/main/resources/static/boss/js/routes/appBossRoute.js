@@ -1903,7 +1903,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum/:ids/:names',
+                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum/:ids/:names/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {
