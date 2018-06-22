@@ -230,7 +230,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      * @return
      */
     private boolean subSpecialRechargeCard(ShopUserOrderDTO shopUserOrderDTO, ResponseDTO responseDTO, String balancePay) {
-        if(StringUtils.isNotBlank(balancePay)){
+        if(StringUtils.isNotBlank(balancePay) && Integer.parseInt(balancePay)>0){
             //查询用户的特殊账户
             ShopUserRechargeCardDTO specialCard = new ShopUserRechargeCardDTO();
             specialCard.setSysShopId(shopUserOrderDTO.getShopId());
