@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('modifyProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductInfoMess','Global','UpdateProductInfo','$filter','ImageBase64UploadToOSS',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductInfoMess,Global,UpdateProductInfo,$filter,ImageBase64UploadToOSS) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductInfoMess','Global','UpdateProductInfo','$filter','ImageBase64UploadToOSS','GetProductInfoByScanCode',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductInfoMess,Global,UpdateProductInfo,$filter,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
             $rootScope.title = "修改产品";
 
             $scope.param = {
