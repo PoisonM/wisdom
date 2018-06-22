@@ -33,7 +33,9 @@ PADWeb.controller('rechargeCardDetailCtrl', function($scope, $stateParams, $stat
         ConsumeFlowNo.get({
             consumeFlowNo:$stateParams.flowNo
         },function (data) {
-
+            if(data.result == "0x00001"){
+                $scope.dataInfo = data.responseData
+            }
         })
     }
 

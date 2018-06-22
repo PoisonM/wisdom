@@ -20,9 +20,10 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                 $scope.param.outOperationName = $stateParams.names.split(',')[0];
                 $scope.param.outOperationVal = $stateParams.ids.split(',')[0];
             }
-
-             if($stateParams.stockStyle=='3'){
+            if($stateParams.stockStyle==3){
                     $scope.sum = 1;
+                    alert($stateParams.stockStyle);
+                    alert($stateParams.productCode);
                     GetProductInfo.get({
                         productCode:$stateParams.productCode
                     },function(data){
@@ -80,7 +81,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
 
             $scope.selectTheOutboundTypeGo = function(){
-                $state.go("selectTheOutboundType",{shopStoreId:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,sum:$scope.sum,name:$stateParams.name})
+                $state.go("selectTheOutboundType",{shopStoreId:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,sum:$scope.sum,name:$stateParams.name,productCode:$stateParams.productCode})
             }
 
             /*添加更多*/
@@ -102,7 +103,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
             $scope.selReceiver = function(){
 
-                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle});
+                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,productCode:$stateParams.productCode});
             }
 
             /*确认出库*/

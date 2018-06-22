@@ -29,15 +29,15 @@
             <ul>
                 <li>
                     <span class="name">单次折扣</span>
-                    <span class="type">{{responseData.timeDiscount=='1'?'无折扣':responseData.timeDiscount*10}}折</span>
+                    <span class="type">{{responseData.timeDiscount=='1'?'无':responseData.timeDiscount*10}}折</span>
                 </li>
                 <li>
                     <span class="name">疗程卡折扣</span>
-                    <span class="type">{{responseData.periodDiscount=='1'?'无折扣':responseData.periodDiscount*10}}折</span>
+                    <span class="type">{{responseData.periodDiscount=='1'?'无':responseData.periodDiscount*10}}折</span>
                 </li>
                 <li>
                     <span class="name">产品折扣</span>
-                    <span class="type">{{responseData.productDiscount=='1'?'无折扣':responseData.productDiscount*10}}折</span>
+                    <span class="type">{{responseData.productDiscount=='1'?'无':responseData.productDiscount*10}}折</span>
                 </li>
             </ul>
             <ul>
@@ -48,10 +48,6 @@
             </ul>
             <div class="signConfirmLeftContentTitle">支付明细</div>
             <ul>
-                <li>
-                    <span class="name">余额</span>
-                    <span class="type">{{responseData.balancePay}}</span>
-                </li>
                 <li ng-if="responseData.payType==rootScopePayType.bankPay">
                     <span class="name">银行卡支付</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
@@ -63,6 +59,10 @@
                 <li ng-if="responseData.payType==rootScopePayType.weChatPay">
                     <span class="name">微信支付</span>
                     <span class="type">¥{{responseData.surplusPayPrice==null?'0':responseData.surplusPayPrice}}</span>
+                </li>
+                <li>
+                    <span class="name">现金支付</span>
+                    <span class="type">¥{{responseData.cashPay==null?'0':responseData.cashPay}}</span>
                 </li>
             </ul>
         </div>
@@ -202,7 +202,7 @@
             <div class="signConfirmLeftContentTitle">支付明细</div>
             <ul>
                 <li>
-                    <span class="name">余额</span>
+                    <span class="name">余额支付</span>
                     <span class="type">{{shopUserPayDTO.balancePay}}</span>
                 </li>
 
@@ -218,9 +218,9 @@
                     <span class="name">微信支付</span>
                     <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="shopUserPayDTO.payType==rootScopePayType.cashPay">
+                <li>
                     <span class="name">现金支付</span>
-                    <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
+                    <span class="type">¥{{shopUserPayDTO.cashPayPrice==null?'0':shopUserPayDTO.cashPayPrice}}</span>
                 </li>
             </ul>
         </div>

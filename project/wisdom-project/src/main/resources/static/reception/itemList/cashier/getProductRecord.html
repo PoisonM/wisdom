@@ -3,11 +3,11 @@
         <ul>
             <li ng-click="goCashProductDetails()" ng-repeat="item in dataList">
                 <div class="basic_info">
-                    <p>{{item.shopProductName}}</p>
-                    <span>{{item.createDate}}</span>
+                    <p>{{item.flowName}}</p>
+                    <span>{{item.createDate |date:'yyyy-MM-dd hh:mm:ss'}}</span>
                 </div>
                 <div class="go_detail">
-                    领取数量:111
+                    领取数量:&nbsp {{item.consumeNumber}}
                     <span class="go_set"></span>
                 </div>
             </li>

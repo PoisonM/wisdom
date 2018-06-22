@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -195,6 +196,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	 */
 	@Override
 	public int saveShopUserRechargeCardInfo(ShopUserRechargeCardDTO userRechargeCardDTO) {
+		userRechargeCardDTO.setCreateDate(new Date());
 		return shopUserRechargeCardMapper.insert(userRechargeCardDTO);
 	}
 }
