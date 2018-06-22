@@ -372,6 +372,8 @@ public class ProductController {
                 if (StringUtils.isNotBlank(price)) {
                     productInfoDTO.setMarketPrice(new BigDecimal(price));
                 }
+                productInfoDTO.setCode(codeArray[1]);
+                productInfoDTO.setProductCode(codeArray[1]);
                 String spec = extShopScanProductInfoDTO.getSpec();
                 if (StringUtils.isNotBlank(spec)) {
                     String regEx = "[^0-9]";
@@ -420,8 +422,9 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
 
+        String[] codeArray =productCode.split(",");
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
-        shopProductInfoDTO.setProductCode(productCode);
+        shopProductInfoDTO.setProductCode(codeArray[1]);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
         responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);

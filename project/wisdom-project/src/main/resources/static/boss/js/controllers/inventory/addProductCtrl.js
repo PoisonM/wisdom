@@ -70,7 +70,6 @@ angular.module('controllers',[]).controller('addProductCtrl',
 
 
              $scope.scan = function(){
-                alert("开始");
                 //扫码添加产品
                 wx.scanQRCode({
                     needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
@@ -82,15 +81,20 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             code:result
                         },function(data){
                              if(data.result == "0x00001"){
-
+                                $rootScope.settingAddsome.product.productName=data.responseData.productName;
+                                $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
+                                $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
+                                $rootScope.settingAddsome.product.productUnit = data.responseData.productSpecUnit;
+                                $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
+                                $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
                              }else{
-                                alert("未找到该商品,请先添加该商品！");
+                                alert("该二维码或一维码无效!");
                              }
                         })
 
                     },
                      error: function(){
-                          alert("未查询到此商品,请手动添加！！");
+                          alert("未查询到此商品信息,请手动添加！！");
                      }
                 });
              }
