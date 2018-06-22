@@ -24,7 +24,7 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
         cardDetail:{}
     }
 
-    Detail.get({id:2},function (data) {
+    Detail.get({id:$state.params.id},function (data) {
         $scope.param.cardDetail = data.responseData;
         console.log($scope.param.cardDetail);
     })
