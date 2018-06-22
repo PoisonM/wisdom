@@ -422,8 +422,9 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
 
+        String[] codeArray =productCode.split(",");
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
-        shopProductInfoDTO.setProductCode(productCode);
+        shopProductInfoDTO.setProductCode(codeArray[1]);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
         responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
