@@ -108,7 +108,8 @@ public class OrderController {
                 logger.error("用户特殊账号为空={}", "sysUserId = [" + sysUserId + "], orderId = [" + orderId + "]");
                 throw new ServiceException("用户特殊账号为空");
             }
-            shopUserOrderDTO.setAvailableBalance(userRechargeCardList.get(0).getSurplusAmount());
+            ShopUserRechargeCardDTO rechargeCardDTO = userRechargeCardList.get(0);
+            shopUserOrderDTO.setAvailableBalance(rechargeCardDTO.getSurplusAmount());
 
             //计算订单价格
             BigDecimal orderPrice = new BigDecimal(0);
@@ -134,6 +135,10 @@ public class OrderController {
                 }
             }
             shopUserOrderDTO.setOrderPrice(orderPrice.toString());
+            //默认添加余额充值
+            if(null == shopUserOrderDTO.getShopUserRechargeCardDTO()){
+                shopUserOrderDTO.setShopUserRechargeCardDTO(rechargeCardDTO);
+            }
         }
 
         responseDTO.setResponseData(shopUserOrderDTO);
