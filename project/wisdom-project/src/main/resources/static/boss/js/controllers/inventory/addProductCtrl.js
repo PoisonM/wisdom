@@ -82,7 +82,12 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             code:result
                         },function(data){
                              if(data.result == "0x00001"){
-
+                                $rootScope.settingAddsome.product.productName=data.responseData.productName;
+                                $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
+                                $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
+                                $rootScope.settingAddsome.product.productUnit = data.responseData.productSpecUnit;
+                                $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
+                                $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
                              }else{
                                 alert("未找到该商品,请先添加该商品！");
                              }
