@@ -44,7 +44,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
     }
 
     if($stateParams.id != ""){
-        $scope.flagFn("","编辑档案",true)
+        $scope.flagFn("","编辑档案",false,true)
         ArchivesDetail.get({id:$stateParams.id},function (data) {
             $scope.responseData = data.responseData
             $scope.param.imgSrc = data.responseData.imageUrl;
@@ -58,13 +58,15 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
             $scope.param.selectContentHeight = data.responseData.height;
             $scope.param.selectContentChannel = data.responseData.channel;
         })
+    }else {
+        $scope.flagFn("","添加档案",false,true)
     }
 
 
     /*---------------------------------方法-----------------------------------*/
 
 
-    $scope.flagFn("","添加档案",false,true)
+    // $scope.flagFn("","添加档案",false,true)
 
    
 
