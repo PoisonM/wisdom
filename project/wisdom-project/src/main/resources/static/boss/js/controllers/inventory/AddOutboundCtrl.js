@@ -80,7 +80,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
 
             $scope.selectTheOutboundTypeGo = function(){
-                $state.go("selectTheOutboundType",{shopStoreId:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,sum:$scope.sum,name:$stateParams.name})
+                $state.go("selectTheOutboundType",{shopStoreId:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,sum:$scope.sum,name:$stateParams.name,productCode:$stateParams.productCode})
             }
 
             /*添加更多*/
@@ -102,7 +102,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
             $scope.selReceiver = function(){
 
-                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle});
+                $state.go('receiver',{sum:$stateParams.sum,id:$stateParams.shopStoreId,stockStyle:$stateParams.stockStyle,productCode:$stateParams.productCode});
             }
 
             /*确认出库*/

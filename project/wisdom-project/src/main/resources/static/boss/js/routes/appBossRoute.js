@@ -1517,7 +1517,7 @@ define(['appBoss'], function(app){
 
                     //领取人
                     .state('receiver', {
-                        url: '/receiver/:id/:sum/:shopStoreId/:stockStyle',
+                        url: '/receiver/:id/:sum/:shopStoreId/:stockStyle/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'receiverCtrl',
                         resolve: {
@@ -1969,7 +1969,7 @@ define(['appBoss'], function(app){
                     })
                 /*selectTheOutboundType 选择出库类型*/
                     .state('selectTheOutboundType', {
-                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle/:name/:sum',
+                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle/:name/:sum/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectTheOutboundTypeCtrl',
                         resolve: {
