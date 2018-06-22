@@ -20,7 +20,7 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetBossShopInfo.get({},function (data){
+                GetBossShopInfo.get({type:'0'},function (data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide();
                         $scope.beautySetting = data.responseData

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/14.
  */
 angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','Global','GetInComeExpenditureDetail','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,Global,GetInComeExpenditureDetail,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','$filter','BossUtil','Global','GetInComeExpenditureDetail','$ionicLoading','$ionicPopup','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,Global,GetInComeExpenditureDetail,$ionicLoading,$ionicPopup,$timeout) {
             /*日期插件*/
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
@@ -32,8 +32,22 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
                 } else {
                     console.log(val);
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
-                    $scope.getInfo();
+                    var d1 = new Date(val);
+                    var d2 =  new Date();
+                    if(d1<d2){
+                        $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
+                        $scope.getInfo();
+                    }else{
+                        alert("当前时间段无法查询")
+                        /*var alertPopup = $ionicPopup.alert({
+                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">当前时间段无法查询</span>',
+                         /!*okText:'确定'*!/
+                         });
+                         $timeout(function () {
+                         alertPopup.close()
+                         },1000)*/
+                    }
+
                 }
             };
             //主体对象
@@ -83,7 +97,4 @@ angular.module('controllers',[]).controller('oneIncomeAnalysisCtrl',
                 })
             }
             $scope.getInfo()
-
-
-
         }]);
