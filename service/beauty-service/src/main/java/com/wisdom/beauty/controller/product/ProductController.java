@@ -353,8 +353,9 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> getProductInfoByScanCode(@RequestParam String code) {
 
+        String[] codeArray =code.split(",");
         ResponseDTO responseDTO = new ResponseDTO();
-        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(code);
+        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(codeArray[1]);
         logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
         ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
         if (null != extShopScanProductInfoDTO) {
