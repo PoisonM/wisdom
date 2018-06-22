@@ -103,11 +103,14 @@ public class ShopController {
      */
     @RequestMapping(value = "/getBossAllShopList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getBossAllShopList() {
+    ResponseDTO<Object> getBossAllShopList(@RequestParam(required = false) String type){
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
         extSysShopDTO.setSysBossCode(bossInfo.getId());
+        if(StringUtils.isNotBlank(type)){
+            extSysShopDTO.setType(type);
+        }
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
         if (CommonUtils.objectIsEmpty(bossShopInfo)) {
             logger.info("老板{}切换店铺", bossInfo.getId());

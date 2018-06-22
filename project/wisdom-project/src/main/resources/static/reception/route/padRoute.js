@@ -357,7 +357,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
 
         .state('pad-web.left_nav.selectRechargeType', {
-            url: '/selectRechargeType/:type/:userId',
+            url: '/selectRechargeType/:type/:userId/:orderId',
             templateUrl: root + '/cashier/selectRechargeType.html',
             controller: 'selectRechargeTypeCtrl',
             resolve: {
@@ -1386,7 +1386,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
          }
        })
         .state('pad-web.userInfo.cardRecords', {
-            url: '/cardRecords',
+            url: '/cardRecords/:id',
             templateUrl: root + '/userInfo/cardRecords.html',
             controller: 'cardRecordsCtrl',
             resolve: {

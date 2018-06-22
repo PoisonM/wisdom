@@ -218,9 +218,38 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 
 	@Override
 	public List<ExpenditureAndIncomeResponseDTO> getIncomeExpenditureAnalysisDetail(
-			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
-		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getIncomeList(pageParamVoDTO);
-		return list;
+			PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO) {
+		List<ShopCashFlowDTO> shopCashFlowDTOs = cashService.getShopCashFlowList(pageParamVoDTO);
+		Map<String, ExpenditureAndIncomeResponseDTO> map=null;
+		if(CollectionUtils.isNotEmpty(shopCashFlowDTOs)) {
+			//过滤出现金，银行卡，微信，支付宝支付的数据，即现金支付=0 支付方式为空
+			 map = new HashMap<>();
+			for (ShopCashFlowDTO shopCashFlowDTO : shopCashFlowDTOs) {
+				if (StringUtils.isBlank(shopCashFlowDTO.getPayType()) && shopCashFlowDTO.getCashAmount().compareTo(new BigDecimal("0")) == 0) {
+					continue;
+				}
+				if (map.containsKey(shopCashFlowDTO.getFlowNo())) {
+					ExpenditureAndIncomeResponseDTO expenditureAndIncome = map.get(shopCashFlowDTO.getFlowNo());
+					expenditureAndIncome.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
+					map.put(shopCashFlowDTO.getFlowNo(), expenditureAndIncome);
+				} else {
+					ExpenditureAndIncomeResponseDTO expenditureAndIncome = new ExpenditureAndIncomeResponseDTO();
+					expenditureAndIncome.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
+					expenditureAndIncome.setCreateDate(shopCashFlowDTO.getCreateDate());
+					expenditureAndIncome.setFlowNo(shopCashFlowDTO.getFlowNo());
+					map.put(shopCashFlowDTO.getFlowNo(), expenditureAndIncome);
+				}
+			}
+		}
+		if(map==null){
+			return null;
+		}else {
+			List<ExpenditureAndIncomeResponseDTO> list = new ArrayList<>();
+			for (Map.Entry<String, ExpenditureAndIncomeResponseDTO> entry:map.entrySet()){
+				list.add(entry.getValue());
+			}
+			return list;
+		}
 	}
 
 }

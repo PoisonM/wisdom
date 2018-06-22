@@ -22,4 +22,5 @@ PADWeb.controller('feedbackCtrl', function($scope,$state, $stateParams,Suggestio
         }
 
     };
+    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
 });

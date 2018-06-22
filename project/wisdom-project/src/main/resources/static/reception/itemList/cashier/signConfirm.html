@@ -202,7 +202,7 @@
             <div class="signConfirmLeftContentTitle">支付明细</div>
             <ul>
                 <li>
-                    <span class="name">余额</span>
+                    <span class="name">余额支付</span>
                     <span class="type">{{shopUserPayDTO.balancePay}}</span>
                 </li>
 
@@ -218,9 +218,9 @@
                     <span class="name">微信支付</span>
                     <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
                 </li>
-                <li ng-if="shopUserPayDTO.payType==rootScopePayType.cashPay">
+                <li>
                     <span class="name">现金支付</span>
-                    <span class="type">¥{{shopUserPayDTO.surplusPayPrice==null?'0':shopUserPayDTO.surplusPayPrice}}</span>
+                    <span class="type">¥{{shopUserPayDTO.cashPayPrice==null?'0':shopUserPayDTO.cashPayPrice}}</span>
                 </li>
             </ul>
         </div>

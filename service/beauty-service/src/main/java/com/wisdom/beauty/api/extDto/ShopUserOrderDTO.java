@@ -71,7 +71,7 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
 
     //存储用户支付抵扣充值卡对象
-    private List<ShopUserRechargeCardDTO> userPayRechargeCardList;
+    private List<ExtShopUserRechargeCardDTO> userPayRechargeCardList;
 
     //套卡
     private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
@@ -116,11 +116,11 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public List<ShopUserRechargeCardDTO> getUserPayRechargeCardList() {
+    public List<ExtShopUserRechargeCardDTO> getUserPayRechargeCardList() {
         return userPayRechargeCardList;
     }
 
-    public void setUserPayRechargeCardList(List<ShopUserRechargeCardDTO> userPayRechargeCardList) {
+    public void setUserPayRechargeCardList(List<ExtShopUserRechargeCardDTO> userPayRechargeCardList) {
         this.userPayRechargeCardList = userPayRechargeCardList;
     }
 
