@@ -33,6 +33,7 @@
                     <p class="textName">{{item.projectName}}</p>
                     <p class="textMoney">单次价格：￥{{item.oncePrice}}</p>
                     <p>
+                        <span class="cards bff6666" ng-if="item.cardType=='0'">次卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='1'">月卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='2'">季卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='3'">半年卡</span>
