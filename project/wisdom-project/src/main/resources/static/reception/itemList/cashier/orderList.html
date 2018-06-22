@@ -4,7 +4,7 @@
     <ul class="orderListUl">
         <li ng-repeat="item in responseData.userPayRechargeCardList">
             <div>{{item.shopRechargeCardName}}（可用余额：¥{{item.surplusAmount}}）</div>
-            <span><b class="fl">¥</b><input type="text" ng-model="item.surplusAmount"></span>
+            <span><b class="fl">¥</b><input type="text" value="" ng-model="item.consumePrice"></span>
         </li>
     </ul>
     <div class="orderListTitle"></div>

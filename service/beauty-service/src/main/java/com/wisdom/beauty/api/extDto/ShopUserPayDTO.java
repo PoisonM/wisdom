@@ -1,9 +1,6 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-
 import java.util.Date;
-import java.util.List;
 
 public class ShopUserPayDTO {
 
@@ -71,9 +68,6 @@ public class ShopUserPayDTO {
         this.signUrl = signUrl;
     }
 
-    //用户与充值卡的关系
-    private List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS;
-
     public String getCashPayPrice() {
         return cashPayPrice;
     }
@@ -120,13 +114,5 @@ public class ShopUserPayDTO {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public List<ShopUserRechargeCardDTO> getShopUserRechargeCardDTOS() {
-        return shopUserRechargeCardDTOS;
-    }
-
-    public void setShopUserRechargeCardDTOS(List<ShopUserRechargeCardDTO> shopUserRechargeCardDTOS) {
-        this.shopUserRechargeCardDTOS = shopUserRechargeCardDTOS;
     }
 }

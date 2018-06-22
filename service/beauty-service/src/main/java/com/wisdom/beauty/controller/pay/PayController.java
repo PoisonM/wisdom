@@ -2,6 +2,7 @@ package com.wisdom.beauty.controller.pay;
 
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.beauty.core.service.ShopRechargeCardService;
@@ -156,7 +157,7 @@ public class PayController {
 
         ResponseDTO responseDTO = new ResponseDTO<String>();
 
-        List<ShopUserRechargeCardDTO> userPayRechargeCardList = shopUserOrderDTO.getUserPayRechargeCardList();
+        List<ExtShopUserRechargeCardDTO> userPayRechargeCardList = shopUserOrderDTO.getUserPayRechargeCardList();
         List<ShopUserRechargeCardDTO> filterList = new ArrayList<>();
         if(CommonUtils.objectIsNotEmpty(userPayRechargeCardList)){
             userPayRechargeCardList.forEach(e->{
