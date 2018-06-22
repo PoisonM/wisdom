@@ -122,6 +122,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "充值记录",
                         files: [
                             root + "userInfo/rechargeRecord.css?version=" + version,
+                            root + "userInfo/cardRecords.css?version=" + version,
                             root + "userInfo/rechargeRecord.js?version=" + version,
                         ]
                     })
