@@ -94,31 +94,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     @Autowired
     private ShopStockService shopStockService;
 
-
-    /**
-     * 用户消费充值卡信息
-     *
-     * @param userRechargeCardDTO
-     * @return
-     */
-    @Override
-    public int userConsumeRechargeCard(ShopUserRechargeCardDTO userRechargeCardDTO) {
-        if (userRechargeCardDTO == null || StringUtils.isBlank(userRechargeCardDTO.getId())) {
-            logger.error("用户消费充值卡信息传入参数为空");
-            throw new RuntimeException();
-        }
-        //更新用户充值卡记录信息
-        List<ShopUserRechargeCardDTO> userRechargeCardList = shopCardService.getUserRechargeCardList(userRechargeCardDTO);
-        if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
-            logger.error("用户消费充值卡信息,根据主键插叙用户充值卡为空，{}", "userRechargeCardList = [" + userRechargeCardList + "]");
-            throw new RuntimeException();
-        }
-        userRechargeCardDTO = userRechargeCardList.get(0);
-        BigDecimal surplus = userRechargeCardDTO.getSurplusAmount().subtract(userRechargeCardDTO.getSurplusAmount());
-        userRechargeCardDTO.setSurplusAmount(surplus);
-        return shopCardService.updateUserRechargeCard(userRechargeCardDTO);
-    }
-
     /**
      * 用户充值操作
      */
@@ -318,10 +293,17 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
     private BigDecimal useRechargeCard(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserRechargeCardDTO> rechargeCardDTOS) {
         BigDecimal totalAmount = new BigDecimal(0);
         if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
-            for (ShopUserRechargeCardDTO dto : rechargeCardDTOS) {
-                //更新用户的充值卡记录
-                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
+            for (ExtShopUserRechargeCardDTO dto : rechargeCardDTOS) {
+                int consumePrice = Integer.parseInt(dto.getConsumePrice());
+                if(StringUtils.isBlank(dto.getConsumePrice()) || consumePrice ==0){
+                    continue;
+                }
+                //更新用户的充值卡记录,先查询再更新
+                ShopUserRechargeCardDTO shopUserRechargeCardDTOById = shopRechargeCardService.getShopUserRechargeCardDTOById(dto.getId());
+                shopUserRechargeCardDTOById.setSurplusAmount(shopUserRechargeCardDTOById.getSurplusAmount().subtract(new BigDecimal(consumePrice)));
+                shopRechargeCardService.updateRechargeCard(shopUserRechargeCardDTOById);
 
+                ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
                 userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
                 userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
                 userConsumeRecordDTO.setCreateDate(new Date());
@@ -339,7 +321,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                 userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
                 logger.info("订单号={},更新用户的充值卡信息={}", orderId, userConsumeRecordDTO);
-                userConsumeRechargeCard(dto);
 
                 userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
                 saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);

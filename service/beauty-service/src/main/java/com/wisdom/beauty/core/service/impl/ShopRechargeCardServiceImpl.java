@@ -189,6 +189,16 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	}
 
 	/**
+	 * 查询用户充值卡
+	 * @param userRechargeCardId
+	 * @return
+	 */
+	@Override
+	public ShopUserRechargeCardDTO getShopUserRechargeCardDTOById(String userRechargeCardId){
+		return shopUserRechargeCardMapper.selectByPrimaryKey(userRechargeCardId);
+	}
+
+	/**
 	 * 生产用户的充值卡
 	 *
 	 * @param userRechargeCardDTO
