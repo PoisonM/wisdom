@@ -104,7 +104,7 @@ define(['appBoss'], function(app){
                 /*全部家人*/
 
                     .state('allFamily', {
-                        url: '/allFamily/:date',
+                        url: '/allFamily/:date,:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'allFamilyCtrl',
                         resolve: {

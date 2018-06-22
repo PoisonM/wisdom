@@ -71,6 +71,13 @@
     font-size: 0.234375rem;
     color: #A4A4A4;
 }
+.unclaimedAll .unclaimedAll_search .searchButton{
+    position: absolute;
+    top: 0.1875rem;
+    right: 0.15625rem;
+    font-size: 0.234375rem;
+    color: #f66667;
+}
 .unclaimedAll .unclaimedAll_content .user_form{
     width: 100%;
 }

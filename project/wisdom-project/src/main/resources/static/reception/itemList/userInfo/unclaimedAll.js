@@ -32,4 +32,7 @@ PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,Ge
             }
         })
     });
+    $scope.cancel = function () {
+        $scope.searchNameAndPhone = "";
+    }
 });

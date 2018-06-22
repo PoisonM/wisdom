@@ -9,7 +9,8 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
             $scope.param = {
                 startDate : $stateParams.date,
                 date:$stateParams.date,
-                picFlag:false
+                picFlag:false,
+                sysShopId:$stateParams.sysShopId
             };
             $scope.param.date=$scope.param.date.replace(/00/g,'')
             $scope.param.date=$scope.param.date.replace(/:/g,'')
@@ -71,7 +72,8 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                 GetFamilyList.get({
                     endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59",
                     startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",
-                    pageSize:100
+                    pageSize:1000,
+                    sysShopId:$stateParams.sysShopId
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
