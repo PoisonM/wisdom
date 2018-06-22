@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('addProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','getProductInfoByScanCode',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,getProductInfoByScanCode) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','GetProductInfoByScanCode',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
             $rootScope.title = "添加产品";
             $scope.selFlag =true
             $rootScope.settingAddsome.product ={
@@ -67,6 +67,8 @@ angular.module('controllers',[]).controller('addProductCtrl',
                  error : function() {
                  }
              });
+
+
              $scope.scan = function(){
                 //扫码添加产品
                 wx.scanQRCode({
@@ -76,18 +78,23 @@ angular.module('controllers',[]).controller('addProductCtrl',
                         var result1 = JSON.stringify(res);
                         var result = res.resultStr;
                         GetProductInfoByScanCode.get({
-                            productCode:result
+                            code:result
                         },function(data){
                              if(data.result == "0x00001"){
-
+                                $rootScope.settingAddsome.product.productName=data.responseData.productName;
+                                $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
+                                $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
+                                $rootScope.settingAddsome.product.productUnit = data.responseData.productSpecUnit;
+                                $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
+                                $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
                              }else{
-                                alert("未找到该商品,请先添加该商品！");
+                                alert("该二维码或一维码无效!");
                              }
                         })
 
                     },
                      error: function(){
-                          alert("未查询到此商品,请手动添加！！");
+                          alert("未查询到此商品信息,请手动添加！！");
                      }
                 });
              }
