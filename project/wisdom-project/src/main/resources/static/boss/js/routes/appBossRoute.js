@@ -77,7 +77,7 @@ define(['appBoss'], function(app){
                 /*业绩明细*/
 
                     .state('detailedPerformance', {
-                        url: '/detailedPerformance/:sysShopId,:searchFile,:sysClerkId',
+                        url: '/detailedPerformance/:sysShopId,:searchFile,:sysClerkId,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailedPerformanceCtrl',
                         resolve: {
@@ -104,7 +104,7 @@ define(['appBoss'], function(app){
                 /*全部家人*/
 
                     .state('allFamily', {
-                        url: '/allFamily/:date',
+                        url: '/allFamily/:date,:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'allFamilyCtrl',
                         resolve: {

@@ -8,8 +8,8 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     console.log("消费记录");
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
-        goodsType:7,
-        consumeType:0,
+        goodsType:4,
+        consumeType:1,
         pageSize:12
     },function (data) {
         $scope.dataList = data.responseData

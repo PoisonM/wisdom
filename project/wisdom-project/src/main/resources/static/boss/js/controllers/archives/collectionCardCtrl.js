@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('collectionCardCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserProjectGroupList','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserProjectGroupList,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserProjectGroupList','Global','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserProjectGroupList,Global,$ionicScrollDelegate) {
             $rootScope.title = "套卡";
             $scope.param={
                 flag:false,
@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
             };
             /*点击筛选*/
             $scope.sel = function(){
+                $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                 $scope.param.flag = true
             };
             /*点击关闭*/
@@ -63,6 +64,8 @@ angular.module('controllers',[]).controller('collectionCardCtrl',
                     }
                     if($scope.collectionCar.length<=0){
                         $scope.param.picFlag=true;
+                    }else{
+                        $scope.param.picFlag=false;
                     }
                 }
             };

@@ -10,7 +10,10 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
 
             $scope.userConsumeRequest = {
                 pageSize:1000,
-                searchFile:$stateParams.searchFile
+                searchFile:$stateParams.searchFile,
+                startTime:$stateParams.date+' 00:00:00',
+                endTime:$stateParams.date+' 23:59:59'
+
             };
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
@@ -81,11 +84,13 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                             $scope.detailedPerformance.push($scope.list[i])
                         }
                     }
-                    if( $scope.detailedPerformance.length<=0){
-                        $scope.picFlag.flag=true;
-                    }
                 }else{
                     $scope.detailedPerformance=$scope.list
+                }
+                if( $scope.detailedPerformance.length<=0){
+                    $scope.param.picFlag=true;
+                }else{
+                    $scope.param.picFlag=false
                 }
                 $scope.flag = false
 

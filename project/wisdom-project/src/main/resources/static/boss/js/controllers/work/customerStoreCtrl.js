@@ -1,7 +1,7 @@
 
 angular.module('controllers',[]).controller('customerStoreCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetCustomerArriveList','$filter','BossUtil','$ionicLoading','$ionicPopup','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,GetCustomerArriveList,$filter,BossUtil,$ionicLoading,$ionicPopup,$timeout) {
 
             $rootScope.title = "顾客到店";
 
@@ -30,8 +30,23 @@ angular.module('controllers',[]).controller('customerStoreCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date = $filter('date')(val, 'yyyy-MM-dd')
-                    $scope.getInfo();
+                    var d1 = new Date(val);
+                    var d2 =  new Date();
+                    if(d1<d2){
+                        $scope.param.date = $filter('date')(val, 'yyyy-MM-dd');
+                        $scope.getInfo();
+
+                    }else{
+                        alert("当前时间段无法查询")
+                        /*var alertPopup = $ionicPopup.alert({
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">当前时间段无法查询</span>',
+                            /!*okText:'确定'*!/
+                        });
+                        $timeout(function () {
+                            alertPopup.close()
+                        },1000)*/
+                    }
+
                 }
             };
 

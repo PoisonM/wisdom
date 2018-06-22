@@ -6,17 +6,10 @@ PADWeb.controller('feedbackCtrl', function($scope,$state, $stateParams,Suggestio
     $scope.$parent.param.headerCash.leftTip="提交"
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = false
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
-
-
-    console.log("意见反馈");
-    // $scope.$parent.$parent.leftTipFn = function () {
-    //     alert("提交成功")
-    // }
-
     // 提交反馈
     $scope.$parent.$parent.leftTipFn = function () {
         console.log($scope.param.suggestion);
-        if($scope.param.suggestion!=""){
+        if(undefined != $scope.param.suggestion|| $scope.param.suggestion!=""){
             SuggestionDetail.get({suggestion:$scope.param.suggestion},function(data){
                 if('0x00001'==data.result)
                 {

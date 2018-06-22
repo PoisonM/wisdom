@@ -197,7 +197,9 @@ public class ShopMemberAttendanceController {
 	@RequestMapping(value = "/getFamilyList", method = { RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getFamilyList(@RequestParam String startTime,
-			@RequestParam String endTime, @RequestParam int pageSize) {
+																	 @RequestParam String endTime,
+																	 @RequestParam String sysShopId,
+																	 @RequestParam int pageSize) {
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		if (sysBossDTO == null) {
@@ -207,14 +209,14 @@ public class ShopMemberAttendanceController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysBossCode(sysBossDTO.getId());
+		userConsumeRequestDTO.setSysShopId(sysShopId);
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setPaging(true);
 		pageParamVoDTO.setPageSize(pageSize);
 		pageParamVoDTO.setPageNo(0);
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
-		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponse = shopStatisticsAnalysisService
-				.getClerkExpenditureAndIncomeList(pageParamVoDTO);
+		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponse = shopStatisticsAnalysisService.getClerkAchievementList(pageParamVoDTO);
 
 		ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> response = new ResponseDTO<>();
 		response.setResponseData(expenditureAndIncomeResponse);
