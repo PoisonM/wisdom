@@ -20,9 +20,10 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                 $scope.param.outOperationName = $stateParams.names.split(',')[0];
                 $scope.param.outOperationVal = $stateParams.ids.split(',')[0];
             }
-
-             if($stateParams.stockStyle=='3'){
+            if($stateParams.stockStyle==3){
                     $scope.sum = 1;
+                    alert($stateParams.stockStyle);
+                    alert($stateParams.productCode);
                     GetProductInfo.get({
                         productCode:$stateParams.productCode
                     },function(data){
