@@ -5,7 +5,7 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
     $scope.$parent.param.headerCash.leftContent = "我"
     $scope.$parent.param.headerCash.leftAddContent = ""
     $scope.$parent.param.headerCash.backContent = "今日收银记录"
-    // $scope.$parent.param.headerCash.leftTip = "筛选"
+    $scope.$parent.param.headerCash.leftTip = "筛选"
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
@@ -73,7 +73,7 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
     }
     //使用帮助
     $scope.goUsingHelp = function() {
-        $state.go("pad-web.userInfo.usingHelp")
+        $state.go("pad-web.userInfo.guide")
     }
     //意见反馈
     $scope.goFeedback = function() {

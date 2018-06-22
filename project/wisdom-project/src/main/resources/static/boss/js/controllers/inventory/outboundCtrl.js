@@ -131,7 +131,6 @@ angular.module('controllers',[]).controller('outboundCtrl',
                         success: function (res) {
                             var result1 = JSON.stringify(res);
                             var result = res.resultStr;
-                            alert(result1);
                             GetProductInfo.get({
                                 productCode:result
                             },function(data){

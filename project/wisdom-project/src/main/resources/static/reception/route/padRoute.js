@@ -1386,7 +1386,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
          }
        })
         .state('pad-web.userInfo.cardRecords', {
-            url: '/cardRecords',
+            url: '/cardRecords/:id',
             templateUrl: root + '/userInfo/cardRecords.html',
             controller: 'cardRecordsCtrl',
             resolve: {

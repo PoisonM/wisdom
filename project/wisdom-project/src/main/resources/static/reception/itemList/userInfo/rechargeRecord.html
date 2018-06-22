@@ -8,7 +8,7 @@
     </div>
     <div class="rechargeRecord_content">
         <ul>
-            <li ng-repeat="item in dataList">
+            <li ng-repeat="item in dataList" ng-click="goRecordDetail(item)">
                 <div class="ifo">
                     <span ng-class="{chesty:$index == 2}" >{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
                     <span>{{item.sysUserName}}</span>
@@ -18,47 +18,44 @@
             </li>
         </ul>
     </div>
-    <div  class="mt10 fs32 bgfff shaiBox" >
-        <div>
-            <p class=" col666 bgfff  pb5 mt20"><span class="ml10 ">时间</span></p>
-            <div class="sb bgfff pd15pd0 bbl col888">
-                <p class="W33 center">
-                    <a class="commonType center shaiTime pd5pd10" >最近一周</a>
-                </p>
-                <p class=" W33 center">
-                    <a class="commonType center shaiTime pd5pd10" >最近十五天</a>
-                <p class="W33 center">
-                    <a class="commonType center shaiTime pd5pd10" >最近一个月</a>
-                </p>
-            </div>
-        </div>
-        <div >
-            <ion-list>
-                <ion-item  class="h45 bgfff sb"  >
-                    <p class="ml10  col888">开始时间</p>
-                    <p class="mr10">
-                        <img src="images/more.png" style="width:8px;height:14.1px;">
-                    </p>
-                </ion-item>
-                <ion-item  class="h45 bgfff sb"  >
-                    <p class="ml10  col888">结束时间</p>
-                    <p class="mr10">
-                        <img src="images/more.png" style="width:8px;height:14.1px;">
-                    </p>
-                </ion-item>
-            </ion-list>
-        </div>
+    <!--<div  class="mt10 fs32 bgfff shaiBox" >-->
+        <!--<div>-->
+            <!--<p class=" col666 bgfff  pb5 mt20"><span class="ml10 ">时间</span></p>-->
+            <!--<div class="sb bgfff pd15pd0 bbl col888">-->
+                <!--<p class="W33 center">-->
+                    <!--<a class="commonType center shaiTime pd5pd10" >最近一周</a>-->
+                <!--</p>-->
+                <!--<p class=" W33 center">-->
+                    <!--<a class="commonType center shaiTime pd5pd10" >最近十五天</a>-->
+                <!--<p class="W33 center">-->
+                    <!--<a class="commonType center shaiTime pd5pd10" >最近一个月</a>-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div >-->
+            <!--<ion-list>-->
+                <!--<ion-item  class="h45 bgfff sb"  >-->
+                    <!--<p class="ml10  col888">开始时间</p>-->
+                    <!--<p class="mr10">-->
+                        <!--<img src="images/more.png" style="width:8px;height:14.1px;">-->
+                    <!--</p>-->
+                <!--</ion-item>-->
+                <!--<ion-item  class="h45 bgfff sb"  >-->
+                    <!--<p class="ml10  col888">结束时间</p>-->
+                    <!--<p class="mr10">-->
+                        <!--<img src="images/more.png" style="width:8px;height:14.1px;">-->
+                    <!--</p>-->
+                <!--</ion-item>-->
+            <!--</ion-list>-->
+        <!--</div>-->
 
-        <div class="tabs bgfff sb buttonArea" >
-            <a class="tab-item True reset" >
-                重置
-            </a>
-            <a class="tab-item True activeTrue trueShaiBtn" >
-                确认
-            </a>
-
-        </div>
-
-
-    </div>
+        <!--<div class="tabs bgfff sb buttonArea" >-->
+            <!--<a class="tab-item True reset" >-->
+                <!--重置-->
+            <!--</a>-->
+            <!--<a class="tab-item True activeTrue trueShaiBtn" >-->
+                <!--确认-->
+            <!--</a>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>

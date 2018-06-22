@@ -3,7 +3,7 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     $scope.$parent.$parent.param.headerCash.title="消费记录";
     $scope.$parent.$parent.param.headerCash.backContent = "今日收银记录"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
-
+    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
 
     console.log("消费记录");
     //consumeType 0：充值 1：消费 2、还欠款 3、退款

@@ -22,8 +22,6 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
             }
             if($stateParams.stockStyle==3){
                     $scope.sum = 1;
-                    alert($stateParams.stockStyle);
-                    alert($stateParams.productCode);
                     GetProductInfo.get({
                         productCode:$stateParams.productCode
                     },function(data){
