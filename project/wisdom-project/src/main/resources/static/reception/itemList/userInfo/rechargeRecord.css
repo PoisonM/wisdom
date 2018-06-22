@@ -64,3 +64,7 @@
     height: 0.2109375rem;
 }
 .rechargeRecord  .shaiTime{height:26px;width:80%;line-height: 26px;border: solid #ded4d4 1px;border-radius: 5px;}
+.rechargeRecord .shaiBox{position: absolute;right:0;top:0;z-index: 101;width:37%;height:97%;padding:0 10px;border-radius: 10px}
+.rechargeRecord .buttonArea{  margin-top: 50px;  margin-left: 10px;}
+.rechargeRecord .reset{background: #ece8e8; color: #655a5a;padding: 10px 40px;   border-radius: 5px;}
+.rechargeRecord .trueShaiBtn{padding: 10px 70px;   background: #ff6666; color: #fff;  border-radius: 5px;}

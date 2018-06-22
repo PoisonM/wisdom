@@ -48,6 +48,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             GetUserRechargeCardList.get({
                 sysUserId: $stateParams.userId
             }, function(data) {
+                $scope.totalBalance = data.responseData.totalBalance
                 $scope.RechargeCardList = data.responseData.userRechargeCardList;
             })
         } else if ($state.params.type == 2) {
