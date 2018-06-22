@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('AddOutboundCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','GetStockNumber','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,GetStockNumber,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','GetStockNumber','Global','GetProductInfo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,GetStockNumber,Global,GetProductInfo) {
 
             $rootScope.title = "新增出库";
             $scope.sum = $stateParams.sum;
