@@ -3,7 +3,7 @@ PADWeb.controller('stampCardRecordCtrl', function($scope,$state, $stateParams, n
     $scope.$parent.$parent.param.headerCash.title="划卡记录"
     $scope.$parent.$parent.param.headerCash.backContent = "今日收银记录"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
-    console.log('划卡记录');
+    $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
 
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
