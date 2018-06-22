@@ -12,7 +12,7 @@ angular.module('controllers',[]).controller('expenseCardRecordCtrl',
             }
 
             GetProjectConsumes.save({consumeType:'0',goodType:'6',
-                pageSize:$scope.param.pageSize,shopUserId:$rootScope.shopAppointInfo.shopUserInfo.id},function (data) {
+                pageSize:$scope.param.pageSize,sysUserId:$rootScope.shopAppointInfo.shopUserInfo.id},function (data) {
                 if(data.result==Global.SUCCESS)
                 {
                     if(data.responseData!=null)
