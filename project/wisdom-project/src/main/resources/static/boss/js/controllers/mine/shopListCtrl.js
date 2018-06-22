@@ -14,13 +14,12 @@ angular.module('controllers',[]).controller('shopListCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetBossAllShopList.get({},function (data) {
+                GetBossAllShopList.get({type:'1'},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide();
                         $scope.shopList = data.responseData
                     }
                 })
             })
-
 
         }]);
