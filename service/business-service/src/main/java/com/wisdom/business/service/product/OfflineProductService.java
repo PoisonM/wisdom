@@ -2,6 +2,7 @@ package com.wisdom.business.service.product;
 
 import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.service.account.AccountService;
+import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
@@ -31,6 +32,9 @@ public class OfflineProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private PayRecordService payRecordService;
+
     public ProductDTO<OfflineProductDTO> getOfflineProductDetailById(String productId) {
         logger.info("service -- 根据商品id={}查询商品信息 getOfflineProductDetailById,方法执行",productId);
         ProductDTO<OfflineProductDTO> productDTO = productMapper.getBusinessProductInfo(productId);
@@ -49,10 +53,14 @@ public class OfflineProductService {
     public List<ProductDTO> findOfflineProductList(PageParamDTO pageParamDTO) {
         List<ProductDTO> productDTOList = productMapper.findOfflineProductList(pageParamDTO);
         for (ProductDTO productDTO : productDTOList){
+            String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             if(null != offlineProductDTO){
                 offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+                //sellNum真是销量乘一个基数
+                int sell = Integer.parseInt(sellNum) * 8;
+                offlineProductDTO.setProductSalesVolume(sell+"");
             }
             productDTO.setProductDetail(offlineProductDTO);
         }
