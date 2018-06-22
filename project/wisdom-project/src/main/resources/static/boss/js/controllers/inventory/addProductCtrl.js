@@ -67,7 +67,10 @@ angular.module('controllers',[]).controller('addProductCtrl',
                  error : function() {
                  }
              });
+
+
              $scope.scan = function(){
+                alert("开始");
                 //扫码添加产品
                 wx.scanQRCode({
                     needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
@@ -76,7 +79,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                         var result1 = JSON.stringify(res);
                         var result = res.resultStr;
                         GetProductInfoByScanCode.get({
-                            productCode:result
+                            code:result
                         },function(data){
                              if(data.result == "0x00001"){
 
