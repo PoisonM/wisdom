@@ -47,7 +47,7 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
             $scope.responseData.sysClerkName = $scope.staffListNames.join(";");
         }
         $scope.responseData.sysUserId = $stateParams.userId;
-
+        $scope.responseData.surplusPayPrice = $scope.responseData.amount - $scope.responseData.cashPay;
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){
                 $rootScope.staffListNames=[]//保存清除关联员工

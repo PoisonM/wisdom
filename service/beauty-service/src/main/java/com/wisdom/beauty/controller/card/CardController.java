@@ -334,8 +334,10 @@ public class CardController {
 			lock = new RedisLock("recharge_" + transactionId);
 			responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
 		} catch (Exception e) {
+			logger.error("异常信息为={}"+e.getMessage(),e);
 			responseDTO.setErrorInfo("异常数据");
 			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
 		}finally {
 			lock.unlock();
 		}
