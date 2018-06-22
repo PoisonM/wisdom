@@ -63,22 +63,7 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
                            })
                        }
                     }
-               /* if($scope.param.type != type)
-                {
-                    $scope.param.selectProductTypeOneId = "";
-                    $scope.param.multiSelectFlag=false;
-                    $scope.param.type = type;
-                    $scope.param.selectProductList = '';
-                }
-                else
-                {
-                    $scope.param.multiSelectFlag = !$scope.param.multiSelectFlag;
-                }
-                GetShopProductLevelInfo.get({shopStoreId:$rootScope.shopInfo.shopStoreId,productType:type},function(data){
-                    $scope.param.detailProductList = data.responseData.detailProductList;
-                    $scope.param.oneLevelList = data.responseData.oneLevelList;
-                    $scope.param.twoLevelList = data.responseData.twoLevelList;
-                })*/
+
 
                 if(type=='0')
                 {

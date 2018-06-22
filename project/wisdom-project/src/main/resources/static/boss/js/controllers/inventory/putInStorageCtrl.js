@@ -7,6 +7,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 flag: false,
                 type: 0, /*客装产品  易耗品*/
                 selType: 0, /*扫码入库  手动入库*/
+                indexs: [],/*入库产品*/
                 ids: [],/*入库产品*/
                 detailProductList:[],
                 searchProductList:[],
@@ -149,48 +150,49 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 }
             }
 
-            $scope.selProduct = function (domIndex) {
-                if($scope.sum<30){
-                    $rootScope.shopInfo.entryShopProductList = [];
-                    if($scope.param.type=='0')
-                    {
-                        $scope.param.selectProductList = '客装产品';
-                    }
-                    else if($scope.param.type=='1')
-                    {
-                        $scope.param.selectProductList = '院装产品';
-                    }
-                    else if($scope.param.type=='2')
-                    {
-                        $scope.param.selectProductList = '易耗品';
-                    }
-                    if ($scope.param.ids.indexOf(domIndex) != -1) {
-                        var key = 0;
-                        angular.forEach($scope.param.ids, function (val, index) {
-                            if (val == domIndex) {
-                                $scope.param.ids.splice(key, 1);
-                            }
-                            key++;
-                        })
-                    } else {
-                        $scope.param.ids.push(domIndex);
-                    }
-                    var key1 = 0;
-                    angular.forEach($scope.param.ids,function (val,index) {
-                        angular.forEach($scope.param.detailProductList,function (val1,index1) {
-                            if(val==index1){
-                                $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
-                                $rootScope.shopInfo.entryShopProductList.push(val1);
-                                key1++;
-                            }
+            $scope.selProduct = function (domIndex,id) {
+                   if($scope.sum<30){
+                       $rootScope.shopInfo.entryShopProductList = [];
 
-                        })
-                    })
-                    $scope.sum = key1;
-                }else{
-                    alert("一次性只能选择30种产品");
-                }
-            };
+                       if($scope.param.type=='0'){
+                           $scope.param.selectProductList = '客装产品';
+                       } else if($scope.param.type=='1'){
+                           $scope.param.selectProductList = '院装产品';
+                       } else if($scope.param.type=='2'){
+                           $scope.param.selectProductList = '易耗品';
+                       }
+
+                       if ($scope.param.indexs.indexOf(domIndex) != -1) {
+                           var key = 0;
+                           angular.forEach($scope.param.indexs, function (val, index) {
+                               if (val == domIndex) {
+                                   $scope.param.indexs.splice(key, 1);
+                                   $scope.param.ids.splice(key, 1);
+                               }
+                               key++;
+                           })
+                       } else {
+                           $scope.param.indexs.push(domIndex);
+                           $scope.param.ids.push(id);
+                       }
+
+                       var key1 = 0;
+
+                       angular.forEach($scope.param.indexs,function (val,index) {
+                           angular.forEach($scope.param.detailProductList,function (val1,index1) {
+                               if(val==index1)
+                               {
+                                   $scope.param.selectProductList = $scope.param.selectProductList+','+val1.productTypeTwoName;
+                                   $rootScope.shopInfo.entryShopProductList.push(val1);
+                                   key1++;
+                               }
+                           })
+                       })
+                      $scope.sum = key1;
+                   }else{
+                       alert("一次性只能选择30种产品");
+                   }
+               };
 
             $scope.inventoryRecordsPicsGo = function(){
                 $state.go("inventoryRecordsPics",{shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name})
@@ -232,6 +234,8 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             }
             
             $scope.chooseProductList = function (productTypeTwoId) {
+                $scope.param.indexs = [];
+                $scope.param.ids=[];
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
