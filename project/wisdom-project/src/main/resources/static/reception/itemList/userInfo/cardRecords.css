@@ -46,10 +46,17 @@
 .h50{height:50px;line-height: 50px;}
 .h60{height:60px;}
 .LH60{line-height: 60px;}
+.W33{width:33.3%}
 ion-item{
-    border-bottom: solid #f6f6f6 1px;
+    border-bottom: solid #ded4d4 1px;
 }
-
+.bbl{border-bottom: solid #ded4d4 1px;}
 .cardRecords textarea{
     border:none
 }
+.sb{
+    display: flex;justify-content: space-between;
+}
+.center{text-align: center}
+.pd15pd0{padding:15px 0px;}
+.pd5pd10{padding:5px 10px;}
