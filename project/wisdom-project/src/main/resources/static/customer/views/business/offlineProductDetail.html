@@ -1,12 +1,16 @@
 <ion-view style="background: #f2f5f9" >
     <style>
         .check{
-            color: #666666;
-            border: 1px solid #666666;
+            color: #4A4A4A;
+            letter-spacing: 0;
+            background: #F2F5F9;
+            border-radius: 14px;
         }
         .check_type{
-            color: #ff4a59;
-            border: 1px solid rgb(255, 74, 89);
+            color: #FFFFFF;
+            letter-spacing: 0;
+            background: #FF6666;
+            border-radius: 14px;
         }
     </style>
     <ion-content >
@@ -99,8 +103,9 @@
     <!--点击选择型号出现的弹框-->
     <div class="model" ng-show="model" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: 10002;background: #000;opacity: 0.42" ng-click="concealment()"></div>
     <div class="model" ng-show="model" style="position: absolute;bottom: 0;background: white;width: 100%;z-index: 13000;">
-        <div style="border-bottom: 1px solid #e5e5e5;width: 100%;height: 1.8rem">
+        <div style="border-bottom: 1px solid #e5e5e5;width: 100%;height: 2.3rem;position: relative">
             <img ng-src="{{param.product.productDetail.listPic[0]}}" style="width: 1.92rem;height: 1.92rem;margin-top: -0.5rem;margin-left: 0.2rem;float: left">
+              <span style="font-family: PingFang-SC-Regular;font-size: 18px;color: #000000;letter-spacing: 0;line-height: 22px;position: absolute;top: 1.7rem;left: 0.2rem">型号：</span>
             <div style="z-index: 13000;float: left;margin-left: 0.3rem;margin-top: 0.3rem">
                 <p style="color: #ff4a59;font-size: 0.32rem;font-weight: 600">￥{{param.product.price}}</p>
                 <p style="color: #666666;font-size: 0.3rem;margin-top: 0.2rem">请选择型号</p>
@@ -108,19 +113,17 @@
             </div>
         </div>
         <!--型号-->
-        <div class="item" style="border-bottom: 1px solid #e5e5e5">
-            <span style="color: #666666;font-size: 0.3rem;margin-left: 0.3rem;display: inline-block;font-weight: 600;float: left">
-                型号：
-                <span ng-if="param.product.productDetail.spec.length != 1" class="check"  style="color: #666666;font-size: 0.3rem;margin-left: 0.4rem;display: inline-block;height: 25px;line-height: 25px;padding: 1px; font-family: Arial Black;"  ng-repeat="item in param.product.productDetail.spec" ng-click="confirmProductSpec(item)" ng-class="{'check_type':param.checkFlag == item}">{{item}}</span>
-                <span ng-if="param.product.productDetail.spec.length == 1" class="check check_type"  style="color: #666666;font-size: 0.3rem;margin-left: 0.4rem;display: inline-block;height: 25px;line-height: 25px;padding: 1px; font-family: Arial Black;"  ng-repeat="item in param.product.productDetail.spec" >{{item}}</span>
-            </span>
+        <div class="item row row-wrap">
+            <span ng-if="param.product.productDetail.spec.length != 1" class="check "  style="display: inline-block;font-size: 14px;height: 22px;line-height:3px;padding: 10px;text-align: center;font-family: PingFang-SC-Regular;margin-top: 8px;margin-right: 7px;margin-left: 6px"  ng-repeat="item in param.product.productDetail.spec" ng-click="confirmProductSpec(item)" ng-class="{'check_type':param.checkFlag == item}">{{item}}</span>
+            <span ng-if="param.product.productDetail.spec.length == 1" class="check check_type"  style="display: inline-block;font-size: 14px;height: 25px;padding: 4px; font-family: PingFang-SC-Regular;text-align: center;margin-bottom: 5px"  ng-repeat="item in param.product.productDetail.spec" >{{item}}</span>
         </div>
         <!--数量-->
         <div class="item" style="width:100%;height:1rem">
             <span style="color: #666666;font-size: 0.3rem;margin-left: 0.3rem;font-weight: 600">数量：</span>
-            <p class="item-note" style="margin-right: 0.4rem;margin-top: -5px">
+            <p class="item-note" style="margin-right: -1rem;margin-top: -5px">
                 <ion class="ion ion-ios-minus-outline" style="font-size:25px;margin-right: 0.1rem" ng-click="minusProductNum()" class="grey"></ion>
-                <span style="font-size:0.4rem">{{param.productNum}}</span>
+                <input type="number" ng-model="param.productNum" style="display: inline-block;margin-top: -10px;text-align: center;width: 30%;" ng-click="inputBox()">
+              <!--  <span style="font-size:0.4rem">{{param.productNum}}</span>-->
                 <ion class="ion ion-ios-plus-outline" style="font-size:25px;margin-left: 0.1rem" ng-click="addProductNum()"></ion>
             </p>
         </div>
