@@ -120,17 +120,18 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                  error : function() {
                  }
              });
+
             $scope.selType = function (type) {
                 $scope.param.selType = type;
-                alert(type);
                 if(type=='1'){
                     //扫码入库
                     wx.scanQRCode({
                         needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                         scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
                         success: function (res) {
-                            if(res.errMsg.scanQRCode=='ok'){
-                                var result = res.resultStr;
+                            var result1 = JSON.stringify(res);
+                            var result = res.resultStr;
+                            alert(result1);
                                 GetProductInfo.get({
                                     productCode:result
                                 },function(data){
@@ -141,11 +142,6 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                                      }
                                 })
 
-                            }else{
-                                alert("未找到该商品！");
-                            }
-                        }error:function(){
-                            alert("未找到该商品！");
                         }
                     });
                 }
