@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('outboundCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetShopProductLevelInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetShopProductLevelInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetShopProductLevelInfo','GetProductInfo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetShopProductLevelInfo,GetProductInfo) {
             $rootScope.title = "出库";
             $scope.sum = 0;
             $scope.param = {
@@ -78,10 +78,76 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
          /*   $scope.threeMess = function () {
                 $scope.param.flag = false;
-            }
+            }*/
+
+             $.ajax({
+                 url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
+                 async:true,
+                 type:'get',
+                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url
+                 cache:false,
+                 dataType:'json',
+                 success:function(data) {
+                     var configValue = data.responseData;
+                     console.log(configValue);
+                     if(configValue!=null ){
+                         timestamp = configValue.timestamp;//得到时间戳
+                         nonceStr = configValue.nonceStr;//得到随机字符串
+                         signature = configValue.signature;//得到签名
+                         appid = configValue.appid;//appid
+
+                         //微信配置
+                         wx.config({
+                             debug: false,
+                             appId: appid,
+                             timestamp:timestamp,
+                             nonceStr: nonceStr,
+                            signature: signature,
+                             jsApiList: [
+                                 'scanQRCode'
+                             ] // 功能列表
+                         });
+                         wx.ready(function () {
+                             // config信息验证后会执行ready方法，
+                             // 所有接口调用都必须在config接口获得结果之后，
+                             // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
+                             // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+                             // 则可以直接调用，不需要放在ready函数中。
+                         })
+                     }else{
+                     }
+                 },
+                 error : function() {
+                 }
+             });
+
+
             $scope.selType = function (type) {
                 $scope.param.selType = type;
-            }*/
+                 if(type=='3'){
+                    //扫码出库
+                    wx.scanQRCode({
+                        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                        scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                        success: function (res) {
+                            var result1 = JSON.stringify(res);
+                            var result = res.resultStr;
+                            GetProductInfo.get({
+                                productCode:result
+                            },function(data){
+                                 if(data.result == "0x00001"){
+                                        $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,productCode:result});
+                                 }else{
+                                    alert("未找到该商品,请先添加该商品！");
+                                 }
+                            })
+                        },
+                          error : function() {
+                            alert("此商品未存在！");
+                          }
+                    });
+                }
+            }
 
             $scope.selProduct = function (domIndex,id) {
                 if($scope.sum<30){

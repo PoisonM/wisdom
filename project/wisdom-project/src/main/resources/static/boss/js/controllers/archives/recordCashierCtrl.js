@@ -133,7 +133,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     consumeType:'0',
                     goodType:$scope.param.goodType,
                     pageSize:1000,
-                    shopUserId:$stateParams.sysUserId,
+                    sysUserId:$stateParams.sysUserId,
                     startTime:$scope.param.startDate,
                     endTime:$scope.param.endDate
                 }

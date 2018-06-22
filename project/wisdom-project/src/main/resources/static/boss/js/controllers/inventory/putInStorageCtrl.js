@@ -131,16 +131,15 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                         success: function (res) {
                             var result1 = JSON.stringify(res);
                             var result = res.resultStr;
-                            alert(result1);
-                                GetProductInfo.get({
-                                    productCode:result
-                                },function(data){
-                                     if(data.result == "0x00001"){
-                                            $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name,productCode:result});
-                                     }else{
-                                        alert("未找到该商品,请先添加该商品！");
-                                     }
-                                })
+                            GetProductInfo.get({
+                                productCode:result
+                            },function(data){
+                                 if(data.result == "0x00001"){
+                                        $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name,productCode:result});
+                                 }else{
+                                    alert("未找到该商品,请先添加该商品！");
+                                 }
+                            })
 
                         }
                     });
