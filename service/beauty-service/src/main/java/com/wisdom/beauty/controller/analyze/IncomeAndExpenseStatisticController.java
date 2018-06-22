@@ -143,18 +143,22 @@ public class IncomeAndExpenseStatisticController {
     */
     @RequestMapping(value = "/getIncomeExpenditureAnalysisDetailList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getIncomeExpenditureAnalysisDetail(@RequestParam String sysShopId,int pageSize){
+    ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getIncomeExpenditureAnalysisDetail(@RequestParam String startTime,
+                                                                                          @RequestParam String endTime,
+                                                                                          @RequestParam String sysShopId,int pageSize){
 
         sysShopId = redisUtils.getShopId();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
-        UserConsumeRequestDTO userConsumeRequestDTO=new UserConsumeRequestDTO();
-        userConsumeRequestDTO.setSysShopId(sysShopId);
-        userConsumeRequestDTO.setSysBossCode(bossInfo.getId());
-        pageParamVoDTO.setRequestData(userConsumeRequestDTO);
+        PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO = new PageParamVoDTO<>();
+        ShopCashFlowDTO shopCashFlowDTO=new ShopCashFlowDTO();
+        shopCashFlowDTO.setSysShopId(sysShopId);
+        shopCashFlowDTO.setSysBossCode(bossInfo.getId());
+        pageParamVoDTO.setRequestData(shopCashFlowDTO);
         pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
         List<ExpenditureAndIncomeResponseDTO> list=incomeExpenditureAnalysisService.getIncomeExpenditureAnalysisDetail(pageParamVoDTO);
         ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);

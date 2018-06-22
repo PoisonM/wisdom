@@ -48,6 +48,6 @@ public interface IncomeExpenditureAnalysisService {
      * @Description: 获取某个店的收入明细
      * @Date:2018/5/14 11:01
      */
-    List<ExpenditureAndIncomeResponseDTO> getIncomeExpenditureAnalysisDetail(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    List<ExpenditureAndIncomeResponseDTO> getIncomeExpenditureAnalysisDetail(PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO);
 
 }
