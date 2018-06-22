@@ -21,7 +21,7 @@
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span>{{dataInfo.goodsType}}</span>
+                    <span>充值卡</span>
                 </li>
             </ul>
         </div>
@@ -37,6 +37,13 @@
                     <label for="">充值金额</label>
                     <span>{{listItem.price}}</span>
                 </li>
+
+            </ul>
+        </div>
+
+        <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" class="basic">
+            <p>折扣</p>
+            <ul>
                 <li>
                     <label for="">单次</label>
                     <span>{{listItem.timeDiscount=='1'?'无折扣':listItem.timeDiscount}}折</span>
@@ -49,10 +56,6 @@
                     <label for="">产品</label>
                     <span>{{listItem.productDiscount=='1'?'无折扣':listItem.productDiscount}}折</span>
                 </li>
-                <!--<li>
-                    <label for="">员工业绩</label>
-                    <span>2018-05-13</span>
-                </li>-->
             </ul>
         </div>
 
