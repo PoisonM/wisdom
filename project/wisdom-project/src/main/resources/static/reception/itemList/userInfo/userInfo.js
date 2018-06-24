@@ -77,6 +77,8 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
     }
     //意见反馈
     $scope.goFeedback = function() {
+        $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
+        $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
         $state.go("pad-web.userInfo.feedback")
     }
     /*-------------------------------------------------弹窗----------------------------------------------------------------*/
