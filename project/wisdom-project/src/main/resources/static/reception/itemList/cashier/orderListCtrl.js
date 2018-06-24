@@ -92,7 +92,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             rechargePrice = Number(date.consumePrice) + rechargePrice;
         })
         //计算余额支付
-        $scope.balancePay = $scope.responseData.orderPrice - rechargePrice;
+        // $scope.balancePay = $scope.responseData.orderPrice - rechargePrice;
         //计算剩余支付
         $scope.surplusPrice = $scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice;
     }
