@@ -68,9 +68,7 @@ public class RedisUtils {
      */
     public void saveShopAppointInfoToRedis(ShopAppointServiceDTO shopAppointServiceDTO) {
         logger.info("保存预约详情到redis，预约详情为{}",shopAppointServiceDTO);
-        if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())
-                ||StringUtils.isBlank(shopAppointServiceDTO.getSysShopId()) ||
-                StringUtils.isBlank((shopAppointServiceDTO.getSysClerkId()))) {
+        if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())) {
             logger.error("保存预约详情到redis传入参数异常，{}","shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
             return;
         }
