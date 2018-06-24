@@ -31,10 +31,12 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
     $scope.getUserInfo()
     /*---------------------------------------------方法--------------------------------------------------*/
     $scope.selectSex = function (sexType) {
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
         $scope.param.openSexFlag = true
     };
     
     $scope.selectFn = function (sexType) {
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
         $scope.userInfoDataMod.sex = sexType
         $scope.param.openSexFlag = false
     }
