@@ -100,7 +100,7 @@
                         <span class="name">{{item.sysShopProjectName}}</span>
                         <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}.00</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
                         <label for="" class="discountPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-model="item.sysShopProjectInitAmount" ng-value="item.sysShopProjectInitAmount*item.discount">
+                        <input ng-change="myChangeFn()" type="text" ng-model="item.sysShopProjectInitAmount" ng-value="item.sysShopProjectPurchasePrice*item.discount">
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text">-->
                         <div class="delete" ng-click="deleteClick(goodsType.timeCard,item)">删除</div>
@@ -117,7 +117,7 @@
                             </li>
                             <li>
                             <span class="subtotal xiaoji">
-                                <e style="float: left">小计¥{{(item.sysShopProjectInitAmount*item.discount*item.sysShopProjectInitTimes)|number:2}}</e>
+                                <e style="float: left">小计¥{{(item.sysShopProjectPurchasePrice*item.discount*item.sysShopProjectInitTimes)|number:2}}</e>
                                 <input readonly >
                             </span>
                             </li>
