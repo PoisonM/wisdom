@@ -75,9 +75,9 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     }
     CardInfo.get({ id: $state.params.type,sysUserId: $stateParams.userId}, function(data) {
         $scope.responseData = data.responseData;
-        $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?responseData.timeDiscount:'无';
-        $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?responseData.periodDiscount:'无';
-        $scope.productDiscount= $scope.responseData.productDiscount!='1'?responseData.productDiscount:'无';
+        $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
+        $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
+        $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
         $scope.responseData.payType = localStorage.getItem("payType");
     })
 
