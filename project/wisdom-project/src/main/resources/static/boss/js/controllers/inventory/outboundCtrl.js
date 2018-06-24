@@ -237,11 +237,16 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
             /*下一步*/
             $scope.AddOutboundGo = function(){
-                if($rootScope.shopInfo.entryShopProductList.length<=0){
-                    alert("请选择产品");
-                    return
+                if($scope.param.selType=="3"){
+                    if($rootScope.shopInfo.entryShopProductList.length<=0){
+                        alert("请选择产品");
+                        return
+                    }
+                    $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,sum:$scope.sum})
+                }else{
+                    alert("请切换到手动出库！");
                 }
-                $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,sum:$scope.sum})
+
             }
 
 }])

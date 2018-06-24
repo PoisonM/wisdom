@@ -41,6 +41,8 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	/** 生产日期 */
 	private Date productDate;
 
+	private String productDateString;
+
 	/** 库存单价（元） */
 	private BigDecimal stockPrice;
 
@@ -60,6 +62,14 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 
 	public void setStockOutNumber(Integer stockOutNumber) {
 		this.stockOutNumber = stockOutNumber;
+	}
+
+	public String getProductDateString() {
+		return productDateString;
+	}
+
+	public void setProductDateString(String productDateString) {
+		this.productDateString = productDateString;
 	}
 
 	public String getShopBossId() {

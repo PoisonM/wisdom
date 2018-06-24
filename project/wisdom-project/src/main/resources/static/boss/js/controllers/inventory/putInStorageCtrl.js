@@ -199,12 +199,19 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
 
             $scope.newLibraryGo = function(){
-                console.log($rootScope.shopInfo.entryShopProductList);
-                if($rootScope.shopInfo.entryShopProductList.length<=0){
-                    alert("请先选择产品");
+
+                if($scope.param.selType=="0"){
+                    console.log($rootScope.shopInfo.entryShopProductList);
+                    if($rootScope.shopInfo.entryShopProductList.length<=0){
+                        alert("请先选择产品");
+                        return;
+                    }
+                    $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name})
+                }else{
+                    alert("请切换到手动入库");
                     return;
                 }
-                $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name})
+
             }
 
             $scope.search = function(){
