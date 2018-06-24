@@ -29,6 +29,13 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     //产品id
     private String shopProductId;
 
+    //备注
+    private String detail;
+
+
+    private T shopUserConsumeDTO;
+
+    private String goodsType;
 
     public String getImageUrl() {
         return imageUrl;
@@ -54,9 +61,13 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
         this.flowId = flowId;
     }
 
-    private T shopUserConsumeDTO;
+    public String getDetail() {
+        return detail;
+    }
 
-    private String goodsType;
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getGoodsType() {
         return goodsType;
