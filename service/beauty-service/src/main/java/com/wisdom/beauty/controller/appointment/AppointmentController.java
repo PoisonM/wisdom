@@ -554,7 +554,7 @@ public class AppointmentController {
 				hashMap.put("sysClerkInfo", redisUtils.getSysClerkDTO(serviceDTO.getSysClerkId()));
 				hashMap.put("appointmentInfo", serviceDTO);
 				int length = serviceDTO.getShopProjectId().split(";").length;
-				hashMap.put("projectNumber", length-1);
+				hashMap.put("projectNumber", length);
 				arrayList.add(hashMap);
 			}
 		}
