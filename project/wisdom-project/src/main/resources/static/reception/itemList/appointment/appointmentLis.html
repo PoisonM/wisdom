@@ -1,20 +1,13 @@
 <!--预约列表-->
     <div class="LisMess">
         <ul>
-            <li>
-                <P ng-click="detailsWrap(2,$index,'消费')"><img src="images/ic_dian.png" >
-                    <span class="name">安娜</span></P>
-                <P><span class="time">10:00-11:00</span></P>
-            </li>
-            <li>
-                <P ng-click="detailsWrap(2,$index,'划卡')"><img src="images/ic_dian.png">
-                    <span class="name">安娜</span></P>
-                <P><span class="time">10:00-11:00</span></P>
-            </li>
-            <li>
-                <P ng-click="detailsWrap(2,$index,'散客')"><img src="images/ic_dian.png">
-                    <span class="name">安娜</span></P>
-                <P><span class="time">10:00-11:00</span></P>
+            <li ng-repeat="item in weekAppoint">
+                <P>
+                    <img src="images/ic_dian.png" >
+                    <span class="name">{{item.shopProjectName}}</span>
+                </P>
+                <P><span class="name">{{item.sysClerkName}}</span></P>
+                <P><span class="time">{{item.appointStartTime |date: "HH:mm"}}</span>--<span class="time">{{item.appointEndTime|date: "HH:mm"}}</span></P>
             </li>
         </ul>
     </div>

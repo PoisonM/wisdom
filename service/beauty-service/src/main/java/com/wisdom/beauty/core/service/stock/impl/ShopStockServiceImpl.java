@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.wisdom.beauty.client.UserServiceClient;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -387,10 +388,20 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("转换出来的集合shopStocks为空");
 			return null;
 		}
+		SimpleDateFormat sdfp = new SimpleDateFormat("yyyy-MM-dd");
 
 		//开始执行入库/出库
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
+		Date date = null;
+
+		try {
+			date = sdfp.parse(shopStockDto.getProductDateString());
+		} catch (ParseException e) {
+			logger.error(e.getMessage(),e);
+		}
+
+		shopStockDto.setProductDate(date);
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id = IdGen.uuid();
 		if(sysBossDTO!=null){
@@ -402,7 +413,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
-		shopStockRecordDTO.setCreateDate(new Date());
+
 
 		//生成单据号
 		Random random = new Random();
