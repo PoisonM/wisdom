@@ -97,5 +97,14 @@ angular.module('controllers',[]).controller('reminderCtrl',
 
                 })
             }
+            
+            $scope.depaly=function (typeName) {
+                if(typeName == '4'){
+                    setTimeout(function(){
+                        document.body.scrollTop = document.body.scrollHeight;
+                    },300);
+                }
+
+            }
 
         }]);

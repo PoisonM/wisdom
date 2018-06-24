@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.order;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.enums.ExtCardTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
@@ -279,7 +280,7 @@ public class OrderController {
                     ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(dto.getSysShopProjectId());
                     dto.setSysShopProjectName(projectDetail.getProjectName());
                     //如果是疗程卡
-                    if(CardTypeEnum.TREATMENT_CARD.getCode().equals(dto.getUseStyle())){
+                    if(ExtCardTypeEnum.TREATMENT_CARD.getCode().equals(dto.getUseStyle())){
                         timeProjectList.add(dto);
                     }
                     //单次卡

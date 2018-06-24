@@ -63,7 +63,7 @@ define(['appBoss'], function(app){
                 /*收支明细*/
                 $stateProvider
                     .state('incomeDetails', {
-                        url: '/incomeDetails',
+                        url: '/incomeDetails,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'incomeDetailsCtrl',
                         resolve: {
