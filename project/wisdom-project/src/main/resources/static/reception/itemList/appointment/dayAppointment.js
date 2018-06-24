@@ -897,7 +897,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     /*选择顾客*/
     $scope.selectCustomersFun = function () {
         FindArchives.get({
-            queryField: "",
+            queryField:  $scope.param.selectCustomersObject.queryField,
             pageNo: 1,
             pageSize: 100
         }, function (data) {
@@ -936,13 +936,9 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             className: 'newProject ngdialog-theme-custom'
         });
     };
-    $scope.searchCustomer = function () {
-        console.log($scope.param.selectCustomersObject.queryField)
+    $scope.searchCustomer = function (item,sysUserName,sysUserId,phone) {
         $scope.selectCustomersFun()
-
     }
-
-
 
     /*预约 选择项目*/
     /*疗程卡*/
@@ -1286,6 +1282,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     mrsList.push($scope.param.memeda[key].sysClerkDTO);
                 }
                 $scope.param.ModifyAppointmentObject.beauticianName = mrsList[index].name;
+                $scope.param.ModifyAppointmentObject.beauticianId = mrsList[index].id;
                 $scope.param.selectMrsId = mrsList[index].id
                 GetClerkScheduleInfo.get({
                     appointmentId:"",
