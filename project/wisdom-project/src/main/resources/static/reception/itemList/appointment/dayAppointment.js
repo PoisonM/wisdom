@@ -1470,11 +1470,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     if(type==1){
                         console.log($scope.param.addCustomersObject)
                         if($scope.param.addCustomersObject.userPhone == ""){
-                            $scope.param.addCustomersObject.userPhone='请填写手机号';
+                            alert('请填写手机号');
                             return;
                         }
                         if(pattern.test($scope.param.addCustomersObject.userPhone)==false){
-                            $scope.param.addCustomersObject.userPhone='请填写正确的手机号';
+                            alert('请填写正确的手机号');
                             return
                         }
                         $scope.ShopUserArchivesDTO = {
