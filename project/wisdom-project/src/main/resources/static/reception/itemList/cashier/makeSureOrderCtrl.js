@@ -65,7 +65,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         $(e.target).children('.checkBox').css('background', '#FF6666')
     }
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType', { type: 1,userId:$stateParams.userId });
+        $state.go('pad-web.left_nav.selectRechargeType', { type: 1,userId:$stateParams.userId,orderId:$scope.orderId});
     }
 
     SaveShopUserOrderInfo.save({ userId: $stateParams.userId }, function(data) {

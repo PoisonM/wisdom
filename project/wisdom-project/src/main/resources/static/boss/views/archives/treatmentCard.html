@@ -5,7 +5,7 @@
     <ion-content class="partialFiles bgf6"  style="margin-top:45px;" delegate-handle="dashboard" >
         <div class="colfff" ng-show="!param.picFlag" ng-class="{'hidden':param.flag==true}">
             <ion-list class="colfff" >
-                <ion-item style="height:100px;width:90%;background: url('images/treatmentCardRed.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;"  ng-click="goTreatmentCard(item.id)" ng-repeat="item in treatmentCard" ng-if="item.overdue=='0'&&(item.sysShopProjectInitTimes/1) != (item.sysShopProjectSurplusTimes/1)">
+                <ion-item style="height:100px;width:90%;background: url('images/treatmentCardRed.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;"  ng-click="goTreatmentCard(item.id)" ng-repeat="item in treatmentCard" ng-if="item.overdue=='0'&&(item.sysShopProjectSurplusTimes/1 !=0)">
                     <p class="fs15 colfff ml10" style="margin-top:7px;" >
                         {{item.sysShopProjectName}}
                     </p>
@@ -18,7 +18,7 @@
                         {{item.detail}}
                     </p>
                 </ion-item>
-                <ion-item style="height:112px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-repeat="item in treatmentCard" ng-click="goTreatmentCard(item.id)" ng-if="(item.sysShopProjectInitTimes/1) == (item.sysShopProjectSurplusTimes/1)&&item.overdue=='0'">
+                <ion-item style="height:112px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-repeat="item in treatmentCard" ng-click="goTreatmentCard(item.id)" ng-if="(item.sysShopProjectSurplusTimes/1 ==0)&&item.overdue=='0'">
                     <p class="fs15 colfff ml10" style="margin-top:7px;" >
                         {{item.sysShopProjectName}}
                     </p>

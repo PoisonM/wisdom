@@ -1,7 +1,6 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.ExtCardTypeEnum;
 import com.wisdom.beauty.api.enums.IsUseUpEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
@@ -19,6 +18,7 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -341,6 +341,7 @@ public class ProjectController {
 				map.put("marketPrice", shopProjectGroupDTO.getMarketPrice());
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
+				map.put("expirationDate", DateUtils.StrToDate(shopProjectGroupDTO.getExpirationDate(),"date").getTime() );
 				map.put("projectGroupName", projectGroupName);
 				map.put("consumeRecordId", consumeRecordId);
 				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());

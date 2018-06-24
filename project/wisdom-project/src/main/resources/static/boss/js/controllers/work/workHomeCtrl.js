@@ -15,7 +15,7 @@ angular.module('controllers',[]).controller('workHomeCtrl',
                     animation: 'fade-in',
                     showBackdrop: true,
                     maxWidth: 200,
-                    showDelay: 0
+                    showDelay:0
                 });
                 GetBossAchievement.get({},function(data){
                     $ionicLoading.hide();

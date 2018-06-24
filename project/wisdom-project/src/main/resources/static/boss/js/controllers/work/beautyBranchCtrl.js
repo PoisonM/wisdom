@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/4.
  */
 angular.module('controllers',[]).controller('beautyBranchCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopCustomerArriveList','$filter','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetShopCustomerArriveList,$filter,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopCustomerArriveList','$filter','$ionicLoading','$ionicPopup','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,GetShopCustomerArriveList,$filter,$ionicLoading,$ionicPopup,$timeout) {
 
             $rootScope.title = "美容院分店";
             $scope.param={
@@ -14,6 +14,7 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                     $scope.param.current=param;
                     $scope.getInfo()
             };
+
             $scope.getInfo= function () {
                     $ionicLoading.show({
                         content: 'Loading',
@@ -114,7 +115,7 @@ angular.module('controllers',[]).controller('beautyBranchCtrl',
                     }else{
                         alert("当前时间段无法查询")
                         /*var alertPopup = $ionicPopup.alert({
-                         template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">当前时间段无法查询</span>',
+                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">当前时间段无法查询</span>',
                          /!*okText:'确定'*!/
                          });
                          $timeout(function () {

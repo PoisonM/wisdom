@@ -632,6 +632,17 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         }
                     })
                 };
+                /*开始服务*/
+                $scope.endSevier = function () {
+                    if($scope.param.changeYuyueFlag != 2) return;
+                    UpdateAppointmentInfoById.get({shopAppointServiceId: id, status: "3"}, function (data) {
+                        if (data.result == "0x00001") {
+                            $scope.param.changeYuyueFlag = "3"
+                            indexItem.status = "3"
+                        }
+                    })
+                };
+
             }],
             className: 'ngdialog-theme-default',
 
@@ -886,7 +897,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     /*选择顾客*/
     $scope.selectCustomersFun = function () {
         FindArchives.get({
-            queryField: "",
+            queryField:  $scope.param.selectCustomersObject.queryField,
             pageNo: 1,
             pageSize: 100
         }, function (data) {
@@ -925,13 +936,29 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             className: 'newProject ngdialog-theme-custom'
         });
     };
-    $scope.searchCustomer = function () {
-        console.log($scope.param.selectCustomersObject.queryField)
+    $scope.searchCustomer = function (item,sysUserName,sysUserId,phone) {
         $scope.selectCustomersFun()
-
     }
 
+    /*加载预约详情项目 根据预约主键查询预约项目*/
+    $scope.detailsWeepWrap = function (info) {
+        if (info == undefined) {
+            return
+        }
+        $scope.weekAppoint = info
+        ngDialog.open({
+            template: 'appointmentLis',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function ($scope, $interval) {
+            $scope.close = function () {
+              $scope.closeThisDialog();
+            };
+            }],
+            className: 'ngdialog-theme-default',
 
+        });
+        // detailsReservation && detailsReservation($scope, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, FindArchives, GetShopProjectList, GetShopProjectList, ShopWeekAppointmentInfoByDate);
+    };
 
     /*预约 选择项目*/
     /*疗程卡*/
@@ -943,6 +970,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             filterStr:filterStr
         }, function (data) {
             $scope.param.newProductObject.newProjectData = data.responseData;
+            console.log(data.responseData)
         })
     };
     /*本店项目*/
@@ -953,6 +981,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             pageSize: ""
         }, function (data) {
             $scope.param.newProductObject.selfProductData = data.responseData;
+            console.log(data.responseData)
         });
     }
     $scope.newProductSearch = function () {
@@ -1071,11 +1100,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
             $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
         }
-        /*if (type == "疗程") {
-         $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
-         } else {
-         $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
-         }*/
+        // if (type == "疗程") {
+        //  $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
+        //  } else {
+        //  $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
+        //  }
         console.log($scope.param.checkprojectId)
     }
 
@@ -1275,6 +1304,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     mrsList.push($scope.param.memeda[key].sysClerkDTO);
                 }
                 $scope.param.ModifyAppointmentObject.beauticianName = mrsList[index].name;
+                $scope.param.ModifyAppointmentObject.beauticianId = mrsList[index].id;
                 $scope.param.selectMrsId = mrsList[index].id
                 GetClerkScheduleInfo.get({
                     appointmentId:"",

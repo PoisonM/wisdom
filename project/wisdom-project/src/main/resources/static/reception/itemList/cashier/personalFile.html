@@ -12,12 +12,14 @@
             <div class="treatmentCard clearfix" ng-if="select=='0'">
                 <div ng-click="goCureCardRecords(item0.id)" ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
                     <span class="treatmentCardTopName">{{item0.sysShopProjectName}}</span>
+                    <span class="treatmentCardTopName" ng-if="item0.invalidDays!='0' && (item0.invalidDays<currentTime)"><b>已过期</b></span>
+                    <span class="treatmentCardTopName" ng-if="item0.invalidDays=='0'"><b>永久有效</b></span>
                     <span class="treatmentCardTopPrice">金额:￥{{item0.sysShopProjectInitAmount}}</span>
                     <div class="useNub">
                         <span class="treatmentCardTopUsed">{{item0.sysShopProjectSurplusTimes}}</span>
                         <span class="treatmentCardTopTotal">/{{item0.sysShopProjectInitTimes}}</span>
                     </div>
-                    <button ng-click="goConsumptionList('1',item0.id)">划卡</button>
+                    <button ng-click="goConsumptionList('1',item0.id,item0.invalidDays)">划卡</button>
                 </div>
                 <!--<div class="treatmentCardBottom">
                     <span>备注：</span>
@@ -29,6 +31,8 @@
                     <div class="recorderCardTop clearfix">
                         <span class="recorderCardTopName">{{item1.projectGroupName}}</span>
                         <span class="recorderCardTopPrice">金额:   <b>{{item1.marketPrice}}</b></span>
+                        <span class="recorderCardTopPrice" ng-if="item1.expirationDate!='0' && (item1.expirationDate<currentTime)"><b>已过期</b></span>
+                        <span class="recorderCardTopPrice" ng-if="item1.expirationDate=='0'"><b>永久有效</b></span>
                     </div>
                     <!--<div class="recorderCardNote clearfix">
                         <span>备注：</span>
@@ -41,7 +45,7 @@
                                 <span class="recorderCardContentUsed">{{item1Sm.projectSurplusTimes}}</span>
                                 <span class="recorderCardContentTotal">/{{item1Sm.projectInitTimes}}</span>
                             </div>
-                            <button ng-click="goConsumptionList('2',item1Sm.id)">划卡</button>
+                            <button ng-click="goConsumptionList('2',item1Sm.id,item1.expirationDate)">划卡</button>
                         </div>
                     </div>
                 </div>
@@ -64,7 +68,7 @@
                             <e>单次：{{item2.productDiscount=='1'?'无折扣':item2.productDiscount*10+'折'}}</e>
 
                         </div>
-                        <div class="prepaidCardTime">
+                        <div class="prepaidCardTime" ng-if="$index!=0">
                             <e>充值时间：{{item2.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</e>
                         </div>
                     </div>
@@ -77,7 +81,7 @@
             <div class="singleCard clearfix" ng-if="select=='3'">
                 <ul>
                     <li ng-repeat="item3 in courseProjectList1">
-                        <div class="time">{{item3.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</div>
+                        <div class="time">{{item3.createDate |date:"yyyy-MM-dd HH:mm:ss"}}</div>
                         <div class="type">单次消费</div>
                         <div class="name ov_dian">{{item3.sysShopProjectName}}</div>
                         <div class="number">{{item3.sysShopProjectInitTimes}}</div>

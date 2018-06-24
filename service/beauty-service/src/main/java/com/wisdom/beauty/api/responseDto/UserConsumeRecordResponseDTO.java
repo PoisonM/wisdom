@@ -6,6 +6,7 @@ import com.wisdom.common.entity.BaseEntity;
 import org.apache.commons.collections.map.HashedMap;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @Date:Created in 2018/4/9 19:26
  * @since JDK 1.8
  */
-public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
+public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO implements Comparable<UserConsumeRecordResponseDTO> {
 	// 总金额
 	private BigDecimal sumAmount;
 	// 划卡和消费页面展示的名称
@@ -108,5 +109,15 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO {
 
 	public void setPayMap(Map<String, Object> payMap) {
 		this.payMap = payMap;
+	}
+
+
+	@Override
+	public int compareTo(UserConsumeRecordResponseDTO o) {
+		if(this.getCreateDate().getTime()-o.getCreateDate().getTime()>0){
+			return -1;
+		}else {
+			return  1;
+		}
 	}
 }

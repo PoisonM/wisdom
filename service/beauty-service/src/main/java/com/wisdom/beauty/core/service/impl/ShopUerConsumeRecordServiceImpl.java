@@ -74,7 +74,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
 		// 排序
-		criteria.setOrderByClause("create_date");
+		criteria.setOrderByClause("create_date desc");
 		// 分页
 		if (pageParamVoDTO.getPaging()) {
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
@@ -199,8 +199,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 		}
 		logger.info("getShopCustomerConsumeRecordList执行完成");
-		List values = Arrays.asList(map.values().toArray());
-		return values;
+		List<UserConsumeRecordResponseDTO>  responseDTOs=new ArrayList<>();
+		for (Map.Entry<String, UserConsumeRecordResponseDTO> entry:map.entrySet()){
+			responseDTOs.add(entry.getValue());
+		}
+		Collections.sort(responseDTOs);
+		return responseDTOs;
 	}
 
 	@Override

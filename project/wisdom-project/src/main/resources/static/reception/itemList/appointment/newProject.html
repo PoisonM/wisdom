@@ -28,15 +28,31 @@
                 </div>
             </div>
 
-            <ul ng-show="param.newProductObject.content" class="bgfff">
-                <li class="h100 space-between bte5" ng-repeat = "(index,item) in param.newProductObject.newProjectData" ng-click="selectTheProduct($index,'疗程',item.projectDuration)" >
-                    <P>
-                        <img ng-src=" {{param.ModifyAppointmentObject.newProjectDataFlag[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">
-                        <span class="fs30 color333 newProjectIndex" projectName="{{item.projectName}}" shopProjectId="{{item.id}}" appointPeriod="{{item.projectDuration}}">{{item.projectName}}123</span>
-                    </P>
-                    <P><span class="colff6666 fs28 mr30">剩余{{item.maxContainTimes}}次</span></P>
-                </li>
+            <!--<ul ng-show="param.newProductObject.content" class="bgfff">-->
+                <!--<li class="h100 space-between bte5" ng-repeat = "(index,item) in param.newProductObject.newProjectData" ng-click="selectTheProduct($index,'疗程',item.projectDuration)" >-->
+                    <!--<P>-->
+                        <!--<img ng-src=" {{param.ModifyAppointmentObject.newProjectDataFlag[$index]==true?'images/bt_Single%20election_select.png':'images/bt_Single%20election_nor_.png'}}" class="singleSelsectPic ml30 mr20">-->
+                        <!--<span class="fs30 color333 newProjectIndex" projectName="{{item.projectName}}" shopProjectId="{{item.id}}" appointPeriod="{{item.projectDuration}}">{{item.projectName}}123</span>-->
+                    <!--</P>-->
+                    <!--<P><span class="colff6666 fs28 mr30">剩余{{item.maxContainTimes}}次</span></P>-->
+                <!--</li>-->
+                <!--<P ng-if="param.newProductObject.newProjectData.length == 0">暂无顾客疗程卡可用</P>-->
+            <!--</ul>-->
 
-            </ul>
+            <div ng-show="param.newProductObject.content" class="bgfff" ng-repeat = "item in param.newProductObject.selfProductData" ng-show="param.newProductObject.titleFlag">
+                <div  ng-repeat="item in param.newProductObject.newProjectData">
+                    <p class="fs34 color333 h70 bgeee pl30" >{{item.projectGroupName}}</p>
+                    <ul class="bgfff" >
+                        <li class="h100 space-between bte5 "  ng-repeat="productInfo in item.projectList" ng-click="selectTheProduct(items,$parent.$index,$index,'本店项目')" >
+                            <P class="redCorrectFlag" >
+                                <img ng-if = "param.tempRedgArr.indexOf(items.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
+                                <img ng-if = "param.tempRedgArr.indexOf(items.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
+                                <span class="fs30 color333 selfProductDataIndex"  projectName="{{productInfo.shopProjectInfoName}}" shopProjectId="{{productInfo.id}}" appointPeriod="{{productInfo.projectDuration}}">{{productInfo.shopProjectInfoName}}</span>
+                            </P>
+                            <P ng-if="param.newProductObject.content"><span class="colff6666 fs28 mr30">剩余{{productInfo.projectSurplusTimes}}次</span></P>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>

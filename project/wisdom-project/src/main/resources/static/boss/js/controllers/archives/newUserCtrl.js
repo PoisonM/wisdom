@@ -15,7 +15,8 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     sysUserName:"",
                     phone:"",
                     sysShopId:"",
-                    sysShopName:""
+                    sysShopName:"",
+                    imageUrl:'images/headPhone.png'
             };
 
             /*点击女*/

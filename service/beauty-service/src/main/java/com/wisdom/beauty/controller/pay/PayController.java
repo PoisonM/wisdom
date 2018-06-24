@@ -16,6 +16,7 @@ import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -156,13 +157,20 @@ public class PayController {
     ResponseDTO<String> updateShopUserOrderPayInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
         ResponseDTO responseDTO = new ResponseDTO<String>();
-
+        if(StringUtils.isBlank(shopUserOrderDTO.getOrderId())){
+            responseDTO.setErrorInfo("订单号为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
         List<ExtShopUserRechargeCardDTO> userPayRechargeCardList = shopUserOrderDTO.getUserPayRechargeCardList();
-        List<ShopUserRechargeCardDTO> filterList = new ArrayList<>();
+        List<ExtShopUserRechargeCardDTO> filterList = new ArrayList<>();
         if(CommonUtils.objectIsNotEmpty(userPayRechargeCardList)){
             userPayRechargeCardList.forEach(e->{
                 ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(e);
-                filterList.add(shopUserRechargeInfo);
+                ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO = new ExtShopUserRechargeCardDTO();
+                BeanUtils.copyProperties(shopUserRechargeInfo,extShopUserRechargeCardDTO);
+                extShopUserRechargeCardDTO.setConsumePrice(e.getConsumePrice());
+                filterList.add(extShopUserRechargeCardDTO);
             });
         }
         //mongodb中更新订单的状态
