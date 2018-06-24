@@ -51,9 +51,9 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         }
         $scope.responseData.sysUserId = $stateParams.userId;
         $scope.responseData.surplusPayPrice = $scope.responseData.amount - $scope.responseData.cashPay;
-        $scope.responseData.timeDiscount=$scope.timeDiscount;
-        $scope.responseData.periodDiscount=$scope.periodDiscount;
-        $scope.responseData.productDiscount=$scope.productDiscount;
+        $scope.responseData.timeDiscount=('无'==$scope.timeDiscount?'1':$scope.timeDiscount);
+        $scope.responseData.periodDiscount=('无'==$scope.periodDiscount?'1':$scope.periodDiscount);
+        $scope.responseData.productDiscount=('无'==$scope.productDiscount?'1':$scope.productDiscount);
 
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){
