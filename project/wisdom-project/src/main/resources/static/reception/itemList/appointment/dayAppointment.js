@@ -940,6 +940,26 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         $scope.selectCustomersFun()
     }
 
+    /*加载预约详情项目 根据预约主键查询预约项目*/
+    $scope.detailsWeepWrap = function (info) {
+        if (info == undefined) {
+            return
+        }
+        $scope.weekAppoint = info
+        ngDialog.open({
+            template: 'appointmentLis',
+            scope: $scope, //这样就可以传递参数
+            controller: ['$scope', '$interval', function ($scope, $interval) {
+            $scope.close = function () {
+              $scope.closeThisDialog();
+            };
+            }],
+            className: 'ngdialog-theme-default',
+
+        });
+        // detailsReservation && detailsReservation($scope, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, FindArchives, GetShopProjectList, GetShopProjectList, ShopWeekAppointmentInfoByDate);
+    };
+
     /*预约 选择项目*/
     /*疗程卡*/
 

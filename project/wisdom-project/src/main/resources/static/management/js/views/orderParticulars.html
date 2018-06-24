@@ -26,10 +26,10 @@
                         </div>
 
                         <div class="uploading_product_name">
-                            <label>付款时间：</label>{{orderParticulars.payDate|date:'yyyy-MM-dd HH:MM:ss'}}
+                            <label>付款时间：</label>{{orderParticulars.payDate|date:'yyyy-MM-dd HH:mm:ss'}}
                         </div>
                         <div class="uploading_product_name" ng-if="statusFlag">
-                            <label>{{status}}</label>{{orderParticulars.updateDate|date:'yyyy-MM-dd HH:MM:ss'}}
+                            <label>{{status}}</label>{{orderParticulars.updateDate|date:'yyyy-MM-dd HH:mm:ss'}}
                         </div>
                         <div class="uploading_product_name">
                             <label>支付金额：</label>{{orderParticulars.amount}}
