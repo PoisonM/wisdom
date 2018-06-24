@@ -122,7 +122,7 @@
             <span style="color: #666666;font-size: 0.3rem;margin-left: 0.3rem;font-weight: 600">数量：</span>
             <p class="item-note" style="margin-right: -1rem;margin-top: -5px">
                 <ion class="ion ion-ios-minus-outline" style="font-size:25px;margin-right: 0.1rem" ng-click="minusProductNum()" class="grey"></ion>
-                <input type="tel" ng-model="param.productNum" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" style="display: inline-block;margin-top: -10px;text-align: center;width: 30%;" ng-click="inputBox()" >
+                <input type="text" ng-model="param.productNum" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" style="display: inline-block;margin-top: -10px;text-align: center;width: 30%;" ng-click="inputBox()" >
               <!--  <span style="font-size:0.4rem">{{param.productNum}}</span>-->
                 <ion class="ion ion-ios-plus-outline" style="font-size:25px;margin-left: 0.1rem" ng-click="addProductNum()"></ion>
             </p>
