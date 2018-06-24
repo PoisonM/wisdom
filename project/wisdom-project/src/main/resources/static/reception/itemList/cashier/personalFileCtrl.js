@@ -102,8 +102,9 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
         if(expirationDate<$rootScope.currentTime){
             alert("对不起，你的卡项已过期^_^");
             return false;
+        }else{
+            $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
         }
-        $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
     };
 
     $scope.goGetProduct = function(id) {
