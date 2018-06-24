@@ -55,6 +55,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
         consumePrice: 0,
         consumeOncePrice:0,
         imageUrl:'',
+        detail:''
     })
     //查询用户套卡
     if ($scope.params.type == 2) {
@@ -113,7 +114,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
         }
 
         ImageBase64UploadToOSS.save({
-            imageStr: $("#signConfirmRight").jSignature("getData")
+            imageStr: $("#signConfirmRight").jSignature("getData"),
         }, function(data) {
             $scope.shopUserConsumeDTO[0].imageUrl = data.responseData
             if($scope.staffListIds == undefined){
@@ -126,6 +127,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
 
             //疗程卡划卡
             if($scope.params.type== 1){
+                $scope.shopUserConsumeDTO.imageUrl = $("#signConfirmRight").jSignature("getData")
                 ConsumeCourseCard.save({
                     shopUserConsumeDTO: $scope.shopUserConsumeDTO
                 }, function(data) {

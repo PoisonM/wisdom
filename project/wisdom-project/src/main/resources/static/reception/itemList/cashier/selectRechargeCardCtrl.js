@@ -66,7 +66,7 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         localStorage.setItem("payType",e)
         $scope.responseData.payType = localStorage.getItem("payType");
     }
-    CardInfo.get({ id: $state.params.type }, function(data) {
+    CardInfo.get({ id: $state.params.type,sysUserId: $stateParams.userId}, function(data) {
         $scope.responseData = data.responseData;
         $scope.responseData.payType = localStorage.getItem("payType");
     })

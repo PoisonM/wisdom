@@ -14,6 +14,7 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +113,7 @@ public class ShopController {
             extSysShopDTO.setType(type);
         }
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
-        if (CommonUtils.objectIsEmpty(bossShopInfo)) {
+        if (CollectionUtils.isNotEmpty(bossShopInfo)) {
             logger.info("老板{}切换店铺", bossInfo.getId());
             bossInfo.setCurrentShopId(bossShopInfo.get(0).getShopId());
             UserUtils.bossSwitchShops(bossInfo);
