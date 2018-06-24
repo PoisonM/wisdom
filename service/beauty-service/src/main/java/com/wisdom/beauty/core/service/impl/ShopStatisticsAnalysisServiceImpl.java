@@ -19,6 +19,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -986,6 +987,98 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		responseMap.put("consumeTime", list == null ? 0 : list.size());// 人次数
 
 		return responseMap;
+	}
+
+	@Override
+	public List<ShopClerkWorkRecordResponseDTO> getShopMoneyConsumeDetail(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
+		UserConsumeRequestDTO  userConsumeRequestDTO=pageParamVoDTO.getRequestData();
+		if(userConsumeRequestDTO==null){
+			logger.info("userConsumeRequestDTO参数为空");
+			return  null;
+		}
+		logger.info("getShopCustomerConsumeRecordList方法传入的参数,sysClerkId={},startTime={}，endTime={}",
+				userConsumeRequestDTO.getSysClerkId(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
+
+		List<ShopUserConsumeRecordDTO>  list = shopUerConsumeRecordService
+				.getShopCustomerConsumeRecord(pageParamVoDTO);
+		List<ShopClerkWorkRecordResponseDTO> recordResponseDTOList=new ArrayList<>();
+		ShopClerkWorkRecordResponseDTO shopClerkWorkRecordResponseDTO=null;
+		for(ShopUserConsumeRecordDTO dto:list){
+			shopClerkWorkRecordResponseDTO=new ShopClerkWorkRecordResponseDTO();
+			if("1".equals(userConsumeRequestDTO.getSearchFile())){
+				// 业绩 ---充值卡充值金额
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(dto.getGoodsType())) {
+					shopClerkWorkRecordResponseDTO.setType("0");
+					shopClerkWorkRecordResponseDTO.setSumAmount(dto.getPrice());
+					shopClerkWorkRecordResponseDTO.setFlowNo(dto.getFlowNo());
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
+				// 业绩 ---消费金额
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
+						&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(dto.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("业绩消费金额");
+					shopClerkWorkRecordResponseDTO.setType("1");
+					shopClerkWorkRecordResponseDTO.setSumAmount(dto.getPrice());
+					shopClerkWorkRecordResponseDTO.setFlowNo(dto.getFlowNo());
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
+			}
+			if("2".equals(userConsumeRequestDTO.getSearchFile())){
+				// 耗卡 --- 划卡金额(疗程卡和套卡)
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(dto.getConsumeType())) {
+					if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(dto.getGoodsType())
+							|| GoodsTypeEnum.COLLECTION_CARD.getCode()
+							.equals(dto.getGoodsType())) {
+						// shopClerkWorkRecordResponseDTO.setType("耗卡划卡金额");
+						shopClerkWorkRecordResponseDTO.setType("2");
+						shopClerkWorkRecordResponseDTO.setSumAmount(dto.getPrice());
+						shopClerkWorkRecordResponseDTO.setFlowNo(dto.getFlowNo());
+						recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+					}
+				}
+				// 耗卡 --- 单次消费
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
+						&& GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("耗卡单次消费");
+					shopClerkWorkRecordResponseDTO.setType("3");
+					shopClerkWorkRecordResponseDTO.setSumAmount(dto.getPrice());
+					shopClerkWorkRecordResponseDTO.setFlowNo(dto.getFlowNo());
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
+			}
+			if("3".equals(userConsumeRequestDTO.getSearchFile())){
+				// 卡耗 --- 单次消费
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(dto.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(dto.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("卡耗单次消费");
+					shopClerkWorkRecordResponseDTO.setType("4");
+					shopClerkWorkRecordResponseDTO.setSumAmount(dto.getPrice());
+					shopClerkWorkRecordResponseDTO.setFlowNo(dto.getFlowNo());
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
+			}
+		}
+        //做去重处理
+		Map<String,ShopClerkWorkRecordResponseDTO> map=new HashMap<>();
+		ShopClerkWorkRecordResponseDTO shopClerkWorkRecordResponse=null;
+		for(ShopClerkWorkRecordResponseDTO dto:recordResponseDTOList){
+			if(map.containsKey(dto.getFlowNo())){
+				shopClerkWorkRecordResponse=new ShopClerkWorkRecordResponseDTO();
+				ShopClerkWorkRecordResponseDTO dev=map.get(dto.getFlowNo());
+				shopClerkWorkRecordResponse.setSumAmount(dev.getSumAmount().add(dto.getSumAmount()));
+				shopClerkWorkRecordResponse.setType(dev.getType());
+				map.put(dto.getFlowNo(),shopClerkWorkRecordResponse);
+
+			}else {
+				map.put(dto.getFlowNo(),dto);
+			}
+		}
+		List<ShopClerkWorkRecordResponseDTO>  responseDTOs=new ArrayList<>();
+		for (Map.Entry<String, ShopClerkWorkRecordResponseDTO> entry:map.entrySet()){
+			responseDTOs.add(entry.getValue());
+		}
+		return responseDTOs;
 	}
 
 }
