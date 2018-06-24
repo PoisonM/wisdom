@@ -64,7 +64,7 @@
                             <e>单次：{{item2.productDiscount=='1'?'无折扣':item2.productDiscount*10+'折'}}</e>
 
                         </div>
-                        <div class="prepaidCardTime">
+                        <div class="prepaidCardTime" ng-if="$index!=0">
                             <e>充值时间：{{item2.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</e>
                         </div>
                     </div>
