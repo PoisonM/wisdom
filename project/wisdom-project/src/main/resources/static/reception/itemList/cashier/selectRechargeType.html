@@ -29,7 +29,8 @@
     </ul>
     <ul class="selectRechargeTypeUl" ng-if="RechargeCardListAll!=undefined">
         <li ng-repeat="item in RechargeCardListAll" ng-if="$index > 0" ng-click="goSelectRechargeCard(item.id)">
-            <div class="checkBox" ng-class="{bgF6:(userPayRechargeCardListCheck.indexOf(item.id)!='-1')}">
+            <div class="checkBox" >
+                <!--ng-class="{bgF6:(userPayRechargeCardListCheck.indexOf(item.id)!='-1')}"-->
                 <img src="images/checkImg.png" alt="">
             </div>
             <img src="{{item.imageUrl}}" alt="">
