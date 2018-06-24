@@ -1,7 +1,7 @@
-PADWeb.controller('cardRecordsCtrl', function($scope,$state, $stateParams,cashConsume) {
+PADWeb.controller('cardRecordsCtrl', function($scope,$state, $stateParams,GetCompleteByflowId) {
 
-    cashConsume.get({
-        consumeFlowNo:$stateParams.id
+    GetCompleteByflowId.get({
+        id:$stateParams.id
     },function (data) {
         if(data.result == "0x00001"){
             $scope.dataInfo = data.responseData
