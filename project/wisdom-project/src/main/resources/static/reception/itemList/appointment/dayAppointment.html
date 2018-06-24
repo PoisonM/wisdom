@@ -168,9 +168,10 @@
                     </div>
                     <div ng-repeat="(key ,val) in param.week.weekData" class="infoitem_sty">
                         <ul>
-                            <li ng-repeat="item in val" data-ccccc="{{item}}">
+                            <li ng-repeat="item in val" data-ccccc="{{item}}" ng-click="detailsWeepWrap(item.info)">
                                 <div style="position:relative;height:100%">
-                                    <p class="ovInfo" ng-repeat="item1 in item.info" ng-class="{'pinkC':item1.status == 0 || item1.status == 1,'blueC':item1.status == 2 || item1.status == 5,'grayC':item1.status == 3 || item1.status == 4 || item1.status ==6}" >
+                                    <p class="ovInfo" ng-repeat="item1 in item.info"
+                                       ng-class="{'pinkC':item1.status == 0 || item1.status == 1,'blueC':item1.status == 2 || item1.status == 5,'grayC':item1.status == 3 || item1.status == 4 || item1.status ==6}" >
                                         <span class="info_sty ml5">{{item1.sysUserName}}</span>
                                         <span class="info_sty">{{item1.shopProjectName}}</span>
                                         <span class="info_sty">{{item1.appointStartTime |date: "HH:mm"}}</span>
