@@ -120,12 +120,8 @@
                                   ng-click="detailsWrap(indexItem,indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
                                 <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
                                 <div class="havedata">
-                                    <div>
-                                        <!--<p>{{indexItem.sysUserName}}</p>
-                                        <span>{{indexItem.shopProjectName}}</span>
-                                        <span>{{indexItem.status}}</span>-->
+                                    <div ng-if="key == (indexItem.appointStartTime | date: 'HH:mm')">
                                         <p class="user_name">{{indexItem.sysUserName}}</p>
-                                        <!--index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2]-->
                                         <div class="user_info">
                                             <em>客</em>
                                             <span class="time">{{indexItem.appointStartTime | date: "HH:mm"}}</span>
