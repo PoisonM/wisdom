@@ -197,7 +197,7 @@ public class CommonUtils {
 
 		//根据开始时间编号计算结束时间编号
 		StringBuffer responseStr = new StringBuffer();
-		for (int i = Integer.parseInt(startNo); i <= Integer.parseInt(endNo); i++) {
+		for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo); i++) {
 			responseStr.append(i);
 			responseStr.append(",");
 		}
@@ -277,5 +277,4 @@ public class CommonUtils {
 
 		return hashMap;
 	}
-
 }

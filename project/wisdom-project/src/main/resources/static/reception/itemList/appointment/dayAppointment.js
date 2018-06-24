@@ -970,6 +970,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             filterStr:filterStr
         }, function (data) {
             $scope.param.newProductObject.newProjectData = data.responseData;
+            console.log(data.responseData)
         })
     };
     /*本店项目*/
@@ -980,6 +981,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             pageSize: ""
         }, function (data) {
             $scope.param.newProductObject.selfProductData = data.responseData;
+            console.log(data.responseData)
         });
     }
     $scope.newProductSearch = function () {
@@ -1098,11 +1100,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
             $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
         }
-        /*if (type == "疗程") {
-         $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
-         } else {
-         $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
-         }*/
+        // if (type == "疗程") {
+        //  $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
+        //  } else {
+        //  $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
+        //  }
         console.log($scope.param.checkprojectId)
     }
 
@@ -1468,11 +1470,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     if(type==1){
                         console.log($scope.param.addCustomersObject)
                         if($scope.param.addCustomersObject.userPhone == ""){
-                            $scope.param.addCustomersObject.userPhone='请填写手机号';
+                            alert('请填写手机号');
                             return;
                         }
                         if(pattern.test($scope.param.addCustomersObject.userPhone)==false){
-                            $scope.param.addCustomersObject.userPhone='请填写正确的手机号';
+                            alert('请填写正确的手机号');
                             return
                         }
                         $scope.ShopUserArchivesDTO = {

@@ -30,6 +30,7 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
         groupCard:'3',
         project:'8'
     }
+    $rootScope.currentTime = (new Date()).valueOf();
     //支付方式
     $rootScope.rootScopePayType = {
         weChatPay : "0",

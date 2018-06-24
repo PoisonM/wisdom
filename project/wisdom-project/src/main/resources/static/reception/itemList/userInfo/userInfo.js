@@ -45,19 +45,48 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
             }, function(data) {
                 $scope.tempArr = []
                 $scope.userInfoData = data
+                console.log(data)
                 //计算资料完成度
                 for (var key in $scope.userInfoData[0]) {
                     $scope.tempArr.push($scope.userInfoData[0][key]); //属性
                 }
                 var tempLength = 0
-                for(var i = 0; i < $scope.tempArr.length; i++){
-                    if($scope.tempArr[i] != null){
-                        tempLength+=1
-                    }
+                if($scope.userInfoData[0]["photo"]!= null){
+                    tempLength+=1;
                 }
-                $scope.userInfoData[0].completeness = Number(tempLength/$scope.tempArr.length*100).toFixed(0)+"%";
-                /*操作dom*/
-                $(".col_pink").width(($(".bg_gray").width()*Number(tempLength/$scope.tempArr.length*100).toFixed(1))/100)
+                if($scope.userInfoData[0]["name"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["sex"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["sysShopName"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["role"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["workinglife"]!= null){
+                    tempLength+=1;
+                }
+
+                if($scope.userInfoData[0]["speciality"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["dream"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["wechat"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["qq"]!= null){
+                    tempLength+=1;
+                }
+                if($scope.userInfoData[0]["address"]!= null){
+                    tempLength+=1;
+                }
+                $scope.userInfoData[0].completeness = (Number(tempLength/11)*100).toFixed(0)+"%";
+                 $(".col_pink").width(($(".bg_gray").width()*100*Number(tempLength/11).toFixed(1))/100)
             })
         }
     })
@@ -77,6 +106,8 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
     }
     //意见反馈
     $scope.goFeedback = function() {
+        $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
+        $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
         $state.go("pad-web.userInfo.feedback")
     }
     /*-------------------------------------------------弹窗----------------------------------------------------------------*/

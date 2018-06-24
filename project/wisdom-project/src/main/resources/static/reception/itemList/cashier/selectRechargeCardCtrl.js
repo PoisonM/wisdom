@@ -27,6 +27,9 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     $scope.staffListNames = $rootScope.staffListNames//关联员工
     $scope.staffListIds = $rootScope.staffListIds
 
+    $scope.timeDiscount='';
+    $scope.periodDiscount='';
+    $scope.productDiscount='';
 
     $scope.select = 0;
     $scope.tabclick = function(e) {
@@ -48,6 +51,10 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         }
         $scope.responseData.sysUserId = $stateParams.userId;
         $scope.responseData.surplusPayPrice = $scope.responseData.amount - $scope.responseData.cashPay;
+        $scope.responseData.timeDiscount=('无'==$scope.timeDiscount?'1':$scope.timeDiscount);
+        $scope.responseData.periodDiscount=('无'==$scope.periodDiscount?'1':$scope.periodDiscount);
+        $scope.responseData.productDiscount=('无'==$scope.productDiscount?'1':$scope.productDiscount);
+
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){
                 $rootScope.staffListNames=[]//保存清除关联员工
@@ -66,8 +73,11 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         localStorage.setItem("payType",e)
         $scope.responseData.payType = localStorage.getItem("payType");
     }
-    CardInfo.get({ id: $state.params.type }, function(data) {
+    CardInfo.get({ id: $state.params.type,sysUserId: $stateParams.userId}, function(data) {
         $scope.responseData = data.responseData;
+        $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
+        $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
+        $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
         $scope.responseData.payType = localStorage.getItem("payType");
     })
 

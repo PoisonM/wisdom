@@ -640,6 +640,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setCreateBy(clerkInfo.getId());
             consumeRecordDTO.setSignUrl(dto.getImageUrl());
             consumeRecordDTO.setConsumeNumber(dto.getConsumeNum());
+            consumeRecordDTO.setDetail(dto.getDetail());
             consumeRecordDTO.setSysUserId(shopUserProjectRelationDTO.getSysUserId());
             consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
             consumeRecordDTO.setPrice(dto.getConsumePrice());
@@ -899,7 +900,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 //剩余金额 = 已存剩余金额 + 充值金额
                 shopUserRechargeInfo.setSurplusAmount(shopUserRechargeInfo.getSurplusAmount().add(orderDTO.getAmount()));
                 shopUserRechargeInfo.setTimeDiscount(orderDTO.getTimeDiscount());
-                shopUserRechargeInfo.setProductDiscount(orderDTO.getPeriodDiscount());
+                shopUserRechargeInfo.setPeriodDiscount(orderDTO.getPeriodDiscount());
                 shopUserRechargeInfo.setProductDiscount(orderDTO.getProductDiscount());
                 int i = shopRechargeCardService.updateRechargeCard(shopUserRechargeInfo);
                 logger.info("更新用户的充值卡记录操作{}", i > 0 ? "成功" : "失败");

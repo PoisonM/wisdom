@@ -4,14 +4,15 @@
             <img src="images/checkImg.png" alt="">
         </div>
         <span>{{RechargeCardList[0].shopRechargeCardName}}&emsp;&emsp;&emsp;&emsp;面额：￥{{totalBalance}}</span>
-        <p>折扣：单次{{RechargeCardList[0].timeDiscount*10}}折 疗程卡{{RechargeCardList[0].periodDiscount*10}}折 产品{{RechargeCardList[0].productDiscount*10}}折</p>
+        <p>折扣：单次{{RechargeCardList[0].timeDiscount=='1'?'无':RechargeCardList[0].timeDiscount*10}}折 疗程卡{{RechargeCardList[0].periodDiscount=='1'?'无':RechargeCardList[0].periodDiscount*10}}折 产品{{RechargeCardList[0].productDiscount=='1'?'无':RechargeCardList[0].productDiscount*10}}折</p>
+
     </div>
     <div  ng-if="RechargeCardListAll!=undefined&&type!=2" class="selectRechargeTypeTitle clearfix" ng-click="goSelectRechargeCard(RechargeCardListAll[0].id)">
         <div class="checkBox" style="margin: 23px 8px;" ng-class="{bgF6:false}">
             <img src="images/checkImg.png" alt="">
         </div>
         <span>{{RechargeCardListAll[0].name}}</span>
-            <p>折扣：单次{{RechargeCardListAll[0].timeDiscount*10}}折 疗程卡{{RechargeCardListAll[0].periodDiscount*10}}折 产品{{RechargeCardListAll[0].productDiscount*10}}折</p>
+            <p>折扣：单次{{RechargeCardListAll[0].timeDiscount=='1'?'无':RechargeCardListAll[0].timeDiscount*10}}折 疗程卡{{RechargeCardListAll[0].periodDiscount=='1'?'无':RechargeCardListAll[0].periodDiscount*10}}折 产品{{RechargeCardListAll[0].productDiscount=='1'?'无':RechargeCardListAll[0].productDiscount*10}}折</p>
     </div>
     <!--获取我的充值卡-->
     <ul class="selectRechargeTypeUl" ng-if="RechargeCardList!=undefined">
