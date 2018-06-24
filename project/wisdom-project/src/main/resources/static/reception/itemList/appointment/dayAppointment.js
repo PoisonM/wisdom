@@ -970,6 +970,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             filterStr:filterStr
         }, function (data) {
             $scope.param.newProductObject.newProjectData = data.responseData;
+            console.log(data.responseData)
         })
     };
     /*本店项目*/
@@ -980,6 +981,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             pageSize: ""
         }, function (data) {
             $scope.param.newProductObject.selfProductData = data.responseData;
+            console.log(data.responseData)
         });
     }
     $scope.newProductSearch = function () {
@@ -1098,11 +1100,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
             $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
         }
-        /*if (type == "疗程") {
-         $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
-         } else {
-         $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
-         }*/
+        // if (type == "疗程") {
+        //  $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
+        //  } else {
+        //  $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
+        //  }
         console.log($scope.param.checkprojectId)
     }
 
