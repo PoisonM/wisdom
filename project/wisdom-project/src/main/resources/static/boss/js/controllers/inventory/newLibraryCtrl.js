@@ -3,6 +3,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global,GetProductInfo) {
             $rootScope.title = "新增入库";
             $scope.sum = $stateParams.sum;
+            $scope.productDate ="";
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: [],
@@ -30,6 +31,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                                 productName: val.productName,
                                 productUnit: val.productUnit,
                                 productSpec: val.productSpec,
+                                productDateString: val.effectDate,
                                 stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
                             }
                             $scope.param.shopStock.push(value);
@@ -50,6 +52,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                         productName: val.productName,
                         productUnit: val.productUnit,
                         productSpec: val.productSpec,
+                        productDateString: val.effectDate,
                         stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
                     }
                     $scope.param.shopStock.push(value);
@@ -71,6 +74,14 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             var dateShopProductId = '';
             $scope.selDate = function(productDate,shopProcId){
                 dateShopProductId = shopProcId;
+                var shopStock = [];
+                angular.forEach($scope.param.shopStock,function (val,index) {
+                    if(val.shopProcId == shopProcId){
+                        val.productDateString = productDate;
+                        shopStock.push(val);
+                    }
+                });
+                $scope.param.shopStock = shopStock;
             }
 
             console.log($rootScope.shopInfo.entryShopProductList);
