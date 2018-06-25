@@ -2,7 +2,6 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.ChannelCodeEnum;
 import com.wisdom.beauty.api.enums.ChannelEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
@@ -259,6 +258,29 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 	}
 
 	/**
+	 * 更新用户的档案信息
+	 *
+	 * @param shopUserArchivesDTO
+	 * @return
+	 */
+	@Override
+	public int updateByCriteriaSelective(ShopUserArchivesDTO shopUserArchivesDTO) {
+
+		logger.info("更新用户的档案信息传入参数={}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+
+		if (CommonUtils.objectIsEmpty(shopUserArchivesDTO)||StringUtils.isBlank(shopUserArchivesDTO.getSysShopId())||StringUtils.isBlank(shopUserArchivesDTO.getSysUserId())) {
+			logger.error("更新用户的档案信息,传入参数为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
+			return 0;
+		}
+		ShopUserArchivesCriteria shopUserArchivesCriteria = new ShopUserArchivesCriteria();
+		ShopUserArchivesCriteria.Criteria criteria = shopUserArchivesCriteria.createCriteria();
+		criteria.andSysUserIdEqualTo(shopUserArchivesDTO.getSysUserId());
+		criteria.andSysShopIdEqualTo(shopUserArchivesDTO.getSysShopId());
+
+		return shopUserArchivesMapper.updateByCriteriaSelective(shopUserArchivesDTO,shopUserArchivesCriteria);
+	}
+
+	/**
 	 * 删除用户的档案信息
 	 *
 	 * @param archivesId
@@ -386,6 +408,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		shopUserArchivesDTO.setSysUserName(userInfoDTO.getNickname());
 		shopUserArchivesDTO.setSysUserType(userInfoDTO.getUserType());
 		shopUserArchivesDTO.setCreateDate(new Date());
+		shopUserArchivesDTO.setUpdateDate(new Date());
 		shopUserArchivesDTO
 				.setImageUrl(StringUtils.isBlank(shopUserArchivesDTO.getImageUrl()) ? ImageEnum.USER_HEAD.getDesc()
 						: shopUserArchivesDTO.getImageUrl());
