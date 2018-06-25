@@ -381,7 +381,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
                         groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
                         groupRelRelationDTO.setId(IdGen.uuid());
-                        groupRelRelationDTO.setShopProjectInfoId(dt.getId());
+                        groupRelRelationDTO.setShopProjectInfoId(dt.getShopProjectInfoId());
                         groupRelRelationDTO.setProjectInitAmount(dt.getShopProjectPrice());
                         groupRelRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
                         groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
