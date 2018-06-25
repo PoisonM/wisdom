@@ -82,6 +82,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
                 RechargeCardSignConfirm.get({
                     transactionId: $state.params.transactionId,
                     imageUrl: data.responseData,
+                    imageUrl: data.responseData,
                 }, function(data) {
                     if(data.result == "0x00001"){
                         $state.go("pad-web.left_nav.blankPage");

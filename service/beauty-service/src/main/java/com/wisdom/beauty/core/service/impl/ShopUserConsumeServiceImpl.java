@@ -917,6 +917,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
         //插入用户的消费记录
         orderDTO.setImageUrl(imageUrl);
+        orderDTO.setSignUrl(imageUrl);
         int record = saveRechargeCardConsumeRecord(userInfoDTO,orderDTO, clerkInfo, shopUserRechargeInfo);
         logger.info("充值卡充值操作流水号={}，生成充值记录,{}", transactionId, record > 0 ? "成功" : "失败");
 
