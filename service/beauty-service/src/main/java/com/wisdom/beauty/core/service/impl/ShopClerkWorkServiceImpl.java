@@ -51,7 +51,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 		ShopClerkWorkRecordCriteria criteria = new ShopClerkWorkRecordCriteria();
 		ShopClerkWorkRecordCriteria.Criteria c = criteria.createCriteria();
 		// 排序
-		criteria.setOrderByClause("create_date");
+		criteria.setOrderByClause("create_date desc");
 		// 分页
 		if (pageParamVoDTO.getPaging()) {
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
@@ -70,60 +70,72 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 		if (StringUtils.isNotBlank(shopClerkWorkRecordRequestDTO.getSysClerkId())) {
 			c.andSysClerkIdEqualTo(shopClerkWorkRecordRequestDTO.getSysClerkId());
 		}
-		if (shopClerkWorkRecordRequestDTO.getTypeRequire()) {
-			c.andConsumeTypeIn(shopClerkWorkRecordRequestDTO.getConsumeTypeList());
-			c.andGoodsTypeIn(shopClerkWorkRecordRequestDTO.getGoodsTypeList());
-		}
 		List<ShopClerkWorkRecordDTO> list = shopClerkWorkRecordMapper.selectByCriteria(criteria);
 		Map<String, ShopClerkWorkRecordResponseDTO> map = new HashMap<>(16);
+		List<ShopClerkWorkRecordResponseDTO> recordResponseDTOList=new ArrayList<>();
 		ShopClerkWorkRecordResponseDTO shopClerkWorkRecordResponseDTO = null;
 		for (ShopClerkWorkRecordDTO shopClerkWorkRecord : list) {
 			shopClerkWorkRecordResponseDTO = new ShopClerkWorkRecordResponseDTO();
 			BeanUtils.copyProperties(shopClerkWorkRecord, shopClerkWorkRecordResponseDTO);
-			// 业绩 ---充值金额
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-				// shopClerkWorkRecordResponseDTO.setType("业绩充值");
-				shopClerkWorkRecordResponseDTO.setType("0");
-			}
-			// 业绩 ---消费金额
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
-					&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-				// shopClerkWorkRecordResponseDTO.setType("业绩消费金额");
-				shopClerkWorkRecordResponseDTO.setType("1");
-			}
-			// 耗卡 --- 划卡金额(疗程卡和套卡)
-			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())) {
-				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())
-						|| GoodsTypeEnum.COLLECTION_CARD.getCode()
-								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-					// shopClerkWorkRecordResponseDTO.setType("耗卡划卡金额");
-					shopClerkWorkRecordResponseDTO.setType("2");
+			if("1".equals(shopClerkWorkRecordRequestDTO.getSearchFile())){
+				// 业绩 ---充值金额
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("业绩充值");
+					shopClerkWorkRecordResponseDTO.setType("0");
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
+				// 业绩 ---消费金额
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
+						&& !GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("业绩消费金额");
+					shopClerkWorkRecordResponseDTO.setType("1");
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
 				}
 			}
-			// 耗卡 --- 单次消费
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.TIME_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-				// shopClerkWorkRecordResponseDTO.setType("耗卡单次消费");
-				shopClerkWorkRecordResponseDTO.setType("3");
+			if("2".equals(shopClerkWorkRecordRequestDTO.getSearchFile())){
+				// 耗卡 --- 划卡金额(疗程卡和套卡)
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())) {
+					if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())
+							|| GoodsTypeEnum.COLLECTION_CARD.getCode()
+							.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
+						// shopClerkWorkRecordResponseDTO.setType("耗卡划卡金额");
+						shopClerkWorkRecordResponseDTO.setType("2");
+						recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+					}
+				}
+				// 耗卡 --- 单次消费
+				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
+						&& GoodsTypeEnum.TIME_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("耗卡单次消费");
+					shopClerkWorkRecordResponseDTO.setType("3");
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
 			}
-			// 卡耗 --- 单次消费
-			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
-					&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-				// shopClerkWorkRecordResponseDTO.setType("卡耗单次消费");
-				shopClerkWorkRecordResponseDTO.setType("4");
+			if("3".equals(shopClerkWorkRecordRequestDTO.getSearchFile())){
+				// 卡耗 --- 单次消费
+				if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
+						&& GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
+					// shopClerkWorkRecordResponseDTO.setType("卡耗单次消费");
+					shopClerkWorkRecordResponseDTO.setType("4");
+					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
+				}
 			}
-			if (map.get(shopClerkWorkRecord.getFlowNo()) == null) {
+		}
+		//去重处理
+		for(ShopClerkWorkRecordResponseDTO dto:recordResponseDTOList){
+			if (map.get(dto.getFlowNo()) == null) {
 				shopClerkWorkRecordResponseDTO.setSumAmount(shopClerkWorkRecordResponseDTO.getPrice());
-				map.put(shopClerkWorkRecord.getFlowNo(), shopClerkWorkRecordResponseDTO);
+				map.put(dto.getFlowNo(), shopClerkWorkRecordResponseDTO);
 			} else {
-				if (map.get(shopClerkWorkRecord.getFlowNo()).getPrice() != null) {
-					BigDecimal prices = map.get(shopClerkWorkRecord.getFlowNo()).getPrice()
-							.add(shopClerkWorkRecord.getPrice());
+				if (map.get(dto.getFlowNo()).getPrice() != null) {
+					BigDecimal prices = map.get(dto.getFlowNo()).getSumAmount()
+							.add(dto.getPrice());
 					shopClerkWorkRecordResponseDTO.setSumAmount(prices);
 				}
-				map.put(shopClerkWorkRecord.getFlowNo(), shopClerkWorkRecordResponseDTO);
+				map.put(dto.getFlowNo(), shopClerkWorkRecordResponseDTO);
 			}
+
 		}
 		List values = Arrays.asList(map.values().toArray());
 		return values;

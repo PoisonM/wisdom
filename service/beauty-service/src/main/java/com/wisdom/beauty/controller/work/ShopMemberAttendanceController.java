@@ -243,41 +243,6 @@ public class ShopMemberAttendanceController {
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 
 		userConsumeRequestDTO.setSysShopId(sysShopId);
-		// 设置为true 这样需要通过consumeType和goodType做为条件来查询
-		//userConsumeRequestDTO.setGoodsTypeRequire(true);
-/*		if ("1".equals(searchFile)) {
-			List<String> consumeType = new ArrayList<>();
-			consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
-			userConsumeRequestDTO.setConsumeTypeList(consumeType);
-			List<String> goodsType = new ArrayList<>();
-			goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
-			goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-			goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
-			goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-			goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
-			userConsumeRequestDTO.setGoodsTypeList(goodsType);
-		}
-		if ("2".equals(searchFile)) {
-			userConsumeRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
-			List<String> goodsType = new ArrayList<>();
-			goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
-			goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-			goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-			userConsumeRequestDTO.setGoodsTypeList(goodsType);
-			List<String> consumeType = new ArrayList<>();
-			consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
-			consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
-			userConsumeRequestDTO.setConsumeTypeList(consumeType);
-		}
-		if ("3".equals(searchFile)) {
-			userConsumeRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
-			List<String> goodsType = new ArrayList<>();
-			goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
-			userConsumeRequestDTO.setGoodsTypeList(goodsType);
-			List<String> consumeType = new ArrayList<>();
-			consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
-			userConsumeRequestDTO.setConsumeTypeList(consumeType);
-		}*/
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		userConsumeRequestDTO.setSearchFile(searchFile);
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
