@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
+
 /**
  * ClassName: ShopUerConsumeRecordServiceImpl
  *
@@ -299,7 +301,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					shopProjectInfoDTO.setDiscountPrice(
-							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
 					map.put(dto.getShopProjectGroupId(), devDto);
