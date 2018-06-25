@@ -3,7 +3,7 @@
         <div class="checkBox" style="margin: 23px 8px;" ng-class="{bgF6:false}">
             <img src="images/checkImg.png" alt="">
         </div>
-        <span>{{RechargeCardList[0].shopRechargeCardName}}&emsp;&emsp;&emsp;&emsp;面额：￥{{surplusAmount}}</span>
+        <span>{{RechargeCardList[0].shopRechargeCardName}}&emsp;&emsp;&emsp;&emsp;面额：￥{{RechargeCardList[0].surplusAmount}}</span>
         <p>折扣：单次{{RechargeCardList[0].timeDiscount=='1'?'无':RechargeCardList[0].timeDiscount*10}}折 疗程卡{{RechargeCardList[0].periodDiscount=='1'?'无':RechargeCardList[0].periodDiscount*10}}折 产品{{RechargeCardList[0].productDiscount=='1'?'无':RechargeCardList[0].productDiscount*10}}折</p>
 
     </div>
