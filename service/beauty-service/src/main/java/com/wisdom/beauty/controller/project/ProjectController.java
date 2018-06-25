@@ -21,6 +21,7 @@ import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -715,4 +716,61 @@ public class ProjectController {
 		return false;
 	}
 
+
+	/**
+	 * 查询顾客疗程卡信息(疗程卡+套卡)
+	 *
+	 * @param sysUserId
+	 * @return
+	 */
+	@RequestMapping(value = "getCourseProjectList", method = { RequestMethod.POST, RequestMethod.GET })
+
+	public @ResponseBody ResponseDTO<List<Map>> getCourseProjectList(
+			@RequestParam(required = false) String sysUserId) {
+
+		String sysBossCode = redisUtils.getBossCode();
+		String sysShopId = redisUtils.getShopId();
+
+		logger.info("传入参数={}",
+				"sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+		ResponseDTO<List<Map>> responseDTO = new ResponseDTO<>();
+
+		//查询用户疗程卡信息
+		ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
+		relationDTO.setSysUserId(sysUserId);
+		relationDTO.setSysShopId(sysShopId);
+		relationDTO.setUseStyle("0");
+		relationDTO.setSysBossCode(sysBossCode);
+
+		List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
+		List<Map> shopUserProjectRResponseDTO = new ArrayList<>();
+		for (ShopUserProjectRelationDTO shopUserProjectRelationDTO : userProjectList) {
+		  if (shopUserProjectRelationDTO.getInvalidDays().getTime() > System.currentTimeMillis()) {
+			  Map projectMap = new HashedMap();
+			  projectMap.put("projectName",shopUserProjectRelationDTO.getSysShopProjectName());
+			  projectMap.put("id",shopUserProjectRelationDTO.getId());
+			  projectMap.put("projectId", shopUserProjectRelationDTO.getSysShopProjectId());
+			  projectMap.put("surplusTimes", shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
+			  shopUserProjectRResponseDTO.add(projectMap);
+		  }
+		}
+
+		// 查询用户的套卡信息
+		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+		shopUserProjectGroupRelRelationDTO.setSysUserId(sysUserId);
+		shopUserProjectGroupRelRelationDTO.setSysShopId(sysShopId);
+		List<ShopUserProjectGroupRelRelationDTO> userCollectionCardProjectList = projectService
+				.getUserCollectionCardProjectList(shopUserProjectGroupRelRelationDTO);
+		for(ShopUserProjectGroupRelRelationDTO groupRelRelationDTO : userCollectionCardProjectList){
+			Map projectMap = new HashedMap();
+			projectMap.put("projectName",groupRelRelationDTO.getShopProjectInfoName());
+			projectMap.put("id",groupRelRelationDTO.getId());
+			projectMap.put("projectId", groupRelRelationDTO.getShopProjectInfoId());
+			projectMap.put("surplusTimes", groupRelRelationDTO.getProjectSurplusTimes());
+			shopUserProjectRResponseDTO.add(projectMap);
+		}
+		responseDTO.setResponseData(shopUserProjectRResponseDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		return responseDTO;
+	}
 }
