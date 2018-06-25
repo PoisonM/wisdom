@@ -60,6 +60,14 @@ public interface ShopCustomerArchivesService {
     int updateShopUserArchivesInfo(ShopUserArchivesDTO shopUserArchivesDTO);
 
     /**
+     * 更新用户的档案信息
+     *
+     * @param shopUserArchivesDTO
+     * @return
+     */
+    int updateByCriteriaSelective(ShopUserArchivesDTO shopUserArchivesDTO);
+
+    /**
      * 删除用户的档案信息
      *
      * @param archivesId
