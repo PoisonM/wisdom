@@ -77,16 +77,12 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.editedRecharge.imageList.push(data.responseData)
                             }
-
                         })
                     };
                     fr.readAsDataURL(file);
-
                 }else {
                     alert("浏览器不支持")
                 }
-
-
             };
             $scope.delPic = function(index){
                 $rootScope.settingAddsome.editedRecharge.imageList.splice(index,1)

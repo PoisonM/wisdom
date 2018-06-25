@@ -6,10 +6,14 @@ angular.module('controllers',[]).controller('confirmedCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetAppointmentInfoById,UpdateAppointmentInfoById,Global,$ionicPopup,$ionicLoading,$timeout) {
           /*  $rootScope.title = "已确认预约";*/
             $scope.date=$stateParams.date;
-            $scope.param={
-                flag:false
-            }
-
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetAppointmentInfoById.get({
                     shopAppointServiceId:$stateParams.shopAppointServiceId
                 },function(data){
@@ -17,11 +21,10 @@ angular.module('controllers',[]).controller('confirmedCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.confirmed = data.responseData;
                         $rootScope.title = $scope.confirmed.sysClerkName;
-                        $scope.param.flag = false;
-                    }else{
-                        $scope.param.flag = true;
                     }
                 })
+            })
+
 
 
             /*日期插件*/

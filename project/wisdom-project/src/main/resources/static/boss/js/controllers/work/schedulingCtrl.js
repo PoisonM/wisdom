@@ -9,7 +9,8 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 nowdate:new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月",//初始化时间
                 compileDateFlag:true,
                 displayShopBox:false,
-                displayShop:false
+                displayShop:false,
+                shopId:""
             };
 
             $scope.queryScheduleList = function (searchDate) {
@@ -22,7 +23,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 });
                 GetShopClerkScheduleList.get({
                     searchDate:searchDate,
-                    sysShopId:"11"
+                    sysShopId:$scope.param.shopId
                 },function (data) {
                     if(data.result == "0x00001"){
                         $ionicLoading.hide()
@@ -90,6 +91,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
 
             /*点击店铺名字切换店铺*/
             $scope.choseShop=function (id) {
+                $scope.param.shopId =id
                 $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"));
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;

@@ -89,7 +89,7 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml20">折扣</p>
                             <p class="mr10 col888">
-                                {{item.discount == null?'无折':item.discount}}
+                                {{(item.discount == null)||(item.discount == 1)?'无折':item.discount*10+'折'}}
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
@@ -120,7 +120,7 @@
                 <p class="h50 ml10">支付明细</p>
                 <div>
                     <opn-list >
-                        <ion-item  class="h50 bgfff" >
+                        <ion-item  class="h50 bgfff" ng-if="info.payMap.payType!=''" >
                             <p class="ml10"  ng-if="info.payMap.payType=='0'" style="display: flex;justify-content: space-between">
                                 <span>微信</span>
                                 <span class="mr10"> ￥{{info.payMap.payTypeAmount}}</span>
