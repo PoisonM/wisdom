@@ -95,6 +95,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
                 PaySignConfirm.save({
                     orderId:$stateParams.orderId,
                     imageUrl: data.responseData,
+                    signUrl: data.responseData,
                 },function (data) {
                     if(data.result == "0x00001"){
                         $state.go("pad-web.left_nav.blankPage");
