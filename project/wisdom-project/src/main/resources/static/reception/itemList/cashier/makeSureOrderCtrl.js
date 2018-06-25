@@ -78,6 +78,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
                 $scope.orderPrice = data.responseData.orderPrice;
             }
+            $scope.myChangeFn();
         })
     })
 
