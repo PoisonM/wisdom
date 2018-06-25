@@ -102,6 +102,11 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	 * 到店次数，标记每个用户的到店次数
 	 */
 	private Integer  useArriveShopTime;
+	//0、商品类型为次卡；1、商品类型为疗程卡 ；2、商品类型为充值卡；3、商品类型为套卡 4、商品类型为产品
+	private String goodsType;
+
+	//0：充值  1：消费 2、还欠款 3、退款
+	private String consumeType;
 	public BigDecimal getExpenditure() {
 		return expenditure;
 	}
@@ -284,5 +289,21 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 
 	public void setUseArriveShopTime(Integer useArriveShopTime) {
 		this.useArriveShopTime = useArriveShopTime;
+	}
+
+	public String getGoodsType() {
+		return goodsType;
+	}
+
+	public void setGoodsType(String goodsType) {
+		this.goodsType = goodsType;
+	}
+
+	public String getConsumeType() {
+		return consumeType;
+	}
+
+	public void setConsumeType(String consumeType) {
+		this.consumeType = consumeType;
 	}
 }

@@ -84,6 +84,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
     } else {
         GetRechargeCardList.get({
             pageSize: 100,
+            sysUserId: $stateParams.userId
         }, function(data) {
             $scope.RechargeCardListAll = data.responseData;
         })
@@ -119,7 +120,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             orderId: $state.params.orderId,
             shopUserRechargeCardDTO: {
                 id: eid,
-                shopRechargeCardId: eid,
+                shopRechargeCardId: id,
                 shopRechargeCardName: name,
             },
         }, function(data) {

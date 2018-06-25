@@ -121,6 +121,9 @@ public class Base64Utils {
         imgStr = imgStr.replace("data:image/png;base64,", "");
         imgStr = imgStr.replace("data:image/jpeg;base64,", "");
         imgStr = imgStr.replace("\"", "");
+        imgStr = imgStr.replace("{\"imageStr\":", "");
+        imgStr = imgStr.replace("}", "");
+        imgStr = imgStr.replace("{imageStr:", "");
         BASE64Decoder decoder = new BASE64Decoder();
         InputStream inputStream = null;
         // Base64解码

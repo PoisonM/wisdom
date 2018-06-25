@@ -828,6 +828,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
 			dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 			dto.setPeriodDiscount(userConsumeRecordResponseDTO.getPeriodDiscount());
+			dto.setDiscount(userConsumeRecordResponseDTO.getDiscount());
 			dto.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
 			dto.setFlowName(userConsumeRecordResponseDTO.getFlowName());
 			userConsumeRecordResponses.add(dto);

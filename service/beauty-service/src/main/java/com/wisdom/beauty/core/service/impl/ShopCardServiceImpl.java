@@ -80,6 +80,10 @@ public class ShopCardServiceImpl implements ShopCardService {
             criteria.andSysUserIdEqualTo(shopUserRechargeCardDTO.getSysUserId());
         }
 
+        if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getShopRechargeCardId())) {
+            criteria.andShopRechargeCardIdEqualTo(shopUserRechargeCardDTO.getShopRechargeCardId());
+        }
+
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysShopId())) {
             criteria.andSysShopIdEqualTo(shopUserRechargeCardDTO.getSysShopId());
         }
