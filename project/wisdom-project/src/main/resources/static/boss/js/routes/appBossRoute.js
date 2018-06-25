@@ -90,7 +90,7 @@ define(['appBoss'], function(app){
                     })
                         /*员工端的业绩明细*/
                     .state('employeeDetailedPerformance', {
-                        url: '/employeeDetailedPerformance/:searchFile',
+                        url: '/employeeDetailedPerformance/:searchFile,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'employeeDetailedPerformanceCtrl',
                         resolve: {
