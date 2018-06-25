@@ -2,6 +2,7 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.ShopAppointServiceCriteria;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
+import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.enums.AppointStatusEnum;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -11,6 +12,7 @@ import com.wisdom.beauty.core.mapper.ExtShopAppointServiceMapper;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -57,6 +60,9 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
 
     @Autowired
     private ShopProjectService shopProjectService;
+
+    @Resource
+    private ShopCustomerArchivesService shopCustomerArchivesService;
 
     /**
      * 根据时间查询查询某个店的有预约号源的美容师列表
@@ -360,9 +366,24 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             shopProjectName = shopProjectName.substring(0,shopProjectName.length()-1);
             shopAppointServiceDTO.setShopProjectName(shopProjectName);
         }
+        //补充用户的手机号id
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
+        shopUserArchivesDTO.setSysShopId(shopAppointServiceDTO.getSysShopId());
+        shopAppointServiceDTO.setSysUserPhone(shopAppointServiceDTO.getSysUserId());
+        List<ShopUserArchivesDTO> shopUserArchivesDTOList = shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
+        if(null != shopUserArchivesDTOList && shopUserArchivesDTOList.size()>0){
+            shopAppointServiceDTO.setSysUserPhone(shopUserArchivesDTOList.get(0).getPhone());
+        }
+
         int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         logger.debug("保存用户的预约信息执行结果， {}", insert > 0 ? "成功" : "失败");
+        //更新档案信息,最后一次到店时间
+        shopUserArchivesDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
+        shopUserArchivesDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
+        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
 
         HashMap<Object, Object> hashMap = new HashMap<>(1);
         hashMap.put("appointmentId", shopAppointServiceDTO.getId());

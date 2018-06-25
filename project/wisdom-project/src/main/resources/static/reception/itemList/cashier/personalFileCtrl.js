@@ -98,15 +98,21 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
     }
     // $scope.tabclick(0);
 
-    $scope.goConsumptionList = function(type, id) {
-        $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
+    $scope.goConsumptionList = function(type, id,expirationDate,$event) {
+        $event.stopPropagation();//阻止事件冒泡
+        if(expirationDate<$rootScope.currentTime){
+            // alert("对不起，你的卡项已过期^_^");
+            return false;
+        }else{
+            $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
+        }
     };
 
     $scope.goGetProduct = function(id) {
         $state.go('pad-web.left_nav.getProduct', { id: id })
     }
+    $scope.goCureCardRecords = function (id,$event) {
 
-    $scope.goCureCardRecords = function (id) {
         $state.go('pad-web.left_nav.cureCardRecords',{id:id,userId:$stateParams.sysUserId})
     }
 

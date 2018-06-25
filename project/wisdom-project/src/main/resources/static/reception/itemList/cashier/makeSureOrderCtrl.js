@@ -65,7 +65,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         $(e.target).children('.checkBox').css('background', '#FF6666')
     }
     $scope.goSelectRechargeType = function() {
-        $state.go('pad-web.left_nav.selectRechargeType', { type: 1,userId:$stateParams.userId });
+        $state.go('pad-web.left_nav.selectRechargeType', { type: 1,userId:$stateParams.userId,orderId:$scope.orderId});
     }
 
     SaveShopUserOrderInfo.save({ userId: $stateParams.userId }, function(data) {
@@ -78,6 +78,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
                 $scope.shopUserRechargeCardDTO = data.responseData.shopUserRechargeCardDTO;
                 $scope.orderPrice = data.responseData.orderPrice;
             }
+            $scope.myChangeFn();
         })
     })
 
@@ -164,7 +165,7 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         });
         //项目价格
         angular.forEach($scope.shopUserProjectRelationDTOS, function(data,index,array){
-            $scope.orderPrice = Number(data.sysShopProjectInitAmount*data.discount*data.sysShopProjectInitTimes)+ Number($scope.orderPrice)
+            $scope.orderPrice = Number(data.sysShopProjectInitAmount*data.sysShopProjectInitTimes)+ Number($scope.orderPrice)
         });
         //产品价格
         angular.forEach($scope.shopUserProductRelationDTOS, function(data,index,array){

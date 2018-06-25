@@ -45,6 +45,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         GetUserRechargeCardList.get({
             sysUserId: $stateParams.userId
         }, function(data) {
+            $scope.userPayRechargeCardListCheck = [];
             $scope.totalBalance = data.responseData.totalBalance
             $scope.RechargeCardList = data.responseData.userRechargeCardList;
         })
@@ -83,6 +84,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
     } else {
         GetRechargeCardList.get({
             pageSize: 100,
+            sysUserId: $stateParams.userId
         }, function(data) {
             $scope.RechargeCardListAll = data.responseData;
         })
@@ -115,15 +117,15 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
     $scope.updateVirtualGoodsOrderInfo = function(id, eid, name, callback) {
         UpdateVirtualGoodsOrderInfo.save({
             goodsType: '2',
-            orderId: $scope.orderId,
+            orderId: $state.params.orderId,
             shopUserRechargeCardDTO: {
                 id: eid,
-                shopRechargeCardId: eid,
+                shopRechargeCardId: id,
                 shopRechargeCardName: name,
             },
         }, function(data) {
             console.log(data)
-            // callback && callback();
+            callback && callback();
         })
     }
     

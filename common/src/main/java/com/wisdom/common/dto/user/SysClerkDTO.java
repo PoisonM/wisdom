@@ -81,7 +81,7 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
     //
     private Date updateDate;
 
-    private Integer workinglife;
+    private String workinglife;
 
     private String speciality;
 
@@ -293,14 +293,13 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public Integer getWorkinglife() {
+    public String getWorkinglife() {
         return workinglife;
     }
 
-    public void setWorkinglife(Integer workinglife) {
+    public void setWorkinglife(String workinglife) {
         this.workinglife = workinglife;
     }
-
     public String getSpeciality() {
         return speciality;
     }

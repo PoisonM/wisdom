@@ -104,7 +104,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //根据流水号查消费记录
     .factory('cashConsume', ['$resource', function($resource) {
-        return $resource(beautyIP + 'consume/:consumeFlowNo', { consumeFlowNo: '@id' })
+        return $resource(beautyIP + 'consume/consumeFlowNo')
     }])
     //获取档案列表
     .factory('FindArchives', ['$resource', function($resource) {
@@ -197,6 +197,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     //查询某个用户的产品信息
     .factory('GetUserProductList', ['$resource', function($resource) {
         return $resource(beautyIP + 'productInfo/getUserProductList')
+    }])
+    //查询pad端预约模块用户的
+    .factory('GetCourseList', ['$resource', function($resource) {
+        return $resource(beautyIP + 'projectInfo/getCourseProjectList')
     }])
     //查询某个用户的套卡信息
     .factory('GetUserProjectGroupList', ['$resource', function($resource) {

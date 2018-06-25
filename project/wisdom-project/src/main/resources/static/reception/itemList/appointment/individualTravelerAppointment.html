@@ -25,7 +25,7 @@
         </div>
 
         <div>
-            <p class=" mt30" ng-if="param.changeYuyueFlag == 0"><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">{{param.week.details.sysUserName}}</span><span class="giveContent fs32"  data-flag="{{param.changeYuyueFlag}}" ng-click ="modifyingAppointment()">修改预约</span></p>
+            <p class=" mt30" ><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">{{param.week.details.sysUserName}}</span><span ng-if="param.changeYuyueFlag == 0" class="giveContent fs32"  data-flag="{{param.changeYuyueFlag}}" ng-click ="modifyingAppointment()">修改预约</span></p>
             <div class="contentTime mt44 space-between">
                 <P ><img src="images/ic_point.png" alt="" class=" w16 h16 ml60"> <span class="minute fs30">{{param.week.details.appointStartTime|date:'HH:mm'}}~{{param.week.details.appointEndTime|date:'HH:mm'}}</span></P>
                 <p class="fs32 mr60">美容师 <span class="fs28 color333">{{param.week.details.sysClerkName}}</span></p>

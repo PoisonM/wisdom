@@ -28,6 +28,12 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
 
     $scope.goSignConfirm = function() {
+        
+        if($scope.surplusPrice<0){
+            alert("剩余支付小于0元，请核对(^_^)");
+            return false;
+        }
+
         if($scope.payType == undefined){
             $scope.payType = ""
         }
@@ -92,7 +98,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             rechargePrice = Number(date.consumePrice) + rechargePrice;
         })
         //计算余额支付
-        $scope.balancePay = $scope.responseData.orderPrice - rechargePrice;
+        // $scope.balancePay = $scope.responseData.orderPrice - rechargePrice;
         //计算剩余支付
         $scope.surplusPrice = $scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice;
     }
