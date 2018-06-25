@@ -342,7 +342,7 @@ public class ProjectController {
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
 				String expirationDate = shopProjectGroupDTO.getExpirationDate();
-				map.put("expirationDate", expirationDate.equals("0")?DateUtils.StrToDate(expirationDate,"date").getTime():"0" );
+				map.put("expirationDate", !expirationDate.equals("0")?DateUtils.StrToDate(expirationDate,"date").getTime():"0" );
 				map.put("projectGroupName", projectGroupName);
 				map.put("consumeRecordId", consumeRecordId);
 				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());
