@@ -70,7 +70,6 @@ public class IncomeController {
 	 * @return
 	 */
 	@RequestMapping(value = "getIncomeRanking",method = {RequestMethod.GET,RequestMethod.POST})
-	@LoginRequired
 	public
 	@ResponseBody ResponseDTO<List<IncomeRecordDTO>> getIncomeRanking(){
 		long startTime = System.currentTimeMillis();
