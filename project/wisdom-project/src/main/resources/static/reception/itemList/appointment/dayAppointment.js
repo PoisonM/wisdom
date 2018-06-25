@@ -5,7 +5,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     , GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject
     , GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, UpdateAppointmentInfoById
     , FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList
-    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,ImageBase64UploadToOSS) {
+    ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,ImageBase64UploadToOSS,GetCourseList,ProjectInfo) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     //切换时间更新数据
@@ -964,10 +964,9 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     /*疗程卡*/
 
     $scope.newProjectFun = function (filterStr) {
-        GetUserProjectGroupList.get({
-            cardStyle: "0",
-            sysUserId: $scope.param.selectCustomersObject.sysUserId,
-            filterStr:filterStr
+        GetCourseList.get({
+            sysUserId: $scope.param.selectCustomersObject.sysUserId
+            // filterStr:filterStr
         }, function (data) {
             $scope.param.newProductObject.newProjectData = data.responseData;
             console.log(data.responseData)
@@ -1095,10 +1094,21 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         $scope.param.checkprojectId = ""
         $scope.param.checkprojectName = ""
         $scope.param.checkprojectDuration = new Number()
+
+
         for(var i = 0; i < $scope.param.checkProjectArr.length; i++){
             $scope.param.checkprojectId += $scope.param.checkProjectArr[i].id+";"
-            $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
-            $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
+            if("本店项目" == type){
+                $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
+                $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
+            }else{
+                $scope.param.checkprojectName += $scope.param.checkProjectArr[i].sysShopProjectName+";"
+                ProjectInfo.get({id:$scope.param.checkProjectArr[i].projectId},function (data) {
+                    if(data.result == "0x00001"){ 
+                    $scope.productInformation = data.responseData.projectDuration;
+                    $scope.param.checkprojectDuration += parseInt($scope.productInformation)
+                } })
+            }
         }
         // if (type == "疗程") {
         //  $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
