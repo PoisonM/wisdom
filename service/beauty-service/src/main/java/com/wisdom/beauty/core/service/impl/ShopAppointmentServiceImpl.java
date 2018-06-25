@@ -214,6 +214,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if (shopAppointServiceDTO == null || StringUtils.isBlank(shopAppointServiceDTO.getId())) {
             return 0;
         }
+        redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         return shopAppointServiceMapper.updateByPrimaryKeySelective(shopAppointServiceDTO);
     }
 
