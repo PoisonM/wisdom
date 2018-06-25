@@ -5,6 +5,8 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
 
+    $scope.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
+
     console.log("消费记录");
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
