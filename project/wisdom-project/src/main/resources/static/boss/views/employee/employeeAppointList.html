@@ -31,11 +31,14 @@
             <div class="col col-80 ml-20" style="margin-left:-10px">
                 <p class="fs15">
                     <span>客户姓名：{{item.appointmentInfo.sysUserName}}</span>
+                    <span style="float: right">
+                      <a  ng-click="pho(item.appointmentInfo.sysUserPhone)"><img src="images/work/phone.png" style="width: 14px;height: 23px;"></a>
+                    </span>
                 </p >
                 <p class="fs15">预约项目数：{{item.appointmentNumber}}项</span></p>
                 <p class="fs15" style="white-space:pre-wrap">项目名称：{{item.appointmentInfo.shopProjectName}}</p>
                 <p class="fs15">
-                    <span>项目时长：{{item.appointmentInfo.appointPeriod}}分钟</span>
+                    <img src="images/work/minute.png" style="display: inline-block;width: 15px;height: 15px;margin-left: 5px"><span style="margin-left: 17px">{{item.appointmentInfo.appointStartTime|date:'HH:mm'}}~{{item.appointmentInfo.appointEndTime|date:'HH:mm'}}</span><span class="ml10">{{item.appointmentInfo.appointPeriod}}分钟</span>
                 <p>状态：
                     <span class="eal-s1" ng-if="item.appointmentInfo.status=='0'">未开始</span>
                     <span class="eal-s1" ng-if="item.appointmentInfo.status=='1'">已确认</span>
