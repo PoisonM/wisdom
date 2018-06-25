@@ -1417,7 +1417,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
                             sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
-                            appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
+                            appointStartTimeS:$scope.param.nowTime+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
                             shopProjectName:$scope.param.checkprojectName,
                             appointPeriod:$scope.param.checkprojectDuration,
                             detail:$scope.param.ModifyAppointmentObject.detail,
