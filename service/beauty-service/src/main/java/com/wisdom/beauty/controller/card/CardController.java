@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * FileName: card
  *
- * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
+ * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 充值卡相关
  */
 @Controller
 @LoginAnnotations
