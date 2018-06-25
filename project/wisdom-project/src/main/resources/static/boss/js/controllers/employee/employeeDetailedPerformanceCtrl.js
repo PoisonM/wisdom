@@ -7,9 +7,7 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
 
             $rootScope.title = "业绩明细";
             $scope.flag = false;/*点击筛选出现的数据div*/
-            $scope.param={
-                picFlag:false/*空白页面的显示*/
-            };
+
             $scope.userConsumeRequest = {
                 pageSize:1000,
                 searchFile:$stateParams.searchFile,
@@ -24,6 +22,9 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+                $scope.param={
+                    picFlag:false/*空白页面的显示*/
+                };
                 GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
@@ -63,17 +64,17 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                             $scope.detailedPerformance.push($scope.list[i])
                         }
                     }
-                    if( $scope.detailedPerformance.length<=0){
-                        $scope.param.picFlag=true;
-                        console.log(2);
-                    }else {
-                        $scope.param.picFlag=false;
-                    }
                 }else{
                     $scope.detailedPerformance=$scope.list
+                }
+                if( $scope.detailedPerformance.length<=0){
+                    $scope.param.picFlag=true;
+                }else{
+                    $scope.param.picFlag=false
                 }
                 $scope.flag = false
 
             };
+
 
         }]);
