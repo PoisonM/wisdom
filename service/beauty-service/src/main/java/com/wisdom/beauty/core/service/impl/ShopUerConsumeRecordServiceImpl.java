@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
+
 /**
  * ClassName: ShopUerConsumeRecordServiceImpl
  *
@@ -299,7 +301,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					shopProjectInfoDTO.setDiscountPrice(
-							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
 					map.put(dto.getShopProjectGroupId(), devDto);
@@ -349,15 +351,11 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
 			for (ShopUserConsumeRecordDTO dto : treatmentCardList) {
 				userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
+				BeanUtils.copyProperties(dto,userConsumeRecordResponse);
 				userConsumeRecordResponse.setIncludeTimes(map.get(dto.getFlowId()));
 				if (dto.getPrice() != null && dto.getConsumeNumber() != null) {
 					userConsumeRecordResponse.setPrice(dto.getPrice().divide(new BigDecimal(dto.getConsumeNumber())));
 				}
-				userConsumeRecordResponse.setSumAmount(dto.getPrice());
-				userConsumeRecordResponse.setPeriodDiscount(dto.getPeriodDiscount());
-				userConsumeRecordResponse.setConsumeNumber(dto.getConsumeNumber());
-				userConsumeRecordResponse.setFlowName(dto.getFlowName());
-				userConsumeRecordResponse.setGoodsType(dto.getGoodsType());
 				userConsumeRecordResponses.add(userConsumeRecordResponse);
 			}
 			list.removeAll(treatmentCardList);
@@ -566,7 +564,15 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Override
 	public int updateConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 		logger.info("更新用户的消费记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
-		return shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
+		if(StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowNo())){
+			ShopUserConsumeRecordCriteria shopUserConsumeRecordCriteria = new ShopUserConsumeRecordCriteria();
+			ShopUserConsumeRecordCriteria.Criteria criteria = shopUserConsumeRecordCriteria.createCriteria();
+			criteria.andFlowNoEqualTo(shopUserConsumeRecordDTO.getFlowNo());
+			shopUserConsumeRecordMapper.updateByCriteriaSelective(shopUserConsumeRecordDTO,shopUserConsumeRecordCriteria);
+		}else{
+			shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
+		}
+		return 1;
 	}
 
 	@Override

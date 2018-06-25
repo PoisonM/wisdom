@@ -5,11 +5,11 @@
                 <b>{{item.createDate |date:"yyyy-MM-dd HH:mm:ss"}}</b>
                 <div class="go_set"></div>
             </div>
-            <div ng-if="item.title == 1">店内消费</br>
+            <div class="item_box" ng-if="item.title == 1">店内消费</br>
                 <b>{{item.createDate |date:"yyyy-MM-dd HH:mm:ss"}}</b>
                 <div class="go_set"></div>
             </div>
-            <span>{{item.sumAmount}}</span>
+            <span class="divcss5-right">￥{{item.sumAmount}}</span>
         </li>
     </ul>
 </div>

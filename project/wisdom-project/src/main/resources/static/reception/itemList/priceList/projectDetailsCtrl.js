@@ -1,6 +1,3 @@
-/**
- * Created by Administrator on 2018/3/30.
- */
 PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,ProjectInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";

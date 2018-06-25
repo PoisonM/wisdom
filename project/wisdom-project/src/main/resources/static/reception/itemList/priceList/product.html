@@ -1,11 +1,12 @@
+<!--
 <div style="position:fixed;z-index: 999;top: 50%;left: 40%;font-size: 50px;color: red;" ng-show="loading">
     <div class="mask"></div>
-    <!--<div class="alert alert-info">-->
-        <!--<strong>数据加载中......</strong>-->
-    <!--</div>-->
+    &lt;!&ndash;<div class="alert alert-info">&ndash;&gt;
+        &lt;!&ndash;<strong>数据加载中......</strong>&ndash;&gt;
+    &lt;!&ndash;</div>&ndash;&gt;
 </div>
 <div class="productWrap">
-    <!--导航-->
+    &lt;!&ndash;导航&ndash;&gt;
     <div class="productHeader">
         <ul class="tab-head">
             <li ng-repeat="items in selectSingleData" class="tab-head-item" >
@@ -13,14 +14,14 @@
              </li>
         </ul>
     </div>
-    <!--点击导航栏的任意商品出现相对应的弹框-->
+    &lt;!&ndash;点击导航栏的任意商品出现相对应的弹框&ndash;&gt;
     <div ng-show="param.productAppear" class="productAppear" >
         <ul>
             <li ng-class="{'product-red':param.chooseProductItem==items.id,'product-white':param.chooseProductItem!=items.id}"
                     ng-repeat="item in product2List" ng-click="goThreeList(item.id)">{{item.productTypeName}}</li>
         </ul>
     </div>
-    <!--商品-->
+    &lt;!&ndash;商品&ndash;&gt;
     <div class="productGoods" ng-repeat="items in product3List">
         <ul>
             <li  data-iii="{{items}}" ng-click="goProductDetails(items.id)">
@@ -32,6 +33,42 @@
                     <p class="textMoney cff6666 mb"><span class="fs30">价格：</span><span class="fs34">￥{{items.discountPrice}}</span></p>
                 </div>
             </li>
+        </ul>
+    </div>
+</div>
+
+-->
+
+
+<div class="productWrap">
+    <!--导航-->
+    <div class="productHeader">
+        <ul class="tab-head">
+            <li ng-repeat="items in selectSingleData" class="tab-head-item" >
+                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index,items.id)">{{items.productTypeName}}</span>
+                <span
+                        ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status,items.id);" ></span>
+            </li>
+        </ul>
+    </div>
+    <!--商品-->
+    <div class="productGoods" ng-repeat="items in product3List">
+        <ul>
+            <li  data-iii="{{items}}" ng-click="goProductDetails(items.id)">
+                <div class="imgDiv">
+                    <img ng-src="{{items.productUrl}}" alt="">
+                </div>
+                <div class="textDiv">
+                    <p class="textName bold">{{items.productName}}</p>
+                    <p class="textMoney cff6666 mb"><span class="fs30">价格：</span><span class="fs34">298</span><span class="fs28">.00</span></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--点击导航栏的任意商品出现相对应的弹框-->
+    <div ng-show="param.productAppear" class="productAppear" >
+        <ul>
+            <li ng-class="{'project-red':param.chooseProductItem==item.id}" ng-repeat="item in product2List"  ng-click="goThreeList(item.id)">{{item.productTypeName}}</li>
         </ul>
     </div>
 </div>

@@ -167,7 +167,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
             //消费记录表中添加签字图片
             shopUserConsumeRecordDTO.setFlowNo(shopUserOrderDTO.getOrderId());
-            shopUserConsumeRecordDTO.setSignUrl(shopUserOrderDTO.getSignUrl());
+            shopUserConsumeRecordDTO.setSignUrl(shopUserPayDTO.getSignUrl());
             shopUserConsumeRecordDTO.setStatus(OrderStatusEnum.CONFIRM_PAY.getCode());
             shopUerConsumeRecordService.updateConsumeRecord(shopUserConsumeRecordDTO);
 
@@ -316,6 +316,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
                 userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
                 userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
+                userConsumeRecordDTO.setSignUrl(shopUserPayDTO.getSignUrl());
                 userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
                 userConsumeRecordDTO.setPrice(dto.getSurplusAmount());
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
@@ -831,6 +832,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         userConsumeRecordDTO.setSysUserId(archivesInfo.getSysUserId());
         userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
         userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
+        userConsumeRecordDTO.setSignUrl(shopUserPayDTO.getSignUrl());
         userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
         if(StringUtils.isNotBlank(shopUserPayDTO.getPayType())){

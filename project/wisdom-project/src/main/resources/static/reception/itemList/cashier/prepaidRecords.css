@@ -33,6 +33,13 @@
     letter-spacing: 0.45px;
 }
 
+.prepaidRecordsBox .prepaidRecordsUl li .divcss5-right {
+    width:20px;
+    height:20px;
+    border:0px;
+    margin-right:80px
+}
+
 .prepaidRecordsBox .prepaidRecordsUl li .item_box b {
     font-family: PingFangSC-Regular;
     font-size: 11px;
