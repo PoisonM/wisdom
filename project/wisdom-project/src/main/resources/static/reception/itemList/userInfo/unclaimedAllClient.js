@@ -6,6 +6,8 @@ PADWeb.controller('unclaimedAllClientCtrl', function($scope, $stateParams
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
 
+    $scope.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
+
     Consumes.save({
         goodsType:4,
         consumeType:1,

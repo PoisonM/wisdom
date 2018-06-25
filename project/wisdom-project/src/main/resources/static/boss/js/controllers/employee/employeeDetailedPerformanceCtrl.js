@@ -8,12 +8,13 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
             $rootScope.title = "业绩明细";
             $scope.flag = false;/*点击筛选出现的数据div*/
             $scope.param={
-                picFlag:false,/*空白页面的显示*/
-                date:$stateParams.date
+                picFlag:false/*空白页面的显示*/
             };
             $scope.userConsumeRequest = {
                 pageSize:1000,
-                searchFile:$stateParams.searchFile
+                searchFile:$stateParams.searchFile,
+                startTime:$stateParams.date+' 00:00:00',
+                endTime:$stateParams.date+' 23:59:59'
             };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -23,7 +24,7 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetClerkPerformanceListClerk.get({pageSize:$scope.userConsumeRequest.pageSize,searchFile:$scope.userConsumeRequest.searchFile, startTime:$scope.param.date+" 00:00:00", endTime:$scope.param.date+" 23:59:59"},function(data){
+                GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
                         $ionicLoading.hide();
