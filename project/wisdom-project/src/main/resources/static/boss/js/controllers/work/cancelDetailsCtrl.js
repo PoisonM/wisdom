@@ -10,11 +10,11 @@ angular.module('controllers',[]).controller('cancelDetailsCtrl',
                 shopAppointServiceId:$stateParams.shopAppointServiceId
             },function(data){
                 $scope.cancelDetails = data.responseData;
-                if($scope.cancelDetails.shopProjectName.indexOf(";") !=-1){
-                    $scope.cancelDetails.shopProjectName =$scope.cancelDetails.shopProjectName.split(";")
-                    $scope.cancelDetails.appointPeriodDetail =$scope.cancelDetails.appointPeriodDetail.split(";")
-
-                }
+                console.log(data.responseData)
+                // if($scope.cancelDetails.shopProjectName.indexOf(";") !=-1){
+                //     $scope.cancelDetails.shopProjectName =$scope.cancelDetails.shopProjectName.split(";")
+                //     $scope.cancelDetails.appointPeriodDetail =$scope.cancelDetails.appointPeriodDetail.split(";")
+                // }
 
             })
             $scope.pho=function(pho){
