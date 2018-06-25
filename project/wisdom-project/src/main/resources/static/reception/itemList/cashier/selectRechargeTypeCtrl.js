@@ -120,7 +120,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
             orderId: $state.params.orderId,
             shopUserRechargeCardDTO: {
                 id: eid,
-                shopRechargeCardId: eid,
+                shopRechargeCardId: id,
                 shopRechargeCardName: name,
             },
         }, function(data) {
