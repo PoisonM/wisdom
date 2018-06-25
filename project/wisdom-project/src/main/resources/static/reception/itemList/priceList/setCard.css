@@ -8,8 +8,11 @@
 .textName{font-size: 0.26rem;color: #333333;}
 .textMoney{font-size: 0.22rem;color: #333333;}
 .textDiv .cards{width: 0.8rem;height:0.4rem;display: inline-block;text-align: center;border-radius: 3px;font-size: 0.21rem;line-height: 0.4rem;margin-bottom:0.21rem;color: #ffffff;}
-.textDiv p{margin-top: 0.21rem}
+.textDiv p{margin-top: 5px}
 .bff6666{background: #ff6666}
 .cff6666{color: #ff6666}
 .fs39{font-size: 0.3rem}
 .fs31{font-size: 0.24rem}
+.setCardGoods .textDiscount{
+    margin-bottom: 10px
+}

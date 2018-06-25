@@ -250,11 +250,11 @@
     background: url("../images/bt__attendance_nor.png") no-repeat;
     background-size: 100%;
 }
-.top_bottom .footer .footer_box ul li:nth-child(4) span{
+.top_bottom .footer .footer_box ul li:nth-child(3) span{
     background: url("../images/bt_price_list_nor.png") no-repeat;
     background-size: 100%;
 }
-.top_bottom .footer .footer_box ul li:nth-child(5) span{
+.top_bottom .footer .footer_box ul li:nth-child(4) span{
     background: url("../images/bt_mine_nor.png") no-repeat;
     background-size: 100%;
 }
@@ -272,11 +272,11 @@
     background: url("../images/bt__attendance_select.png") no-repeat;
     background-size: 100%;
 }
-.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(4) span{
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(3) span{
     background: url("../images/bt_price_list_select.png") no-repeat;
     background-size: 100%;
 }
-.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(5) span{
+.top_bottom .footer .footer_box ul .top_bottom_select:nth-child(4) span{
     background: url("../images/bt_mine_select.png") no-repeat;
     background-size: 100%;
 }

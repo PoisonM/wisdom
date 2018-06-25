@@ -63,7 +63,7 @@
 
 /*
 .day{overflow-y: scroll;}*/
-.detailsWrap{position: fixed;top:50%;left:50%;margin-top:-4rem;margin-left:-3rem;}
+.dayAppointment .detailsWrap{position: fixed;top:50%;left:50%;margin-top:-4rem;margin-left:-3rem;}
 .individual{position: fixed;top:50%;left:50%;margin-top:-5rem;margin-left:-3.5rem;}
 .appointmentLisArea{height:7.8rem;position: fixed;left:50%;top:50%;margin-left:-3.5rem;margin-top:-4rem;}
 .selectContent,.payType,.consumption,.givingArea,.scratchCard{position: fixed;left:50%;top:50%;margin-top:-5.5rem;margin-left:-5.25rem;}

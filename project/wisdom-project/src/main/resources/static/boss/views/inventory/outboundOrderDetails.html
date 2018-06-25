@@ -11,11 +11,11 @@
                     <span class="col col-75 fs14 col333">{{param.shopOutboundDetails.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</span>
                 </p>
                 <p class="row">
-                    <span class="col col-30 fs14 col888">入库仓库</span>
+                    <span class="col col-30 fs14 col888">出库仓库</span>
                     <span class="col col-75 fs14 col333">{{param.shopOutboundDetails.name}}</span>
                 </p>
                 <p class="row">
-                    <span class="col col-30 fs14 col888">入库类型</span>
+                    <span class="col col-30 fs14 col888">出库类型</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='0'">采购入库</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='1'">内部员工出库</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='2'">顾客出库</span>
@@ -24,13 +24,16 @@
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='5'">院用</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='6'">退回供货商</span>
                     <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='7'">下发到店</span>
+                    <span class="col col-75 fs14 col333" ng-if="param.shopOutboundDetails.stockType=='8'">寄存出库</span>
                 </p>
                 <p class="row">
-                    <span class="col col-30 fs14 col888">申请人</span>
+                    <span ng-if="param.shopOutboundDetails.stockType=='8'" class="col col-30 fs14 col888">操作人</span>
+                    <span ng-if="param.shopOutboundDetails.stockType!='8'" class="col col-30 fs14 col888">申请人</span>
                     <span class="col col-75 fs14 col333">{{param.shopOutboundDetails.applayUser}}</span>
                 </p>
                 <p class="row">
-                    <span class="col col-30 fs14 col888">领取人</span>
+                    <span ng-if="param.shopOutboundDetails.stockType=='8'" class="col col-30 fs14 col888">档案</span>
+                    <span ng-if="param.shopOutboundDetails.stockType!='8'" class="col col-30 fs14 col888">领取人</span>
                     <span class="col col-75 fs14 col333">{{param.shopOutboundDetails.receiver}}</span>
                 </p>
                 <p class="row">
