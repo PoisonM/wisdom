@@ -4,6 +4,8 @@ PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,Ge
     $scope.$parent.$parent.param.headerCash.backContent = "今日收银记录"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false
+
+    $scope.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
     $scope.searchNameAndPhone = "";
     $scope.dataNewValueList = [];
 
