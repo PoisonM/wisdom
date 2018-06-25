@@ -164,7 +164,6 @@ public class ShopMemberAttendanceController {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 		userConsumeRequestDTO.setSysShopId(sysClerkDTO.getSysShopId());
-		userConsumeRequestDTO.setSysClerkId(sysClerkDTO.getId());
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		String startTime = DateUtils.getStartTime();
 		String endTime = DateUtils.getEndTime();
