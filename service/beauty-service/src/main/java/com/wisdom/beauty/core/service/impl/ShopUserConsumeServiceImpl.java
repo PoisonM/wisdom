@@ -9,6 +9,7 @@ import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.beauty.client.UserServiceClient;
+import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
@@ -90,6 +91,9 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
     @Autowired
     private CashService cashService;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Autowired
     private ShopStockService shopStockService;
@@ -930,7 +934,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             logger.error("查无此用户账户");
             throw new ServiceException("查无此用户账户");
         }
-
+        //记录资金流水
+        saveCashFlowInfo(orderDTO);
         Update update = new Update();
         update.set("imageUrl", imageUrl);
         update.set("orderStatusDesc", OrderStatusEnum.CONFIRM_PAY.getDesc());
@@ -941,11 +946,37 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         return responseDTO;
     }
 
+    /**
+     * 保存资金流水记录
+     *
+     * @param orderDTO
+     */
+    private void saveCashFlowInfo(ShopRechargeCardOrderDTO orderDTO) {
+        ShopCashFlowDTO shopCashFlowDTO = new ShopCashFlowDTO();
+        shopCashFlowDTO.setId(IdGen.uuid());
+        shopCashFlowDTO.setCreateDate(new Date());
+        if(StringUtils.isNotBlank(orderDTO.getSurplusPayPrice())){
+            shopCashFlowDTO.setPayTypeAmount(new BigDecimal(orderDTO.getSurplusPayPrice()));
+        }
+        if(StringUtils.isNotBlank(orderDTO.getCashPay())){
+            shopCashFlowDTO.setCashAmount(new BigDecimal(orderDTO.getCashPay()));
+        }
+        shopCashFlowDTO.setPayType(orderDTO.getPayType());
+        shopCashFlowDTO.setSysShopId(redisUtils.getShopId());
+        shopCashFlowDTO.setSysBossCode(redisUtils.getBossCode());
+        shopCashFlowDTO.setFlowNo(orderDTO.getTransactionId());
+        if (StringUtils.isNotBlank(orderDTO.getCashPay())) {
+            shopCashFlowDTO.setCashAmount(new BigDecimal(orderDTO.getCashPay()));
+        }
+        int shopCashFlow = cashService.saveShopCashFlow(shopCashFlowDTO);
+        logger.info("保存资金流水={}，执行结果={}", shopCashFlow, shopCashFlow > 0 ? "成功" : "失败");
+    }
+
     private int saveRechargeCardConsumeRecord(UserInfoDTO userInfoDTO,ShopRechargeCardOrderDTO orderDTO, SysClerkDTO clerkInfo, ShopUserRechargeCardDTO shopUserRechargeInfo) {
         ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
         shopUserConsumeRecordDTO.setId(IdGen.uuid());
         shopUserConsumeRecordDTO.setFlowId(shopUserRechargeInfo.getId());
-        shopUserConsumeRecordDTO.setFlowNo(DateUtils.DateToStr(new Date(), "dateMillisecond"));
+        shopUserConsumeRecordDTO.setFlowNo(orderDTO.getTransactionId());
         shopUserConsumeRecordDTO.setFlowName(orderDTO.getName());
         shopUserConsumeRecordDTO.setGoodsType(GoodsTypeEnum.RECHARGE_CARD.getCode());
         if (null != orderDTO.getAmount()) {
@@ -956,6 +987,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setSysClerkId(orderDTO.getSysClerkId());
         shopUserConsumeRecordDTO.setTimeDiscount(orderDTO.getTimeDiscount());
         shopUserConsumeRecordDTO.setProductDiscount(orderDTO.getProductDiscount());
+        shopUserConsumeRecordDTO.setDetail(orderDTO.getDetail());
         shopUserConsumeRecordDTO.setPeriodDiscount(shopUserConsumeRecordDTO.getPeriodDiscount());
         shopUserConsumeRecordDTO.setSysUserName(orderDTO.getUserName());
         shopUserConsumeRecordDTO.setSysUserId(orderDTO.getSysUserId());
