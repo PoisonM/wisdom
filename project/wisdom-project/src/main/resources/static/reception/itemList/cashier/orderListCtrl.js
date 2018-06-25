@@ -28,6 +28,12 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
     $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
 
     $scope.goSignConfirm = function() {
+        
+        if($scope.surplusPrice<0){
+            alert("剩余支付小于0元，请核对(^_^)");
+            return false;
+        }
+
         if($scope.payType == undefined){
             $scope.payType = ""
         }
