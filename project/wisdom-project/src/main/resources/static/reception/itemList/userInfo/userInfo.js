@@ -51,38 +51,38 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
                     $scope.tempArr.push($scope.userInfoData[0][key]); //属性
                 }
                 var tempLength = 0
-                if($scope.userInfoData[0]["photo"]!= null){
+                if($scope.userInfoData[0]["photo"]!= null && $scope.userInfoData[0]["photo"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["name"]!= null){
+                if($scope.userInfoData[0]["name"]!= null && $scope.userInfoData[0]["name"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["sex"]!= null){
+                if($scope.userInfoData[0]["sex"]!= null && $scope.userInfoData[0]["sex"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["sysShopName"]!= null){
+                if($scope.userInfoData[0]["sysShopName"]!= null && $scope.userInfoData[0]["sysShopName"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["role"]!= null){
+                if($scope.userInfoData[0]["role"]!= null && $scope.userInfoData[0]["role"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["workinglife"]!= null){
+                if($scope.userInfoData[0]["workinglife"]!= null && $scope.userInfoData[0]["workinglife"]!= ''){
                     tempLength+=1;
                 }
 
-                if($scope.userInfoData[0]["speciality"]!= null){
+                if($scope.userInfoData[0]["speciality"]!= null  && $scope.userInfoData[0]["speciality"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["dream"]!= null){
+                if($scope.userInfoData[0]["dream"]!= null && $scope.userInfoData[0]["dream"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["wechat"]!= null){
+                if($scope.userInfoData[0]["wechat"]!= null && $scope.userInfoData[0]["wechat"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["qq"]!= null){
+                if($scope.userInfoData[0]["qq"]!= null && $scope.userInfoData[0]["qq"]!= ''){
                     tempLength+=1;
                 }
-                if($scope.userInfoData[0]["address"]!= null){
+                if($scope.userInfoData[0]["address"]!= null && $scope.userInfoData[0]["address"]!= ''){
                     tempLength+=1;
                 }
                 $scope.userInfoData[0].completeness = (Number(tempLength/11)*100).toFixed(0)+"%";
