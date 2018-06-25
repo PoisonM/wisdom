@@ -104,7 +104,9 @@ angular.module('controllers',[]).controller('reminderCtrl',
                         document.body.scrollTop = document.body.scrollHeight;
                     },300);
                 }
-
+            }
+            $scope.num = function (time,index,type) {
+                $scope.reminder[index][type]=time.replace(/[^0-9:0-9]+/,'')
             }
 
         }]);

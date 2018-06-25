@@ -15,15 +15,15 @@
                     <div class="row">
                         <div class=" col col-33 tc">
                             人头数
-                            <p class="colff">{{customerStore.totalConsumeNumber}}</p>
+                            <p class="colff">{{customerStore.totalConsumeNumber==null?0:customerStore.totalConsumeNumber}}</p>
                         </div>
                         <div class=" col col-33 tc " >
                             新客
-                            <p class="colff">{{customerStore.totalShopNewUserNumber}}</p>
+                            <p class="colff">{{customerStore.totalShopNewUserNumber==null?0:customerStore.totalShopNewUserNumber}}</p>
                         </div>
                         <div class=" col col-33 tc" >
                             人次数
-                            <p class="colff">{{customerStore.totalConsumeTime}}</p>
+                            <p class="colff">{{customerStore.totalConsumeTime==null?0:customerStore.totalConsumeTime}}</p>
                         </div>
                     </div>
                 </div>
@@ -35,15 +35,15 @@
             <div class="row bgfff col33 tc p0" >
                 <div class="col col-33 bre5e5" >
                     人头数
-                    <p style="margin-top: 10px">{{item.consumeNumber}}</p>
+                    <p style="margin-top: 10px">{{item.consumeNumber==null?0:item.consumeNumber}}</p>
                 </div>
                 <div class="col col-33 bre5e5">
                     新客
-                    <p  class="mt10">{{item.shopNewUserNumber}}</p>
+                    <p  class="mt10">{{item.shopNewUserNumber==null?0:item.shopNewUserNumber}}</p>
                 </div>
                 <div class="col col-33" >
                     人次数
-                    <p  class="mt10">{{item.consumeTime}}</p>
+                    <p  class="mt10">{{item.consumeTime==null?0:item.consumeTime}}</p>
                 </div>
             </div>
         </div>

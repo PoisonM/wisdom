@@ -44,4 +44,16 @@ define(['appBoss','jquery'], function (app,$) {
                     }
                 }
             }])
+        .directive('voidPicother', ['$rootScope','$state',
+            function ($rootScope,$state) {
+                return {
+                    restrict: 'EAC',
+                    replace: true,
+                    template: '<div style="width:100%;height:100%"  class="bgfff">'+
+                    '<img src="images/viod.png" style="width:70%;position: absolute;top:50%;margin-top:-200px;left:50%;margin-left:-35%;">'+
+                    '</div>',
+                    link: function(scope,ele,attrs) {
+                    }
+                }
+            }])
 })

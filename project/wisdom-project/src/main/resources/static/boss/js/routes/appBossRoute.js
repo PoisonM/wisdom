@@ -2508,6 +2508,19 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+                /* 产品-领取详情 getTheDetails*/
+                    .state('getTheDetails', {
+                        url: '/getTheDetails',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'getTheDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.getTheDetailsCtrl',
+                                    ['js/controllers/work/getTheDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/work/getTheDetails.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
                 
                 /**/
                 /*
