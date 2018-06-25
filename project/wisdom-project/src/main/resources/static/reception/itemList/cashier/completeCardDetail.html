@@ -21,7 +21,10 @@
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span>套卡</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.groupCard">套卡</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.product">产品</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.periodCard">疗程卡</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.rechargeCard">充值卡</span>
                 </li>
             </ul>
         </div>
@@ -43,7 +46,6 @@
                 <p>备注</p>
                 <ul>
                     <li>
-                        <label for="">备注</label>
                         <span>{{listItem.detail}}</span>
                     </li>
                 </ul>
