@@ -59,17 +59,18 @@
                     <div class="ml30 ">
                         <p class="sb">
                             <span>单次</span>
-                            <span class="mr10">
-                            {{dataInfo.timeDiscount*10}}
-                                折</span>
+                            <span class="mr10" ng-if="dataInfo.timeDiscount != 1">{{dataInfo.timeDiscount*10}}折</span>
+                            <span class="mr10" ng-if="dataInfo.timeDiscount == 1">无折扣</span>
                         </p>
                         <p class="sb">
                             <span>疗程卡</span>
-                            <span class="mr10"> {{dataInfo.periodDiscount*10}}折</span>
+                            <span class="mr10" ng-if="dataInfo.periodDiscount != 1"> {{dataInfo.periodDiscount*10}}折</span>
+                            <span class="mr10" ng-if="dataInfo.periodDiscount == 1">无折扣</span>
                         </p>
                         <p class="sb">
                             <span>产品</span>
-                            <span class="mr10">{{dataInfo.productDiscount*10}}折</span>
+                            <span class="mr10" ng-if="dataInfo.productDiscount != 1">{{dataInfo.productDiscount*10}}折</span>
+                            <span class="mr10" ng-if="dataInfo.productDiscount == 1">无折扣</span>
                         </p>
                     </div>
                 </div>
@@ -97,7 +98,7 @@
                 <p class="ml10" ng-if="payType == '1'"> 支付宝</p>
                 <p class="ml10" ng-if="payType == '2'"> 现金</p>
                 <p class="mr10 col888">
-                    ￥100.1
+                    ￥ {{dataInfo.price}}
                 </p>
             </ion-item>
         </opn-list>
