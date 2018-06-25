@@ -16,8 +16,8 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                 if(data.result =="0x00001"){
                     $scope.libraryTubeSetting =data.responseData
                 }
-
             })
+
 
             if($stateParams.ids!=""){
                  $scope.show = false;
@@ -32,7 +32,6 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                     $scope.param.id = ''
                     return
                 }
-
                 GetStoreManager.get({id:id
                 },function(data){
                     if(data.result =="0x00001")
@@ -40,7 +39,11 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                 })
             }
 
-            $scope.kuTube();
+
+
+            $scope.$on('$ionicView.enter', function() {
+                $scope.kuTube();
+            })
 
             $scope.save = function () {
                 var setStorekeeperRequestDTO = {
