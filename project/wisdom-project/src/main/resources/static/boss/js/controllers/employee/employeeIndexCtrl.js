@@ -8,8 +8,12 @@ angular.module('controllers',[]).controller('employeeIndexCtrl',
             $rootScope.title = "";
 
             BossUtil.setUserType(Global.userType.BEAUTY_CLERK);
-
-
+            $scope.param = {
+                startDate : BossUtil.getNowFormatDate(),
+                date:BossUtil.getNowFormatDate()
+            };
+            $scope.param.date=$scope.param.date.replace(/00/g,'');
+            $scope.param.date=$scope.param.date.replace(/:/g,'');
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -18,7 +22,7 @@ angular.module('controllers',[]).controller('employeeIndexCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetClerkWorkDetail.get({startTime:BossUtil.getNowFormatDate(),endTime:BossUtil.getAddDate(BossUtil.getNowFormatDate(),1)},function(data){
+                GetClerkWorkDetail.get({startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+" 23:59:59"},function(data){
                     BossUtil.checkResponseData(data,"employeeIndex");
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {

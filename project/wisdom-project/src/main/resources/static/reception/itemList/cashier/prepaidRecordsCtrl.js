@@ -25,7 +25,7 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
     $scope.flagFn(true)
 
     $scope.goAccountDetails = function(flowNo) {
-        $state.go('pad-web.left_nav.accountDetails',{
+        $state.go("pad-web.left_nav.completeCardDetail",{
             userId:$stateParams.userId,
             flowNo:flowNo
         })
