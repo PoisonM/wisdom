@@ -286,8 +286,7 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setEndTime(endTime);
 
 		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
-		Map<String, Integer> consumeNumberAndTimeMap = shopStatisticsAnalysisService
-				.getShopsConsumeNumberAndTime(pageParamVoDTO);
+		Map<String,Object> consumeNumberAndTimeMap = shopStatisticsAnalysisService.getCustomerArriveList(pageParamVoDTO);
 		// 服务次数 划卡消费+单次的次数
 		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getExpenditureList(pageParamVoDTO);
 		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
@@ -298,13 +297,13 @@ public class ShopMemberAttendanceController {
 		// 耗卡
 		map.put("expenditure", expenditure == null ? "0" : expenditure.toString());
 		// 消费次数(人次数)
-		map.put("consumeTime", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("consumeTime") == null ? "0"
-				: consumeNumberAndTimeMap.get("consumeTime").toString());
+		map.put("consumeTime", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("totalConsumeTime") == null ? "0"
+				: consumeNumberAndTimeMap.get("totalConsumeTime").toString());
 		// 服务次数
 		map.put("serviceNumber", CollectionUtils.isEmpty(list) ? "0" : String.valueOf(list.size()));
 		// 消费人数(人头数)
-		map.put("consumeNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("consumeNumber") == null ? "0"
-				: consumeNumberAndTimeMap.get("consumeNumber").toString());
+		map.put("consumeNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("totalConsumeNumber") == null ? "0"
+				: consumeNumberAndTimeMap.get("totalConsumeNumber").toString());
 		// 新客
 		map.put("shopNewUserNumber", shopNewUserNumber.toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
