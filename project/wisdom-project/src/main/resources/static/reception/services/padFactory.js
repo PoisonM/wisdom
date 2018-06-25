@@ -198,6 +198,10 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     .factory('GetUserProductList', ['$resource', function($resource) {
         return $resource(beautyIP + 'productInfo/getUserProductList')
     }])
+    //查询pad端预约模块用户的
+    .factory('GetCourseList', ['$resource', function($resource) {
+        return $resource(beautyIP + 'projectInfo/getCourseProjectList')
+    }])
     //查询某个用户的套卡信息
     .factory('GetUserProjectGroupList', ['$resource', function($resource) {
         return $resource(beautyIP + 'projectInfo/getUserProjectGroupList', { sysUserId: "@id" })
