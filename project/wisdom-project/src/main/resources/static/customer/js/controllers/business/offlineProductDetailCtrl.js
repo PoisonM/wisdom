@@ -180,9 +180,8 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     $scope.model = true
                 }
             };
-
             $scope.addProductNum = function(){
-                $scope.param.productNum= $scope.param.productNum+1;
+                $scope.param.productNum=$scope.param.productNum+1;
                 if($scope.param.productNum>$scope.param.product.productAmount){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
@@ -264,7 +263,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetProductNumFromBuyCart.get(function(data){
                     $scope.param.productUnPaidNum = data.responseData;
                 });
-            });
-
+            })
         }])
 
