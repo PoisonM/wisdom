@@ -66,6 +66,25 @@ public class IncomeController {
 	private TimeServiceClient timeServiceClient;
 
 	/**
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "getIncomeRanking",method = {RequestMethod.GET,RequestMethod.POST})
+	@LoginRequired
+	public
+	@ResponseBody ResponseDTO<List<IncomeRecordDTO>> getIncomeRanking(){
+		long startTime = System.currentTimeMillis();
+		logger.info("查询佣金排行榜,开始");
+		ResponseDTO<List<IncomeRecordDTO>> responseDTO = new ResponseDTO<>();
+		PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
+		pageParamVoDTO.setPageSize(10);
+		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRanking(pageParamVoDTO);
+		logger.info("查询佣金排行榜,返回数据",incomeRecordDTOS.size());
+		responseDTO.setResponseData(incomeRecordDTOS);
+		logger.info("查询佣金排行榜耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+	/**
 	 * 根据条件查询用户佣金奖励new
 	 *
 	 * @param pageParamVoDTO
