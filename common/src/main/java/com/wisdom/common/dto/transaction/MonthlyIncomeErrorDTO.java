@@ -22,9 +22,20 @@ public class MonthlyIncomeErrorDTO {
     @JSONField(name = "sysUserId")
     private String sysUserId;
 
+    @JSONField(name = "errorMessage")
+    private String errorMessage;
+
     //0代表未处理，1代表已处理
     @JSONField(name = "status")
     private String status;
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
     public String getStatus() {
         return status;
