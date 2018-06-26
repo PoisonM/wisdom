@@ -132,10 +132,24 @@ top:50%;
 margin-top:px2rem(888/2);
 margin-left:px2rem(1110/2);*/ }
 .trueAppointment .LisMess ul li { display: flex; justify-content: space-between; height: 0.78125rem; line-height: 0.78125rem; background: #ffffff; border-bottom: solid 1px #e5e5e5; }
-.trueAppointment .LisMess ul li img { display: inline-block; margin-left: 0.23438rem; }
-.trueAppointment .LisMess ul li .name { margin-left: 0.15625rem; font-size: 0.25rem; }
+.trueAppointment .LisMess ul li img {
+    display: inline-block;
+    margin-left: 0.23438rem;
+    vertical-align: middle;
+    margin-bottom: 40px;
+}
+.trueAppointment .LisMess ul li .name {
+    margin-left: 0.15625rem;
+    font-size: 0.25rem;
+    width: 120px;
+    display: inline-block;
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .trueAppointment .LisMess ul li .time { float: right; margin-right: 0.23438rem; font-size: 0.21875rem; color: #888888; }
-.trueAppointment .LisMess ul li p { width: 50%; }
+.trueAppointment .LisMess ul li p {  }
 
 .collectionCard  .searchBox { height: 0.67188rem; line-height: 0.67188rem; background: #e5e5e5; }
 .collectionCard  .searchBox input[type='search'] { width: 9.57813rem; height: 0.48438rem; text-align: center; margin-left: 0.15625rem; font-size: 0.21875rem; color: #aaaaaa; border-radius: 0.0625rem; }
