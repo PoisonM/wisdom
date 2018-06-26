@@ -9,10 +9,14 @@ import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.user.client.BeautyServiceClient;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +34,9 @@ public class ClerkServiceController {
 
 	@Resource
 	private ClerkInfoService clerkInfoService;
+
+	@Autowired
+	private BeautyServiceClient beautyServiceClient;
 
 	/**
 	 * 获取店员列表信息
