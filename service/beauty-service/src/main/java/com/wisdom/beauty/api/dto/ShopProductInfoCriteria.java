@@ -1626,63 +1626,63 @@ public class ShopProductInfoCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceIsNull() {
-            addCriterion("discount_price is null");
+        public Criteria andInitialPriceIsNull() {
+            addCriterion("initial_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceIsNotNull() {
-            addCriterion("discount_price is not null");
+        public Criteria andInitialPriceIsNotNull() {
+            addCriterion("initial_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceEqualTo(BigDecimal value) {
-            addCriterion("discount_price =", value, "discountPrice");
+        public Criteria andInitialPriceEqualTo(BigDecimal value) {
+            addCriterion("initial_price =", value, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotEqualTo(BigDecimal value) {
-            addCriterion("discount_price <>", value, "discountPrice");
+        public Criteria andInitialPriceNotEqualTo(BigDecimal value) {
+            addCriterion("initial_price <>", value, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceGreaterThan(BigDecimal value) {
-            addCriterion("discount_price >", value, "discountPrice");
+        public Criteria andInitialPriceGreaterThan(BigDecimal value) {
+            addCriterion("initial_price >", value, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("discount_price >=", value, "discountPrice");
+        public Criteria andInitialPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("initial_price >=", value, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceLessThan(BigDecimal value) {
-            addCriterion("discount_price <", value, "discountPrice");
+        public Criteria andInitialPriceLessThan(BigDecimal value) {
+            addCriterion("initial_price <", value, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("discount_price <=", value, "discountPrice");
+        public Criteria andInitialPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("initial_price <=", value, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceIn(List<BigDecimal> values) {
-            addCriterion("discount_price in", values, "discountPrice");
+        public Criteria andInitialPriceIn(List<BigDecimal> values) {
+            addCriterion("initial_price in", values, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotIn(List<BigDecimal> values) {
-            addCriterion("discount_price not in", values, "discountPrice");
+        public Criteria andInitialPriceNotIn(List<BigDecimal> values) {
+            addCriterion("initial_price not in", values, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("discount_price between", value1, value2, "discountPrice");
+        public Criteria andInitialPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("initial_price between", value1, value2, "initialPrice");
             return (Criteria) this;
         }
 
-        public Criteria andDiscountPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("discount_price not between", value1, value2, "discountPrice");
+        public Criteria andInitialPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("initial_price not between", value1, value2, "initialPrice");
             return (Criteria) this;
         }
 

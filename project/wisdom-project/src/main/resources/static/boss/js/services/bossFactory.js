@@ -53,7 +53,7 @@ define(['appBoss'], function (app) {
         .factory('GetShopAppointmentInfoByStatus',['$resource',function ($resource){
             return $resource(appointmentInfo + 'getShopAppointmentInfoByStatus')
        }])
-        /*根据预约主键获取预约详情*/
+        /*根据预约主键获取预约*/
         .factory('GetAppointmentInfoById',['$resource',function ($resource){
             return $resource(appointmentInfo + 'getAppointmentInfoById')
         }])

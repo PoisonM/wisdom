@@ -7,7 +7,7 @@
     <result column="project_group_name" property="projectGroupName" jdbcType="VARCHAR" />
     <result column="project_group_url" property="projectGroupUrl" jdbcType="VARCHAR" />
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
-    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
     <result column="effective_date" property="effectiveDate" jdbcType="VARCHAR" />
     <result column="expiration_date" property="expirationDate" jdbcType="VARCHAR" />
     <result column="detail" property="detail" jdbcType="VARCHAR" />
@@ -76,7 +76,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_shop_id, project_group_name, project_group_url, market_price, discount_price, 
+    id, sys_shop_id, project_group_name, project_group_url, market_price, initial_price, 
     effective_date, expiration_date, detail, status, create_by, create_date, update_user, 
     update_date
   </sql>
@@ -115,12 +115,12 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO" >
     insert into shop_project_group (id, sys_shop_id, project_group_name, 
-      project_group_url, market_price, discount_price, 
+      project_group_url, market_price, initial_price, 
       effective_date, expiration_date, detail, 
       status, create_by, create_date, 
       update_user, update_date)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{projectGroupName,jdbcType=VARCHAR}, 
-      #{projectGroupUrl,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, 
+      #{projectGroupUrl,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{initialPrice,jdbcType=DECIMAL}, 
       #{effectiveDate,jdbcType=VARCHAR}, #{expirationDate,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
       #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
@@ -143,8 +143,8 @@
       <if test="marketPrice != null" >
         market_price,
       </if>
-      <if test="discountPrice != null" >
-        discount_price,
+      <if test="initialPrice != null" >
+        initial_price,
       </if>
       <if test="effectiveDate != null" >
         effective_date,
@@ -187,8 +187,8 @@
       <if test="marketPrice != null" >
         #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null" >
-        #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        #{initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="effectiveDate != null" >
         #{effectiveDate,jdbcType=VARCHAR},
@@ -240,8 +240,8 @@
       <if test="record.marketPrice != null" >
         market_price = #{record.marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.discountPrice != null" >
-        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      <if test="record.initialPrice != null" >
+        initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.effectiveDate != null" >
         effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
@@ -279,7 +279,7 @@
       project_group_name = #{record.projectGroupName,jdbcType=VARCHAR},
       project_group_url = #{record.projectGroupUrl,jdbcType=VARCHAR},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
-      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
       expiration_date = #{record.expirationDate,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
@@ -307,8 +307,8 @@
       <if test="marketPrice != null" >
         market_price = #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null" >
-        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        initial_price = #{initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="effectiveDate != null" >
         effective_date = #{effectiveDate,jdbcType=VARCHAR},
@@ -343,7 +343,7 @@
       project_group_name = #{projectGroupName,jdbcType=VARCHAR},
       project_group_url = #{projectGroupUrl,jdbcType=VARCHAR},
       market_price = #{marketPrice,jdbcType=DECIMAL},
-      discount_price = #{discountPrice,jdbcType=DECIMAL},
+      initial_price = #{initialPrice,jdbcType=DECIMAL},
       effective_date = #{effectiveDate,jdbcType=VARCHAR},
       expiration_date = #{expirationDate,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},

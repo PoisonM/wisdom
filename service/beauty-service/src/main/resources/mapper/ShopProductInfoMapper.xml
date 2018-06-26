@@ -24,7 +24,7 @@
     <result column="product_warning_day" property="productWarningDay" jdbcType="INTEGER" />
     <result column="product_warning_num" property="productWarningNum" jdbcType="INTEGER" />
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
-    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
     <result column="product_code" property="productCode" jdbcType="VARCHAR" />
     <result column="product_unit" property="productUnit" jdbcType="VARCHAR" />
     <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
@@ -100,7 +100,7 @@
     id, sys_shop_id, parent_shop_id, product_name, product_type_one_name, product_type_one_id, 
     product_type_two_name, product_type_two_id, product_url, product_position, product_function, 
     qr_code_url, product_type, manu_address, quality_period, manu_name, trade_mark, effect_date, 
-    Invalid_date, product_warning_day, product_warning_num, market_price, discount_price, 
+    Invalid_date, product_warning_day, product_warning_num, market_price, initial_price, 
     product_code, product_unit, product_spec, product_spec_unit, note, introduce, is_display, 
     status, create_by, create_date, update_user, update_date
   </sql>
@@ -145,7 +145,7 @@
       product_type, manu_address, quality_period, 
       manu_name, trade_mark, effect_date, 
       Invalid_date, product_warning_day, product_warning_num, 
-      market_price, discount_price, product_code, 
+      market_price, initial_price, product_code, 
       product_unit, product_spec, product_spec_unit, 
       note, introduce, is_display, 
       status, create_by, create_date, 
@@ -157,7 +157,7 @@
       #{productType,jdbcType=CHAR}, #{manuAddress,jdbcType=VARCHAR}, #{qualityPeriod,jdbcType=INTEGER}, 
       #{manuName,jdbcType=VARCHAR}, #{tradeMark,jdbcType=VARCHAR}, #{effectDate,jdbcType=VARCHAR}, 
       #{invalidDate,jdbcType=VARCHAR}, #{productWarningDay,jdbcType=INTEGER}, #{productWarningNum,jdbcType=INTEGER}, 
-      #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, 
+      #{marketPrice,jdbcType=DECIMAL}, #{initialPrice,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, 
       #{productUnit,jdbcType=VARCHAR}, #{productSpec,jdbcType=VARCHAR}, #{productSpecUnit,jdbcType=VARCHAR}, 
       #{note,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, 
       #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
@@ -232,8 +232,8 @@
       <if test="marketPrice != null" >
         market_price,
       </if>
-      <if test="discountPrice != null" >
-        discount_price,
+      <if test="initialPrice != null" >
+        initial_price,
       </if>
       <if test="productCode != null" >
         product_code,
@@ -339,8 +339,8 @@
       <if test="marketPrice != null" >
         #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null" >
-        #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        #{initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="productCode != null" >
         #{productCode,jdbcType=VARCHAR},
@@ -455,8 +455,8 @@
       <if test="record.marketPrice != null" >
         market_price = #{record.marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.discountPrice != null" >
-        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      <if test="record.initialPrice != null" >
+        initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.productCode != null" >
         product_code = #{record.productCode,jdbcType=VARCHAR},
@@ -523,7 +523,7 @@
       product_warning_day = #{record.productWarningDay,jdbcType=INTEGER},
       product_warning_num = #{record.productWarningNum,jdbcType=INTEGER},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
-      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       product_code = #{record.productCode,jdbcType=VARCHAR},
       product_unit = #{record.productUnit,jdbcType=VARCHAR},
       product_spec = #{record.productSpec,jdbcType=VARCHAR},
@@ -606,8 +606,8 @@
       <if test="marketPrice != null" >
         market_price = #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null" >
-        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        initial_price = #{initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="productCode != null" >
         product_code = #{productCode,jdbcType=VARCHAR},
@@ -671,7 +671,7 @@
       product_warning_day = #{productWarningDay,jdbcType=INTEGER},
       product_warning_num = #{productWarningNum,jdbcType=INTEGER},
       market_price = #{marketPrice,jdbcType=DECIMAL},
-      discount_price = #{discountPrice,jdbcType=DECIMAL},
+      initial_price = #{initialPrice,jdbcType=DECIMAL},
       product_code = #{productCode,jdbcType=VARCHAR},
       product_unit = #{productUnit,jdbcType=VARCHAR},
       product_spec = #{productSpec,jdbcType=VARCHAR},
