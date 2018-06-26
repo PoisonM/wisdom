@@ -171,15 +171,17 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setEndTime(endTime);
 		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
 		BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
-		Integer consumeNumber = shopStatisticsAnalysisService.getUserConsumeNumber(sysClerkDTO.getId(), startTime,
-				endTime);
-		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
+		Map<String,Object> consumeNumberAndTimeMap = shopStatisticsAnalysisService.getCustomerArriveList(pageParamVoDTO);
 
 		Map<String, String> map = new HashMap<>(16);
 		map.put("income", income == null ? "0" : income.toString());
 		map.put("expenditure", expenditure == null ? "0" : expenditure.toString());
-		map.put("consumeNumber", consumeNumber.toString());
-		map.put("shopNewUserNumber", shopNewUserNumber.toString());
+		// 消费人数(人头数)
+		map.put("consumeNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("totalConsumeNumber") == null ? "0"
+				: consumeNumberAndTimeMap.get("totalConsumeNumber").toString());
+		//新客
+		map.put("shopNewUserNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("totalShopNewUserNumber") == null ? "0"
+				: consumeNumberAndTimeMap.get("totalShopNewUserNumber").toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
 		response.setResponseData(map);
 		response.setResult(StatusConstant.SUCCESS);
@@ -284,7 +286,6 @@ public class ShopMemberAttendanceController {
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
 
-		Integer shopNewUserNumber = shopStatisticsAnalysisService.getShopNewUserNumber(pageParamVoDTO);
 		Map<String,Object> consumeNumberAndTimeMap = shopStatisticsAnalysisService.getCustomerArriveList(pageParamVoDTO);
 		// 服务次数 划卡消费+单次的次数
 		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService.getExpenditureList(pageParamVoDTO);
@@ -304,7 +305,8 @@ public class ShopMemberAttendanceController {
 		map.put("consumeNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("totalConsumeNumber") == null ? "0"
 				: consumeNumberAndTimeMap.get("totalConsumeNumber").toString());
 		// 新客
-		map.put("shopNewUserNumber", shopNewUserNumber.toString());
+		map.put("shopNewUserNumber", consumeNumberAndTimeMap==null||consumeNumberAndTimeMap.get("totalShopNewUserNumber") == null ? "0"
+				: consumeNumberAndTimeMap.get("totalShopNewUserNumber").toString());
 		ResponseDTO<Map<String, String>> response = new ResponseDTO<>();
 		response.setResponseData(map);
 		response.setResult(StatusConstant.SUCCESS);

@@ -715,7 +715,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 			criteria.andCreateDateBetween(startTime, endTime);
 		}
-		criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
+		if(StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossCode())){
+			criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
+		}
 
 		List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(numberCriteria);
@@ -765,7 +767,12 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		// 新客
 		PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO = new PageParamVoDTO();
 		ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
-		shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
+		if(StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossCode())){
+			shopUserArchivesDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
+		}
+		if(StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())){
+			shopUserArchivesDTO.setSysShopId(userConsumeRequestDTO.getSysShopId());
+		}
 		shopCustomerArchivesDTO.setRequestData(shopUserArchivesDTO);
 		shopCustomerArchivesDTO.setStartTime(pageParamVoDTO.getStartTime());
 		shopCustomerArchivesDTO.setEndTime(pageParamVoDTO.getEndTime());
@@ -808,7 +815,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			if (totalShopNewUserNumber == null) {
 				totalShopNewUserNumber = newCustomerMap.get(shopBossRelation.getSysShopId());
 			} else {
-				totalShopNewUserNumber = totalShopNewUserNumber + newCustomerMap.get(shopBossRelation.getSysShopId());
+				if(newCustomerMap.get(shopBossRelation.getSysShopId())!=null){
+					totalShopNewUserNumber = totalShopNewUserNumber + newCustomerMap.get(shopBossRelation.getSysShopId());
+				}
 			}
 			if (totalConsumeTime == null) {
 				totalConsumeTime = timeMap.get(shopBossRelation.getSysShopId());
