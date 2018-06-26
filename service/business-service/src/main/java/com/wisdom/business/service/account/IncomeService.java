@@ -585,5 +585,7 @@ public class IncomeService {
     }
 
 
-
+    public List<IncomeRecordDTO> getIncomeRanking(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
+        return incomeMapper.getIncomeRanking(pageParamVoDTO);
+    }
 }

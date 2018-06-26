@@ -281,5 +281,9 @@ define(['appCustomer'], function (app) {
         .factory('GetProjectConsumes',['$resource',function ($resource){
             return $resource('/beauty/consumes')
         }])
+        .factory('GetRankingsList',['$resource',function ($resource){
+            return $resource('/business/income/getIncomeRanking')
+        }])
+
 
 });

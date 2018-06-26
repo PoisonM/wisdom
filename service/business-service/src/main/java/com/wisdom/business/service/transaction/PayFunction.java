@@ -5,6 +5,7 @@ import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mapper.level.UserTypeMapper;
 import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper;
 import com.wisdom.business.mapper.transaction.TransactionMapper;
+import com.wisdom.business.mqsender.BusinessMessageQueueSender;
 import com.wisdom.business.service.account.AccountService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.common.constant.ConfigConstant;
@@ -43,7 +44,6 @@ public class PayFunction {
 
     Logger logger = LoggerFactory.getLogger(PayFunction.class);
 
-
     @Autowired
     private PayRecordService payRecordService;
 
@@ -65,11 +65,12 @@ public class PayFunction {
     @Autowired
     private UserTypeMapper userTypeMapper;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     @Autowired
     private PromotionTransactionRelationMapper promotionTransactionRelationMapper;
+
+    @Autowired
+    private BusinessMessageQueueSender businessMessageQueueSender;
 
     @Transactional(rollbackFor = Exception.class)
     public void processPayStatus(List<PayRecordDTO> payRecordDTOList) throws ClientException {
@@ -102,27 +103,7 @@ public class PayFunction {
                         "(" + businessOrderDTO.getProductSpec() + ")" + businessOrderDTO.getBusinessProductNum() + "套" + ";";
                 userId = businessOrderDTO.getSysUserId();
 
-                //若购买的是跨境商品，告知店主，用户购买的情况
-                Query query = new Query(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId()));
-                SpecialShopBusinessOrderDTO specialShopBusinessOrderDTO = mongoTemplate.findOne(query, SpecialShopBusinessOrderDTO.class, "specialShopBusinessOrder");
-                if (specialShopBusinessOrderDTO != null) {
-                    logger.info("购买的是跨境商品");
-                    String shopId = specialShopBusinessOrderDTO.getShopId();
-                    query = new Query(Criteria.where("shopId").is(shopId));
-                    SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query, SpecialShopInfoDTO.class, "specialShopInfo");
-                    UserInfoDTO userInfoDTO = new UserInfoDTO();
-                    userInfoDTO.setMobile(specialShopInfoDTO.getShopBossMobile());
-                    List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-                    if (userInfoDTOList.size() > 0) {
-                        logger.info("直接给店主={}发送推送消息",businessOrderDTO, userInfoDTOList.get(0).getUserOpenid());
-                        WeixinTemplateMessageUtil.sendSpecialShopBossUserBuyTemplateWXMessage(token, payRecordDTO.getAmount() + "元", businessOrderDTO, userInfoDTOList.get(0).getUserOpenid(), specialShopInfoDTO);
-                        SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(), payRecordDTO.getAmount() + "元", businessOrderDTO, specialShopInfoDTO);
-                    } else {
-                        //直接给店主发送短信
-                        logger.info("直接给店主={}发送短信",specialShopInfoDTO.getShopBossMobile());
-                        SMSUtil.sendSpecialShopBossTransactionInfo(specialShopInfoDTO.getShopBossMobile(), payRecordDTO.getAmount() + "元", businessOrderDTO, specialShopInfoDTO);
-                    }
-                }
+                businessMessageQueueSender.sendNotifySpecialShopBossCustomerTransaction(businessOrderDTO);
             }
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -435,8 +416,6 @@ public class PayFunction {
 
     /**
      * 平级返利
-     *
-     *
      * */
     @Transactional(rollbackFor = Exception.class)
     public void flatRebate(String userRuleType ,String parentUserId,String parentRuleType, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
@@ -547,10 +526,8 @@ public class PayFunction {
         transactionMapper.recordMonthTransaction(monthTransactionRecordDTO);
     }
 
-
     /**
      * 根据消费金额计算出永久奖励
-     *
      * @param expenseAmount
      * @return
      */
@@ -587,7 +564,6 @@ public class PayFunction {
 
     /**
      * 给即时返利表插入数据
-     *
      * @param instanceReturnMoneySignalDTO (即时返利表dto)
      */
 
@@ -640,7 +616,6 @@ public class PayFunction {
      * @param parentUserId returnMoney
      *
      * */
-
     public AccountDTO updateUserAccount(AccountDTO accountDTO,String parentUserId,Float returnMoney)throws Exception{
         logger.info("service -- updateUserAccount,更新用户账户金额,参数parentUserId={},returnMoney={}",parentUserId,returnMoney);
 
@@ -687,12 +662,9 @@ public class PayFunction {
 
     /**
      * 插入具体是哪个交易流水升级
-     *
-     *
      * */
     public void insertPromotionTransactionRelation(String promotionLevel,String sysUserId,String transactionId)throws  Exception{
         logger.info("service -- 插入具体是哪个交易流水升级,insertPromotionTransactionRelation方法执行,");
-
         PromotionTransactionRelation promotionTransactionRelation = new PromotionTransactionRelation();
         promotionTransactionRelation.setPromotionLevelId(UUID.randomUUID().toString());
         promotionTransactionRelation.setPromotionLevel(promotionLevel);
@@ -703,7 +675,35 @@ public class PayFunction {
 
     }
 
+    //对用户的级别进行解冻处理
+    public void deFrozenUserType(UserInfoDTO userInfoDTO) {
+        UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
+        userBusinessTypeDTO.setSysUserId(userInfoDTO.getId());
+        userBusinessTypeDTO.setStatus("2");
+        List<UserBusinessTypeDTO> userBusinessTypeDTOS =  userTypeMapper.getUserBusinessType(userBusinessTypeDTO);
+        if(userBusinessTypeDTOS.size()>0)
+        {
+            userBusinessTypeDTO = userBusinessTypeDTOS.get(0);
+            userBusinessTypeDTO.setStatus("1");
+            userTypeMapper.updateUserBusinessType(userBusinessTypeDTO);
+        }
 
+    }
+
+    //计算用户在某笔交易中的消费总金额
+    public float calculateUserExpenseMoney(InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
+        //判断此笔交易可否提升用户等级
+        PayRecordDTO payRecordDTO = new PayRecordDTO();
+        payRecordDTO.setStatus("1");
+        payRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
+        List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
+        float expenseMoney = 0;
+        for(PayRecordDTO payRecord : payRecordDTOList)
+        {
+            expenseMoney = expenseMoney + payRecord.getAmount();
+        }
+        return expenseMoney;
+    }
 
 }
 

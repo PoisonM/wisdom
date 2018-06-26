@@ -20,7 +20,11 @@ public class TimeServiceController {
 
 
 	@RequestMapping(value = "/MTMonthlyIncomeCalc",method=RequestMethod.POST)
-	void MTMonthlyIncomeCalc(@RequestParam("businessType") String businessType, @RequestParam("startDateM") Date startDateM , @RequestParam("endDateM") Date endDateM,@RequestParam("isPullMessage") String isPullMessage,@RequestParam("key") String key) {
+	void MTMonthlyIncomeCalc(@RequestParam("businessType") String businessType,
+							 @RequestParam("startDateM") Date startDateM ,
+							 @RequestParam("endDateM") Date endDateM,
+							 @RequestParam("isPullMessage") String isPullMessage,
+							 @RequestParam("key") String key) {
 		try{
 			businessRunTimeService.MTMonthlyIncomeCalc(businessType,startDateM,endDateM,isPullMessage,key);
 		}catch(Exception e){

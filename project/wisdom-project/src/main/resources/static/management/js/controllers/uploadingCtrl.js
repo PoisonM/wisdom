@@ -28,11 +28,8 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                     spec:[],
                     services:[],
                     senderAddress:"深圳地区发货",
-                    productMarketPrice:"",
-                    productSalesVolume:""
+                    productMarketPrice:""
                 }
-
-
             };
             $scope.upload=function(){
                 if($scope.hintPic1 ==""||$scope.hintPic2 ==""||$scope.hintPic3==""){
@@ -55,7 +52,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                             $scope.ProductDTO.productDetail.services[j]=serviceText[j].innerHTML
                         }
                     }
-                    if($scope.ProductDTO.productName ==""||$scope.ProductDTO.brand ==""||$scope.ProductDTO.secondType ==""||$scope.ProductDTO.price ==""||$scope.ProductDTO.price ==null||$scope.ProductDTO.status ==""||$scope.ProductDTO.productDetail.spec.length<=0||$scope.ProductDTO.productAmount==""||$scope.ProductDTO.productDetail.productMarketPrice==""||$scope.ProductDTO.productDetail.productSalesVolume==""){
+                    if($scope.ProductDTO.productName ==""||$scope.ProductDTO.brand ==""||$scope.ProductDTO.secondType ==""||$scope.ProductDTO.price ==""||$scope.ProductDTO.price ==null||$scope.ProductDTO.status ==""||$scope.ProductDTO.productDetail.spec.length<=0||$scope.ProductDTO.productAmount==""||$scope.ProductDTO.productDetail.productMarketPrice==""){
                         $scope.mess = true;
                     }else{
 

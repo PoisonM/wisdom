@@ -72,4 +72,6 @@ public interface IncomeMapper {
     List<IncomeRecordDTO> findIncomeForUnaudited(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 
     int getIncomeForUnauditedCount(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
+
+    List<IncomeRecordDTO> getIncomeRanking(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO);
 }

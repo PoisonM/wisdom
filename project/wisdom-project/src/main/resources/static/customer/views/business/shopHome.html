@@ -143,11 +143,54 @@
         }
         .tab-title{font-size: 14px;}
 
+        /*轮播样式*/
+      /*  @-webkit-keyframes middle {
+            0% {
+                top: 300px;
+            }
+            100% {
+                top: -1300px;
+            }
+        }*/
+
+        @-webkit-keyframes move {
+            0% {
+                left: 600px;
+            }
+            100% {
+                left: -5650px;
+            }
+        }
+        #wraps{ width:800px;height:100px; position:absolute;margin:100px auto;top: -135px;overflow:hidden;left: 50px}
+        #list{ position:absolute;left:0;top:40px;margin:0;padding:0; -webkit-animation:50s move infinite linear; width:1500%;height:100%;}
+        #list li{ list-style:none;width:370px;height:150px; color:#4A4A4A; font:14px Arial; text-align:center; float:left;white-space: nowrap;}
+        #list li span{color: #f66667;}
+        #wraps:hover #list{ -webkit-animation-play-state:paused;}
+     /*   @keyframes moveup {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }*/
+       /* .box {
+            animation: moveup 15s linear infinite;
+        }
+
+        .box {
+            margin: 0;
+        }
+
+        .box li {
+            line-height: 30px;
+        }*/
+
     </style>
     <ion-content overflow-scroll="true" style="bottom: 48px">
         <!--轮播图部分-->
         <a style="background: #FC4B4B;height: 36px;line-height: 36px;font-size: 16px;font-family: PingFangSC-Regular;text-align: center"
-           href="https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ">一个可以分享赚钱的美妆商城</a>
+           href="https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ">一个可以分享赚钱的韩品直购的美妆商城</a>
         <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
             <ion-slide ng-repeat="item in param.bannerList">
                 <div class="box" style="height:3.98rem;width: 7.50rem">
@@ -156,15 +199,31 @@
                 </div>
             </ion-slide>
         </ion-slide-box>
+      <!--返利排行榜-->
+        <div class="wrap">
+            <div>
+                <div style="position: absolute;left: 0px;top: 220px;background-color: #EAE6E6;width: 100%;height:32px" >
+                    <img src="images/laba.jpg" alt=""style="width: 18px;height: 17px;margin-left: 10px;margin-top: 7px">
+                    <div id="wraps">
+                        <ul id="list">
+                            <li ng-repeat="item in rankingsList">
+                                恭喜<span>{{item.mobile}}</span>店主获得
+                                <span>{{item.amount}}</span>元返利
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--新人专享-->
         <div style="width: 100%;height: 68px;position:relative;">
             <img src="images/newPeople.png" style="width: 123px;height:32px;position:absolute;top:50%;left:50%;margin-top: -12px;
     margin-left: -61.5px;">
         </div>
-        <div style="height:136px;width:7.50rem" ng-repeat="item in param.productList"
+        <div style="height:136px;width:7.50rem;margin-bottom: 16px" ng-repeat="item in param.productList"
             ng-if="item.productPrefecture=='1'">
            <img ng-src="{{item.firstUrl}}" ng-click="enterDetails(item.productId)"
-                style="width: 7.5rem;height: 136px"/>
+                style="width: 7.5rem;height: 136px;"/>
        </div>
        <!--活动专区-->
         <div style="width: 100%;height: 68px;position:relative;">
@@ -198,84 +257,90 @@
                                 <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                 <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
-                                <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
+                                <span style="float: right;margin-right: 5px;color: #9B9B9B;font-size: 12px;font-family: PingFangSC-Regular;">销量 {{item.productDetail.productSalesVolume}}</span>
+                                <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                             </p>
                         </div>
                         <!--点击全部按钮-->
                         <!--99-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag" >
-                          <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
+                          <div style="width: 100%;height: 50px;line-height: 50px;margin-bottom: 4px;margin-top: 18px;">
                               <img src="images/99.png" style="width: 225px;margin: 0 auto">
                           </div>
-                            <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in onePriductList">
+                            <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in onePriductList" >
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
-                                    <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
+                                    <span style="float: right;margin-right: 5px;color: #9B9B9B;font-family: PingFangSC-Regular;font-size: 12px;">销量 {{item.productDetail.productSalesVolume}}</span>
+                                <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                                 </p>
                             </div>
                         </div>
                         <!--199-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
-                                <img src="images/199.png" style="width: 225px;margin: 0 auto">
+                            <div style="width: 100%;height: 50px;line-height: 50px;margin-bottom: 4px;margin-top: 13.5px;">
+                                <img src="images/199.png" style="width: 227px;margin: 0 auto">
                             </div>
-                        <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in twoPriductList">
+                        <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in twoPriductList" >
                             <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                            <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
+                            <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;">
                                 <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                 <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
-                                <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
+                                <span style="float: right;margin-right: 5px;color: #9B9B9B;font-family: PingFangSC-Regular;font-size: 12px;">销量 {{item.productDetail.productSalesVolume}}</span>
+                            <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                             </p>
                         </div>
                         </div>
 
                         <!--299-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
-                                <img src="images/299.png" style="width: 225px;margin: 0 auto">
+                            <div style="width: 100%;height: 50px;line-height: 50px;margin-bottom: 4px;margin-top: 13.5px;">
+                                <img src="images/299.png" style="width: 227px;margin: 0 auto">
                             </div>
-                            <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in threePriductList">
+                            <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in threePriductList" >
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
-                                    <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
+                                    <span style="float: right;margin-right: 5px;color: #9B9B9B;font-family: PingFangSC-Regular;font-size: 12px;">销量 {{item.productDetail.productSalesVolume}}</span>
+                                <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                                 </p>
                             </div>
                         </div>
                         <!--399-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
-                                <img src="images/399.png" style="width: 225px;margin: 0 auto">
+                            <div style="width: 100%;height: 50px;line-height: 50px;margin-bottom: 4px;margin-top: 13.5px;">
+                                <img src="images/399.png" style="width: 227px;margin: 0 auto">
                             </div>
-                            <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in fourPriductList">
+                            <div   ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in fourPriductList" >
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
-                                    <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
+                                    <span style="float: right;margin-right: 5px;color: #9B9B9B;font-family: PingFangSC-Regular;font-size: 12px;">销量 {{item.productDetail.productSalesVolume}}</span>
+                                <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                                 </p>
                             </div>
                         </div>
 
                         <!--499-->
                         <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
-                            <div style="width: 100%;height: 50px;line-height: 50px;padding: 20px">
-                                <img src="images/499.png" style="width: 225px;margin: 0 auto">
+                            <div style="width: 100%;height: 50px;line-height: 50px;margin-bottom: 4px;margin-top: 13.5px;">
+                                <img src="images/499.png" style="width: 227px;margin: 0 auto">
                             </div>
-                            <div ng-if="allProductFlag" ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in fivePriductList">
+                            <div ng-if="allProductFlag" ng-click="enterDetails(item.productId)" class="col col-50" ng-repeat="item in fivePriductList" >
                                 <img class="full-image" ng-src="{{item.firstUrl}}"style="height: 168px">
-                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;margin-bottom: 20px">
+                                <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;margin-top: 10px;">
                                     <span  style="width: 100%; display: inline-block ;overflow: hidden;text-overflow: ellipsis;display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;margin-bottom: 6px;font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;">{{item.productName}}</span>
 
                                     <span style="font-family: PingFangSC-Regular;font-size: 16px;color: #FF6666;letter-spacing: 0;">￥{{item.price}}</span>
-                                    <span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-left: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></span>
+                                    <span style="float: right;margin-right: 5px;color: #9B9B9B;font-family: PingFangSC-Regular;font-size: 12px;">销量 {{item.productDetail.productSalesVolume}}</span>
+                                <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                                 </p>
                             </div>
                         </div>
