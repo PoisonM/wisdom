@@ -130,6 +130,9 @@
     border-right: 1px solid #e5e5e5;
     border-bottom: 1px solid #e5e5e5;
 }
+/*.scheduling table  tr td div:nth-child(1){
+    width: 75px;
+}*/
 .scheduling .listHead td{background: #ffffff}
 .scheduling table tbody  td{
     background: #ffffff;
@@ -142,7 +145,7 @@
 }
 .scheduling .list td img{width: 20px;height: 20px;margin: auto}
 .scheduling  #ofix1_tb_header thead td:nth-child(1){
-    padding-left: 55px;
+    padding-left: 75px;
 }
 .scheduling  #ofix1_tb_left tbody tr:nth-child(1) td div{
     line-height: 0px;

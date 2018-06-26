@@ -153,6 +153,16 @@ img {display: inline-block}
  .table tr:nth-child(even){
   background: #fbfeff;
  }
+ .scheduling  #ofix1_tb_left tbody td:nth-child(1) div{
+  width:75px;
+ }
+.scheduling  #tbTest1 tbody td:nth-child(1) div{
+ width:75px;
+}
+
+.scheduling #ofix1_tb_top_left tbody tr:nth-child(1) td div{
+ width:75px;
+}
 /*.popup-container{
  background: rgba(0,0,0,0)!important;
 }

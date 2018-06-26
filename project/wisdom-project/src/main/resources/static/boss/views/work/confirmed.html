@@ -19,7 +19,7 @@
                     <p  class="fs12 col88">
                         <img src="images/work/minute.png" style="display: inline-block;width: 15px;height: 15px;margin-left: 5px"><span style="margin-left: 17px">{{confirmed.appointStartTime|date:'HH:mm'}}~{{confirmed.appointEndTime|date:'HH:mm'}}</span><span class="ml10">{{confirmed.appointPeriod}}分钟</span>
                     <p>状态：<span ng-if="confirmed.status == 0">未开始</span>
-                        <span ng-if="confirmed.status == 1">"已确认</span>
+                        <span ng-if="confirmed.status == 1">已确认</span>
                         <span ng-if="confirmed.status == 2">服务中</span>
                         <span ng-if="confirmed.status == 3">已完成</span>
                         <span ng-if="confirmed.status == 4">取消预约</span>

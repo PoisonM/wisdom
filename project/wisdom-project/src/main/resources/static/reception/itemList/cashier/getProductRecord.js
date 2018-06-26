@@ -26,8 +26,8 @@ PADWeb.controller('getProductRecordCtrl', function($scope, $stateParams, $state,
         })
     }
     //
-    $scope.goCashProductDetails = function () {
-        $state.go("pad-web.left_nav.cashProductDetails",{userId:$stateParams.userId})
+    $scope.goCashProductDetails = function (flowNo) {
+        $state.go("pad-web.left_nav.cashProductDetails",{userId:$stateParams.userId,flowNo:flowNo})
     }
 
     GetProductDrawRecord.save({

@@ -105,6 +105,9 @@ angular.module('controllers',[]).controller('reminderCtrl',
                     },300);
                 }
             }
+            $('body').bind('touchmove', function(e) {
+                $("input").blur()
+            });
             $scope.num = function (time,index,type) {
                 $scope.reminder[index][type]=time.replace(/[^0-9:0-9]+/,'')
             }
