@@ -50,6 +50,11 @@ public class UserConsumeRequestDTO extends BaseEntity  {
      * 店员表主键
      */
     private String sysClerkId;
+
+    /**
+     * 0 当天  1 非当天
+     */
+    private String isCurrentDay;
     /**
      * 请求来源，用于区分是否需要设置goodsType条件
      */
@@ -63,6 +68,15 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     private String flowId;
     private String searchFile;
     private List<String> flowIds;
+
+    public String getIsCurrentDay() {
+        return isCurrentDay;
+    }
+
+    public void setIsCurrentDay(String isCurrentDay) {
+        this.isCurrentDay = isCurrentDay;
+    }
+
     public String getId() {
         return id;
     }

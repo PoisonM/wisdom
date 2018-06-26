@@ -39,7 +39,8 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
         consumeType:"0",
         sysUserId:$stateParams.userId,
         pageSize:"100",
-        goodsType:"6"
+        goodsType:"6",
+        isCurrentDay:"1"
     },function (data) {
         $scope.itemList = data.responseData
     })
