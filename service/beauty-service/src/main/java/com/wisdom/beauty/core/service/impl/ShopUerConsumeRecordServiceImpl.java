@@ -10,7 +10,6 @@ import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -23,7 +22,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -61,6 +59,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	private ShopService shopService;
 	@Autowired
 	private UserServiceClient userServiceClient;
+
+	@Autowired
+	private ShopCustomerArchivesService shopCustomerArchivesService;
 
 	@Autowired
 	private ShopCustomerProductRelationService shopCustomerProductRelationService;
@@ -324,7 +325,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
 						shopProjectInfoDTO.setDiscountPrice(
-								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					}
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
@@ -357,7 +358,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				BeanUtils.copyProperties(dto,userConsumeRecordResponse);
 				userConsumeRecordResponse.setIncludeTimes(map.get(dto.getFlowId()));
 				if (dto.getPrice() != null && dto.getConsumeNumber() != null) {
-					userConsumeRecordResponse.setPrice(dto.getPrice().divide(new BigDecimal(dto.getConsumeNumber())));
+					userConsumeRecordResponse.setPrice(dto.getPrice().divide(new BigDecimal(dto.getConsumeNumber()),2, ROUND_HALF_DOWN));
 				}
 				userConsumeRecordResponses.add(userConsumeRecordResponse);
 			}
@@ -429,7 +430,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 				if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
 					shopProjectInfoDTO.setDiscountPrice(
-							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 				}
 
 				shopProjectInfos.add(shopProjectInfoDTO);
@@ -440,7 +441,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 		dto.setFlowName(shopUserConsumeRecord.getFlowName());
 		dto.setIncludeTimes(includeTimes);
-		dto.setPrice(shopUserConsumeRecord.getPrice().divide(new BigDecimal(shopUserConsumeRecord.getConsumeNumber())));
+		dto.setPrice(shopUserConsumeRecord.getPrice().divide(new BigDecimal(shopUserConsumeRecord.getConsumeNumber()),2, ROUND_HALF_DOWN));
 		dto.setDiscount(shopUserConsumeRecord.getDiscount());
 		dto.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
 		dto.setSumAmount(shopUserConsumeRecord.getPrice());
@@ -508,13 +509,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
 		}
 		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())) {
-			UserInfoDTO userInfoFromUserId = userServiceClient
-					.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
-			try {
-				shopUserConsumeRecordDTO.setSysUserName(CommonUtils.convertUnicode(userInfoFromUserId.getNickname()));
-			} catch (UnsupportedEncodingException e) {
-				logger.error("用户昵称解码出错");
-				e.printStackTrace();
+			ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
+			archivesDTO.setSysUserId(shopUserConsumeRecordDTO.getSysUserId());
+			archivesDTO.setShopid(shopUserConsumeRecordDTO.getSysShopId());
+			List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
+			if(CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)){
+				shopUserConsumeRecordDTO.setSysUserName(shopUserArchivesInfo.get(0).getSysUserName());
 			}
 		}
 		shopUserConsumeRecordDTO.setCreateDate(new Date());
@@ -538,7 +538,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				ShopClerkWorkRecordDTO recordDTO = new ShopClerkWorkRecordDTO();
 				//平均分配业绩金额
 				if(consumeRecordDTO.getPrice()!=null){
-					recordDTO.setPrice(consumeRecordDTO.getPrice().divide(new BigDecimal(clerks.length)));
+					recordDTO.setPrice(consumeRecordDTO.getPrice().divide(new BigDecimal(clerks.length),2, ROUND_HALF_DOWN));
 				}
 				recordDTO.setId(IdGen.uuid());
 				recordDTO.setPayType(consumeRecordDTO.getPayType());
@@ -834,7 +834,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 			dto.setIncludeTimes(shopUserProjectRelation.getServiceTime());
 			dto.setPrice(userConsumeRecordResponseDTO.getPrice()
-					.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
+					.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber()),2, ROUND_HALF_DOWN));
 			dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 			dto.setPeriodDiscount(userConsumeRecordResponseDTO.getPeriodDiscount());
 			dto.setDiscount(userConsumeRecordResponseDTO.getDiscount());
@@ -900,7 +900,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 		UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 		dto.setPrice(userConsumeRecordResponseDTO.getPrice()
-				.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
+				.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber()),2, ROUND_HALF_DOWN));
 		dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 		dto.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
 		dto.setProductDiscount(userConsumeRecordResponseDTO.getProductDiscount());

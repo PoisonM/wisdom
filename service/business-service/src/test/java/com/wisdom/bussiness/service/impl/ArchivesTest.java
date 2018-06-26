@@ -1,6 +1,7 @@
 package com.wisdom.bussiness.service.impl;
 
 import com.wisdom.business.BusinessServiceApplication;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,14 @@ public class ArchivesTest {
     @Before
     public void setupMockMvc() throws Exception {
        // mvc = MockMvcBuilders.webAppContextSetup(context).build();
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        if("aaaa".equals(userInfoDTO.getId())){
 
+            System.out.print("chengg");
+        }else{
 
+            System.out.print("shibai");
+        }
 
     }
 

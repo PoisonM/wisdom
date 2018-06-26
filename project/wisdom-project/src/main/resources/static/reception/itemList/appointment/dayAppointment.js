@@ -855,7 +855,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             sysClerkId:$scope.param.ModifyAppointmentObject.beauticianId,
                             sysUserId:$scope.param.selectCustomersObject.sysUserId,//biaoji
                             sysUserName:$scope.param.selectCustomersObject.sysUserName,
-                            appointStartTimeS:new Date().format("yyyy-MM-dd")+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
+                            appointStartTimeS:$scope.param.nowTime+" "+$scope.param.ModifyAppointmentObject.appointStartTime,
                             shopProjectName:$scope.param.checkprojectName,
                             appointPeriod:$scope.param.checkprojectDuration,
                             detail:$scope.param.ModifyAppointmentObject.detail,
@@ -942,7 +942,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*加载预约详情项目 根据预约主键查询预约项目*/
     $scope.detailsWeepWrap = function (info) {
-        if (info == undefined) {
+        if (info == undefined ||info == '') {
             return
         }
         $scope.weekAppoint = info

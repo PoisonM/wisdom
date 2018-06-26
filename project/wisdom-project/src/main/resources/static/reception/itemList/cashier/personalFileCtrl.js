@@ -100,7 +100,7 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
 
     $scope.goConsumptionList = function(type, id,expirationDate,$event) {
         $event.stopPropagation();//阻止事件冒泡
-        if(expirationDate<$rootScope.currentTime){
+        if(expirationDate!='0' && expirationDate<$rootScope.currentTime){
             // alert("对不起，你的卡项已过期^_^");
             return false;
         }else{

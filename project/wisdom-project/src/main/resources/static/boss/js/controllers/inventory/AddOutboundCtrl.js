@@ -7,6 +7,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
             $scope.storeManagerName ="";
             $scope.outOperationName = $stateParams.names.split(',')[0];
             $scope.outOperationVal = $stateParams.ids.split(',')[0];
+            $scope.flag = true;
             $scope.param = {
                 shopStock : [],
                 outOperationName : '',
@@ -56,6 +57,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                         var value = {
                             detail:"",
                             productDate:val.effectDate,
+                            productDateString:val.effectDate,
                             stockPrice:val.marketPrice,/*进货单价*/
                             shopProcId:val.id,/*产品id*/
                             shopStoreId:$stateParams.shopStoreId,/*仓库id*/
@@ -64,7 +66,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                             productName: val.productName,
                             productUnit: val.productUnit,
                             productSpec: val.productSpec,
-                            stockStyle:$stateParams.stockStyle, /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                            stockStyle:  $stateParams.stockStyle, /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
                             stockType:$rootScope.shopInfo.outShopStockType,
                             receiver:'',
                             stockOutNumber:''
@@ -106,27 +108,38 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
 
             /*确认出库*/
             $scope.successfulInventoryGo = function(){
-                if($scope.sum>0){
-                    angular.forEach($scope.param.shopStock,function (val,index) {
-                       val.receiver = $scope.param.outOperationVal;
-                       val.detail = $scope.param.detail;
-                    });
-                    var list=$scope.param.shopStock;
-                    for(var i=0;i<list.length;i++){
-                        if(list[i].stockNumber ==""||list[i].stockOutNumber ==""||list[i].stockType ==""||list[i].receiver ==""){
-                            alert("请检查信息");
-                            return
+                if($scope.flag){
+                    $scope.flag = false;
+                    if($scope.sum>0){
+                        angular.forEach($scope.param.shopStock,function (val,index) {
+                           val.receiver = $scope.param.outOperationVal;
+                           val.detail = $scope.param.detail;
+                        });
+                        var list=$scope.param.shopStock;
+                        for(var i=0;i<list.length;i++){
+                            if(list[i].stockNumber ==""||list[i].stockOutNumber ==""||list[i].stockType ==""||list[i].receiver ==""){
+
+                                alert("请检查信息");
+                                $scope.flag = true;
+                                return
+                            }else if(list[i].stockNumber<list[i].stockOutNumber){
+                                  alert("出库数量不能大于库存数量，请修改！");
+                                  $scope.flag = true;
+                                  return;
+                            }
                         }
+                        AddStock.save($scope.param.shopStock,function(data){
+                            if(data.result==Global.SUCCESS){
+                                $rootScope.shopInfo.outShopStockType = '';
+                                $state.go("successfulInventory",{id:data.responseData,type:'outbound'})
+                            }
+                        })
+                    }else{
+                        $scope.flag = true;
+                        alert("请选择出库商品！");
+                        $state.go('outbound',{name:$stateParams.name})
                     }
-                    AddStock.save($scope.param.shopStock,function(data){
-                        if(data.result==Global.SUCCESS){
-                            $rootScope.shopInfo.outShopStockType = '';
-                            $state.go("successfulInventory",{id:data.responseData,type:'outbound'})
-                        }
-                    })
-                }else{
-                    alert("请选择出库商品！");
-                    $state.go('outbound',{name:$stateParams.name})
                 }
+
             }
         }])

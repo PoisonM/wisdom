@@ -18,7 +18,13 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 selectProductTypeOneId:'',
                 selectProductList:'',
             };
-            $rootScope.shopInfo.entryShopProductList = [];
+
+             $scope.$on('$ionicView.enter', function() {
+                     $rootScope.shopInfo.entryShopProductList = [];
+                     $scope.sum = 0;
+                     $scope.param.ids = [];
+                     $scope.param.indexs = [];
+              })
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
 
@@ -144,7 +150,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
 
                         },
                         error: function(){
-                             alert("未查询到此商品,请手动添加！！");
+                             alert("未查询到此商品,请手动添加！");
                         }
                     });
                 }
@@ -201,12 +207,18 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             $scope.newLibraryGo = function(){
 
                 if($scope.param.selType=="0"){
-                    console.log($rootScope.shopInfo.entryShopProductList);
-                    if($rootScope.shopInfo.entryShopProductList.length<=0){
+                    if($scope.sum>0){
+                        console.log($rootScope.shopInfo.entryShopProductList);
+                        if($rootScope.shopInfo.entryShopProductList.length<=0){
+                            alert("请先选择产品");
+                            return;
+                        }
+                        $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name})
+                    }else{
                         alert("请先选择产品");
                         return;
                     }
-                    $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name})
+
                 }else{
                     alert("请切换到手动入库");
                     return;
@@ -243,6 +255,8 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             $scope.chooseProductList = function (productTypeTwoId) {
                 $scope.param.indexs = [];
                 $scope.param.ids=[];
+                $scope.sum = 0;
+                $rootScope.shopInfo.entryShopProductList =[];
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
