@@ -942,7 +942,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*加载预约详情项目 根据预约主键查询预约项目*/
     $scope.detailsWeepWrap = function (info) {
-        if (info == undefined) {
+        if (info == undefined ||info == '') {
             return
         }
         $scope.weekAppoint = info

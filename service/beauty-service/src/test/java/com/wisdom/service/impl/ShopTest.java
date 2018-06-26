@@ -2,8 +2,13 @@ package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wisdom.beauty.BeautyServiceApplication;
+import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.dto.ShopProjectTypeDTO;
 import com.wisdom.beauty.api.dto.SysShopDTO;
+import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
+import com.wisdom.beauty.core.service.ShopClerkScheduleService;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +23,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,6 +47,9 @@ public class ShopTest {
 
     @Autowired
     private WebApplicationContext context;
+
+    @Autowired
+    private ShopClerkScheduleService shopClerkScheduleService;
 
     @Before
     public void setupMockMvc() {
@@ -106,11 +118,25 @@ public class ShopTest {
 
     @Test
     public void getClerkPerformance() throws Exception{
-        MvcResult result = mvc.perform(get("/work/getClerkPerformance").param("startTime", "2017-01-01 00:00:00:0000").param("endTime", "2017-01-01 23:59:59:9999"))
-                .andExpect(status().isOk())// 模拟向testRest发送get请求
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))// 预期返回值的媒体类型text/plain;charset=UTF-8
-                .andReturn();// 返回执行请求的结果
-        System.out.println(result.getResponse().getContentAsString());
+        List clerkScheduleList = new ArrayList<>();
+        //获取某个月的所有天的集合
+        Date searchDate=new Date();
+        List<String> monthFullDay = DateUtils.getMonthFullDay(Integer.parseInt(DateUtils.getYear(searchDate)), Integer.parseInt(DateUtils.getMonth(searchDate)), 0);
+        for (String string : monthFullDay) {
+            ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
+            scheduleDTO.setId(IdGen.uuid());
+            scheduleDTO.setScheduleDate(DateUtils.StrToDate(string, "date"));
+            scheduleDTO.setSysShopId("00");
+            scheduleDTO.setCreateDate(new Date());
+            scheduleDTO.setScheduleType(ScheduleTypeEnum.ALL.getCode());
+
+            scheduleDTO.setSysClerkId("999");
+            scheduleDTO.setSysClerkName("88");
+            scheduleDTO.setSysBossCode("77");
+            clerkScheduleList.add(scheduleDTO);
+        }
+        //批量插入
+        int number = shopClerkScheduleService.saveShopClerkScheduleList(clerkScheduleList);
     }
 
 }
