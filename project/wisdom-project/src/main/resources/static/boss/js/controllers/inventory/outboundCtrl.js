@@ -232,6 +232,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
                 $scope.param.indexs = [];
                 $scope.param.ids=[];
                 $scope.sum = 0;
+                $rootScope.shopInfo.entryShopProductList =[];
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
@@ -244,11 +245,17 @@ angular.module('controllers',[]).controller('outboundCtrl',
             /*下一步*/
             $scope.AddOutboundGo = function(){
                 if($scope.param.selType=="2"){
-                    if($rootScope.shopInfo.entryShopProductList.length<=0){
+                    if($scope.sum>0){
+                        if($rootScope.shopInfo.entryShopProductList.length<=0){
+                            alert("请选择产品");
+                            return
+                        }
+                        $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,sum:$scope.sum})
+                    }else{
                         alert("请选择产品");
                         return
                     }
-                    $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,sum:$scope.sum})
+
                 }else{
                     alert("请切换到手动出库！");
                 }
