@@ -44,7 +44,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
 
                 }
                 if($scope.param.managerStatus == true){
-                    $scope.sysClerkDTO.role += "店员 "
+                    $scope.sysClerkDTO.role += "店长 "
 
                 }
                 if($scope.param.fontDeskStatus == true){

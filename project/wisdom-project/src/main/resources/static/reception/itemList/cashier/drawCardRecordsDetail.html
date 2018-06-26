@@ -21,10 +21,7 @@
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <!--0:微信 1：支付宝 2:银行支付金额-->
-                    <span ng-if="details.payMap.payType==rootScopePayType.weChatPay">微信</span>
-                    <span ng-if="details.payMap.payType==rootScopePayType.aliPay">支付宝</span>
-                    <span ng-if="details.payMap.payType==rootScopePayType.bankPay"">银行支付金额</span>
+                    <span>疗程卡</span>
                 </li>
             </ul>
         </div>
@@ -38,6 +35,20 @@
                     <span>划卡：{{listItem.consumeNumber}}</span>
                 </li>
             </ul>
+        </div>
+        <div class="basic">
+            <p>备注</p>
+            <ul>
+                <li>
+                    <img ng-src="{{dataInfo.detail}}" alt="">
+                </li>
+            </ul>
+        </div>
+        <div class="basic">
+            <p>顾客签字</p>
+        </div>
+        <div>
+            <img ng-src="{{dataInfo.signUrl}}" alt="">
         </div>
     </div>
 </div>

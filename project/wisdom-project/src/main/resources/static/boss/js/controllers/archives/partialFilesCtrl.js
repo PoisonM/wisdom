@@ -77,6 +77,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
               FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                   if(data.result == "0x00001"){
                       $scope.fileList = [];
+                      $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                       $scope.info = data.responseData.info;
                   }else{
                       $scope.info=[]

@@ -237,7 +237,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
             /*下一步*/
             $scope.AddOutboundGo = function(){
-                if($scope.param.selType=="3"){
+                if($scope.param.selType=="2"){
                     if($rootScope.shopInfo.entryShopProductList.length<=0){
                         alert("请选择产品");
                         return

@@ -172,7 +172,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 var d2 =  new Date(Date.parse(expirationDate));
 
                 if(d1>d2 &&$rootScope.settingAddsome.editorCard.expirationDate!='0'){
-                    alert("生效日期大于活动有效期");
+                    alert("活动有效期小于生效日期");
                     return
                 }
                 UpdateProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){

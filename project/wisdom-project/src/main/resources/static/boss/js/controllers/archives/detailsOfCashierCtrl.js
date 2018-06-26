@@ -2,6 +2,7 @@ angular.module('controllers',[]).controller('detailsOfCashierCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductAndRechargeCard','Global','ConsumeFlowNo',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductAndRechargeCard,Global,ConsumeFlowNo) {
             $rootScope.title = "消费详情";
+            console.log($stateParams);
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -15,17 +16,18 @@ angular.module('controllers',[]).controller('detailsOfCashierCtrl',
                     flowId:$stateParams.id,
                     goodsType:2
                 }
-                if($stateParams.rechargeCardType==''){
-                    ProductAndRechargeCard.save(userConsumeRequestDTO,function (data) {
+                if($stateParams.id!=""&&$stateParams.flowNo!=''||($stateParams.id==""&&$stateParams.flowNo!='')){
+                    ConsumeFlowNo.get({
+                        consumeFlowNo:$stateParams.flowNo
+                    },function (data) {
                         $ionicLoading.hide()
                         if(data.result==Global.SUCCESS&&data.responseData!=null){
                             $scope.info =data.responseData
                         }
                     })
-                }else{
-                    ConsumeFlowNo.get({
-                        consumeFlowNo:$stateParams.flowNo
-                    },function (data) {
+
+                }else {
+                    ProductAndRechargeCard.save(userConsumeRequestDTO,function (data) {
                         $ionicLoading.hide()
                         if(data.result==Global.SUCCESS&&data.responseData!=null){
                             $scope.info =data.responseData

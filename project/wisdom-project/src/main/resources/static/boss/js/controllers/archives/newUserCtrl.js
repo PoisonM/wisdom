@@ -79,12 +79,6 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     $scope.shopUserArchivesDTO=$scope.newUser;
                     /*新建保存接口*/
                     SaveArchiveInfo.save($scope.shopUserArchivesDTO,function (data) {
-                        $state.go("partialFiles");
-                    })
-                }else {
-                    $scope.userInformation=$scope.newUser;
-                    /*修改档案更新保存*/
-                    UpdateArchiveInfo.save($scope.userInformation,function (data) {
                         if(Global.SUCCESS=data.result){
                             $scope.newUser={
                                 sex:"女",
@@ -95,6 +89,15 @@ angular.module('controllers',[]).controller('newUserCtrl',
                                 phone:""
 
                             };
+                            $state.go("partialFiles");
+                        }
+
+                    })
+                }else {
+                    $scope.userInformation=$scope.newUser;
+                    /*修改档案更新保存*/
+                    UpdateArchiveInfo.save($scope.userInformation,function (data) {
+                        if(Global.SUCCESS=data.result){
                             $state.go("archives",{id:$stateParams.id})
 
                         }

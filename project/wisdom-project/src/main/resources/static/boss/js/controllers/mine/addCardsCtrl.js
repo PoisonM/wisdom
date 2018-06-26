@@ -17,7 +17,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 expirationDate:$filter('date')(new Date(), 'yyyy-MM-dd'),
                 detail:'',
                 status:'',
-                effectiveDate:""
+                effectiveDate:$filter('date')(new Date(), 'yyyy-MM-dd')
             }
 
             $scope.listOfItemsGo = function () {
@@ -149,7 +149,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 var d2 =  new Date(Date.parse(expirationDate));
 
                 if(d1>d2&&$rootScope.settingAddsome.editorCard.expirationDate!='0'){
-                    alert("生效日期大于活动有效期");
+                    alert("活动有效期小于生效日期");
                     return
                 }
                 SaveProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){

@@ -19,7 +19,7 @@ angular.module('controllers',[]).controller('mployeesDtailsCtrl',
                     $ionicLoading.hide();
                     $scope.mployeesDtails = data[0];
                     $scope.decideStatus("美容师",'beauticianStatus');
-                    $scope.decideStatus("店员",'managerStatus');
+                    $scope.decideStatus("店长",'managerStatus');
                     $scope.decideStatus("前台",'fontDeskStatus')
                 })
 
@@ -40,7 +40,7 @@ angular.module('controllers',[]).controller('mployeesDtailsCtrl',
 
                 }
                 if ($scope.param.managerStatus == true) {
-                    $scope.mployeesDtails.role += "店员 "
+                    $scope.mployeesDtails.role += "店长 "
 
                 }
                 if ($scope.param.fontDeskStatus == true) {

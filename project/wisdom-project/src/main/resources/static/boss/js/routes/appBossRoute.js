@@ -90,7 +90,7 @@ define(['appBoss'], function(app){
                     })
                         /*员工端的业绩明细*/
                     .state('employeeDetailedPerformance', {
-                        url: '/employeeDetailedPerformance/:searchFile',
+                        url: '/employeeDetailedPerformance/:searchFile,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'employeeDetailedPerformanceCtrl',
                         resolve: {
@@ -2505,6 +2505,19 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAboutMineCtrl',
                                     ['js/controllers/employee/employeeAboutMineCtrl.js?ver='+ bossVersion],
                                     'views/employee/employeeAboutMine.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /* 产品-领取详情 getTheDetails*/
+                    .state('getTheDetails', {
+                        url: '/getTheDetails',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'getTheDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.getTheDetailsCtrl',
+                                    ['js/controllers/work/getTheDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/work/getTheDetails.html?ver=' + bossVersion);
                             }
                         }
                     })

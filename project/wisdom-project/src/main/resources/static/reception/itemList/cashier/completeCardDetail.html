@@ -21,33 +21,41 @@
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span>套卡</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.groupCard">套卡</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.product">产品</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.periodCard">疗程卡</span>
+                    <span ng-if="dataInfo.goodsType==rootScopeGoodsType.rechargeCard">充值卡</span>
                 </li>
             </ul>
         </div>
 
-        <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" >
+        <div>
             <div class="basic">
-                <p>划卡信息</p>
+                <p>支付类型</p>
                 <ul>
                     <li>
-                        <label for="">{{listItem.flowName}}</label>
-                        <span>{{listItem.price}}</span>
+                        <label for="">现金支付</label>
+                        <span>{{dataInfo.payMap.cashAmount}}</span>
+
                     </li>
-                </ul>
-            </div>
-            <div class="basic">
-                <p>备注</p>
-                <ul>
                     <li>
-                        <label for="">备注</label>
-                        <span>{{listItem.detail}}</span>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
+                        <span>{{dataInfo.payMap.payTypeAmount}}</span>
                     </li>
                 </ul>
             </div>
         </div>
-
         <div>
+            <div class="basic">
+                <p>备注</p>
+                <ul>
+                    <li>
+                        <span>{{dataInfo.detail}}</span>
+                    </li>
+                </ul>
+            </div>
             <div class="basic">
                 <p>顾客签字</p>
             </div>
