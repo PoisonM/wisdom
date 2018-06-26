@@ -716,48 +716,41 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			criteria.andCreateDateBetween(startTime, endTime);
 		}
 		criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
-		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
+
 		List<ExpenditureAndIncomeResponseDTO> consumeNumberList = extShopUserConsumeRecordMapper
 				.selectPriceListByCriteria(numberCriteria);
 		Map<String, ExpenditureAndIncomeResponseDTO> map = null;
+		Map<String, List<String>> userIdMap = new HashMap<>();
 		if (CollectionUtils.isNotEmpty(consumeNumberList)) {
 			map = new HashedMap(16);
 			for (ExpenditureAndIncomeResponseDTO dto : consumeNumberList) {
 				if (map.get(dto.getSysShopId()) == null) {
 					ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = new ExpenditureAndIncomeResponseDTO();
 					expenditureAndIncomeResponse.setConsumeNumber(1);
-					expenditureAndIncomeResponse.setSysUserId(dto.getSysUserId());
+					List<String> useIdList=new ArrayList<>();
+					useIdList.add(dto.getSysUserId());
+					userIdMap.put(dto.getSysShopId(),useIdList);
 					map.put(dto.getSysShopId(), expenditureAndIncomeResponse);
 				} else {
 					ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = map.get(dto.getSysShopId());
-					if (!dto.getSysUserId().equals(expenditureAndIncomeResponse.getSysUserId())) {
+					if (!userIdMap.get(dto.getSysShopId()).contains(dto.getSysUserId())) {
 						expenditureAndIncomeResponse
 								.setConsumeNumber(expenditureAndIncomeResponse.getConsumeNumber() + 1);
 						map.put(dto.getSysShopId(), expenditureAndIncomeResponse);
+						List<String> useIdList=userIdMap.get(dto.getSysShopId());
+						useIdList.add(dto.getSysUserId());
+						userIdMap.put(dto.getSysShopId(),useIdList);
 					}
-
 				}
 			}
 
 		}
 
 		// 人次数
-		ShopUserConsumeRecordCriteria timeCriteria = new ShopUserConsumeRecordCriteria();
-		ShopUserConsumeRecordCriteria.Criteria c = timeCriteria.createCriteria();
-		if (StringUtils.isNotBlank(pageParamVoDTO.getStartTime())
-				&& StringUtils.isNotBlank(pageParamVoDTO.getEndTime())) {
-			Date startTime = DateUtils.StrToDate(pageParamVoDTO.getStartTime(), "datetime");
-			Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
-			c.andCreateDateBetween(startTime, endTime);
-		}
-		c.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
-		c.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
-		List<ExpenditureAndIncomeResponseDTO> timeList = extShopUserConsumeRecordMapper
-				.selectPriceListByCriteria(timeCriteria);
 		Map<String, Integer> timeMap = null;
-		if (CollectionUtils.isNotEmpty(timeList)) {
+		if (CollectionUtils.isNotEmpty(consumeNumberList)) {
 			timeMap = new HashedMap(16);
-			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : timeList) {
+			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : consumeNumberList) {
 				if (timeMap.get(expenditureAndIncomeResponseDTO.getSysShopId()) == null) {
 					timeMap.put(expenditureAndIncomeResponseDTO.getSysShopId(), 1);
 				} else {
@@ -854,7 +847,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				Date endTime = DateUtils.StrToDate(pageParamVoDTO.getEndTime(), "datetime");
 				numberC.andCreateDateBetween(startTime, endTime);
 			}
-			numberC.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 			numberC.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
 			// 根据时间排序，降序
 			numberCriteria.setOrderByClause("create_date  desc");
@@ -881,7 +873,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				timeC.andCreateDateBetween(startTime, endTime);
 			}
 			timeC.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
-			timeC.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
 			list = extShopUserConsumeRecordMapper.selectPriceListByCriteria(timeCriteria);
 
 			for (ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO : list) {
