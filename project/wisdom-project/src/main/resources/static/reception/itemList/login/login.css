@@ -27,6 +27,7 @@
     height: 100%;
     border-bottom: 0.015625rem solid #cccccc;
     padding-left: 0.15625rem;
+    -webkit-appearance: none;
 }
 .login .login_input .information li input::placeholder{
     font-size: 0.265625rem;
