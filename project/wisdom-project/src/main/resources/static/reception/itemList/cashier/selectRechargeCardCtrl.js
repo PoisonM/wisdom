@@ -1,4 +1,5 @@
-PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, $stateParams, ngDialog, Archives, CardInfo, UserRechargeConfirm) {
+PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, $stateParams
+    , ngDialog, Archives, CardInfo, UserRechargeConfirm,GetShopClerkList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
@@ -24,8 +25,9 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true);
     $scope.$parent.param.selectSty = $stateParams.userId//选中店员控制样式
-    $scope.staffListNames = $rootScope.staffListNames//关联员工
-    $scope.staffListIds = $rootScope.staffListIds
+    // $scope.staffListNames = $rootScope.staffListNames//关联员工
+    // $scope.staffListIds = $rootScope.staffListIds
+    $scope.housekeeperFlag = false
 
     $scope.timeDiscount='';
     $scope.periodDiscount='';
@@ -38,17 +40,8 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     $scope.goChooseGifts = function() {
         $state.go('pad-web.left_nav.chooseGifts');
     }
-    $scope.goHousekeeper = function() {
-        $state.go('pad-web.left_nav.housekeeper');
-    }
+
     $scope.goCustomerSignature = function() {
-        if($scope.staffListIds == undefined){
-            $scope.responseData.sysClerkId = "";
-            $scope.responseData.sysClerkName = ""
-        }else {
-            $scope.responseData.sysClerkId = $scope.staffListIds.join(";");
-            $scope.responseData.sysClerkName = $scope.staffListNames.join(";");
-        }
         $scope.responseData.sysUserId = $stateParams.userId;
         $scope.responseData.surplusPayPrice = $scope.responseData.amount - $scope.responseData.cashPay;
         if($scope.responseData.surplusPayPrice<0){
@@ -64,8 +57,8 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
 
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){
-                $rootScope.staffListNames=[]//保存清除关联员工
-                $rootScope.staffListIds=[]
+                // $rootScope.staffListNames=[]//保存清除关联员工
+                // $rootScope.staffListIds=[]
                 $state.go('pad-web.signConfirm', {
                     transactionId: data.responseData.transactionId,
                     userId:$stateParams.userId
@@ -99,5 +92,53 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         // $state.go("pad-web.left_nav.personalFile")
         window.history.go(-1)
+    }
+
+
+    //获取员工列表
+    GetShopClerkList.get({
+        pageNo: "1",
+        pageSize: "100"
+    }, function(data) {
+        if (data.result == "0x00001") {
+            $scope.UserList = data.responseData
+        }
+    })
+
+
+
+    $scope.userIdList = []
+    $scope.userNameList = []
+    $scope.housekeeperCheck = function (index,userId,name) {
+        if($scope.userIdList.indexOf(userId) != -1){
+            $scope.userIdList.remove(userId)
+            $scope.userNameList.remove(name)
+        }else {
+            $scope.userIdList.push(userId)
+            $scope.userNameList.push(name)
+        }
+    }
+    
+    
+    
+    $scope.goHousekeeper = function() {
+        $scope.housekeeperFlag = true;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = false;
+    }
+
+
+    //保存关联员工
+    $scope.$parent.$parent.leftTipFn = function() {
+        $scope.housekeeperFlag = false
+        if($scope.userIdList == undefined){
+            $scope.responseData.sysClerkId = "";
+            $scope.responseData.sysClerkName = ""
+        }else {
+            $scope.responseData.sysClerkId = $scope.userIdList.join(";");
+            $scope.responseData.sysClerkName = $scope.userNameList.join(";");
+        }
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     }
 });

@@ -403,7 +403,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         groupRelRelationDTO.setSysBossCode(clerkInfo.getSysBossCode());
                         groupRelRelationDTO.setCreateBy(clerkInfo.getId());
                         groupRelRelationDTO.setCreateDate(new Date());
-                        groupRelRelationDTO.setShopGroupPuchasePrice(shopProjectGroupDTO.getDiscountPrice());
+                        groupRelRelationDTO.setShopGroupPuchasePrice(shopProjectGroupDTO.getMarketPrice());
                         groupRelRelationDTO.setShopProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
                         logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
                         shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);

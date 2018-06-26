@@ -377,7 +377,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             relationDTO.setShopProjectInfoId(shopProjectInfoDTO.getId());
             relationDTO.setShopProjectInfoName(shopProjectInfoDTO.getProjectName());
             //每个项目的价格 = 套卡的折扣价格/项目的数量
-            relationDTO.setShopProjectPrice(extShopProjectGroupDTO.getDiscountPrice().divide(new BigDecimal(shopProjectIds.size()),2, ROUND_HALF_DOWN));
+            relationDTO.setShopProjectPrice(extShopProjectGroupDTO.getMarketPrice().divide(new BigDecimal(shopProjectIds.size()),2, ROUND_HALF_DOWN));
             relationDTO.setShopProjectServiceTimes(shopProjectInfoDTO.getServiceTimes());
             shopProjectInfoGroupRelationMapper.insertSelective(relationDTO);
         }

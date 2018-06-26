@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.wisdom.common.entity.BaseEntity;
 
 public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //
@@ -37,10 +37,10 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     //使用方式 1：疗程0：单次
     private String useStyle;
 
-    //卡类别 0：次卡 1：月卡 2：季卡：3：半年卡 4：年卡
+    //卡类别 0：次卡 1：月卡 2：季卡：3：半年卡 4：年卡 5:长期有效卡
     private String cardType;
 
-    //自购买之日起至effective_number_month个月有效
+    //子购买之日起至effective_number_month个月有效
     private Integer effectiveNumberMonth;
 
     //项目图片url
@@ -53,7 +53,7 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
     private BigDecimal marketPrice;
 
     //优惠价格
-    private BigDecimal discountPrice;
+    private BigDecimal initialPrice;
 
     //最多包含次数
     private Integer serviceTimes;
@@ -207,12 +207,12 @@ public class ShopProjectInfoDTO extends BaseEntity implements Serializable {
         this.marketPrice = marketPrice;
     }
 
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
     }
 
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
+    public void setInitialPrice(BigDecimal initialPrice) {
+        this.initialPrice = initialPrice;
     }
 
     public Integer getServiceTimes() {
