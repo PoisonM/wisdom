@@ -739,7 +739,7 @@ public class ProjectController {
 		ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
 		relationDTO.setSysUserId(sysUserId);
 		relationDTO.setSysShopId(sysShopId);
-		relationDTO.setUseStyle("0");
+		relationDTO.setUseStyle("1");
 		relationDTO.setSysBossCode(sysBossCode);
 
 		List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);

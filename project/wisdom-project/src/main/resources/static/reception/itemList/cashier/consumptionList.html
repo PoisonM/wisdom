@@ -33,7 +33,7 @@
     </div>
     <div class="consumptionListUl" ng-if="consumptionListUlShow">
         <div class="search">
-            <input placeholder="请输入名称" ng-keyup="fastSearch()" value="searchInfo" ng-model="searchInfo.info" type="text">
+            <input placeholder="请输入名称" ng-change="fastSearch()" value="searchInfo" ng-model="searchInfo.info" type="text">
             <span ng-click="fastSearch()">搜索</span>
         </div>
         <div style="overflow: scroll;height: 100%;">
@@ -91,7 +91,7 @@
                 <br/>
                 <span class="number">永久有效</span>
                 <div class="right">
-                    <span><b>¥ </b>{{item3.discountPrice}}<b>.00</b></span>
+                    <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>
             </li>
         </ul>

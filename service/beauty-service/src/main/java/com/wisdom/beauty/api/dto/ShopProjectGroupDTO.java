@@ -22,13 +22,13 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
     //市场价格
     private BigDecimal marketPrice;
 
-    //折扣价格
-    private BigDecimal discountPrice;
+    //初始定价
+    private BigDecimal initialPrice;
 
     //生效日期
     private String effectiveDate;
 
-    //有效期
+    //失效日期  0 不限
     private String expirationDate;
 
     //套卡说明
@@ -91,12 +91,12 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
         this.marketPrice = marketPrice;
     }
 
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
     }
 
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
+    public void setInitialPrice(BigDecimal initialPrice) {
+        this.initialPrice = initialPrice;
     }
 
     public String getEffectiveDate() {

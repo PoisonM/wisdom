@@ -21,12 +21,20 @@ public class ExtShopProductInfoDTO extends ShopProductInfoDTO {
     private List<String> imageList;
 
 
-
+    private int number;
     //扫码后的对象
     private ExtShopScanProductInfoDTO showapi_res_body;
 
     public Integer getAllStoreNumber() {
         return allStoreNumber;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public void setAllStoreNumber(Integer allStoreNumber) {

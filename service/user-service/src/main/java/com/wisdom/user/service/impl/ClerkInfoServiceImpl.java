@@ -8,7 +8,9 @@ import com.wisdom.common.dto.user.SysClerkCriteria;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
+import com.wisdom.user.client.BeautyServiceClient;
 import com.wisdom.user.mapper.SysClerkMapper;
+import com.wisdom.user.service.BeautyUserInfoService;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.service.UserInfoService;
 import org.apache.commons.collections.CollectionUtils;
@@ -36,7 +38,10 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 
 	@Autowired
 	private UserInfoService userInfoService;
-
+    @Autowired
+	private BeautyServiceClient beautyServiceClient;
+	@Autowired
+	private BeautyUserInfoService beautyUserInfoService;
 
 	private Gson gson = new Gson();
 
@@ -124,7 +129,7 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		userInfoDTO.setNickname(sysClerkDTO.getName());
 		userInfoDTO.setMobile(sysClerkDTO.getMobile());
 		userInfoDTO.setId(IdGen.uuid());
-		userInfoService.insertUserInfo(userInfoDTO);
+		beautyUserInfoService.insertBeautyUserInfo(userInfoDTO);
 		sysClerkDTO.setId(IdGen.uuid());
 		sysClerkDTO.setSysUserId(userInfoDTO.getId());
 		sysClerkDTO.setSysShopId(sysClerkDTO.getSysShopId());
@@ -133,7 +138,15 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		sysClerkDTO.setRole(sysClerkDTO.getRole());
 		sysClerkDTO.setCreateDate(new Date());
 		sysClerkDTO.setUpdateDate(new Date());
-		return sysClerkMapper.insertSelective(sysClerkDTO);
+		int reult=sysClerkMapper.insertSelective(sysClerkDTO);
+		//设置默认排班
+		SysClerkDTO sysClerk =new SysClerkDTO();
+		sysClerk.setId(sysClerkDTO.getId());
+		sysClerk.setName(sysClerkDTO.getName());
+		sysClerk.setSysBossCode(sysClerkDTO.getSysBossCode());
+		sysClerk.setSysShopId(sysClerkDTO.getSysShopId());
+		beautyServiceClient.saveOneClerkSchedule(sysClerk);
+		return reult;
 	}
 
 	@Override

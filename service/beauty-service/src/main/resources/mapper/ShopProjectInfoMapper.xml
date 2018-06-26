@@ -17,7 +17,7 @@
     <result column="project_url" property="projectUrl" jdbcType="VARCHAR" />
     <result column="project_duration" property="projectDuration" jdbcType="INTEGER" />
     <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
-    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
+    <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
     <result column="service_times" property="serviceTimes" jdbcType="INTEGER" />
     <result column="visit_date_time" property="visitDateTime" jdbcType="INTEGER" />
     <result column="once_price" property="oncePrice" jdbcType="DECIMAL" />
@@ -90,7 +90,7 @@
   <sql id="Base_Column_List" >
     id, sys_shop_id, parent_shop_id, project_name, project_type_one_name, project_type_two_name, 
     project_type_one_id, project_type_two_id, product_type, use_style, card_type, effective_number_month, 
-    project_url, project_duration, market_price, discount_price, service_times, visit_date_time, 
+    project_url, project_duration, market_price, initial_price, service_times, visit_date_time, 
     once_price, function_intr, is_display, status, create_by, create_date, update_user, 
     update_date
   </sql>
@@ -133,7 +133,7 @@
       project_type_one_id, project_type_two_id, product_type, 
       use_style, card_type, effective_number_month, 
       project_url, project_duration, market_price, 
-      discount_price, service_times, visit_date_time, 
+      initial_price, service_times, visit_date_time, 
       once_price, function_intr, is_display, 
       status, create_by, create_date, 
       update_user, update_date)
@@ -142,7 +142,7 @@
       #{projectTypeOneId,jdbcType=VARCHAR}, #{projectTypeTwoId,jdbcType=VARCHAR}, #{productType,jdbcType=CHAR}, 
       #{useStyle,jdbcType=CHAR}, #{cardType,jdbcType=CHAR}, #{effectiveNumberMonth,jdbcType=INTEGER}, 
       #{projectUrl,jdbcType=VARCHAR}, #{projectDuration,jdbcType=INTEGER}, #{marketPrice,jdbcType=DECIMAL}, 
-      #{discountPrice,jdbcType=DECIMAL}, #{serviceTimes,jdbcType=INTEGER}, #{visitDateTime,jdbcType=INTEGER}, 
+      #{initialPrice,jdbcType=DECIMAL}, #{serviceTimes,jdbcType=INTEGER}, #{visitDateTime,jdbcType=INTEGER}, 
       #{oncePrice,jdbcType=DECIMAL}, #{functionIntr,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, 
       #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
@@ -195,8 +195,8 @@
       <if test="marketPrice != null" >
         market_price,
       </if>
-      <if test="discountPrice != null" >
-        discount_price,
+      <if test="initialPrice != null" >
+        initial_price,
       </if>
       <if test="serviceTimes != null" >
         service_times,
@@ -275,8 +275,8 @@
       <if test="marketPrice != null" >
         #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null" >
-        #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        #{initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="serviceTimes != null" >
         #{serviceTimes,jdbcType=INTEGER},
@@ -364,8 +364,8 @@
       <if test="record.marketPrice != null" >
         market_price = #{record.marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.discountPrice != null" >
-        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      <if test="record.initialPrice != null" >
+        initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.serviceTimes != null" >
         service_times = #{record.serviceTimes,jdbcType=INTEGER},
@@ -419,7 +419,7 @@
       project_url = #{record.projectUrl,jdbcType=VARCHAR},
       project_duration = #{record.projectDuration,jdbcType=INTEGER},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
-      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       service_times = #{record.serviceTimes,jdbcType=INTEGER},
       visit_date_time = #{record.visitDateTime,jdbcType=INTEGER},
       once_price = #{record.oncePrice,jdbcType=DECIMAL},
@@ -479,8 +479,8 @@
       <if test="marketPrice != null" >
         market_price = #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null" >
-        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        initial_price = #{initialPrice,jdbcType=DECIMAL},
       </if>
       <if test="serviceTimes != null" >
         service_times = #{serviceTimes,jdbcType=INTEGER},
@@ -531,7 +531,7 @@
       project_url = #{projectUrl,jdbcType=VARCHAR},
       project_duration = #{projectDuration,jdbcType=INTEGER},
       market_price = #{marketPrice,jdbcType=DECIMAL},
-      discount_price = #{discountPrice,jdbcType=DECIMAL},
+      initial_price = #{initialPrice,jdbcType=DECIMAL},
       service_times = #{serviceTimes,jdbcType=INTEGER},
       visit_date_time = #{visitDateTime,jdbcType=INTEGER},
       once_price = #{oncePrice,jdbcType=DECIMAL},

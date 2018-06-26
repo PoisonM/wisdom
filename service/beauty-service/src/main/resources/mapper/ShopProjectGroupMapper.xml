@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopProjectGroupMapper">
-  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
-    <id column="id" property="id" jdbcType="VARCHAR"/>
-    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR"/>
-    <result column="project_group_name" property="projectGroupName" jdbcType="VARCHAR"/>
-    <result column="project_group_url" property="projectGroupUrl" jdbcType="VARCHAR"/>
-    <result column="market_price" property="marketPrice" jdbcType="DECIMAL"/>
-    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL"/>
-    <result column="effective_date" property="effectiveDate" jdbcType="VARCHAR"/>
-    <result column="expiration_date" property="expirationDate" jdbcType="VARCHAR"/>
-    <result column="detail" property="detail" jdbcType="VARCHAR"/>
-    <result column="status" property="status" jdbcType="CHAR"/>
-    <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
-    <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
+<mapper namespace="com.wisdom.beauty.core.mapper.ShopProjectGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProjectGroupDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
+    <result column="project_group_name" property="projectGroupName" jdbcType="VARCHAR" />
+    <result column="project_group_url" property="projectGroupUrl" jdbcType="VARCHAR" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
+    <result column="effective_date" property="effectiveDate" jdbcType="VARCHAR" />
+    <result column="expiration_date" property="expirationDate" jdbcType="VARCHAR" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -46,25 +46,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -75,279 +75,277 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
-    id, sys_shop_id, project_group_name, project_group_url, market_price, discount_price,
-    effective_date, expiration_date, detail, status, create_by, create_date, update_user,
+  <sql id="Base_Column_List" >
+    id, sys_shop_id, project_group_name, project_group_url, market_price, initial_price, 
+    effective_date, expiration_date, detail, status, create_by, create_date, update_user, 
     update_date
   </sql>
-  <select id="selectByCriteria" resultMap="BaseResultMap"
-          parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria">
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from shop_project_group
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
-    <if test="limitStart >= 0">
+    <if test="limitStart >= 0" >
       limit ${limitStart},${pageSize}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from shop_project_group
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from shop_project_group
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria">
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria" >
     delete from shop_project_group
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
-    insert into shop_project_group (id, sys_shop_id, project_group_name,
-    project_group_url, market_price, discount_price,
-    effective_date, expiration_date, detail,
-    status, create_by, create_date,
-    update_user, update_date)
-    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{projectGroupName,jdbcType=VARCHAR},
-    #{projectGroupUrl,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{discountPrice,jdbcType=DECIMAL},
-    #{effectiveDate,jdbcType=VARCHAR}, #{expirationDate,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR},
-    #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO" >
+    insert into shop_project_group (id, sys_shop_id, project_group_name, 
+      project_group_url, market_price, initial_price, 
+      effective_date, expiration_date, detail, 
+      status, create_by, create_date, 
+      update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{projectGroupName,jdbcType=VARCHAR}, 
+      #{projectGroupUrl,jdbcType=VARCHAR}, #{marketPrice,jdbcType=DECIMAL}, #{initialPrice,jdbcType=DECIMAL}, 
+      #{effectiveDate,jdbcType=VARCHAR}, #{expirationDate,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO" >
     insert into shop_project_group
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         sys_shop_id,
       </if>
-      <if test="projectGroupName != null">
+      <if test="projectGroupName != null" >
         project_group_name,
       </if>
-      <if test="projectGroupUrl != null">
+      <if test="projectGroupUrl != null" >
         project_group_url,
       </if>
-      <if test="marketPrice != null">
+      <if test="marketPrice != null" >
         market_price,
       </if>
-      <if test="discountPrice != null">
-        discount_price,
+      <if test="initialPrice != null" >
+        initial_price,
       </if>
-      <if test="effectiveDate != null">
+      <if test="effectiveDate != null" >
         effective_date,
       </if>
-      <if test="expirationDate != null">
+      <if test="expirationDate != null" >
         expiration_date,
       </if>
-      <if test="detail != null">
+      <if test="detail != null" >
         detail,
       </if>
-      <if test="status != null">
+      <if test="status != null" >
         status,
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         create_by,
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         create_date,
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         update_user,
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         update_date,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="sysShopId != null">
+      <if test="sysShopId != null" >
         #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="projectGroupName != null">
+      <if test="projectGroupName != null" >
         #{projectGroupName,jdbcType=VARCHAR},
       </if>
-      <if test="projectGroupUrl != null">
+      <if test="projectGroupUrl != null" >
         #{projectGroupUrl,jdbcType=VARCHAR},
       </if>
-      <if test="marketPrice != null">
+      <if test="marketPrice != null" >
         #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null">
-        #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        #{initialPrice,jdbcType=DECIMAL},
       </if>
-      <if test="effectiveDate != null">
+      <if test="effectiveDate != null" >
         #{effectiveDate,jdbcType=VARCHAR},
       </if>
-      <if test="expirationDate != null">
+      <if test="expirationDate != null" >
         #{expirationDate,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
+      <if test="detail != null" >
         #{detail,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
+      <if test="status != null" >
         #{status,jdbcType=CHAR},
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria"
-          resultType="java.lang.Integer">
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupCriteria" resultType="java.lang.Integer" >
     select count(1) from shop_project_group
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByCriteriaSelective" parameterType="map">
+  <update id="updateByCriteriaSelective" parameterType="map" >
     update shop_project_group
-    <set>
-      <if test="record.id != null">
+    <set >
+      <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
-      <if test="record.sysShopId != null">
+      <if test="record.sysShopId != null" >
         sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="record.projectGroupName != null">
+      <if test="record.projectGroupName != null" >
         project_group_name = #{record.projectGroupName,jdbcType=VARCHAR},
       </if>
-      <if test="record.projectGroupUrl != null">
+      <if test="record.projectGroupUrl != null" >
         project_group_url = #{record.projectGroupUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.marketPrice != null">
+      <if test="record.marketPrice != null" >
         market_price = #{record.marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.discountPrice != null">
-        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      <if test="record.initialPrice != null" >
+        initial_price = #{record.initialPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.effectiveDate != null">
+      <if test="record.effectiveDate != null" >
         effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
       </if>
-      <if test="record.expirationDate != null">
+      <if test="record.expirationDate != null" >
         expiration_date = #{record.expirationDate,jdbcType=VARCHAR},
       </if>
-      <if test="record.detail != null">
+      <if test="record.detail != null" >
         detail = #{record.detail,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null">
+      <if test="record.status != null" >
         status = #{record.status,jdbcType=CHAR},
       </if>
-      <if test="record.createBy != null">
+      <if test="record.createBy != null" >
         create_by = #{record.createBy,jdbcType=VARCHAR},
       </if>
-      <if test="record.createDate != null">
+      <if test="record.createDate != null" >
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateUser != null">
+      <if test="record.updateUser != null" >
         update_user = #{record.updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="record.updateDate != null">
+      <if test="record.updateDate != null" >
         update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByCriteria" parameterType="map">
+  <update id="updateByCriteria" parameterType="map" >
     update shop_project_group
     set id = #{record.id,jdbcType=VARCHAR},
-    sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
       project_group_name = #{record.projectGroupName,jdbcType=VARCHAR},
       project_group_url = #{record.projectGroupUrl,jdbcType=VARCHAR},
       market_price = #{record.marketPrice,jdbcType=DECIMAL},
-      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
-    effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
-    expiration_date = #{record.expirationDate,jdbcType=VARCHAR},
+      initial_price = #{record.initialPrice,jdbcType=DECIMAL},
+      effective_date = #{record.effectiveDate,jdbcType=VARCHAR},
+      expiration_date = #{record.expirationDate,jdbcType=VARCHAR},
       detail = #{record.detail,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=CHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=VARCHAR},
       update_date = #{record.updateDate,jdbcType=TIMESTAMP}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO" >
     update shop_project_group
-    <set>
-      <if test="sysShopId != null">
+    <set >
+      <if test="sysShopId != null" >
         sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
       </if>
-      <if test="projectGroupName != null">
+      <if test="projectGroupName != null" >
         project_group_name = #{projectGroupName,jdbcType=VARCHAR},
       </if>
-      <if test="projectGroupUrl != null">
+      <if test="projectGroupUrl != null" >
         project_group_url = #{projectGroupUrl,jdbcType=VARCHAR},
       </if>
-      <if test="marketPrice != null">
+      <if test="marketPrice != null" >
         market_price = #{marketPrice,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null">
-        discount_price = #{discountPrice,jdbcType=DECIMAL},
+      <if test="initialPrice != null" >
+        initial_price = #{initialPrice,jdbcType=DECIMAL},
       </if>
-      <if test="effectiveDate != null">
+      <if test="effectiveDate != null" >
         effective_date = #{effectiveDate,jdbcType=VARCHAR},
       </if>
-      <if test="expirationDate != null">
+      <if test="expirationDate != null" >
         expiration_date = #{expirationDate,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
+      <if test="detail != null" >
         detail = #{detail,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
+      <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
-      <if test="createBy != null">
+      <if test="createBy != null" >
         create_by = #{createBy,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
+      <if test="createDate != null" >
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null">
+      <if test="updateUser != null" >
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
+      <if test="updateDate != null" >
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO">
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProjectGroupDTO" >
     update shop_project_group
     set sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
-    project_group_name = #{projectGroupName,jdbcType=VARCHAR},
+      project_group_name = #{projectGroupName,jdbcType=VARCHAR},
       project_group_url = #{projectGroupUrl,jdbcType=VARCHAR},
       market_price = #{marketPrice,jdbcType=DECIMAL},
-      discount_price = #{discountPrice,jdbcType=DECIMAL},
-    effective_date = #{effectiveDate,jdbcType=VARCHAR},
-    expiration_date = #{expirationDate,jdbcType=VARCHAR},
+      initial_price = #{initialPrice,jdbcType=DECIMAL},
+      effective_date = #{effectiveDate,jdbcType=VARCHAR},
+      expiration_date = #{expirationDate,jdbcType=VARCHAR},
       detail = #{detail,jdbcType=VARCHAR},
       status = #{status,jdbcType=CHAR},
       create_by = #{createBy,jdbcType=VARCHAR},

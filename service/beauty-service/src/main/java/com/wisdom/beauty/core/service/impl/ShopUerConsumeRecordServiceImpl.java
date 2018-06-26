@@ -10,7 +10,6 @@ import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -23,7 +22,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -61,6 +59,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	private ShopService shopService;
 	@Autowired
 	private UserServiceClient userServiceClient;
+
+	@Autowired
+	private ShopCustomerArchivesService shopCustomerArchivesService;
 
 	@Autowired
 	private ShopCustomerProductRelationService shopCustomerProductRelationService;
@@ -303,7 +304,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-					shopProjectInfoDTO.setDiscountPrice(
+					shopProjectInfoDTO.setMarketPrice(
 							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
@@ -323,7 +324,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-						shopProjectInfoDTO.setDiscountPrice(
+						shopProjectInfoDTO.setMarketPrice(
 								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					}
 					shopProjectInfos.add(shopProjectInfoDTO);
@@ -428,7 +429,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 				if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-					shopProjectInfoDTO.setDiscountPrice(
+					shopProjectInfoDTO.setMarketPrice(
 							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 				}
 
@@ -508,13 +509,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
 		}
 		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())) {
-			UserInfoDTO userInfoFromUserId = userServiceClient
-					.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
-			try {
-				shopUserConsumeRecordDTO.setSysUserName(CommonUtils.convertUnicode(userInfoFromUserId.getNickname()));
-			} catch (UnsupportedEncodingException e) {
-				logger.error("用户昵称解码出错");
-				e.printStackTrace();
+			ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
+			archivesDTO.setSysUserId(shopUserConsumeRecordDTO.getSysUserId());
+			archivesDTO.setShopid(shopUserConsumeRecordDTO.getSysShopId());
+			List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
+			if(CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)){
+				shopUserConsumeRecordDTO.setSysUserName(shopUserArchivesInfo.get(0).getSysUserName());
 			}
 		}
 		shopUserConsumeRecordDTO.setCreateDate(new Date());
