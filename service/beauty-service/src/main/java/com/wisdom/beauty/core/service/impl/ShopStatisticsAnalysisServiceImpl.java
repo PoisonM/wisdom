@@ -434,7 +434,11 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
 		ShopUserConsumeRecordCriteria.Criteria or = recordCriteria.createCriteria();
 		// 耗卡归为消费类
+		List<String> goodsType=new ArrayList<>();
 		criteria.andConsumeTypeEqualTo(ConsumeTypeEnum.CONSUME.getCode());
+		goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+		goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+		criteria.andGoodsTypeIn(goodsType);
 
 		if (StringUtils.isNotBlank(userConsumeRequest.getSysBossCode())) {
 			criteria.andSysBossCodeEqualTo(userConsumeRequest.getSysBossCode());

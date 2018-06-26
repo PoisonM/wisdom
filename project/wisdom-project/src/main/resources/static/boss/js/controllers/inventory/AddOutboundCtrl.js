@@ -56,6 +56,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                         var value = {
                             detail:"",
                             productDate:val.effectDate,
+                            productDateString:val.effectDate,
                             stockPrice:val.marketPrice,/*进货单价*/
                             shopProcId:val.id,/*产品id*/
                             shopStoreId:$stateParams.shopStoreId,/*仓库id*/
@@ -64,7 +65,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                             productName: val.productName,
                             productUnit: val.productUnit,
                             productSpec: val.productSpec,
-                            stockStyle:$stateParams.stockStyle, /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                            stockStyle:  $stateParams.stockStyle, /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
                             stockType:$rootScope.shopInfo.outShopStockType,
                             receiver:'',
                             stockOutNumber:''
@@ -114,8 +115,12 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                     var list=$scope.param.shopStock;
                     for(var i=0;i<list.length;i++){
                         if(list[i].stockNumber ==""||list[i].stockOutNumber ==""||list[i].stockType ==""||list[i].receiver ==""){
+
                             alert("请检查信息");
                             return
+                        }else if(list[i].stockNumber<list[i].stockOutNumber){
+                              alert("出库数量不能大于库存数量，请修改！");
+                              return;
                         }
                     }
                     AddStock.save($scope.param.shopStock,function(data){
