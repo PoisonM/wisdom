@@ -79,6 +79,8 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                     if(val.shopProcId == shopProcId){
                         val.productDateString = productDate;
                         shopStock.push(val);
+                    }else{
+                        shopStock.push(val);
                     }
                 });
                 $scope.param.shopStock = shopStock;

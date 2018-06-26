@@ -144,7 +144,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
 
                         },
                         error: function(){
-                             alert("未查询到此商品,请手动添加！！");
+                             alert("未查询到此商品,请手动添加！");
                         }
                     });
                 }
