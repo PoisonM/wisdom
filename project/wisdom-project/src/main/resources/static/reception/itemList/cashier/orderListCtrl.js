@@ -34,7 +34,10 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             return false;
         }
 
-        if($scope.payType == undefined){
+        if($scope.surplusPrice >0 && ($scope.payType == undefined || $scope.payType == '' ||$scope.payType == null)){
+            alert("请选择支付方式(^_^)");
+            return false;
+        }else if($scope.payType == undefined){
             $scope.payType = ""
         }
         if($scope.detail == undefined){
