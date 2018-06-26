@@ -231,6 +231,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
             $scope.chooseProductList = function (productTypeTwoId) {
                 $scope.param.indexs = [];
                 $scope.param.ids=[];
+                $scope.sum = 0;
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;

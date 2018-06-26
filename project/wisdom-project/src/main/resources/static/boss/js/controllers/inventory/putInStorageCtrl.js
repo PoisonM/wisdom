@@ -24,7 +24,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                      $scope.sum = 0;
                      $scope.param.ids = [];
                      $scope.param.indexs = [];
-                })
+              })
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
 
@@ -249,6 +249,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             $scope.chooseProductList = function (productTypeTwoId) {
                 $scope.param.indexs = [];
                 $scope.param.ids=[];
+                $scope.sum = 0;
                 GetShopProductLevelInfo.get({levelOneId:$scope.param.selectProductTypeOneId,
                     levelTwoId:productTypeTwoId,productType:$scope.param.type},function(data){
                     $scope.param.detailProductList = data.responseData.detailProductList;
