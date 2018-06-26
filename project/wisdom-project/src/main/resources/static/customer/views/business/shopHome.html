@@ -133,15 +133,62 @@
         .tab_sty .bigsize{
 
         }
-        .tab_sty .tab_conetnt .priceArea{
-            width: 100%;
-            margin-bottom: 20px;
+        /*.tab_sty .tab_conetnt .priceArea{*/
+            /*width: 100%;*/
+            /*margin-bottom: 20px;*/
+        /*}*/
+        /*.footColor{color: #4A4A4A;}*/
+
+        /*轮播样式*/
+        @-webkit-keyframes middle {
+            0% {
+                top: 300px;
+            }
+            100% {
+                top: -1300px;
+            }
         }
-        .footColor{color: #4A4A4A;}
-        .footActive{
-            background:#FC4B4B;color:#ffffff;
+
+        @-webkit-keyframes move {
+            0% {
+                left: 600px;
+            }
+            100% {
+                left: -5650px;
+            }
         }
-        .tab-title{font-size: 14px;}
+        #wraps{ width:800px;height:100px; position:absolute;margin:100px auto;top: -135px;overflow:hidden;left: 50px}
+        #list{ position:absolute;left:0;top:40px;margin:0;padding:0; -webkit-animation:30s move infinite linear; width:1500%;height:100%;}
+        #list li{ list-style:none;width:370px;height:150px; color:#4A4A4A; font:14px Arial; text-align:center; float:left;white-space: nowrap;}
+        #list li span{color: #f66667;}
+        #wraps:hover #list{ -webkit-animation-play-state:paused;}
+        @keyframes moveup {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+        .box {
+            animation: moveup 15s linear infinite;
+        }
+        .page {
+            overflow: hidden;
+            height: 230px
+        }
+
+        .box {
+            margin: 0;
+        }
+
+        .box li {
+            line-height: 30px;
+        }
+
+        /*.box li span {*/
+            /*!*clear: both;*!*/
+        /*}*/
 
     </style>
     <ion-content overflow-scroll="true" style="bottom: 48px">
@@ -156,6 +203,21 @@
                 </div>
             </ion-slide>
         </ion-slide-box>
+
+        <div class="wrap">
+            <div>
+                <div style="position: absolute;left: 0px;top: 220px;background-color: #EAE6E6;width: 100%;height:32px" >
+                    <img src="images/laba.jpg" alt=""style="width: 18px;height: 17px;margin-left: 10px;margin-top: 7px">
+                    <div id="wraps">
+                        <ul id="list">
+                            <li ng-repeat="item in rankingsList">
+                                恭喜<span>{{item.mobile}}</span>大当家获得<span>{{item.amount}}</span>元返利
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--新人专享-->
         <div style="width: 100%;height: 68px;position:relative;">
             <img src="images/newPeople.png" style="width: 123px;height:32px;position:absolute;top:50%;left:50%;margin-top: -12px;
