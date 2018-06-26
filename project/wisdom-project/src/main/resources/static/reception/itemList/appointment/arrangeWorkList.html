@@ -29,7 +29,7 @@
                             <p class="" >{{item4.clerkInfo.name}}</p>
                         </div>
                     </td>
-                    <td ng-repeat="infoItem in item4.clerkSchInfo">
+                    <td ng-repeat="infoItem in [1,2,3,4,5]">
                         <div ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" >
                             <span ng-if="infoItem.scheduleType == 3">全</span>
                             <span ng-if="infoItem.scheduleType == 0">早</span>
