@@ -164,6 +164,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             logger.info("更新账户信息传入参数={},执行结果={}", sysUserAccountDTO, flag > 0 ? "成功" : "失败");
             String balancePay = shopUserPayDTO.getBalancePay();
             //扣减特殊账户
+            shopUserOrderDTO.setUserName(archivesDTO.getSysUserName());
             if (subSpecialRechargeCard(shopUserOrderDTO, responseDTO, balancePay)){
                 return responseDTO;
             }
@@ -241,6 +242,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             recordDTO.setSysShopId(shopUserOrderDTO.getShopId());
             recordDTO.setPrice(new BigDecimal(balancePay));
             recordDTO.setConsumeNumber(1);
+            recordDTO.setSysUserName(shopUserOrderDTO.getUserName());
             recordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
             shopUerConsumeRecordService.saveCustomerConsumeRecord(recordDTO);
             logger.info("扣减余额账户={}",info);
@@ -364,7 +366,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 ShopProjectGroupDTO shopProjectGroupDTO = shopProjectGroupService.getShopProjectGroupDTO(groupDto.getShopProjectGroupId());
                 String consumeId = IdGen.uuid();
                 //购买一个套卡的金额
-                BigDecimal discount = groupDto.getShopGroupPuchasePrice().divide(shopProjectGroupDTO.getMarketPrice(), 2, ROUND_HALF_DOWN);
+                BigDecimal discount = groupDto.getProjectInitAmount().divide(shopProjectGroupDTO.getMarketPrice(), 2, ROUND_HALF_DOWN);
                 groupDto.setDiscount(discount.floatValue());
                 //同一种套卡购买多个，groupDto.getProjectInitTimes()存储的是购买了几个同一种套卡
                 for (int i = 0; i < groupDto.getProjectInitTimes(); i++) {
@@ -381,18 +383,19 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
                     //生成用户跟套卡与项目的关系的关系
                     for (ShopProjectInfoGroupRelationDTO dt : groupRelations) {
-                        //查询项目信息
+                        //每个项目的购买金额 = 这种套卡的折扣金额/套卡的购买数量/项目的个数
+                        BigDecimal oneProjectPrice = groupDto.getProjectInitAmount().divide(new BigDecimal(groupDto.getProjectInitTimes()),2, ROUND_HALF_DOWN).divide(new BigDecimal(groupRelations.size()),2, ROUND_HALF_DOWN);
                         ShopUserProjectGroupRelRelationDTO groupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
                         groupRelRelationDTO.setSysShopId(clerkInfo.getSysShopId());
                         groupRelRelationDTO.setSysUserId(archivesInfo.getSysUserId());
                         groupRelRelationDTO.setId(IdGen.uuid());
                         groupRelRelationDTO.setShopProjectInfoId(dt.getShopProjectInfoId());
-                        groupRelRelationDTO.setProjectInitAmount(dt.getShopProjectPrice());
+                        groupRelRelationDTO.setProjectInitAmount(oneProjectPrice);
                         groupRelRelationDTO.setShopProjectGroupId(shopProjectGroupDTO.getId());
                         groupRelRelationDTO.setShopProjectInfoGroupRelationId(dt.getId());
                         groupRelRelationDTO.setProjectSurplusTimes(dt.getShopProjectServiceTimes());
                         groupRelRelationDTO.setProjectInitTimes(dt.getShopProjectServiceTimes());
-                        groupRelRelationDTO.setProjectSurplusAmount(dt.getShopProjectPrice());
+                        groupRelRelationDTO.setProjectSurplusAmount(oneProjectPrice);
                         groupRelRelationDTO.setShopProjectInfoName(dt.getShopProjectInfoName());
                         groupRelRelationDTO.setSysClerkId(groupDto.getSysClerkId());
                         groupRelRelationDTO.setConsumeRecordId(consumeId);
@@ -413,7 +416,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     userConsumeRecordDTO.setDiscount(groupDto.getDiscount());
                 }
                 //购买每种套卡的总金额
-                BigDecimal price = groupDto.getShopGroupPuchasePrice();
+                BigDecimal price = groupDto.getProjectInitAmount();
                 userConsumeRecordDTO.setPrice(price);
                 userConsumeRecordDTO.setDiscount(groupDto.getDiscount());
                 userConsumeRecordDTO.setConsumeNumber(groupDto.getProjectInitTimes());
@@ -476,20 +479,20 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     //项目市场价格
                     BigDecimal marketPrice = projectDetail.getMarketPrice();
                     //购买价格
-                    BigDecimal purchasePrice = dto.getSysShopProjectPurchasePrice();
+                    BigDecimal sysShopProjectInitAmount = dto.getSysShopProjectInitAmount();
                     //购买折扣 = 购买价格/市场价格
-                    BigDecimal discount = purchasePrice.divide(marketPrice, 2, ROUND_HALF_DOWN);
+                    BigDecimal discount = sysShopProjectInitAmount.divide(marketPrice, 2, ROUND_HALF_DOWN);
                     dto.setDiscount(discount.floatValue());
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
                         dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
                         dto.setSysShopProjectSurplusTimes(0);
                     } else {
-                        dto.setSysShopProjectSurplusAmount(purchasePrice);
+                        dto.setSysShopProjectSurplusAmount(sysShopProjectInitAmount);
                         dto.setSysShopProjectSurplusTimes(dto.getServiceTime());
                     }
                     //此次购买初始价格
-                    dto.setSysShopProjectInitAmount(purchasePrice);
+                    dto.setSysShopProjectInitAmount(dto.getSysShopProjectInitAmount());
                     dto.setCreateDate(new Date());
                     //划卡次数即为服务次数
                     dto.setSysShopProjectInitTimes(dto.getServiceTime());
@@ -508,7 +511,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     userConsumeRecordDTO.setTimeDiscount(discount.floatValue());
                     userConsumeRecordDTO.setPeriodDiscount(discount.floatValue());
                     userConsumeRecordDTO.setProductDiscount(discount.floatValue());
-                    userConsumeRecordDTO.setPrice(purchasePrice);
+                    userConsumeRecordDTO.setPrice(sysShopProjectInitAmount);
                     userConsumeRecordDTO.setConsumeNumber(sysShopProjectInitTimes);
                     userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
                     userConsumeRecordDTO.setFlowId(dto.getId());
@@ -555,7 +558,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 dto.setSysBossCode(clerkInfo.getSysBossCode());
                 dto.setSurplusAmount(dto.getInitAmount());
                 dto.setSurplusTimes(dto.getInitTimes());
-                BigDecimal divide = dto.getPurchasePrice().divide(productDetail.getMarketPrice(), 2, ROUND_HALF_DOWN);
+                BigDecimal divide = dto.getInitAmount().divide(productDetail.getMarketPrice(), 2, ROUND_HALF_DOWN);
                 dto.setDiscount(divide.floatValue());
                 dto.setCreateDate(new Date());
                 logger.info("订单号={}，生成用户跟产品的关系={}", orderId, dto);
