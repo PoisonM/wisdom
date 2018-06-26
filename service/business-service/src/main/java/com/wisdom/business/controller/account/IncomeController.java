@@ -76,8 +76,12 @@ public class IncomeController {
 		logger.info("查询佣金排行榜,开始");
 		ResponseDTO<List<IncomeRecordDTO>> responseDTO = new ResponseDTO<>();
 		PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		pageParamVoDTO.setPageSize(10);
+		pageParamVoDTO.setPageSize(100);
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRanking(pageParamVoDTO);
+		for(IncomeRecordDTO recordDTO : incomeRecordDTOS){
+			String phoneNumber = recordDTO.getMobile().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");
+			recordDTO.setMobile(phoneNumber);
+		}
 		logger.info("查询佣金排行榜,返回数据",incomeRecordDTOS.size());
 		responseDTO.setResponseData(incomeRecordDTOS);
 		logger.info("查询佣金排行榜耗时{}毫秒", (System.currentTimeMillis() - startTime));
