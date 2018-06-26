@@ -1009,6 +1009,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		ShopClerkWorkRecordResponseDTO shopClerkWorkRecordResponseDTO=null;
 		for(ShopUserConsumeRecordDTO dto:list){
 			shopClerkWorkRecordResponseDTO=new ShopClerkWorkRecordResponseDTO();
+			shopClerkWorkRecordResponseDTO.setCreateDate(dto.getCreateDate());
 			if("1".equals(userConsumeRequestDTO.getSearchFile())){
 				// 业绩 ---充值卡充值金额
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(dto.getConsumeType())
@@ -1065,16 +1066,14 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
         //做去重处理
 		Map<String,ShopClerkWorkRecordResponseDTO> map=new HashMap<>();
-		ShopClerkWorkRecordResponseDTO shopClerkWorkRecordResponse=null;
 		for(ShopClerkWorkRecordResponseDTO dto:recordResponseDTOList){
 			if(map.containsKey(dto.getFlowNo())){
-				shopClerkWorkRecordResponse=new ShopClerkWorkRecordResponseDTO();
 				ShopClerkWorkRecordResponseDTO dev=map.get(dto.getFlowNo());
-				shopClerkWorkRecordResponse.setSumAmount(dev.getSumAmount().add(dto.getSumAmount()));
-				shopClerkWorkRecordResponse.setType(dev.getType());
-				map.put(dto.getFlowNo(),shopClerkWorkRecordResponse);
+				dev.setSumAmount(dev.getSumAmount().add(dto.getSumAmount()));
+				map.put(dto.getFlowNo(),dev);
 
 			}else {
+				dto.setFlowNo(dto.getFlowNo());
 				map.put(dto.getFlowNo(),dto);
 			}
 		}
