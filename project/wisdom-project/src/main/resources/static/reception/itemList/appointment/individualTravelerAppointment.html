@@ -40,7 +40,7 @@
                 </p>
             </div>
         </div>
-        <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0"class=" fs28 colaaa  h70 bte5">
+        <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0"class=" fs28 colaaa  h70 bte5">
             <span class="ml30">预约项目</span>
         </p>
         <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0" class="bte5">
@@ -50,7 +50,7 @@
                 </span>
             </p>
             <p class="pb60 floatC">
-                <button ng-disable="param.changeYuyueFlag == 3" class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile('xf')">去消费</button>
+                <button ng-disabled="param.changeYuyueFlag != 3" class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile('xf')" ng-class="{'startAppointmentActive':param.changeYuyueFlag != 3}">去消费</button>
             </p>
         </div>
         <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0" class=" fs28 colaaa  h70 bte5">
@@ -63,7 +63,7 @@
                 </span>
             </p>
             <p class="pb60 floatC">
-                <button ng-disable="param.changeYuyueFlag == 3" class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile('hk')">去划卡</button>
+                <button ng-disabled="param.changeYuyueFlag != 3" class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-class="{'startAppointmentActive':param.changeYuyueFlag != 3}" ng-click = "personalFile('hk')">去划卡</button>
             </p>
         </div>
     </div>
