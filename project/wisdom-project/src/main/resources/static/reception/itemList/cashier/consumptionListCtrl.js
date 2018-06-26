@@ -148,8 +148,6 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         });
     }
     $scope.updateVirtualGoodsOrderInfo = function(e, res) {
-
-
         Array.prototype.indexOf = function(val) {
             for (var i = 0; i < this.length; i++) {
                 if (this[i] == val) return i;
