@@ -28,7 +28,7 @@ public class ShopProjectGroupDTO extends BaseEntity implements Serializable {
     //生效日期
     private String effectiveDate;
 
-    //有效期
+    //失效日期  0 不限
     private String expirationDate;
 
     //套卡说明
