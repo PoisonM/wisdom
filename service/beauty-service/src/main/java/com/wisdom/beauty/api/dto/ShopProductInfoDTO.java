@@ -49,8 +49,6 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //生产地址
     private String manuAddress;
 
-    private int number;
-
     //保质期（月）
     private Integer qualityPeriod;
 
@@ -76,7 +74,7 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     private BigDecimal marketPrice;
 
     //优惠价格
-    private BigDecimal discountPrice;
+    private BigDecimal initialPrice;
 
     //产品编号
     private String productCode;
@@ -115,14 +113,6 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     private Date updateDate;
 
     private static final long serialVersionUID = 1L;
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
 
     public String getId() {
         return id;
@@ -300,12 +290,12 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.marketPrice = marketPrice;
     }
 
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
     }
 
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
+    public void setInitialPrice(BigDecimal initialPrice) {
+        this.initialPrice = initialPrice;
     }
 
     public String getProductCode() {
