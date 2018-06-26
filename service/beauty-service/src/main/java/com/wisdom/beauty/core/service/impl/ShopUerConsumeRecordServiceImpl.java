@@ -304,7 +304,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-					shopProjectInfoDTO.setDiscountPrice(
+					shopProjectInfoDTO.setMarketPrice(
 							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
@@ -324,7 +324,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-						shopProjectInfoDTO.setDiscountPrice(
+						shopProjectInfoDTO.setMarketPrice(
 								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					}
 					shopProjectInfos.add(shopProjectInfoDTO);
@@ -429,7 +429,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 				if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-					shopProjectInfoDTO.setDiscountPrice(
+					shopProjectInfoDTO.setMarketPrice(
 							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 				}
 

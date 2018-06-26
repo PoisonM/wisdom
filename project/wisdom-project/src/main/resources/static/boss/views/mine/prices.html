@@ -32,7 +32,7 @@
                         <span>{{item.projectName}}</span>
                     </p >
                     <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.marketPrice}}</p >
-                    <p class=" fs13" style="color: #FF6666!important;">优惠价格价格：¥{{item.discountPrice}}/{{item.serviceTimes}}次</p >
+                    <p class=" fs13" style="color: #FF6666!important;">优惠价格价格：¥{{item.marketPrice}}/{{item.serviceTimes}}次</p >
                 </div>
                 <div class="col col-20">
                     <span style="width: 40px;height: 17px;display: inline-block;background: #FF6666;color: #ffffff;text-align: center;border-radius: 10px;font-size: 10px" ng-if="param.type=='0'">{{item.cardType}}</span>
@@ -49,8 +49,8 @@
                     <p class="fs15" style="color: #333333!important;">
                         <span>{{item.productName}}</span>
                     </p >
-                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.marketPrice}}</p >
-                    <p class=" fs13" style="color: #FF6666!important;">优惠价格价格：¥{{item.discountPrice}}</p >
+                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.initialPrice}}</p >
+                    <p class=" fs13" style="color: #FF6666!important;">优惠价格价格：¥{{item.marketPrice}}</p >
                 </div>
                 <div class="col col-20">
                     <span style="width: 40px;height: 17px;display: inline-block;background: #FF6666;color: #ffffff;text-align: center;border-radius: 10px;font-size: 10px" ng-if="param.type=='0'">{{item.cardType}}</span>
@@ -67,8 +67,8 @@
                 </div>
                 <div class="col col-55 ml20" >
                     <p class="fs15" style="color: #333333!important;"><span>{{item.projectGroupName}}</span></p >
-                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.marketPrice}}</p >
-                    <p class=" fs13" style="color: #ff6666!important;">优惠价格：¥{{item.discountPrice}}</p >
+                    <p class="fs15" style="color: #333333!important;">市场价格：¥{{item.initialPrice}}</p >
+                    <p class=" fs13" style="color: #ff6666!important;">优惠价格：¥{{item.marketPrice}}</p >
                 </div>
                 <div class="col col-25 ">
 
@@ -92,7 +92,7 @@
                         <span>{{item.name}}</span>
                     </p >
                     <p class="fs15" style="color: #333333!important;">面额：¥{{item.amount}}</p >
-                    <p class=" fs13" style="color: #333333!important;">折扣：¥{{item.discountPrice}}</p >
+                    <p class=" fs13" style="color: #333333!important;">折扣：¥{{item.marketPrice}}</p >
                 </div>
                 <div class="col col-20">
                     <i class=" ion ion-ios-arrow-right fr" style="margin-top: 40px"></i>
