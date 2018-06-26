@@ -22,17 +22,17 @@
                 <div class="bgfff">
                     <p class=" ml10 fs13  bgfff h40 bbl">{{details.flowName}}</p>
                     <div class=" ml10 " >
-                        <p class=" ml20 fs13 col88 sb h40 bbl">
+                        <p class=" ml20 fs13 col88 sb h40 bbl mr10">
                             <span>购买数量</span>
-                            <span>{{details.initTimes}}</span>
+                            <span>{{details.initTimes==null?0:details.initTimes}}</span>
                         </p>
-                        <p class=" ml20 fs13 col88 sb h40 bbl">
+                        <p class=" ml20 fs13 col88 sb h40 bbl mr10">
                             <span>未领取数量</span>
-                            <span>{{}}</span>
+                            <span>{{details.waitReceiveNumber==null?0:details.waitReceiveNumber}}</span>
                         </p>
-                        <p class=" ml20 fs13 col88 sb h40 bbl">
+                        <p class=" ml20 fs13 col88 sb h40 bbl mr10">
                             <span>领取数量</span>
-                            <span>{{details.waitReceiveNumber}}</span>
+                            <span>{{details.consumeNumber==null?0:details.consumeNumber}}</span>
                         </p>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
 
             <p class="h50 ml10">顾客签字</p>
             <div style="height:156px;" class="bgfff">
-                <img ng-src="{{details.signUrl}}" style="height:156px;">
+                <img ng-src="{{details.signUrl}}" style="width:100%;">
             </div>
             <p class="h50 ml10 fs14">备注</p>
             <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff" >
