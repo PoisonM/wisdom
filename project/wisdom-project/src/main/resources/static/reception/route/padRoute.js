@@ -1371,7 +1371,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //产品详情
         .state('pad-web.left_nav.cashProductDetails', {
-        url: '/cashProductDetails/:userId',
+        url: '/cashProductDetails/:userId/:flowNo',
         templateUrl: root + '/cashier/cashProductDetails.html',
         controller: 'cashProductDetailsCtrl',
         resolve: {
