@@ -2,7 +2,7 @@
     <ion-content style="margin-bottom: 50px;" scroll="true">
         <div class="list col33">
             <li class="item"><span class="fs16">充值卡名称<span class="colff66">*</span></span><input type="text" placeholder="请输入充值卡名称" class="fr col99 fs14 tr" ng-model="settingAddsome.editedRecharge.name"></li>
-            <li class="item"><span class="fs16">充值面额（元）<span class="colff66">*</span></span><input type="text" placeholder="请输入充值卡面额" class="fr col99 fs14 tr" ng-model="settingAddsome.editedRecharge.amount" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"></li>
+            <li class="item"><span class="fs16">充值面额（元）<span class="colff66">*</span></span><input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="请输入充值卡面额" class="fr col99 fs14 tr" ng-model="settingAddsome.editedRecharge.amount" ></li>
             <li class="item"><span class="fs16">图片</span><span style="color: #3F3F3F;font-size: 16px;margin-left: 10px">(最多可上传6张)</span></li>
 
             <li class="item" >
