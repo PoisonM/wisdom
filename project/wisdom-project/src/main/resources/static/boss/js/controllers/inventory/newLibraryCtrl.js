@@ -4,6 +4,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             $rootScope.title = "新增入库";
             $scope.sum = $stateParams.sum;
             $scope.productDate ="";
+            $scope.flag = true;
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: [],
@@ -79,6 +80,8 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                     if(val.shopProcId == shopProcId){
                         val.productDateString = productDate;
                         shopStock.push(val);
+                    }else{
+                        shopStock.push(val);
                     }
                 });
                 $scope.param.shopStock = shopStock;
@@ -141,18 +144,23 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
 
             $scope.successfulInventoryGo=function(){
                 if($scope.sum>0){
-                    var list = $scope.param.shopStock;
-                    for(var i=0;i<list.length;i++){
-                        if(list[i].stockNumber == ''||list[i].productDate == ''||list[i].stockPrice == ''){
-                            alert("请检查信息")
-                            return
+                    if($scope.flag){
+                        $scope.flag=false;
+                        var list = $scope.param.shopStock;
+                        for(var i=0;i<list.length;i++){
+                            if(list[i].stockNumber == ''||list[i].productDate == ''||list[i].stockPrice == ''){
+                                alert("请检查信息");
+                                $scope.flag=true;
+                                return
+                            }
                         }
+                        AddStock.save($scope.param.shopStock,function(data){
+                            if(data.result==Global.SUCCESS){
+                                $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
+                            }
+                        })
                     }
-                    AddStock.save($scope.param.shopStock,function(data){
-                        if(data.result==Global.SUCCESS){
-                            $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
-                        }
-                    })
+
                 }else{
                      alert("入库商品列表不能为空！");
                      $state.go('putInStorage',{name:$stateParams.name});
