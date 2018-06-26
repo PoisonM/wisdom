@@ -6,6 +6,8 @@ public enum CommonCodeEnum {
     UNSUCCESS("1", "非正常"),
     Y("Y", "正常"),
     N("N", "非正常"),
+    CURRENT_DATE("0", "当天"),
+    UN_CURRENT_DATE("1", "非当天"),
     NOTBIND("notBind", "正常"),
     ALREADY_BIND("alreadyBind", "非正常"),
     ADD("0", "添加"),

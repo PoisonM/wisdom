@@ -18,6 +18,7 @@ import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.constant.SuggestionTypeEnum;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -27,6 +28,7 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,9 +106,12 @@ public class MineController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 
-        // 设置当天的开始时间和结束时间
-//        pageParamVoDTO.setStartTime(DateUtils.getStartTime());
-//        pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+        // 不设置当天为查询条件
+        if(!CommonCodeEnum.UN_CURRENT_DATE.getCode().equals(userConsumeRequest.getIsCurrentDay())){
+            pageParamVoDTO.setStartTime(DateUtils.getStartTime());
+            pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+        }
+
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
