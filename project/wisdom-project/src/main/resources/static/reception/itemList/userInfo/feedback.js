@@ -6,6 +6,7 @@ PADWeb.controller('feedbackCtrl', function($scope,$state, $stateParams,Suggestio
     $scope.$parent.param.headerCash.leftTip="保存"
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
     $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true
+    $scope.param.suggestion = "";
     // 提交反馈
     $scope.$parent.$parent.leftTipFn = function () {
         console.log($scope.param.suggestion);
