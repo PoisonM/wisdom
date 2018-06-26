@@ -18,7 +18,12 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                 selectProductTypeOneId:'',
                 selectProductList:'',
             };
-            $rootScope.shopInfo.entryShopProductList = [];
+
+             $scope.$on('$ionicView.enter', function() {
+                     $rootScope.shopInfo.entryShopProductList = [];
+                     $scope.param.ids = [];
+                     $scope.param.indexs = [];
+                })
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
 
@@ -144,7 +149,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
 
                         },
                         error: function(){
-                             alert("未查询到此商品,请手动添加！！");
+                             alert("未查询到此商品,请手动添加！");
                         }
                     });
                 }

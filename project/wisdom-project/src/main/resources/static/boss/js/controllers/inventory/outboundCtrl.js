@@ -18,7 +18,11 @@ angular.module('controllers',[]).controller('outboundCtrl',
                 selectProductTypeOneId:'',
                 selectProductList:'',
             };
-            $rootScope.shopInfo.outShopProductList = [];
+             $scope.$on('$ionicView.enter', function() {
+                     $rootScope.shopInfo.entryShopProductList = [];
+                     $scope.param.ids = [];
+                     $scope.param.indexs = [];
+                })
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
@@ -135,14 +139,14 @@ angular.module('controllers',[]).controller('outboundCtrl',
                                 productCode:result
                             },function(data){
                                  if(data.result == "0x00001"){
-                                        $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,productCode:result});
+                                     $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,productCode:result});
                                  }else{
                                     alert("未找到该商品,请先添加该商品！");
                                  }
                             })
                         },
                           error : function() {
-                            alert("此商品未存在！");
+                            alert("未查询到此商品,请手动添加！");
                           }
                     });
                 }

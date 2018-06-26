@@ -1,6 +1,5 @@
 package com.wisdom.beauty.client;
 
-import com.wisdom.beauty.interceptor.FeignConfigInterceptor;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -21,6 +20,14 @@ public interface UserServiceClient {
 	 */
 	@RequestMapping(value = "/beauty/getUserInfo", method = RequestMethod.POST)
 	List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO);
+
+
+	/**
+	 * 更新用户信息
+	 * @param userInfoDTO
+	 */
+	@RequestMapping(value = "/updateBeautyUserInfo", method = RequestMethod.POST)
+	void updateBeautyUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 
 	/**
 	 * 更新老板信息

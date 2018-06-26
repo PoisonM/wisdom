@@ -253,7 +253,11 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			logger.error("更新用户的档案信息,传入参数为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
 			return 0;
 		}
-
+		UserInfoDTO userInfoDTO = new UserInfoDTO();
+		userInfoDTO.setId(shopUserArchivesDTO.getSysUserId());
+		userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
+		userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
+		userServiceClient.updateBeautyUserInfo(userInfoDTO);
 		return shopUserArchivesMapper.updateByPrimaryKeySelective(shopUserArchivesDTO);
 	}
 
