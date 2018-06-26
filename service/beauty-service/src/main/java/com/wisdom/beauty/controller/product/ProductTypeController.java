@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.product;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
@@ -194,7 +195,7 @@ public class ProductTypeController {
             }
             List<Object> twoLevelList = new ArrayList<>();
             for (Map.Entry entry : twoMap.entrySet()) {
-                ShopProductInfoDTO shopProductInfoDTO1 = (ShopProductInfoDTO)entry.getValue();
+                ExtShopProductInfoDTO shopProductInfoDTO1 = (ExtShopProductInfoDTO)entry.getValue();
                 for(Map.Entry entrySum : oneProductNumber.entrySet()){
                     if(shopProductInfoDTO1.getProductTypeOneId()!=null){
                         if(entrySum.getKey().equals(shopProductInfoDTO1.getProductTypeOneId())){
