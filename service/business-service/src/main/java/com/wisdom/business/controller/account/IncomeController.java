@@ -76,7 +76,7 @@ public class IncomeController {
 		logger.info("查询佣金排行榜,开始");
 		ResponseDTO<List<IncomeRecordDTO>> responseDTO = new ResponseDTO<>();
 		PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		pageParamVoDTO.setPageSize(100);
+		pageParamVoDTO.setPageSize(20);
 		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeRanking(pageParamVoDTO);
 		for(IncomeRecordDTO recordDTO : incomeRecordDTOS){
 			String phoneNumber = recordDTO.getMobile().replaceAll("(\\d{3})\\d{4}(\\d{4})","$1****$2");
