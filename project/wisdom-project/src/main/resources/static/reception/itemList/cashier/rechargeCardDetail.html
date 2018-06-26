@@ -73,19 +73,21 @@
             <p>支付明细</p>
             <ul>
                 <li>
-                    <label for="">支付宝</label>
-                    <span>{{dataInfo.payType}}</span>
+                    <span  ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">&nbsp;&nbsp;&nbsp;微信  </span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay"> &nbsp;&nbsp;&nbsp; 支付宝  </span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">  &nbsp;&nbsp;&nbsp;银行支付  </span>
+                    <span>￥{{dataInfo.payMap.payTypeAmount}}</span>
                 </li>
             </ul>
         </div>
 
         <div class="basic">
             <p>顾客签字</p>
-            <ul>
-                <li>
-                    <img src="" alt="">
-                </li>
-            </ul>
         </div>
+        <ul>
+            <li>
+                <img src="{{dataInfo.signUrl}}"  alt="">
+            </li>
+        </ul>
     </div>
 </div>
