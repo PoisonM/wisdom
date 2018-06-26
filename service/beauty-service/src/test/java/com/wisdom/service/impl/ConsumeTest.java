@@ -281,7 +281,7 @@ public class ConsumeTest {
     }
    @Test
     public  void  testdd(){
-       shopUerConsumeRecordService
-               .getShopCustomerConsumeRecord("20180607144058285");
+       UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService
+               .getProductDrawRecordDetail("20180626093159851");
    }
 }

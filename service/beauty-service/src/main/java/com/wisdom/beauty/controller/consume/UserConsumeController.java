@@ -353,6 +353,23 @@ public class UserConsumeController {
     }
     /**
     *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 获取产品的领取记录详情
+    *@Date:2018/6/25 18:24
+    */
+    @RequestMapping(value = "/consume/getProductDrawRecord/detail", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<UserConsumeRecordResponseDTO> getProductDrawRecordDetail(@RequestParam String consumeFlowNo) {
+        UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = shopUerConsumeRecordService
+                .getProductDrawRecordDetail(consumeFlowNo);
+        ResponseDTO<UserConsumeRecordResponseDTO> responseDTO = new ResponseDTO<>();
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData(userConsumeRecordResponseDTO);
+        return responseDTO;
+    }
+    /**
+    *@Author:zhanghuan
     *@Param:  flowId  goodsType  consumeType
     *@Return:
     *@Description: 获取产品的消费详情和充值卡的订单详情
