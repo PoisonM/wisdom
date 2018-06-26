@@ -21,6 +21,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
 
              $scope.$on('$ionicView.enter', function() {
                      $rootScope.shopInfo.entryShopProductList = [];
+                     $scope.sum = 0;
                      $scope.param.ids = [];
                      $scope.param.indexs = [];
                 })

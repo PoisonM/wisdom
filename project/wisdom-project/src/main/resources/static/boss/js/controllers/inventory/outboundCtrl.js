@@ -20,9 +20,10 @@ angular.module('controllers',[]).controller('outboundCtrl',
             };
              $scope.$on('$ionicView.enter', function() {
                      $rootScope.shopInfo.entryShopProductList = [];
+                     $scope.sum = 0;
                      $scope.param.ids = [];
                      $scope.param.indexs = [];
-                })
+             })
 
             GetShopProductLevelInfo.get({productType:$scope.param.type},function(data){
                 $scope.param.detailProductList = data.responseData.detailProductList;
