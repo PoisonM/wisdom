@@ -90,7 +90,7 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         })
     }
 
-    $scope.goSelectRechargeCard = function(id, eid, name, price) {
+    $scope.goSelectRechargeCard = function(id, eid, name, price,rechargeCardType) {
         //控制样式
         if ($state.params.type == 1) {
             $scope.updateVirtualGoodsOrderInfo(id, eid, name, function() {
@@ -109,7 +109,8 @@ PADWeb.controller('selectRechargeTypeCtrl', function($scope, $state, $stateParam
         } else {
             $state.go('pad-web.left_nav.selectRechargeCard', {
                 type: id,
-                userId:$stateParams.userId
+                userId:$stateParams.userId,
+                rechargeCardType:rechargeCardType
             });
         }
     }
