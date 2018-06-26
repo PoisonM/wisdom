@@ -62,6 +62,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Autowired
 	private UserServiceClient userServiceClient;
 
+	@Autowired
+	private ShopCustomerProductRelationService shopCustomerProductRelationService;
+
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
@@ -939,6 +942,41 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 		return shopUserConsumeRecordDTOS;
 	}
+
+	@Override
+	public UserConsumeRecordResponseDTO getProductDrawRecordDetail(String consumeFlowNo) {
+		logger.info("getProductDrawRecordDetail方法传入的参数,consumeFlowNo={}", consumeFlowNo);
+		if (StringUtils.isBlank(consumeFlowNo)) {
+			logger.info("getProductDrawRecordDetail方法传入的参数consumeFlowNo为空");
+			return null;
+		}
+		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+		c.andFlowNoEqualTo(consumeFlowNo);
+
+		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
+		if (CollectionUtils.isEmpty(list)) {
+			logger.info("getShopCustomerConsumeRecord方法获取list集合为空");
+			return null;
+		}
+		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
+		// 获取第一条记录，为了获取到基础信息,因为同一个流水的所有记录的基础信息都是一样的
+		BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
+
+		BigDecimal totalAmount = null;
+		List<String> flowIds = new ArrayList<>();
+		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
+		}
+		//查询购买数量和未领取数量
+		ShopUserProductRelationDTO shopUserProductRelationDTO=shopCustomerProductRelationService.getShopProductInfo(userConsumeRecordResponseDTO.getFlowId());
+		if(shopUserProductRelationDTO!=null){
+			userConsumeRecordResponseDTO.setWaitReceiveNumber(shopUserProductRelationDTO.getWaitReceiveNumber());//未领取数量
+			userConsumeRecordResponseDTO.setInitTimes(shopUserProductRelationDTO.getInitTimes());//购买数量
+		}
+		return userConsumeRecordResponseDTO;
+	}
+
 
 	private Map<String, Object> getPayMap(String flowNo) {
 		logger.info("getPayMap方法传入的参数flowNo={}", flowNo);

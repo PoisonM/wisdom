@@ -8,13 +8,7 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
             $rootScope.title = "业绩明细";
             $scope.flag = false;
 
-            $scope.userConsumeRequest = {
-                pageSize:1000,
-                searchFile:$stateParams.searchFile,
-                startTime:$stateParams.date+' 00:00:00',
-                endTime:$stateParams.date+' 23:59:59'
 
-            };
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -25,7 +19,14 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                 });
                 $scope.param={
                     picFlag:false
-                }
+                };
+                 $scope.userConsumeRequest = {
+                     pageSize:1000,
+                     searchFile:$stateParams.searchFile,
+                     startTime:$stateParams.date+' 00:00:00',
+                     endTime:$stateParams.date+' 23:59:59'
+
+                 };
                 if ($stateParams.sysClerkId != "") {
                     $scope.userConsumeRequest.sysClerkId = $stateParams.sysClerkId
                     GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){

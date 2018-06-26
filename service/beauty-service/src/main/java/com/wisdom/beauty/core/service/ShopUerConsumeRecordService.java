@@ -131,4 +131,12 @@ public interface ShopUerConsumeRecordService {
      * @Date:2018/6/15 16:28
      */
     List<ShopUserConsumeRecordDTO> getShopCustomerConsumeRecord(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description: 根据流水号获取产品领取记录详情
+    *@Date:2018/6/25 18:29
+    */
+    UserConsumeRecordResponseDTO getProductDrawRecordDetail(String consumeFlowNo);
 }

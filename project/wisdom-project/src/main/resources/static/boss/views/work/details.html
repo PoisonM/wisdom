@@ -82,19 +82,19 @@
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">单次</span>
-                                <span class="mr10">{{item.timeDiscount==null?'无折':item.timeDiscount+'折'}}</span>
+                                <span class="mr10">{{(item.timeDiscount==null)||(item.timeDiscount==1)?'无折':item.timeDiscount*10+'折'}}</span>
                             </p>
                         </ion-item>
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">疗程卡</span>
-                                <span class="mr10">{{item.periodDiscount==null?'无折':item.periodDiscount+'折'}}</span>
+                                <span class="mr10">{{(item.periodDiscount==null)||(item.periodDiscount==1)?'无折':item.periodDiscount*10+'折'}}</span>
                             </p>
                         </ion-item>
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">产品</span>
-                                <span class="mr10">{{item.productDiscount==null?'无折':item.productDiscount+'折'}}</span>
+                                <span class="mr10">{{(item.productDiscount==null)||(item.productDiscount==1)?'无折':item.productDiscount*10+'折'}}</span>
                             </p>
                         </ion-item>
 
@@ -148,7 +148,7 @@
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">折扣</span>
-                                <span class="mr10">{{item.discount==null?'无折':item.discount+'折'}}</span>
+                                <span class="mr10">{{(item.discount==null)||(item.discount==1)?'无折':item.discount*10+'折'}}</span>
                             </p>
                         </ion-item>
                         <ion-item  class=" bgfff h50" >
@@ -208,7 +208,7 @@
                 <p class="h50 ml10">支付明细</p>
                 <div>
                     <opn-list >
-                        <ion-item  class="h50 bgfff" >
+                        <ion-item  class="h50 bgfff" ng-if="details.payMap.payType!=0&&details.payMap.payType!=null">
                             <p class="ml10"  ng-if="details.payMap.payType=='0'" style="display: flex;justify-content: space-between">
                                 <span>微信</span>
                                 <span class="mr10"> ￥{{details.payMap.payTypeAmount}}</span>

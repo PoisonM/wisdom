@@ -141,13 +141,19 @@ img {display: inline-block}
 .active{border:none;background: none; }
 
  .hidden{  overflow-y: hidden;height:100% }
-.visible{
+ .visible{
+  background: rgba(0,0,0,0.2)!important;
+}
+ .popup-showing{
+ background: rgba(0,0,0,0.2)!important;
+}
+ .popup-head{
  display: none;
 }
-.popup-head{
- display: none;
-}
-.popup-container{
+ .table tr:nth-child(even){
+  background: #fbfeff;
+ }
+/*.popup-container{
  background: rgba(0,0,0,0)!important;
 }
 .popup-container .popup{
@@ -165,7 +171,8 @@ img {display: inline-block}
 }
 .popup-buttons{
  display: none;
-}
+}*/
+
 
 
 

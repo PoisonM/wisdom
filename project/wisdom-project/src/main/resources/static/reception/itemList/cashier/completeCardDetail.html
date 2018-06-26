@@ -29,24 +29,30 @@
             </ul>
         </div>
 
-        <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" >
+        <div>
             <div class="basic">
-                <p>划卡信息</p>
+                <p>支付类型</p>
                 <ul>
                     <li>
-                        <label for="">{{listItem.flowName}}</label>
-                        <span>{{listItem.price}}</span>
+                        <label for="">现金支付</label>
+                        <span>{{dataInfo.payMap.cashAmount}}</span>
+
+                    </li>
+                    <li>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
+                        <span>{{dataInfo.payMap.payTypeAmount}}</span>
                     </li>
                 </ul>
             </div>
-
         </div>
         <div>
             <div class="basic">
                 <p>备注</p>
                 <ul>
                     <li>
-                        <span>{{listItem.detail}}</span>
+                        <span>{{dataInfo.detail}}</span>
                     </li>
                 </ul>
             </div>
