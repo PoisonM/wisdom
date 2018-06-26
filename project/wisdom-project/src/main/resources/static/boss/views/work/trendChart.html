@@ -1,3 +1,4 @@
+
 <ion-view>
     <ion-content class="bgfff">
 
@@ -12,5 +13,20 @@
                    series="series"
                    options="options">
         </highchart>
+        <table class="table  text-center bgfff mt20" style="width:100%;table-layout: fixed;">
+            <tr>
+                <th style="border: solid #e6e6ea 1px;" class="h40">日期</th>
+                <th style="border: solid #e6e6ea 1px;" class="h40">现金收益</th>
+            </tr>
+            <tr ng-repeat="item in trendChart">
+                <td style="border-right: solid #e6e6ea 1px;border-bottom: solid #e6e6ea 1px;" class="h40">
+                    {{item.formateDate}}
+                </td>
+                <td style="border-right: solid #e6e6ea 1px;border-bottom: solid #e6e6ea 1px;" class="h40">
+                    {{item.cashEarnings==null?0:item.cashEarnings}}
+                </td>
+
+            </tr>
+        </table>
     </ion-content>
 </ion-view>

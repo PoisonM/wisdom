@@ -163,7 +163,7 @@
 .selectProject{background-color:#eaeaea;color: #ff6666}
 .productAppear{position: absolute;z-index: 1001;left: 0;top: 1rem   ;background: #f5f5f5;width: 100%}
 .productAppear ul{width: 100%;background: #f5f5f5;display: flex;flex-wrap: wrap;text-align: center}
-.productAppear ul li{width: 1.8rem;height: 0.56rem;;line-height: 0.56rem}
+.productAppear ul li{width: 2.8125rem;height: 0.56rem;;line-height: 0.56rem}
 .productAppear ul li{
     margin: 0.37rem;
     background:#FFFFFF;

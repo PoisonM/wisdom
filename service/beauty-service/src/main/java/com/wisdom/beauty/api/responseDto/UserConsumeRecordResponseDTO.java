@@ -38,6 +38,10 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO imple
 	private List<String> sysClerkNameList;
 	// 支付明细
 	private Map<String, Object> payMap;
+	//产品待领取的数量
+	private Integer waitReceiveNumber;
+	//初始数量
+	private Integer initTimes;
 
 	public String getSysShopClerkId() {
 		return sysShopClerkId;
@@ -119,5 +123,21 @@ public class UserConsumeRecordResponseDTO extends ShopUserConsumeRecordDTO imple
 		}else {
 			return  1;
 		}
+	}
+
+	public Integer getWaitReceiveNumber() {
+		return waitReceiveNumber;
+	}
+
+	public void setWaitReceiveNumber(Integer waitReceiveNumber) {
+		this.waitReceiveNumber = waitReceiveNumber;
+	}
+
+	public Integer getInitTimes() {
+		return initTimes;
+	}
+
+	public void setInitTimes(Integer initTimes) {
+		this.initTimes = initTimes;
 	}
 }

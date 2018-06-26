@@ -108,6 +108,10 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
+
+            $scope.pho=function(num){
+                window.location.href = "tel:" + num;
+            }
             
             $scope.confirmedGo = function(shopAppointServiceId){
                 //这一期暂停

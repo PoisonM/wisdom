@@ -76,7 +76,8 @@ angular.module('controllers',["ionic-datepicker"]).controller('sevenDayChartsCtr
                         layout: '',
                         align: 'right',
                         verticalAlign: 'top',
-                        borderWidth: 0
+                        borderWidth: 0,
+                        x:10,
                     },
                     credits: {		            //去除右下角highcharts标志
                         enabled: false

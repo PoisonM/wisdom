@@ -30,6 +30,15 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
         groupCard:'3',
         project:'8'
     }
+    //虚拟商品类型
+    $rootScope.rootScopeGoodsType = {
+        product : '4',
+        periodCard :'1',
+        rechargeCard :'2',
+        timeCard :'0',
+        groupCard:'3',
+        project:'8'
+    }
     $rootScope.currentTime = (new Date()).valueOf();
     //支付方式
     $rootScope.rootScopePayType = {

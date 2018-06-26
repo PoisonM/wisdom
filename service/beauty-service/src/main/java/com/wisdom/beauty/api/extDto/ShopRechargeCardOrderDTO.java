@@ -39,6 +39,8 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
 
     private String orderStatusDesc;
 
+    private String oweAmount;
+
     /**
      * BANK_PAY("0", "银行卡支付"),
      * WECHAT_PAY("1", "微信支付"),
@@ -49,6 +51,14 @@ public class ShopRechargeCardOrderDTO extends ShopRechargeCardDTO {
     private String userName;
     //图片
     private List<String> imageList;
+
+    public String getOweAmount() {
+        return oweAmount;
+    }
+
+    public void setOweAmount(String oweAmount) {
+        this.oweAmount = oweAmount;
+    }
 
     public String getOrderStatusDesc() {
         return orderStatusDesc;
