@@ -1001,7 +1001,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         shopUserConsumeRecordDTO.setDiscount(orderDTO.getTimeDiscount());
         shopUserConsumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
-        shopUserConsumeRecordDTO.setSysUserName(userInfoDTO.getNickname());
         shopUserConsumeRecordDTO.setStatus(shopUserConsumeRecordDTO.getStatus());
         shopUserConsumeRecordDTO.setOperDate(new Date());
         shopUserConsumeRecordDTO.setPeriodDiscount(orderDTO.getPeriodDiscount());

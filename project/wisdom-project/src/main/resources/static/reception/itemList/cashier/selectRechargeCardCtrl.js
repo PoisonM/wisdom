@@ -51,6 +51,13 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         }
         $scope.responseData.sysUserId = $stateParams.userId;
         $scope.responseData.surplusPayPrice = $scope.responseData.amount - $scope.responseData.cashPay;
+        if($scope.responseData.surplusPayPrice<0){
+            alert("剩余支付金额为负数啦(^_^)");
+            return false;
+        }else if($scope.responseData.surplusPayPrice > 0 && (null == $scope.responseData.payType || ''==$scope.responseData.payType)){
+            alert("请选择支付方式");
+            return false;
+        }
         $scope.responseData.timeDiscount=('无'==$scope.timeDiscount?'1':$scope.timeDiscount);
         $scope.responseData.periodDiscount=('无'==$scope.periodDiscount?'1':$scope.periodDiscount);
         $scope.responseData.productDiscount=('无'==$scope.productDiscount?'1':$scope.productDiscount);

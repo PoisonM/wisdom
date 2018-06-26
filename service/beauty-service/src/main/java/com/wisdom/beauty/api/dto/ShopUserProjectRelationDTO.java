@@ -25,7 +25,7 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
     //
     private String sysClerkName;
 
-    //使用方式 0：单次 1：疗程卡
+    //使用方式 1：单次 0：疗程卡
     private String useStyle;
 
     //美容院id
