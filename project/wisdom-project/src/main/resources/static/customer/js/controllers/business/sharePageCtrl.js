@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('sharePageCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetQRCodeURL','BusinessUtil','$location',
-        function ($scope,$rootScope,$stateParams,$state,GetQRCodeURL,BusinessUtil,$location) {
+    ['$scope','$rootScope','$stateParams','$state','GetCustomerQRCode','BusinessUtil','$location',
+        function ($scope,$rootScope,$stateParams,$state,GetCustomerQRCode,BusinessUtil,$location) {
 
             $rootScope.title = "分享赚钱";
 
@@ -48,8 +48,8 @@ angular.module('controllers',[]).controller('sharePageCtrl',
                 }
             }
 
-            GetQRCodeURL.get({userPhone:$stateParams.userPhone},function (data) {
-                BusinessUtil.checkResponseData(data,'sharePage');
+            GetCustomerQRCode.get({userPhone:$stateParams.userPhone},function (data) {
+
                 $scope.param.weixinShareInfo = data.responseData;
 
                 //获取$scope.param.canvas
@@ -121,11 +121,10 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             });
 
             wx.onMenuShareTimeline({
-                title: '测试', // 分享标题
+                title: '一个可以分享赚钱的美妆商城', // 分享标题
+                imgUrl: 'https://mximage.oss-cn-beijing.aliyuncs.com/viewPicture/585854756758332547.jpg', // 分享图标
                 link: $location.absUrl(), // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                imgUrl: '', // 分享图标
                 success: function () {
-
                 }
             })
         }])

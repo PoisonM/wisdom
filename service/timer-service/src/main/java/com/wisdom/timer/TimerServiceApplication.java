@@ -40,11 +40,11 @@ public class TimerServiceApplication {
 
 		weixinServiceClient.updateBeautyWeixinToken();
 
-		try{
+	/*	try{
 			businessRunTimeService.autoMonthlyIncomeCalc();
 		}catch (Exception e){
 
-		}
+		}*/
 		/*boolean month = true;
 		while(month){
 			Date startDate = new Date();

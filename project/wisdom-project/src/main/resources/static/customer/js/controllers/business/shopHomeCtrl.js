@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList) {
             $rootScope.title = "美享99触屏版";
             $scope.param = {
                 bannerList:{},
@@ -35,6 +35,12 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+
+                GetRankingsList.save(function(data){
+                    console.log(data)
+                    $scope.rankingsList = data.responseData;
+
+                })
 
                 GetHomeBannerList.save(function(data){
                     $scope.param.bannerList = data.responseData;
@@ -86,11 +92,11 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     $scope.param.product2List = tempArr;
                     console.log( $scope.param.product2List)*/
                     $scope.repeatList = [];
-                    $scope.onePriductList = [];
-                    $scope.twoPriductList = [];
-                    $scope.threePriductList = [];
-                    $scope.fourPriductList = [];
-                    $scope.fivePriductList = [];
+                    $scope.onePriductList = [];/*99*/
+                    $scope.twoPriductList = [];/*199*/
+                    $scope.threePriductList = [];/*299*/
+                    $scope.fourPriductList = [];/*399*/
+                    $scope.fivePriductList = [];/*499*/
                     $scope.allPriductList = $scope.param.productList;
                     $scope.repeatList=$scope.param.productList;/*一进入商城默认全部商城*/
                     for(var i = 0; i < $scope.param.productList.length; i++){
@@ -106,16 +112,103 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                             $scope.fivePriductList.push($scope.param.productList[i])
                         }
                     }
-
+                   /*在这写销量排序 按照销量由大到小*/
+                   /*99*/
+                    function bubbleSort(arr) {
+                        var len = $scope.onePriductList.length;
+                        if(len>1){
+                            for (var i = 0; i < len; i++) {
+                                for (var j = 0; j < len - 1 - i; j++) {
+                                    if (arr[j].productDetail.productSalesVolume/1 < arr[j+1].productDetail.productSalesVolume/1) { //相邻元素两两对比
+                                        var temp = arr[j+1]; //元素交换
+                                        arr[j+1] = arr[j];
+                                        arr[j] = temp;
+                                        console.log(arr)
+                                    }
+                                }
+                            }
+                            return arr;
+                        }
+                    }
+                   bubbleSort($scope.onePriductList);
+                    /*199*/
+                    function bubbleSort1(arr) {
+                        var len = $scope.twoPriductList.length;
+                        if(len>1){
+                            for (var i = 0; i < len; i++) {
+                                for (var j = 0; j < len - 1 - i; j++) {
+                                    if (arr[j].productDetail.productSalesVolume/1 < arr[j+1].productDetail.productSalesVolume/1) { //相邻元素两两对比
+                                        var temp = arr[j+1]; //元素交换
+                                        arr[j+1] = arr[j];
+                                        arr[j] = temp;
+                                        console.log(arr)
+                                    }
+                                }
+                            }
+                            return arr;
+                        }
+                    }
+                    bubbleSort1($scope.twoPriductList);
+                  /*299*/
+                    function bubbleSort2(arr) {
+                        var len = $scope.threePriductList.length;
+                        if(len>1) {
+                            for (var i = 0; i < len; i++) {
+                                for (var j = 0; j < len - 1 - i; j++) {
+                                    if (arr[j].productDetail.productSalesVolume / 1 < arr[j + 1].productDetail.productSalesVolume / 1) { //相邻元素两两对比
+                                        var temp = arr[j + 1]; //元素交换
+                                        arr[j + 1] = arr[j];
+                                        arr[j] = temp;
+                                        console.log(arr)
+                                    }
+                                }
+                            }
+                        return arr;
+                        }
+                    }
+                    bubbleSort2($scope.threePriductList);
+                    /*399*/
+                    function bubbleSort3(arr) {
+                        var len = $scope.fourPriductList.length;
+                        if(len>1) {
+                            for (var i = 0; i < len; i++) {
+                                for (var j = 0; j < len - 1 - i; j++) {
+                                    if (arr[j].productDetail.productSalesVolume / 1 < arr[j + 1].productDetail.productSalesVolume / 1) { //相邻元素两两对比
+                                        var temp = arr[j + 1]; //元素交换
+                                        arr[j + 1] = arr[j];
+                                        arr[j] = temp;
+                                        console.log(arr)
+                                    }
+                                }
+                            }
+                            return arr;
+                        }
+                    }
+                    bubbleSort3($scope.fourPriductList);
+                    /*499*/
+                    function bubbleSort4(arr) {
+                        var len = $scope.fivePriductList.length;
+                        if(len>1) {
+                            for (var i = 0; i < len; i++) {
+                                for (var j = 0; j < len - 1 - i; j++) {
+                                    if (arr[j].productDetail.productSalesVolume / 1 < arr[j + 1].productDetail.productSalesVolume / 1) { //相邻元素两两对比
+                                        var temp = arr[j + 1]; //元素交换
+                                        arr[j + 1] = arr[j];
+                                        arr[j] = temp;
+                                        console.log(arr)
+                                    }
+                                }
+                            }
+                            return arr;
+                        }
+                    }
+                    bubbleSort4($scope.fivePriductList);
                     $scope.checkPrice($rootScope.shopHomeParam);
-
                 });
                 /*点击底部切换按钮更改背景色 字体*/
                $scope.checkBg=function (checkType) {
                 $scope.param.checkType=checkType;
                }
-
-
                 //判断用户是否购买过新人大礼包产品
                 /*GetBusinessOrderByProductId.get({productId:$scope.param.promoteProductId},function(data){
                     if(data.result==Global.SUCCESS)
