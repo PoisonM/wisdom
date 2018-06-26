@@ -96,7 +96,7 @@ public class ConsumeTest {
     public void consumeCourseCard() throws Exception {
         List<ShopUserConsumeDTO> shopUserConsumeDTO = new ArrayList<>();
         ShopUserConsumeDTO consumeDTO = new ShopUserConsumeDTO();
-        consumeDTO.setClerkId("1");
+//        consumeDTO.setClerkId("1");
         consumeDTO.setConsumeId("6a06eb1c040447ea8c33617f0111468b");
         consumeDTO.setConsumePrice(new BigDecimal(100));
         consumeDTO.setConsumeNum(12);
@@ -125,7 +125,7 @@ public class ConsumeTest {
 
         List<ShopUserConsumeDTO> arrayList = new ArrayList<>();
         ShopUserConsumeDTO consumeDTO = new ShopUserConsumeDTO();
-        consumeDTO.setClerkId("1");
+//        consumeDTO.setClerkId("1");
         consumeDTO.setConsumeId("5b080f1a39634d4eb3b9bc82130402e5");
         consumeDTO.setConsumePrice(new BigDecimal(100));
         consumeDTO.setConsumeNum(12);
@@ -156,7 +156,7 @@ public class ConsumeTest {
     public void consumesUserProduct() throws Exception {
         List<ShopUserConsumeDTO> shopUserConsumeDTO = new ArrayList<>();
         ShopUserConsumeDTO consumeDTO = new ShopUserConsumeDTO();
-        consumeDTO.setClerkId("1");
+//        consumeDTO.setClerkId("1");
         consumeDTO.setConsumeId("1");
         consumeDTO.setConsumePrice(new BigDecimal(100));
         consumeDTO.setConsumeNum(12);

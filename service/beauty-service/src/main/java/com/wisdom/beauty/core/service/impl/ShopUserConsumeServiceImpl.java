@@ -242,6 +242,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             recordDTO.setSysShopId(shopUserOrderDTO.getShopId());
             recordDTO.setPrice(new BigDecimal(balancePay));
             recordDTO.setConsumeNumber(1);
+            recordDTO.setDetail(shopUserOrderDTO.getDetail());
             recordDTO.setSysUserName(shopUserOrderDTO.getUserName());
             recordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
             shopUerConsumeRecordService.saveCustomerConsumeRecord(recordDTO);
@@ -641,7 +642,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setSysUserId(dto.getSysUserId());
             consumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
             consumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
-            consumeRecordDTO.setSysClerkId(clerkInfo.getId());
+            consumeRecordDTO.setSysClerkId(dto.getSysClerkId());
+            consumeRecordDTO.setSysClerkName(dto.getSysClerkName());
             consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
             consumeRecordDTO.setFlowName(shopUserProjectRelationDTO.getSysShopProjectName());
             consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
@@ -781,9 +783,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setCreateDate(new Date());
         consumeRecordDTO.setFlowNo(transactionCodeNumber);
         consumeRecordDTO.setSysUserId(consumeDTO.getSysUserId());
+        consumeRecordDTO.setDetail(consumeDTO.getDetail());
         consumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
         consumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
-        consumeRecordDTO.setSysClerkId(clerkInfo.getId());
+        consumeRecordDTO.setSysClerkId(consumeDTO.getSysClerkId());
+        consumeRecordDTO.setSysClerkName(consumeDTO.getSysClerkName());
         consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
         consumeRecordDTO.setFlowName(consumeDTO.getConsumeName());
         consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());

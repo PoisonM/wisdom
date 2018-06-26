@@ -780,6 +780,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			return null;
 		}
 		c.andFlowIdIn(flowIds);
+		criteria.setOrderByClause("create_date desc");
 		return shopUserConsumeRecordMapper.selectByCriteria(criteria);
 
 	}

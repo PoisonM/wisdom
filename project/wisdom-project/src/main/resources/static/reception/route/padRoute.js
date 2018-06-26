@@ -1285,13 +1285,13 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         //套卡划卡详情
         .state('pad-web.left_nav.completeCardDetail', {
             url: '/completeCardDetail/:userId/:flowNo',
-            templateUrl: root + '/cashier/completeCardDetail.html',
-            controller: 'completeCardDetailCtrl',
+            templateUrl: root + '/cashier/consumeGroupCardDetail.html',
+            controller: 'consumeGroupCardDetail',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "套卡划卡详情",
-                        files: [root + "cashier/completeCardDetail.js?version=" + version,
+                        files: [root + "cashier/consumeGroupCardDetail.js?version=" + version,
                             root + "cashier/completeCardDetail.css?version=" + version,
                         ]
                     })

@@ -46,6 +46,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
         UpdateShopUserOrderPayInfo.save({
             orderId: $state.params.orderId,
             userPayRechargeCardList: $scope.userPayRechargeCardList,
+            detail:$scope.responseData.detail
         }, function(data) {
             if("0x00001" == data.result){
                 UserPayOpe.save({

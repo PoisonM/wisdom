@@ -179,6 +179,7 @@ public class PayController {
         Update update = new Update();
         update.set("userPayRechargeCardList", filterList);
         update.set("updateDate",new Date());
+        update.set("detail",shopUserOrderDTO.getDetail());
         mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);
