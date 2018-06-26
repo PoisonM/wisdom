@@ -131,6 +131,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 				shopClerkWorkRecordResponse.setSumAmount(dto.getPrice());
 				shopClerkWorkRecordResponse.setType(dto.getType());
 				shopClerkWorkRecordResponse.setCreateDate(dto.getCreateDate());
+				shopClerkWorkRecordResponse.setFlowNo(dto.getFlowNo());
 				map.put(dto.getFlowNo(), shopClerkWorkRecordResponse);
 			} else {
 				shopClerkWorkRecordResponse = map.get(dto.getFlowNo());
