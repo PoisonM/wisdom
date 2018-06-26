@@ -30,4 +30,8 @@ PADWeb.controller('accountRecordsCtrl', function($scope, $state, $stateParams, n
     $scope.goDrawCardRecords = function() {
         $state.go('pad-web.left_nav.drawCardRecords',{userId:$state.params.userId})
     }
+
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
 });
