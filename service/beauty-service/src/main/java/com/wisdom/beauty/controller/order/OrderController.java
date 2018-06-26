@@ -96,9 +96,10 @@ public class OrderController {
             logger.info("根据用户id和shopId查询用户最近一次订单记录={}");
             shopUserOrderDTO = getUserRecentlyOrder(shopUserOrderDTO);
         }
+        ShopUserRechargeCardDTO shopUserRechargeCardDTO = null;
         if (null != shopUserOrderDTO) {
             //查询用户账户总余额
-            ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+            shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
             shopUserRechargeCardDTO.setSysUserId(shopUserOrderDTO.getUserId());
             shopUserRechargeCardDTO.setSysShopId(shopUserOrderDTO.getShopId());
             List<ShopUserRechargeCardDTO> userRechargeCardList = shopCardService.getUserRechargeCardList(shopUserRechargeCardDTO);
@@ -106,8 +107,8 @@ public class OrderController {
                 logger.error("用户特殊账号为空={}", "sysUserId = [" + sysUserId + "], orderId = [" + orderId + "]");
                 throw new ServiceException("用户特殊账号为空");
             }
-            ShopUserRechargeCardDTO rechargeCardDTO = userRechargeCardList.get(0);
-            shopUserOrderDTO.setAvailableBalance(rechargeCardDTO.getSurplusAmount());
+            shopUserRechargeCardDTO = userRechargeCardList.get(0);
+            shopUserOrderDTO.setAvailableBalance(shopUserRechargeCardDTO.getSurplusAmount());
 
             //计算订单价格
             BigDecimal orderPrice = new BigDecimal(0);
@@ -133,17 +134,18 @@ public class OrderController {
                 }
             }
             shopUserOrderDTO.setOrderPrice(orderPrice.toString());
-            //默认添加余额充值
-            if(null == shopUserOrderDTO.getShopUserRechargeCardDTO()){
-                shopUserOrderDTO.setShopUserRechargeCardDTO(rechargeCardDTO);
-            }
+
         }
         //保持订单10分钟之内有效
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
         update.set("updateDate",new Date());
         mongoTemplate.upsert(query, update, "shopUserOrderDTO");
-
+        //默认添加余额充值
+        if(null == shopUserOrderDTO.getShopUserRechargeCardDTO()){
+            shopUserOrderDTO.setShopUserRechargeCardDTO(shopUserRechargeCardDTO);
+            shopOrderService.updateShopUserOrderInfo(shopUserOrderDTO);
+        }
         responseDTO.setResponseData(shopUserOrderDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
