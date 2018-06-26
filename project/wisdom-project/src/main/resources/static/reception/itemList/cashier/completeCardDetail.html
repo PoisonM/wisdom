@@ -33,12 +33,16 @@
             <div class="basic">
                 <p>支付类型</p>
                 <ul>
-                    <li>
+                    <li ng-if="dataInfo.payMap.cashAmount!=''">
                         <label for="">现金支付</label>
                         <span>{{dataInfo.payMap.cashAmount}}</span>
-
                     </li>
-                    <li>
+                    <li ng-if="dataInfo.payMap.balanceAmount!='' ">
+                        <label for="">余额支付</label>
+                        <span>{{dataInfo.payMap.balanceAmount}}</span>
+                    </li>
+
+                    <li ng-if="dataInfo.payMap.payType!=''">
                         <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
                         <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
                         <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
