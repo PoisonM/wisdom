@@ -32,7 +32,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                             $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")
                         }
                         $scope.tempUser = data.responseData.responseList;
-                        $scope.tempWeek.push()
+                        console.log($scope.tempWeek);
 
                     }
                 })

@@ -553,5 +553,10 @@ define(['appBoss'], function (app) {
             return $resource(productInfo + "getProductInfo")
         }])
 
+        //产品领取记录详情
+        .factory('getProductDrawRecordDetail',['$resource',function ($resource){
+            return $resource(consume + "getProductDrawRecord/detail")
+        }])
+
 
 });
