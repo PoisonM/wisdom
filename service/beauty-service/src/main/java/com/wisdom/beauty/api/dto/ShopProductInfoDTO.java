@@ -49,6 +49,8 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //生产地址
     private String manuAddress;
 
+    private int number;
+
     //保质期（月）
     private Integer qualityPeriod;
 
@@ -58,10 +60,10 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //商标
     private String tradeMark;
 
-    //
+    //生效日期
     private String effectDate;
 
-    //
+    //失效日期
     private String invalidDate;
 
     //产品有效期预警（天）
@@ -111,8 +113,6 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
 
     //
     private Date updateDate;
-
-    private int number;
 
     private static final long serialVersionUID = 1L;
 
