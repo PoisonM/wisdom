@@ -1,7 +1,7 @@
 <div class="getProductRecord">
     <div class="getProductRecord_box">
         <ul>
-            <li ng-click="goCashProductDetails()" ng-repeat="item in dataList">
+            <li ng-click="goCashProductDetails(item.flowNo)" ng-repeat="item in dataList">
                 <div class="basic_info">
                     <p>{{item.flowName}}</p>
                     <span>{{item.createDate |date:'yyyy-MM-dd hh:mm:ss'}}</span>

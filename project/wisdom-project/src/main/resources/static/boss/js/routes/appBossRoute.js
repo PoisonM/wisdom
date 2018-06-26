@@ -2510,7 +2510,7 @@ define(['appBoss'], function(app){
                     })
                 /* 产品-领取详情 getTheDetails*/
                     .state('getTheDetails', {
-                        url: '/getTheDetails',
+                        url: '/getTheDetails,:flowNo',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'getTheDetailsCtrl',
                         resolve: {

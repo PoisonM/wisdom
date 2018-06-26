@@ -9,8 +9,11 @@
                  <img src="images/help.png" class="helpPic ml10" ng-click="help()">
              </div>
              <ion-item  class=" bgfff row" style="" ng-repeat="item in refillCard.userRechargeCardList"ng-click="prepaidPhoneRecordsGo(item.id,item.rechargeCardType)">
-                 <div class="col col-33 center" style="line-height: 82px;">
-                     <img src="images/banbleCard.png" class="banbleCardPic">
+                 <div class="col col-25 center" style="line-height: 82px;">
+                     <div style="border: solid 1px #e6e6e6;margin-top: 10px; height: 60px;">
+                         <p style="width:82px;height:50px;background: url('{{item.imageUrl}}');background-position: center center;background-repeat: no-repeat;background-size: contain;  margin-top: 5px; "></p>
+                     </div>
+
                  </div>
                  <div class="col col-67" >
                      <p>{{item.shopRechargeCardName}}</p>

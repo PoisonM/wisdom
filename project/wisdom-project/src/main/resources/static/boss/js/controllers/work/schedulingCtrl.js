@@ -27,12 +27,13 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 },function (data) {
                     if(data.result == "0x00001"){
                         $ionicLoading.hide()
-                        $scope.tempWeek = data.responseData.dateDetail;
-                        for(var i = 0; i < $scope.tempWeek.length; i++){
-                            $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")
+                        var tempWeek = data.responseData.dateDetail;
+                        for(var i = 0; i < tempWeek.length; i++){
+                            tempWeek[i] = (tempWeek[i].split("||")[0].substr(tempWeek[i].split("||")[0].length-2,2)+","+tempWeek[i].split("||")[1].replace("星期","周")).split(",")
                         }
                         $scope.tempUser = data.responseData.responseList;
-                        $scope.tempWeek.push()
+                        $scope.tempWeek = tempWeek
+                        console.log($scope.tempWeek);
 
                     }
                 })
