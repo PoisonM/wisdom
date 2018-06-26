@@ -72,7 +72,9 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         $state.go("pad-web.compileWorkList",{time:$scope.tempTime})
     }
 
-
+    $scope.arrangeWorkListBack = function () {
+        window.history.go(-1)
+    }
 
 
 
