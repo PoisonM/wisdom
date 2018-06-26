@@ -27,7 +27,6 @@ import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,8 +105,8 @@ public class MineController {
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 
         // 设置当天的开始时间和结束时间
-        pageParamVoDTO.setStartTime(DateUtils.getStartTime());
-        pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+//        pageParamVoDTO.setStartTime(DateUtils.getStartTime());
+//        pageParamVoDTO.setEndTime(DateUtils.getEndTime());
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
