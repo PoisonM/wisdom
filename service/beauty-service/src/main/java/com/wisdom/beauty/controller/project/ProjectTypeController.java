@@ -75,7 +75,7 @@ public class ProjectTypeController {
 
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if (null == shopProjectTypeDTO || StringUtils.isBlank(shopProjectTypeDTO.getId())) {
-            responseDTO.setResponseData("传入参数有问题");
+            responseDTO.setResponseData("传入参数为空");
             responseDTO.setResult(StatusConstant.FAILURE);
             return responseDTO;
         }
