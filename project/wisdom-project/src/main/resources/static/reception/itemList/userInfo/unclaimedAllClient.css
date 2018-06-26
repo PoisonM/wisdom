@@ -6,6 +6,7 @@
     width: 100%;
     border-collapse: collapse;
     border: 0px solid #E5E5E5;
+    table-layout: fixed;
 }
 .unclaimedAllClient table td{
     padding-left: 0.265625rem;
@@ -37,4 +38,8 @@
     font-size: 0.234375rem;
     color: #333333;
     letter-spacing: 0.52px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
