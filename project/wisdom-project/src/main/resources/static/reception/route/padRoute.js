@@ -372,7 +372,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.selectRechargeCard', {
-            url: '/selectRechargeCard/:type/:userId',
+            url: '/selectRechargeCard/:type/:userId/:rechargeCardType',
             templateUrl: root + '/cashier/selectRechargeCard.html',
             controller: 'selectRechargeCardCtrl',
             resolve: {

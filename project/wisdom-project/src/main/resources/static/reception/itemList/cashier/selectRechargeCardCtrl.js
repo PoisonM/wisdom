@@ -75,11 +75,18 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     }
     CardInfo.get({ id: $state.params.type,sysUserId: $stateParams.userId}, function(data) {
         $scope.responseData = data.responseData;
-        $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
-        $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
-        $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
-        $scope.responseData.payType = '';//localStorage.getItem("payType") 默认为空
-        $scope.responseData.amount = '0';//默认为0
+        //如果是特殊充值卡
+        if($stateParams.rechargeCardType == '0'){
+            $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
+            $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
+            $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
+            $scope.responseData.payType = '';//localStorage.getItem("payType") 默认为空
+            $scope.responseData.amount = '0';//默认为0
+        }else{
+            $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
+            $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
+            $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
+        }
     })
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
