@@ -416,7 +416,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     userConsumeRecordDTO.setDiscount(groupDto.getDiscount());
                 }
                 //购买每种套卡的总金额
-                userConsumeRecordDTO.setPrice(discountPrice);
+                userConsumeRecordDTO.setPrice(discountPrice.multiply(new BigDecimal(groupDto.getProjectInitTimes())));
                 userConsumeRecordDTO.setDiscount(groupDto.getDiscount());
                 userConsumeRecordDTO.setConsumeNumber(groupDto.getProjectInitTimes());
                 userConsumeRecordDTO.setId(consumeId);
@@ -477,15 +477,15 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     ShopProjectInfoResponseDTO projectDetail = shopProjectService.getProjectDetail(dto.getSysShopProjectId());
 
                     //购买价格
-                    BigDecimal sysShopProjectInitAmount = dto.getDiscountPrice();
+                    BigDecimal discountPrice = dto.getDiscountPrice();
                     //此次购买初始价格
-                    dto.setSysShopProjectInitAmount(sysShopProjectInitAmount);
+                    dto.setSysShopProjectInitAmount(discountPrice);
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(dto.getUseStyle())) {
                         dto.setSysShopProjectSurplusAmount(new BigDecimal(0));
                         dto.setSysShopProjectSurplusTimes(0);
                     } else {
-                        dto.setSysShopProjectSurplusAmount(sysShopProjectInitAmount);
+                        dto.setSysShopProjectSurplusAmount(discountPrice);
                         dto.setSysShopProjectSurplusTimes(dto.getServiceTime());
                     }
 
@@ -507,8 +507,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     userConsumeRecordDTO.setTimeDiscount(dto.getDiscount());
                     userConsumeRecordDTO.setPeriodDiscount(dto.getDiscount());
                     userConsumeRecordDTO.setProductDiscount(dto.getDiscount());
-                    userConsumeRecordDTO.setPrice(sysShopProjectInitAmount);
-                    userConsumeRecordDTO.setConsumeNumber(sysShopProjectInitTimes);
+                    userConsumeRecordDTO.setPrice(discountPrice);
+                    userConsumeRecordDTO.setConsumeNumber(dto.getServiceTime());
                     userConsumeRecordDTO.setGoodsType(dto.getUseStyle());
                     userConsumeRecordDTO.setFlowId(dto.getId());
                     userConsumeRecordDTO.setFlowName(dto.getSysShopProjectName());
