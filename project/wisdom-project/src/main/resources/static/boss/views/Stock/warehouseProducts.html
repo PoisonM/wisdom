@@ -39,7 +39,7 @@
             <div style="position: absolute;top:0;width:100%;z-index: 1000;padding:0"  class="row bgf6" ng-show="param.flag">
                 <ul class="col col-33 col333  fs14 bgfff" style="padding-right:0">
                     <li class="  col333 center bbl " ng-repeat="item in warehouseProducts.oneLevelList" ng-click="selTwo(item.productTypeOneId,item.productTypeOneName);$event.stopPropagation()" style="min-height: 40px;padding: 5px 0" ng-class="{'bge6':param.levelOneId == item.productTypeOneId}">
-                        <div class="ml10 mr10">{{item.productName}}</div>
+                        <div class="ml10 mr10">{{item.productTypeOneName}}</div>
                     </li>
                 </ul>
                 <ul style="width:77%;background: #F6F6F6;" class="fs14 col333">
