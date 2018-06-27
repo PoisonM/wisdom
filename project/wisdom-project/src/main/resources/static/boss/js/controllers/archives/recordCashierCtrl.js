@@ -129,6 +129,12 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                 $state.go("detailsOfCashier",{flowNo:flowNo})
             }
             $scope.getInfo = function(){
+                if($scope.param.startDate!=''){
+                    $scope.param.startDate=$scope.param.startDate+' 00:00:00'
+                }
+                if($scope.param.endDate!=''){
+                    $scope.param.endDate=$scope.param.endDate+' 23:59:59'
+                }
                 $scope.userConsumeRequest = {
                     consumeType:'0',
                     goodType:$scope.param.goodType,
