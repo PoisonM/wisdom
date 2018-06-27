@@ -139,6 +139,7 @@ public class ProjectController {
 		//获取二级和三级
 		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
 		shopProjectType.setSysShopId(sysShopId);
+		shopProjectType.setStatus(status);
 		List<ShopProjectTypeDTO> twoAndThreeTypeList=projectService.getTwoLevelProjectList(shopProjectType);
 		//一个一级对应所有的二级
 		Map<String,Map<String,ShopProjectTypeDTO>> twoMap=null;
@@ -162,7 +163,7 @@ public class ProjectController {
 		ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
 
 		// 缓存一级
-		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId,"");
+		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId,status);
 		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			return responseDTO;
