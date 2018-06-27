@@ -23,6 +23,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private BigDecimal shopGroupPuchasePrice;
 
     //
+    private BigDecimal discountPrice;
+
+    //
     private String sysUserId;
 
     //项目表主键
@@ -116,6 +119,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setShopGroupPuchasePrice(BigDecimal shopGroupPuchasePrice) {
         this.shopGroupPuchasePrice = shopGroupPuchasePrice;
+    }
+
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
     public String getSysUserId() {
