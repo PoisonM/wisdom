@@ -112,7 +112,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         selectSingleData:{},//产品的一级商品列表
         product2List:{},//点击一级产品列表出现二级列表
         product3List:{},//最终展示的商品列表
-        pageSize:"10",//页码大小
+        pageSize:"100",//页码大小
         productName:"",//产品名称
         productTypeOneId:"",//一级产品id
         productTypeTwoId:"",//二级产品id
