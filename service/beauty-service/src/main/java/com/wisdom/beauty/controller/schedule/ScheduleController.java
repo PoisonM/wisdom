@@ -228,8 +228,10 @@ public class ScheduleController {
 
         //构建预约过的时间
         if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
+            filterStr.append(",");
             for (int i = 0; i < shopAppointServiceDTOS.size(); i++) {
-                filterStr.append(CommonUtils.getArrayNo(DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
+                filterStr.append(CommonUtils.getArrayNo(
+                        DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
                         DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointEndTime(), "time")));
                 if (i != (shopAppointServiceDTOS.size() - 1)) {
                     filterStr.append(",");
