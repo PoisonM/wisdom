@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProductRelationDTO extends BaseEntity implements Serializable {
     //
@@ -36,6 +36,9 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     //
     private String sysShopName;
+
+    //
+    private BigDecimal discountPrice;
 
     //初始数量
     private Integer initTimes;
@@ -150,6 +153,14 @@ public class ShopUserProductRelationDTO extends BaseEntity implements Serializab
 
     public void setSysShopName(String sysShopName) {
         this.sysShopName = sysShopName;
+    }
+
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
     public Integer getInitTimes() {
