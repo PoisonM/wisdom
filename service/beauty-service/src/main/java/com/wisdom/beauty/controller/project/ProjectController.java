@@ -752,6 +752,8 @@ public class ProjectController {
 			  projectMap.put("id",shopUserProjectRelationDTO.getId());
 			  projectMap.put("projectId", shopUserProjectRelationDTO.getSysShopProjectId());
 			  projectMap.put("surplusTimes", shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
+			  ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = projectService.getProjectDetail(shopUserProjectRelationDTO.getSysShopProjectId());
+			  projectMap.put("projectDuration", shopProjectInfoResponseDTO.getProjectDuration());
 			  shopUserProjectRResponseDTO.add(projectMap);
 		  }
 		}
