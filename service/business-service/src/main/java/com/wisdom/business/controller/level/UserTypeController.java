@@ -41,12 +41,14 @@ public class UserTypeController {
 	public
 	@ResponseBody
 	ResponseDTO<List<UserInfoDTO>> getUserNextLevelStruct(HttpSession session, HttpServletRequest request) {
+		long startTime = System.currentTimeMillis();
+		logger.info("getUserNextLevelStruct==={}开始" , startTime);
 		ResponseDTO<List<UserInfoDTO>> responseDTO = new ResponseDTO<>();
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		List<UserInfoDTO> userInfoDTOList = new ArrayList<>();
 
-		logger.info("当前{}登录用户级别为{}",userInfoDTO.getId(),userInfoDTO.getUserType());
+		logger.info("当前用户id{}登录用户级别为{}",userInfoDTO.getId(),userInfoDTO.getUserType());
 
 		if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1))
 		{
@@ -84,6 +86,7 @@ public class UserTypeController {
 
 		responseDTO.setResponseData(userInfoDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("getUserNextLevelStruct,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 

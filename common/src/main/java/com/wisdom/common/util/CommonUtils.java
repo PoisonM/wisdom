@@ -113,14 +113,37 @@ public class CommonUtils {
 	 * @return
 	 */
 	public static String nameDecoder(String name){
-		if(name != null && name !=""){
+		String nickNameW="";
+		try {
+			if(name != null && name != ""){
+				 nickNameW = name.replaceAll("%", "%25");
+				while(true){
+					if(nickNameW!=null&&nickNameW!=""){
+						if(nickNameW.contains("%25")){
+							nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+						}else{
+							nickNameW = URLDecoder.decode(nickNameW,"utf-8");
+							break;
+						}
+					}else{
+						break;
+					}
+				}
+			}else{
+				 nickNameW= "未知用户";
+			}
+		} catch(Throwable e){
+
+			 nickNameW = "特殊符号用户";
+		}
+		/*if(name != null && name !=""){
 			try {
 				return URLDecoder.decode(name,"utf-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-		}
-		return null;
+		}*/
+		return nickNameW;
 	}
 
 	/**

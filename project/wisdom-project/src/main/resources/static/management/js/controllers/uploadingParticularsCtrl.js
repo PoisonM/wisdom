@@ -28,10 +28,10 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 ManagementUtil.checkResponseData(data,"");
                 if(data.result == Global.SUCCESS){
                     $scope.uploadingPar = data.responseData;
+                    $scope.param.productDetail.senderAddress = data.responseData.productDetail.senderAddress
                     $scope.param.productName=$scope.uploadingPar.productName;
                     $scope.param.brand=$scope.uploadingPar.brand;
                     $scope.param.secondType=$scope.uploadingPar.secondType;
-                    $scope.param.productDetail.senderAddress =  $scope.uploadingPar.productDetail.senderAddress;
 
                    if(data.responseData.productDetail){
                        pic(data,"#particulars_viewPic","detailPic");
@@ -346,15 +346,16 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                     /*传给服务器的值*/
                     var ProductDTO = {
                         id:$stateParams.id,
-                        productName:$scope.param.productName,
+                        productName:$scope.uploadingPar.productName,
                         productId:$stateParams.productId,
-                        brand:$scope.param.brand,
+                        brand:$scope.uploadingPar.brand,
                         type:"offline",
-                        secondType:$scope.param.secondType,
+                        secondType:$scope.uploadingPar.secondType,
                         description:description,
                         firstUrl:$scope.uploadingPar.firstUrl,
                         price:price,
                         status:status,
+                        productPrefecture:$scope.uploadingPar.productPrefecture,
                         productAmount:$scope.uploadingPar.productAmount,
                         productDetail:{
                             createDate:$stateParams.createDate,
@@ -363,8 +364,10 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             spec:typelisText,
                             detailPic:$scope.uploadingPar.productDetail.detailPic,
                             listPic:$scope.uploadingPar.productDetail.listPic,
-                            senderAddress:$scope.param.productDetail.senderAddress,
-                            productId:$stateParams.productId
+                            senderAddress:$scope.uploadingPar.productDetail.senderAddress,
+                            productId:$stateParams.productId,
+                            productSalesVolume:$scope.uploadingPar.productDetail.productSalesVolume,
+                            productMarketPrice:$scope.uploadingPar.productDetail.productMarketPrice
                         }
                     };
                     UpdateProductByParameters.save(ProductDTO,function(data){

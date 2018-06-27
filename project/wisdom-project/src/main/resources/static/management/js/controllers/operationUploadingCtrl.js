@@ -25,7 +25,7 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                         }]
                     }]}
             };
-/*上传视频*/
+      /*上传视频*/
 
             $scope.onFileSelect = function (files) {
                 $scope.myFile = files;
@@ -82,7 +82,8 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                 })
 
             };
-//删除图片
+
+            //删除图片
             function remove (name,picArr,id,div){
                 var img = document.querySelectorAll(name);
                 var patter = document.querySelector(id);

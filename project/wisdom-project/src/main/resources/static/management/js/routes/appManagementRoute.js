@@ -77,7 +77,7 @@ define(['appManagement'], function(app){
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeCtrl',
                                     ['js/controllers/homeCtrl.js?ver=' + managementVersion],
-                                    'js/views/bossHome.html?ver=' + managementVersion);
+                                    'js/views/home.html?ver=' + managementVersion);
                             }
                         }
                     })
@@ -322,15 +322,28 @@ define(['appManagement'], function(app){
                                 }
                             }
                         })
-                    .state('bossHome', {
-                        url: '/bossHome',
+                    .state('homePageEditor', {
+                        url: '/homePageEditor',
                         templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'bossHomeCtrl',
+                        controller: 'homePageEditorCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.bossHomeCtrl',
-                                    ['js/controllers/beauty/bossHomeCtrl.js?ver=' + managementVersion],
-                                    'js/views/beauty/bossHome.html?ver=' + managementVersion);
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homePageEditorCtrl',
+                                    ['js/controllers/homePageEditorCtrl.js?ver=' + managementVersion],
+                                    'js/views/homePageEditor.html?ver=' + managementVersion);
+                            }
+                        }
+                    })
+
+                    .state('homeImageUpload', {
+                        url: '/homePageEditor/:bannerId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'homeImageUploadCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeImageUploadCtrl',
+                                    ['js/controllers/homeImageUploadCtrl.js?ver=' + managementVersion],
+                                    'js/views/homeImageUpload.html?ver=' + managementVersion);
                             }
                         }
                     })

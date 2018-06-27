@@ -24,17 +24,17 @@
                             <label for="name">
                                 商品名称:
                             </label>
-                            <input type="text" id="name" class="product_type uploading_product_name_search name" ng-model="param.productName">
+                            <input type="text" id="name" class="product_type uploading_product_name_search name" ng-model="uploadingPar.productName">
                         </div>
                         <div class="name_row">
 
                             <label for="brand">品牌:</label>
-                            <input type="text" id="brand" class="product_type uploading_product_name_search name"  ng-model="param.brand">
+                            <input type="text" id="brand" class="product_type uploading_product_name_search name"  ng-model="uploadingPar.brand">
 
                         </div>
                         <div class="name_row">
                             <label for="classify">分类:</label>
-                            <input type="text" id="classify" class="product_type uploading_product_name_search name"  ng-model="param.secondType">
+                            <input type="text" id="classify" class="product_type uploading_product_name_search name"  ng-model="uploadingPar.secondType">
 
                         </div>
                         <div class="name_row">
@@ -49,6 +49,18 @@
                                 价格:
                             </label>
                             <input type="text" id="price" class="uploading_product_name_search price" value="{{uploadingPar.price}}">
+                        </div>
+                        <div class="uploading_product_name">
+                            <label for="price">
+                                展示销量:
+                            </label>
+                            <input type="text" id="productSalesVolume" class="uploading_product_name_search price" ng-model="uploadingPar.productDetail.productSalesVolume">
+                        </div>
+                        <div class="uploading_product_name">
+                            <label for="price">
+                                市场零售价:
+                            </label>
+                            <input type="text" id="productMarketPrice" class="uploading_product_name_search price" ng-model="uploadingPar.productDetail.productMarketPrice">
                         </div>
                         <div class="uploading_product_name">
                             <label for="price">
@@ -118,7 +130,20 @@
 
                         <div class="uploading_product_name">
                             <label for="address">发货地:</label>
-                            <input type="text" id="address" class="product_type uploading_product_name_search name"  ng-model="param.productDetail.senderAddress">
+                            <input type="text" id="address" class="product_type uploading_product_name_search name"  ng-model="uploadingPar.productDetail.senderAddress">
+                        </div>
+                        <div class="name_row">
+                            <label>商品专区:</label>
+                            <select class="product_type states uploading_product_name_search"  ng-model="uploadingPar.productPrefecture">
+                                <option value="">请选择</option>
+                                <option value="1">新人专区</option>
+                                <option value="2">活动专区</option>
+                                <option value="99">99专区</option>
+                                <option value="199">199专区</option>
+                                <option value="299">299专区</option>
+                                <option value="399">399专区</option>
+                                <option value="499">499专区</option>
+                            </select>
                         </div>
                         <div class="save">
                             <button class="save_btn" ng-click="save()">保存</button>

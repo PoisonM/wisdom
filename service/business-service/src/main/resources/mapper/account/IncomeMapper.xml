@@ -427,6 +427,7 @@
         FROM income_record
         WHERE
         sys_user_id = #{userId}
+        and amount != 0
         ORDER BY update_date DESC
         limit #{pageNo},#{pageSize}
     </select>
@@ -771,6 +772,16 @@
             AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='finance-1')
             AND i.id in(select irm.income_record_id from income_record_management irm  where irm.status='1'and irm.user_type ='operation-1')
         </if>
+    </select>
+
+    <!--查询佣金排行榜-->
+    <select id="getIncomeRanking"
+            resultType="com.wisdom.common.dto.account.IncomeRecordDTO">
+        SELECT i.sys_user_id,i.user_name AS nickName,i.user_mobile AS mobile,i.user_type,SUM(i.amount) AS amount
+        from income_record i
+        GROUP BY i.sys_user_id
+        ORDER BY amount DESC
+        limit #{pageStartNo},#{pageSize}
     </select>
 
 </mapper>

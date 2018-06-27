@@ -81,7 +81,6 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
             };
             $scope.goOrderManagement = function(type){
                 $state.go("orderManagement",{"type":type});
-
             };
 
             $scope.myselfLogin = function(){
@@ -104,6 +103,10 @@ angular.module('controllers',[]).controller('myselfCenterCtrl',
                  }else{
                      $state.go("login",{redirectUrl:"myTeam"})
                  }
+            };
+            /*点击售后电话跳转到一个新的页面*/
+            $scope.goAfterSale=function () {
+                $state.go("afterSale")
             };
             $scope.bool=false;
             $scope.checkOpen=function ($event) {

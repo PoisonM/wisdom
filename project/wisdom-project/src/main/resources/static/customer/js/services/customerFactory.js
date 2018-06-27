@@ -173,8 +173,8 @@ define(['appCustomer'], function (app) {
         }])
 
         //获取用户的推广二维码
-        .factory('GetQRCodeURL',['$resource',function ($resource){
-            return $resource(weixin + 'getUserQRCode')
+        .factory('GetCustomerQRCode',['$resource',function ($resource){
+            return $resource(weixin + 'getCustomerQRCode')
         }])
 
         //获取用户的推广二维码
@@ -281,5 +281,9 @@ define(['appCustomer'], function (app) {
         .factory('GetProjectConsumes',['$resource',function ($resource){
             return $resource('/beauty/consumes')
         }])
+        .factory('GetRankingsList',['$resource',function ($resource){
+            return $resource('/business/income/getIncomeRanking')
+        }])
+
 
 });

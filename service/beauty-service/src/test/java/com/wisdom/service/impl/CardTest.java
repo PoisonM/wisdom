@@ -1,10 +1,14 @@
 package com.wisdom.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.beauty.BeautyServiceApplication;
 import com.wisdom.beauty.api.dto.ShopProjectProductCardRelationDTO;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
+import com.wisdom.common.dto.account.AccountDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -165,4 +169,11 @@ public class CardTest {
         System.out.println(result.getResponse().getContentAsString());
     }
 
+    @Test
+    public void test2(){
+        String userInfoStr = JedisUtils.get("");
+        UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr,UserInfoDTO.class);
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setSysUserId(userInfoDTO.getId());
+    }
 }

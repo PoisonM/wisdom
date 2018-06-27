@@ -10,6 +10,8 @@ var customer = '/user/customer/';
 
 var file = '/system/file/';
 
+var banner = '/system/banner/';
+
 define(['appManagement'], function (app) {
     app
         .factory('UserLoginOut',['$resource',function ($resource){
@@ -177,5 +179,45 @@ define(['appManagement'], function (app) {
 
         .factory('ExportNextUserInfoControl',['$resource',function ($resource){
             return $resource(income + 'exportNextUserInfoControl');
+        }])
+
+        //手动生成月度
+        .factory('MonthlyIncomeSignalMT',['$resource',function ($resource){
+            return $resource(income + 'MonthlyIncomeSignalMT');
+        }])
+
+         //监听
+        .factory('GetKey',['$resource',function ($resource){
+            return $resource(income + 'getKey');
+        }])
+
+        //获取banner图列表
+        .factory('GetHomeBannerList',['$resource',function ($resource){
+            return $resource(banner + 'getHomeBannerList');
+        }])
+
+         //获取banner上移下移delHomeBannerById
+        .factory('UpdateHomeBannerRank',['$resource',function ($resource){
+            return $resource(banner + 'updateHomeBannerRank');
+        }])
+
+         //获取删除banner图
+        .factory('DelHomeBannerById',['$resource',function ($resource){
+            return $resource(banner + 'delHomeBannerById');
+        }])
+
+         //获取banner详细信息
+        .factory('FindHomeBannerInfoById',['$resource',function ($resource){
+            return $resource(banner + 'findHomeBannerInfoById');
+        }])
+
+        //新增banner
+        .factory('AddHomeBanner',['$resource',function ($resource){
+            return $resource(banner + 'addHomeBanner');
+        }])
+
+         //更新banner
+        .factory('UpdateHomeBanner',['$resource',function ($resource){
+            return $resource(banner + 'updateHomeBanner');
         }])
 });

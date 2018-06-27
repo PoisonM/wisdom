@@ -27,7 +27,6 @@ import java.util.List;
 @Service
 @Transactional(readOnly = false)
 public class ProductService {
-
     @Autowired
     private ProductMapper productMapper;
 
@@ -50,6 +49,7 @@ public class ProductService {
      * @return
      */
     public PageParamVoDTO<List<ProductDTO>> queryAllProducts(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+        logger.info("service -- 查询所有商品 queryAllProducts,方法执行");
         PageParamVoDTO<List<ProductDTO>> pageResult = new  PageParamVoDTO<>();
         String currentPage = String.valueOf(pageParamVoDTO.getPageNo());
         String pageSize = String.valueOf(pageParamVoDTO.getPageSize());
@@ -74,17 +74,19 @@ public class ProductService {
      * @return
      */
     public PageParamVoDTO<List<ProductDTO>> queryProductsByParameters(PageParamVoDTO<ProductDTO> pageParamVoDTO) {
+        logger.info("service -- 条件查询商品 queryProductsByParameters,方法执行");
         PageParamVoDTO<List<ProductDTO>> page = new  PageParamVoDTO<>();
         int count = productMapper.queryProductsCountByParameters(pageParamVoDTO);
-        logger.info("条件查询商品Count="+count);
         page.setTotalCount(count);
         List<ProductDTO> productDTOList = productMapper.queryProductsByParameters(pageParamVoDTO);
+        logger.info("service -- 条件查询商品Count={},List={}",count,productDTOList.size());
         for (ProductDTO productDTO : productDTOList){
             String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             if(null != offlineProductDTO){
                 offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+                offlineProductDTO.setProductSalesVolume(Integer.parseInt(sellNum)*8+"");
             }
             productDTO.setSellNum(sellNum);
             productDTO.setProductDetail(offlineProductDTO);
@@ -99,6 +101,7 @@ public class ProductService {
      * @return
      */
     public ProductDTO findProductById(String productId) {
+        logger.info("service -- 根据商品id={}查询商品信息 findProductById,方法执行",productId);
         Query query = new Query().addCriteria(Criteria.where("productId").is(productId));
         OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
         offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
@@ -112,7 +115,7 @@ public class ProductService {
      * @param productDTO
      */
     public void updateProductByParameters(ProductDTO<OfflineProductDTO> productDTO) {
-
+        logger.info("service -- 编辑商品={} updateProductByParameters,方法执行",productDTO.getProductId());
         Query query = new Query().addCriteria(Criteria.where("productId").is(productDTO.getProductId()));
         Update update = new Update();
         update.set("tag",productDTO.getProductDetail().getTag());
@@ -120,6 +123,8 @@ public class ProductService {
         update.set("services",productDTO.getProductDetail().getServices());
         update.set("spec",productDTO.getProductDetail().getSpec());
         update.set("detailPic",productDTO.getProductDetail().getDetailPic());
+        update.set("productMarketPrice",productDTO.getProductDetail().getProductMarketPrice());
+        update.set("productSalesVolume",productDTO.getProductDetail().getProductSalesVolume());
         update.set("senderAddress",productDTO.getProductDetail().getSenderAddress());
         update.set("productAmount",productDTO.getProductDetail().getProductAmount());
         mongoTemplate.updateFirst(query,update,"offlineProduct");
@@ -142,6 +147,7 @@ public class ProductService {
     }
 
     public void addOfflineProduct(ProductDTO<OfflineProductDTO> productDTO) {
+        logger.info("service -- 新增商品={} addOfflineProduct,方法执行",productDTO.getProductId());
         mongoTemplate.insert(productDTO.getProductDetail(),"offlineProduct");
         productMapper.addOfflineProduct(productDTO);
     }

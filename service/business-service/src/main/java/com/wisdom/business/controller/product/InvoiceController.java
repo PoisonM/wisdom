@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 关于账户管理
- * @author frank
+ * @author
  * @date 2015-10-14
  */
 @Controller
@@ -40,6 +40,8 @@ public class InvoiceController {
 	public
 	@ResponseBody
 	ResponseDTO addInvoiceInfo(@RequestBody InvoiceDTO invoiceDTO) {
+		long startTime = System.currentTimeMillis();
+		logger.info("发票==={}开始" , startTime);
 		ResponseDTO responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		logger.info("用户添加发票信息=="+userInfoDTO.getMobile());
@@ -53,7 +55,7 @@ public class InvoiceController {
 		{
 			responseDTO.setResult(StatusConstant.FAILURE);
 		}
-
+		logger.info("发票,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -68,11 +70,15 @@ public class InvoiceController {
 	public
 	@ResponseBody
 	ResponseDTO<InvoiceDTO> getInvoiceDetailById(@RequestParam String transactionId) {
+		long startTime = System.currentTimeMillis();
+		logger.info("查询发票==={}开始" , startTime);
 		ResponseDTO<InvoiceDTO> responseDTO = new ResponseDTO<>();
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		logger.info("查询发票用户手机号==={},transaction==={}" , userInfoDTO.getId(),transactionId);
 		InvoiceDTO invoiceDTO = invoiceService.getInvoiceDetailById(userInfoDTO.getId(),transactionId);
 		responseDTO.setResponseData(invoiceDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("查询发票,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 

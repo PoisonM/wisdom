@@ -71,7 +71,8 @@ public class TransactionService {
             }
             //查出库中订单数据
             BusinessOrderDTO oldBusinessOrderDTO = transactionMapper.getBusinessOrderByOrderId(businessOrderDTO.getBusinessOrderId());
-            if ("0".equals(oldBusinessOrderDTO.getStatus()) || "3".equals(oldBusinessOrderDTO.getStatus())) {
+
+            if ("0".equals(oldBusinessOrderDTO.getStatus()) || "3".equals(oldBusinessOrderDTO.getStatus()) || "6".equals(oldBusinessOrderDTO.getStatus())) {
 
                 //根据订单号查出订单对应的商品
                 BusinessOrderDTO businessOrderDTO1 = transactionMapper.getBusinessOrderDetailInfoByOrderId(businessOrderDTO.getBusinessOrderId());
@@ -88,6 +89,10 @@ public class TransactionService {
                     }
                     productDTO.setProductId(businessOrderDTO1.getBusinessProductId());
                     productDTO.setProductAmount(String.valueOf(businessOrderDTO1.getBusinessProductNum()));
+                    //用户在输入密码处等待超过20分钟,
+                    if("6".equals(oldBusinessOrderDTO.getStatus())){
+                        this.updateOfflineProductAmount(productDTO,businessOrderDTO, "lose");
+                    }
                     //查询是否有记录
                     //如果库里订单状态为待付款,并即将修改状态不是已支付,那么将恢复库存
                     if (!"1".equals(businessOrderDTO.getStatus()) && !"0".equals(businessOrderDTO.getStatus())) {
@@ -276,9 +281,9 @@ public class TransactionService {
                     while(true){
                         if(nickNameW!=null&&nickNameW!=""){
                             if(nickNameW.contains("%25")){
-                                nickNameW = CommonUtils.nameDecoder(nickNameW);
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                             }else{
-                                nickNameW = CommonUtils.nameDecoder(nickNameW);
+                                nickNameW = URLDecoder.decode(nickNameW,"utf-8");
                                 break;
                             }
                         }else{
@@ -428,9 +433,9 @@ public class TransactionService {
      */
     public void updateOfflineProductAmount(ProductDTO productDTO,BusinessOrderDTO businessOrderDTO,String addAndLose) {
         logger.info("根据订单商品数量修改相应的商品库存,商品id为:"+productDTO.getProductId()+"添加还是减少:"+addAndLose);
-        Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
-        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO1 = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
-        if(null == offlineProductAmountRecordDTO1) {
+//        Query query = new Query().addCriteria(Criteria.where("orderId").is(businessOrderDTO.getBusinessOrderId())).addCriteria(Criteria.where("addAndLose").is("add"));
+//        OfflineProductAmountRecordDTO offlineProductAmountRecordDTO1 = mongoTemplate.findOne(query, OfflineProductAmountRecordDTO.class,"offlineProductAmountRecordDTO");
+//        if(null == offlineProductAmountRecordDTO1) {
             ProductDTO productDTO2 = new ProductDTO();
             productDTO2.setProductId(productDTO.getProductId());
             //创建库存流水记录
@@ -472,7 +477,7 @@ public class TransactionService {
                 logger.info("修改商品库存失败,商品id为:" + productDTO.getProductId());
                 e.printStackTrace();
             }
-        }
+//        }
     }
 
     public Date getBusinessOrderSendDate(String orderId) {

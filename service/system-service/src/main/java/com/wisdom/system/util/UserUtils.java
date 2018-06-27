@@ -13,6 +13,8 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.SpringUtil;
 import com.wisdom.system.client.BusinessServiceClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -35,10 +37,16 @@ public class UserUtils {
 
 	private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
+	private static Logger logger = LoggerFactory.getLogger(UserUtils.class);
+
 	public static UserInfoDTO getUserInfoFromRedis(){
+		logger.info("system-service utils == 获取用户信息从redis");
+
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		Map<String, String> tokenValue = getHeadersInfo(request);
 		String token = tokenValue.get("logintoken");
+		logger.info("用户token值为：{}",token);
+
 		String userInfoStr = JedisUtils.get(token);
 		UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr,UserInfoDTO.class);
 
@@ -61,6 +69,7 @@ public class UserUtils {
 
 		@Override
 		public void run() {
+			logger.info("utils == 同步userType信息到redis中");
 
 			UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
 			userBusinessTypeDTO.setStatus("1");
