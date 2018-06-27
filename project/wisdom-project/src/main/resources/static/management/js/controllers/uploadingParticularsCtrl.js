@@ -366,7 +366,6 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             listPic:$scope.uploadingPar.productDetail.listPic,
                             senderAddress:$scope.uploadingPar.productDetail.senderAddress,
                             productId:$stateParams.productId,
-                            productSalesVolume:$scope.uploadingPar.productDetail.productSalesVolume,
                             productMarketPrice:$scope.uploadingPar.productDetail.productMarketPrice
                         }
                     };

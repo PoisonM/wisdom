@@ -483,4 +483,8 @@ public class TransactionService {
     public Date getBusinessOrderSendDate(String orderId) {
         return null;
     }
+
+    public List<PayRecordDTO> queryPayFirstOrder() {
+       return transactionMapper.queryPayFirstOrder();
+    }
 }
