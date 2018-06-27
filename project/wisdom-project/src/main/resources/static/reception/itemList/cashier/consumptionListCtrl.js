@@ -71,6 +71,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             SearchShopProjectList.get({
                 filterStr: $scope.searchInfo.info,
                 useStyle: e,
+                status:$scope.status
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 //默认展示第一个
