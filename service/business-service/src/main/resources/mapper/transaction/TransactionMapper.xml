@@ -566,4 +566,14 @@
             AND  transaction_id=#{transactionId}
         </if>
     </select>
+    <!--查询用户在一个时间段内第一笔升级消费记录-->
+    <select id="queryPayFirstOrder"
+            resultType="com.wisdom.common.dto.account.PayRecordDTO">
+        SELECT pay_date,sys_user_id,transaction_id,order_id,sum(amount) amount FROM pay_record pp WHERE pp.transaction_id in(
+        SELECT p.transaction_id from pay_record p WHERE p.pay_date in
+        (SELECT min(pay_date) pay_date from pay_record
+                WHERE amount > 497 AND `status` ="1"
+                AND pay_date BETWEEN "2018-04-15 00:00:00" AND "2018-06-13 23:59:59"
+         GROUP BY sys_user_id )) GROUP BY sys_user_id
+    </select>
 </mapper>

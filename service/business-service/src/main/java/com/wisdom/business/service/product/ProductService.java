@@ -86,6 +86,7 @@ public class ProductService {
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             if(null != offlineProductDTO){
                 offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+                offlineProductDTO.setProductSalesVolume(Integer.parseInt(sellNum)*8+"");
             }
             productDTO.setSellNum(sellNum);
             productDTO.setProductDetail(offlineProductDTO);

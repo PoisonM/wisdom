@@ -630,7 +630,8 @@ public class BusinessRunTimeService {
                         this.insertIncome(returnMoney,userInfo,startRangeM,endRangeM);
                     }catch (Exception e){
                         logger.info("用户"+userInfo.getMobile()+"startDateM"+"-"+"endDateM"+"插入月度返利表出问题");
-                        this.insertMonthlyIncomeError(startDateM,userInfo,businessType);
+                        System.out.println(e.getMessage());
+                        this.insertMonthlyIncomeError(startDateM,userInfo,businessType,e.getMessage());
                     }
                 }
             }
@@ -1019,19 +1020,18 @@ public class BusinessRunTimeService {
             incomeRecordDTO.setStatus("0");
             incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
             incomeRecordDTO.setNextUserIdentifyNumber("");
-            incomeRecordDTO.setNickName(userInfo.getNickname());
+            incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname()));
             incomeRecordDTO.setNextUserNickName("");
             incomeRecordDTO.setIncomeType("month");
             incomeRecordDTO.setMobile(userInfo.getMobile());
             incomeRecordDTO.setNextUserMobile("");
             incomeRecordDTO.setParentRelation("");
             businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-
             IncomeMonthDTO incomeMonth = new IncomeMonthDTO();
             incomeMonth.setIncomeId(incomeRecordDTO.getId());
             incomeMonth.setTimeRangeId(timeRangeId);
             incomeMonth.setSysUserId(userInfo.getId());
-            mongoTemplate.insert(incomeMonthDTO, "incomeMonth");
+            mongoTemplate.insert(incomeMonth, "incomeMonth");
         }else{
             IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
             incomeRecordDTO.setId(incomeMonthDTO.getIncomeId());
@@ -1048,7 +1048,7 @@ public class BusinessRunTimeService {
      *
      * */
 
-    public void insertMonthlyIncomeError(Date date,UserInfoDTO userInfo ,String businessType){
+    public void insertMonthlyIncomeError(Date date,UserInfoDTO userInfo ,String businessType,String errorMegssage){
 
         SimpleDateFormat sdfYear  = new SimpleDateFormat("yyyy");
         SimpleDateFormat sdfMon  = new SimpleDateFormat("MM");
@@ -1061,6 +1061,7 @@ public class BusinessRunTimeService {
         monthlyIncomeError.setBusinessType(businessType);
         monthlyIncomeError.setStatus("0");
         monthlyIncomeError.setSysUserId(userInfo.getId());
+        monthlyIncomeError.setErrorMessage(errorMegssage);
 
         mongoTemplate.insert(monthlyIncomeError, "MonthlyIncomeError");
 
