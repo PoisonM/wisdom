@@ -52,9 +52,9 @@
         </ul>
     </div>
     <!--商品-->
-    <div class="productGoods" ng-repeat="items in product3List">
+    <div class="productGoods" >
         <ul>
-            <li  data-iii="{{items}}" ng-click="goProductDetails(items.id)">
+            <li ng-click="goProductDetails(items.id)" ng-repeat="items in product3List">
                 <div class="imgDiv">
                     <img ng-src="{{items.productUrl}}" alt="">
                 </div>
