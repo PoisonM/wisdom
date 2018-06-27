@@ -19,7 +19,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     $scope.searchInfo = {
         info :''
     };
-
+    $scope.status = '0'
     //获取订单ID
     SaveShopUserOrderInfo.save({
         userId: $stateParams.userId
@@ -71,6 +71,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             SearchShopProjectList.get({
                 filterStr: $scope.searchInfo.info,
                 useStyle: e,
+                status:$scope.status
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 //默认展示第一个
@@ -91,6 +92,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             SearchShopProductList.get({
                 pageSize: "100",
                 filterStr: $scope.searchInfo.info,
+                status :$scope.status
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 var first = data.responseData.detailLevel[0];
@@ -112,7 +114,8 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         } else if (e == 3) {
             GetShopProjectGroups.get({
                 projectGroupName: '',
-                pageSize: 100
+                pageSize: 100,
+                status:$scope.status
             }, function(data) {
                 $scope.threeCategories = data.responseData;
             })
@@ -128,6 +131,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             projectTypeOneId: one,
             ProjectTypeTwoId: two,
             useStyle: $scope.select,
+            status:$scope.status
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });
@@ -143,6 +147,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             productName: "",
             productTypeOneId: one,
             productTypeTwoId: two,
+            status:$scope.status
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });

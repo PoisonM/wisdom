@@ -131,9 +131,13 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         pageSize:"10",
         chooseProjectItem:""
     };
+    //查询已启用状态的项目
+    $scope.status = '0';
 
     /*一级项目列表接口*/
-    OneLevelProject.get(function (data) {
+    OneLevelProject.get(({
+        status:$scope.status
+    }),function (data) {
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
@@ -146,7 +150,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             ProjectTypeTwoId:id,
             projectTypeOneId: $scope.param.projectTypeOneId,
             projectName:$scope.param.projectName,
-            pageSize:$scope.param.pageSize
+            pageSize:$scope.param.pageSize,
+            status:$scope.status
         },function (data) {
             $scope.threeList=data.responseData;
             // $scope.param.projectAppear=false;
@@ -194,7 +199,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
                 ProjectTypeTwoId:data.responseData[0].id,
                 projectTypeOneId:oneId,
                 projectName:$scope.param.projectName,
-                pageSize:$scope.param.pageSize
+                pageSize:$scope.param.pageSize,
+                status:$scope.status
             },function (data) {
                 $scope.threeList=data.responseData;
                 $scope.param.projectAppear=false;

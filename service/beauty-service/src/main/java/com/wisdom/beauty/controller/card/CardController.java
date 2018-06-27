@@ -146,13 +146,16 @@ public class CardController {
 	 */
 	@RequestMapping(value = "/getRechargeCardList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<Object> findRechargeCardList(@RequestParam(required = false) String name,@RequestParam(required = false) String sysUserId,
-											 int pageSize) {
+	ResponseDTO<Object> findRechargeCardList(@RequestParam(required = false) String name,
+											 @RequestParam(required = false) String sysUserId,
+											 int pageSize,
+											 @RequestParam(required = false) String status) {
         String sysShopId = redisUtils.getShopId();
 		PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
         shopRechargeCardDTO.setSysShopId(sysShopId);
 		shopRechargeCardDTO.setName(name);
+		shopRechargeCardDTO.setStatus(status);
 
 		pageParamVoDTO.setRequestData(shopRechargeCardDTO);
 		pageParamVoDTO.setPageNo(0);
@@ -227,7 +230,7 @@ public class CardController {
 	@RequestMapping(value = "/getShopProjectGroups", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ProjectInfoGroupResponseDTO>> findShopProjectGroupList(
-			@RequestParam(required = false) String projectGroupName, int pageSize) {
+			@RequestParam(required = false) String projectGroupName, int pageSize,@RequestParam(required = false) String status) {
 
 		ShopProjectGroupDTO shopProjectGroupDTO = new ShopProjectGroupDTO();
         String sysShopId = redisUtils.getShopId();
@@ -236,6 +239,9 @@ public class CardController {
 		PageParamVoDTO<ShopProjectGroupDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		if (StringUtils.isNotBlank(projectGroupName)) {
 			shopProjectGroupDTO.setProjectGroupName(projectGroupName);
+		}
+		if(StringUtils.isNotBlank(status)){
+			shopProjectGroupDTO.setStatus(status);
 		}
 		pageParamVoDTO.setRequestData(shopProjectGroupDTO);
 		pageParamVoDTO.setPaging(true);

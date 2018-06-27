@@ -47,8 +47,8 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
             status: 1,
             shopUserRechargeCardDTO: $scope.shopUserRechargeCardDTO,
             orderPrice: $scope.orderPrice, //总金额
-            sysClerkId:"",
-            sysClerkName:""
+            sysClerkId:$scope.staffListIds,
+            sysClerkName:$scope.staffListNames
         }
         if($scope.staffListIds == undefined){
             $scope.importData.sysClerkId = "";
@@ -176,9 +176,6 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-2)
     }
-
-
-
 
     //获取员工列表
     GetShopClerkList.get({

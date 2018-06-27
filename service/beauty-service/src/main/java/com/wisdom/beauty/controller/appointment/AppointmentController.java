@@ -23,6 +23,7 @@ import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.LunarUtils;
 import com.wisdom.common.util.RedisLock;
+import org.apache.commons.collections.map.LinkedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,7 +103,8 @@ public class AppointmentController {
 		}
 		logger.info(preLog + "根据时间查询当前店下所有美容师个数={}", clerkInfo.size());
 
-		HashMap<String, Object> responseMap = new HashMap<>(32);
+		LinkedHashMap <String, Object> responseMap = new LinkedHashMap(32);
+		LinkedHashMap <String, Object> responseMapDev = new LinkedHashMap(32);
 
 		//查询某个店的排班信息
 		ShopScheduleSettingDTO shopScheduleSettingDTO = new ShopScheduleSettingDTO();
@@ -139,6 +141,10 @@ public class AppointmentController {
 				logger.info(preLog + "美容师预约列表为空");
 				shopAppointMap.put("appointmentInfo",appointInfoList);
 				shopAppointMap.put("point", 0);
+				shopAppointMap.put("sysClerkDTO", SysClerkDTO);
+				responseMapDev.put(SysClerkDTO.getName(), shopAppointMap);
+				continue;
+
 			} else {
 				for (ShopAppointServiceDTO serviceDTO : shopAppointServiceDTOS) {
 					try {
@@ -157,7 +163,9 @@ public class AppointmentController {
 			shopAppointMap.put("sysClerkDTO", SysClerkDTO);
 			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
 		}
-
+		if(responseMapDev!=null){
+			responseMap.putAll(responseMapDev);
+		}
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(responseMap);
 		return responseDTO;

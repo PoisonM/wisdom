@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
@@ -88,6 +89,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         c.andSysShopIdEqualTo(shopProjectGroupDTO.getSysShopId());
         if (StringUtils.isNotBlank(shopProjectGroupDTO.getProjectGroupName())) {
             c.andProjectGroupNameLike("%" + shopProjectGroupDTO.getProjectGroupName() + "%");
+        }
+
+        if (StringUtils.isNotBlank(shopProjectGroupDTO.getStatus())) {
+            c.andStatusEqualTo(shopProjectGroupDTO.getStatus());
         }
 
         List<ShopProjectGroupDTO> groupDTOS = shopProjectGroupMapper.selectByCriteria(criteria);
@@ -191,7 +196,11 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             shopProjectInfoDTO=new ShopProjectInfoDTO();
             shopProjectInfoDTO.setProjectName(shopProjectInfoGroupRelationDTO.getShopProjectInfoName());
             shopProjectInfoDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
-            shopProjectInfoDTO.setMarketPrice(shopProjectInfoGroupRelationDTO.getShopProjectPrice());
+            ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = shopProjectService.getProjectDetail(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
+            if(null != shopProjectInfoDTO){
+                shopProjectInfoDTO.setMarketPrice(shopProjectInfoResponseDTO.getMarketPrice());
+            }
+            shopProjectInfoDTO.setId(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
             shopProjectInfos.add(shopProjectInfoDTO);
         }
         // 获取套卡信息

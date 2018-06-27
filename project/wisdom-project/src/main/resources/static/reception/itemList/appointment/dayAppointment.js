@@ -969,7 +969,10 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             // filterStr:filterStr
         }, function (data) {
             $scope.param.newProductObject.newProjectData = data.responseData;
-            console.log(data.responseData)
+            for (var i = 0; i < $scope.param.newProductObject.newProjectData.length; i++) {
+                $scope.param.newProductObject.newProjectData[i]['type'] = 'gklck'
+            }
+            console.log($scope.param.newProductObject.newProjectData)
         })
     };
     /*本店项目*/
@@ -1080,7 +1083,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.param.checkProjectArr = []
     //选择项目包括控制样式
     $scope.selectTheProduct = function (items,parentIndex,index, type) {
-        debugger
         //重构
         $scope.redCorrectFlag = items.id
         if($scope.param.tempRedgArr.indexOf(items.id) != -1){
@@ -1090,31 +1092,21 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.param.tempRedgArr.push(items.id)
             $scope.param.checkProjectArr.push(items)
         }
+
         //计算时长 项目名称 项目id
         $scope.param.checkprojectId = ""
         $scope.param.checkprojectName = ""
         $scope.param.checkprojectDuration = new Number()
 
-
         for(var i = 0; i < $scope.param.checkProjectArr.length; i++){
-            $scope.param.checkprojectId += $scope.param.checkProjectArr[i].id+";"
-            if("本店项目" == type){
-                $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
-                $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
+            if("gklck" == $scope.param.checkProjectArr[i].type){
+                $scope.param.checkprojectId += $scope.param.checkProjectArr[i].projectId+";"
             }else{
-                $scope.param.checkprojectName += $scope.param.checkProjectArr[i].sysShopProjectName+";"
-                ProjectInfo.get({id:$scope.param.checkProjectArr[i].projectId},function (data) {
-                    if(data.result == "0x00001"){ 
-                    $scope.productInformation = data.responseData.projectDuration;
-                    $scope.param.checkprojectDuration += parseInt($scope.productInformation)
-                } })
+                $scope.param.checkprojectId += $scope.param.checkProjectArr[i].id+";"
             }
+            $scope.param.checkprojectName += $scope.param.checkProjectArr[i].projectName+";"
+            $scope.param.checkprojectDuration += parseInt($scope.param.checkProjectArr[i].projectDuration)
         }
-        // if (type == "疗程") {
-        //  $scope.param.ModifyAppointmentObject.newProjectDataFlag[index] = !$scope.param.ModifyAppointmentObject.newProjectDataFlag[index];
-        //  } else {
-        //  $scope.param.ModifyAppointmentObject.selfProductDataFlag[index] = !$scope.param.ModifyAppointmentObject.selfProductDataFlag[index];
-        //  }
         console.log($scope.param.checkprojectId)
     }
 

@@ -11,7 +11,8 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     private String consumeId;
 
     //关联员工
-    private String clerkId;
+    private String sysClerkId;
+    private String sysClerkName;
 
     private String sysUserId;
 
@@ -36,6 +37,22 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     private T shopUserConsumeDTO;
 
     private String goodsType;
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -100,15 +117,6 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     public void setConsumeId(String consumeId) {
         this.consumeId = consumeId;
     }
-
-    public String getClerkId() {
-        return clerkId;
-    }
-
-    public void setClerkId(String clerkId) {
-        this.clerkId = clerkId;
-    }
-
 
     public int getConsumeNum() {
         return consumeNum;

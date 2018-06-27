@@ -62,3 +62,11 @@
     width: 0.1171875rem;
     height: 0.2109375rem;
 }
+
+
+.hidenInfo{
+    white-space: nowrap;  /*强制span不换行*/
+    display: inline-block;  /*将span当做块级元素对待*/
+    overflow: hidden;  /*超出宽度部分隐藏*/
+    text-overflow: ellipsis;  /*超出部分以点号代替*/
+}

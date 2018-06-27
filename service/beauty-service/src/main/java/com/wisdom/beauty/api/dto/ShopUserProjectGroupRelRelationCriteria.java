@@ -196,76 +196,6 @@ public class ShopUserProjectGroupRelRelationCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andConsumeRecordIdIsNull() {
-            addCriterion("consume_record_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdIsNotNull() {
-            addCriterion("consume_record_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdEqualTo(String value) {
-            addCriterion("consume_record_id =", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdNotEqualTo(String value) {
-            addCriterion("consume_record_id <>", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdGreaterThan(String value) {
-            addCriterion("consume_record_id >", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdGreaterThanOrEqualTo(String value) {
-            addCriterion("consume_record_id >=", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdLessThan(String value) {
-            addCriterion("consume_record_id <", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdLessThanOrEqualTo(String value) {
-            addCriterion("consume_record_id <=", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdLike(String value) {
-            addCriterion("consume_record_id like", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdNotLike(String value) {
-            addCriterion("consume_record_id not like", value, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdIn(List<String> values) {
-            addCriterion("consume_record_id in", values, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdNotIn(List<String> values) {
-            addCriterion("consume_record_id not in", values, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdBetween(String value1, String value2) {
-            addCriterion("consume_record_id between", value1, value2, "consumeRecordId");
-            return (Criteria) this;
-        }
-
-        public Criteria andConsumeRecordIdNotBetween(String value1, String value2) {
-            addCriterion("consume_record_id not between", value1, value2, "consumeRecordId");
-            return (Criteria) this;
-        }
-
         public Criteria andShopProjectGroupNameIsNull() {
             addCriterion("shop_project_group_name is null");
             return (Criteria) this;
@@ -523,6 +453,66 @@ public class ShopUserProjectGroupRelRelationCriteria {
 
         public Criteria andShopGroupPuchasePriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("shop_group_puchase_price not between", value1, value2, "shopGroupPuchasePrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIsNull() {
+            addCriterion("discount_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIsNotNull() {
+            addCriterion("discount_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceEqualTo(BigDecimal value) {
+            addCriterion("discount_price =", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotEqualTo(BigDecimal value) {
+            addCriterion("discount_price <>", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceGreaterThan(BigDecimal value) {
+            addCriterion("discount_price >", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("discount_price >=", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceLessThan(BigDecimal value) {
+            addCriterion("discount_price <", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("discount_price <=", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIn(List<BigDecimal> values) {
+            addCriterion("discount_price in", values, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotIn(List<BigDecimal> values) {
+            addCriterion("discount_price not in", values, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("discount_price between", value1, value2, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("discount_price not between", value1, value2, "discountPrice");
             return (Criteria) this;
         }
 
@@ -1383,6 +1373,76 @@ public class ShopUserProjectGroupRelRelationCriteria {
 
         public Criteria andDiscountNotBetween(Float value1, Float value2) {
             addCriterion("discount not between", value1, value2, "discount");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdIsNull() {
+            addCriterion("consume_record_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdIsNotNull() {
+            addCriterion("consume_record_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdEqualTo(String value) {
+            addCriterion("consume_record_id =", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdNotEqualTo(String value) {
+            addCriterion("consume_record_id <>", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdGreaterThan(String value) {
+            addCriterion("consume_record_id >", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdGreaterThanOrEqualTo(String value) {
+            addCriterion("consume_record_id >=", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdLessThan(String value) {
+            addCriterion("consume_record_id <", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdLessThanOrEqualTo(String value) {
+            addCriterion("consume_record_id <=", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdLike(String value) {
+            addCriterion("consume_record_id like", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdNotLike(String value) {
+            addCriterion("consume_record_id not like", value, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdIn(List<String> values) {
+            addCriterion("consume_record_id in", values, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdNotIn(List<String> values) {
+            addCriterion("consume_record_id not in", values, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdBetween(String value1, String value2) {
+            addCriterion("consume_record_id between", value1, value2, "consumeRecordId");
+            return (Criteria) this;
+        }
+
+        public Criteria andConsumeRecordIdNotBetween(String value1, String value2) {
+            addCriterion("consume_record_id not between", value1, value2, "consumeRecordId");
             return (Criteria) this;
         }
 
