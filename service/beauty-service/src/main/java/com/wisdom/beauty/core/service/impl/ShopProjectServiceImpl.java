@@ -224,6 +224,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getId())) {
 			criteria.andIdEqualTo(extShopProjectInfoDTO.getId());
 		}
+		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getStatus())) {
+			criteria.andStatusEqualTo(extShopProjectInfoDTO.getStatus());
+		}
 		List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 
 		return dtos;

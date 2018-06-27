@@ -245,7 +245,7 @@ public class ProductController {
 
     public
     @ResponseBody
-    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
+    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr,@RequestParam(required = false) String status) {
 
         String sysShopId = null;
         if (StringUtils.isBlank(sysShopId)) {
@@ -268,7 +268,7 @@ public class ProductController {
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
         shopProductInfoDTO.setSysShopId(sysShopId);
         shopProductInfoDTO.setProductName(filterStr);
-
+        shopProductInfoDTO.setStatus(status);
         HashMap<String, Object> returnMap = new HashMap<>(16);
         List<ShopProductInfoDTO> shopProductInfo = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
 

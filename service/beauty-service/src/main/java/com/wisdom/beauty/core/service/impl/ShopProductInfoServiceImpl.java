@@ -85,6 +85,10 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
+		
+		if(StringUtils.isNotBlank(shopProductInfoDTO.getStatus())){
+		    criteria.andStatusEqualTo(shopProductInfoDTO.getStatus());
+		}
 
 		List<ShopProductInfoDTO> shopProductInfoDTOS = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
 		return shopProductInfoDTOS;

@@ -12,7 +12,6 @@ import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -115,7 +114,7 @@ public class ProjectController {
 	@RequestMapping(value = "searchShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
 
 	public @ResponseBody ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle,
-			@RequestParam(required = false) String filterStr) {
+			@RequestParam(required = false) String filterStr,@RequestParam(required = false) String status) {
         String sysShopId = redisUtils.getShopId();
 
 		logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
@@ -124,7 +123,7 @@ public class ProjectController {
 		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
 		extShopProjectInfoDTO.setSysShopId(sysShopId);
 		extShopProjectInfoDTO.setProjectName(filterStr);
-		extShopProjectInfoDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
+		extShopProjectInfoDTO.setStatus(status);
 		if (StringUtils.isNotBlank(useStyle) && (!ExtCardTypeEnum.ALL.getCode().equals(useStyle))) {
 			extShopProjectInfoDTO.setUseStyle(useStyle);
 		}
