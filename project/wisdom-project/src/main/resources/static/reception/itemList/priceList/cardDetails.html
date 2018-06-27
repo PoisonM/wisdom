@@ -14,7 +14,7 @@
                     <p class="mt50 fs32 c66"><span>包含项目</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>（{{param.cardDetail.shopProjectInfoDTOS.length}}）</span></p>
                     <ul class="mt30">
                         <li ng-repeat="item in param.cardDetail.shopProjectInfoDTOS">
-                            <img ng-src="{{item.projectUrl}}" alt="">
+                            <img src="{{item.projectUrl}}" alt="" onerror="this.src='images/moren.png'">
                             <p class="mt22 fs32 c66">{{item.projectName}}</p>
                             <p><span class="c99 fs26">价格：</span><span class="c99 fs26">￥{{item.marketPrice}}</span>
                                 &nbsp;&nbsp;<span class="fs28 cff66">{{item.serviceTimes}}次</span>
