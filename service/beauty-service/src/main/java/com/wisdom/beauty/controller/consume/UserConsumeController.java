@@ -68,6 +68,8 @@ public class UserConsumeController {
         pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
+        pageParamVoDTO.setStartTime(userConsumeRequest.getStartTime());
+        pageParamVoDTO.setEndTime(userConsumeRequest.getEndTime());
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
