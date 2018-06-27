@@ -805,7 +805,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			}
 			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
 			if (totalConsumeNumber == null) {
-				totalConsumeNumber = map.get(shopBossRelation.getSysShopId()).getConsumeNumber();
+				if(map!=null&&map.get(shopBossRelation.getSysShopId())!=null){
+					totalConsumeNumber = map.get(shopBossRelation.getSysShopId()).getConsumeNumber();
+				}
 			} else {
 				if (map.get(shopBossRelation.getSysShopId()) != null) {
 					totalConsumeNumber = totalConsumeNumber
@@ -820,7 +822,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				}
 			}
 			if (totalConsumeTime == null) {
-				totalConsumeTime = timeMap.get(shopBossRelation.getSysShopId());
+				if(timeMap!=null){
+					totalConsumeTime = timeMap.get(shopBossRelation.getSysShopId());
+				}
 			} else {
 				if (timeMap.get(shopBossRelation.getSysShopId()) != null) {
 					totalConsumeTime = totalConsumeTime + timeMap.get(shopBossRelation.getSysShopId());
