@@ -48,6 +48,9 @@ public class BusinessMessageQueueReceiver {
     @Autowired
     private PayFunction payFunction;
 
+    @Autowired
+    private BusinessMessageQueueSender businessMessageQueueSender;
+
     private static Gson gson = new Gson();
 
     @RabbitListener(queues = "notifySpecialShopBossCustomerTransaction")
@@ -192,6 +195,9 @@ public class BusinessMessageQueueReceiver {
             }
         }
 
+        float expenseMoney = payFunction.calculateUserExpenseMoney(instanceReturnMoneySignalDTO);
+
+        businessMessageQueueSender.sendHandleUserLevelPromotion(userInfoDTO,expenseMoney);
     }
 
     @RabbitListener(queues = "recordMonthTransaction")

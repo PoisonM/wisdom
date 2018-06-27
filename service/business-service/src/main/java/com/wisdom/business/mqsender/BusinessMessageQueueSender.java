@@ -18,6 +18,8 @@ import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -75,4 +77,7 @@ public class BusinessMessageQueueSender {
         logger.info("send handleUserLevelPromotion message==="+sendHandleUserLevelPromotionMessage);
         this.rabbitTemplate.convertAndSend("handleUserLevelPromotion", sendHandleUserLevelPromotionMessage);
     }
+
+
+
 }

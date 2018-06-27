@@ -518,26 +518,38 @@ public class BusinessRunTimeService {
         logger.info("用户即时返现解冻==={}开始" , startTime);
         for(IncomeRecordDTO incomeRecord : incomeRecordDTOList)
         {
-            if(!transactionIds.contains(incomeRecord.getTransactionId()))
+            try
             {
-                transactionIds.add(incomeRecord.getTransactionId());
+                deFrozenIncomeRecord(incomeRecord,transactionIds);
             }
-
-            boolean operationFlag = true;
-            boolean businessFlag = true;
-
-            //判断incomeRecord记录中的这个用户的门店是不是处于冻结状态
-            UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-            userBusinessTypeDTO.setSysUserId(incomeRecord.getSysUserId());
-            userBusinessTypeDTO.setStatus("2");
-            List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-            if(userBusinessTypeDTOS.size()>0)
+            catch (Exception e)
             {
-                logger.info("incomeRecord记录中的这个用户={}的门店处于冻结状态" ,incomeRecord.getSysUserId());
-                businessFlag = false;
-                continue;
+                e.printStackTrace();
             }
+        }
+        logger.info("用户即时返现解冻,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+    }
 
+    @Transactional(readOnly = false)
+    public void deFrozenIncomeRecord(IncomeRecordDTO incomeRecord,List<String> transactionIds){
+        if(!transactionIds.contains(incomeRecord.getTransactionId()))
+        {
+            transactionIds.add(incomeRecord.getTransactionId());
+        }
+
+        boolean operationFlag = true;
+
+        //判断incomeRecord记录中的这个用户的门店是不是处于冻结状态
+        UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
+        userBusinessTypeDTO.setSysUserId(incomeRecord.getSysUserId());
+        userBusinessTypeDTO.setStatus("2");
+        List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
+        if(userBusinessTypeDTOS.size()>0)
+        {
+            logger.info("incomeRecord记录中的这个用户={}的门店处于冻结状态" ,incomeRecord.getSysUserId());
+        }
+        else
+        {
             //判断此记录，是否财务和运营人员，都已经审核通过
             IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
             incomeRecordManagementDTO.setIncomeRecordId(incomeRecord.getId());
@@ -569,7 +581,7 @@ public class BusinessRunTimeService {
                 }
             }
 
-            if(operationFlag&&businessFlag)
+            if(operationFlag)
             {
                 //用户资金解冻和级别提升返现，和推荐奖励，以及月度返利的所有操作，加一把锁
                 RedisLock redisLock = new RedisLock("userReturnMoneyDeLock"+incomeRecord.getSysUserId());
@@ -607,7 +619,6 @@ public class BusinessRunTimeService {
                 }
             }
         }
-        logger.info("用户即时返现解冻,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
 
@@ -956,6 +967,8 @@ public class BusinessRunTimeService {
         float returnMonthlyMoney = 0;
         float returnMonthlyMoney_A = 0;
         float returnMonthlyMoney_B = 0;
+        float returnMonthlyMoney_C = 0;
+        float importLevelMoney = 0;
 
         String startDate =  DateUtils.formatDate(startDateM,"yyyy-MM-dd HH-mm-ss");
         String endDate = DateUtils.formatDate(endDateM,"yyyy-MM-dd HH-mm-ss");
@@ -971,10 +984,21 @@ public class BusinessRunTimeService {
             else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
             {
                 returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
+            }else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessC1)){
+                returnMonthlyMoney_C = returnMonthlyMoney_C + monthTransactionRecordDTO.getAmount();
+                importLevelMoney = monthTransactionRecordDTO.getAmount();
             }
         }
-        if(returnMonthlyMoney_B>0||returnMonthlyMoney_A>0){
-            returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+        if(returnMonthlyMoney_B>0||returnMonthlyMoney_A>0||returnMonthlyMoney_C>0){
+            if(returnMonthlyMoney_C>0){
+                if(importLevelMoney >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&importLevelMoney<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + returnMonthlyMoney_C*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+                }else if(importLevelMoney>= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + returnMonthlyMoney_C*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+                }
+            }else{
+                returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+            }
         }
 
         return returnMonthlyMoney;
