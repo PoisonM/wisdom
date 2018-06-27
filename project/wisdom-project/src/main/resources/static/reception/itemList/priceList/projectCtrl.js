@@ -128,7 +128,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         projectTypeOneId:"",//一级项目id
         ProjectTypeTwoId:"",//二级项目id
         projectName:"",
-        pageSize:"10",
+        pageSize:"100",
         chooseProjectItem:""
     };
     //查询已启用状态的项目

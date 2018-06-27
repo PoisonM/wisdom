@@ -5,12 +5,12 @@ import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.DiscountService;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopOrderService;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -159,8 +159,11 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             for (ShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
                 if (null != userProductRelationDTO && null != userProductRelationDTO.getPurchasePrice() && null != userProductRelationDTO.getInitTimes()) {
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
-                    BigDecimal multiplyAmount = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount())).multiply(new BigDecimal(userProductRelationDTO.getInitTimes()));
-                    userProductRelationDTO.setInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
+                    //折扣价格，也就是单个产品的价格
+                    BigDecimal discountPrice = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
+                    BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProductRelationDTO.getInitTimes()));
+                    userProductRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
+                    userProductRelationDTO.setInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                     userProductRelationDTO.setDiscount(shopUserRechargeCardDTO.getProductDiscount());
                     updateFlag = true;
                 }
@@ -176,17 +179,28 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 if (null != userProjectRelationDTO && null != userProjectRelationDTO.getSysShopProjectPurchasePrice() && null != userProjectRelationDTO.getSysShopProjectInitTimes()) {
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
-                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()).multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes())));
-                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        //折扣价格，也是单个价格
+                        BigDecimal discountPrice = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
+                        BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes()));
+                        userProjectRelationDTO.setSysShopProjectInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                         userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getTimeDiscount());
+                        userProjectRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
                         updateFlag = true;
                     } else {
-                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()).multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes())));
-                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        BigDecimal discountPrice = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
+                        BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes()));
+                        userProjectRelationDTO.setSysShopProjectInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
                         userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getPeriodDiscount());
+                        userProjectRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
                         updateFlag = true;
                     }
                 }
+            }
+        }
+        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
+        if(CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)){
+            for(ShopUserProjectGroupRelRelationDTO dto:projectGroupRelRelationDTOS){
+                dto.setDiscountPrice(dto.getShopGroupPuchasePrice());
             }
         }
 
@@ -198,6 +212,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if (updateFlag) {
             update.set("shopUserProjectRelationDTOS", alreadyOrderDTO.getShopUserProjectRelationDTOS());
             update.set("shopUserProductRelationDTOS", alreadyOrderDTO.getShopUserProductRelationDTOS());
+        }
+        if(CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)){
+            update.set("projectGroupRelRelationDTOS", projectGroupRelRelationDTOS);
         }
         update.set("updateDate",new Date());
         mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");

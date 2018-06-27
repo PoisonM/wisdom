@@ -17,7 +17,7 @@
                         <span class="name">{{item.shopProjectGroupName}}</span>
                         <span class="discount"><s>原价 {{item.shopGroupPuchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
                         <label for="" class="marketPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-value="(item.projectInitAmount|number:2)" ng-model="item.projectInitAmount">
+                        <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text" ng-model="item.projectInitTimes"> -->
                         <div class="delete" ng-click="deleteClick(goodsType.groupCard,item)">删除</div>
@@ -59,7 +59,7 @@
                         <span class="name">{{item.shopProductName}}</span>
                         <span class="discount"><s>原价 {{item.purchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
                         <label for="" class="marketPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-model="item.initAmount" ng-value="(item.initAmount*item.discount|number:2)">
+                        <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text" ng-model="item.initTimes"> -->
                         <div class="delete" ng-click="deleteClick(goodsType.product,item)">删除</div>
@@ -100,7 +100,7 @@
                         <span class="name">{{item.sysShopProjectName}}</span>
                         <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}.00</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
                         <label for="" class="marketPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-model="item.sysShopProjectInitAmount" ng-value="item.sysShopProjectPurchasePrice*item.discount">
+                        <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text">-->
                         <div class="delete" ng-click="deleteClick(goodsType.timeCard,item)">删除</div>

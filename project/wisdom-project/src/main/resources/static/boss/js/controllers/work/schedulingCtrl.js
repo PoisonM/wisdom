@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/4.
  */
 angular.module('controllers',[]).controller('schedulingCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopClerkScheduleList','GetBossShopList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetShopClerkScheduleList,GetBossShopList,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopClerkScheduleList','GetBossShopList','$ionicLoading','GetClerkAchievementList',
+        function ($scope,$rootScope,$stateParams,$state,GetShopClerkScheduleList,GetBossShopList,$ionicLoading,GetClerkAchievementList) {
             $rootScope.title = "排班";
             $scope.param={
                 nowdate:new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月",//初始化时间
@@ -32,8 +32,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                             tempWeek[i] = (tempWeek[i].split("||")[0].substr(tempWeek[i].split("||")[0].length-2,2)+","+tempWeek[i].split("||")[1].replace("星期","周")).split(",")
                         }
                         $scope.tempUser = data.responseData.responseList;
-                        $scope.tempWeek = tempWeek
-                        console.log($scope.tempWeek);
+                        $rootScope.tempWeek = tempWeek
 
                     }
                 })
@@ -64,6 +63,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 $scope.compileDateFn()
             };
             $scope.addMonth = function () {
+                console.log(2);
                 $scope.dataYear = parseInt($scope.param.nowdate.split("年")[0])
                 $scope.dataMonth = parseInt($scope.param.nowdate.split("年")[1].split("月")[0])
                 $scope.param.nowdate = $scope.dataYear+"年"+($scope.dataMonth+1)+"月"
@@ -104,4 +104,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                     clearTimeout(tiemInt)
                 }
             },100)
+
+
+
 }]);

@@ -27,7 +27,7 @@ PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScop
     }
     $scope.param={
         name:"",
-        pageSize:"10",
+        pageSize:"100",
         cardList:{}
     }
     $scope.status = '0';
