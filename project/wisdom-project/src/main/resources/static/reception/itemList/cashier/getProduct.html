@@ -16,9 +16,11 @@
     <div class="stillOwedTitle"></div>
     <div class="height100Num color333FS34 ">
         <ul>
-            <li ng-click="goHousekeeper()" class="space-between paddingLeft30">
-                <span>关联员工</span>
-                <span ng-repeat="useItem in staffListNames">{{useItem}}</span>
+            <li ng-click="goHousekeeper()" class="space-between paddingLeft30 rele_people">
+                <div>关联员工</div>
+                <span>
+                    <e ng-repeat="useItem in staffListNames">{{useItem}}</e>
+                </span>
                 <div class="go_set"></div>
             </li>
         </ul>
