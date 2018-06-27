@@ -125,10 +125,11 @@ public class ProductController {
      */
     @RequestMapping(value = "/oneLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct() {
+    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct(@RequestParam(required = false) String status) {
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
+        shopProductTypeDTO.setStatus(status);
         shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
@@ -211,7 +212,7 @@ public class ProductController {
     ResponseDTO<List<ShopProductInfoResponseDTO>> findThreeLevelProduct(@RequestParam String productTypeOneId,
                                                                 @RequestParam String productTypeTwoId,
                                                                 @RequestParam(required = false) String productName,
-                                                                @RequestParam int pageSize) {
+                                                                @RequestParam int pageSize, @RequestParam(required = false) String status) {
 
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -221,6 +222,7 @@ public class ProductController {
         shopProductInfoDTO.setProductTypeOneId(productTypeOneId);
         shopProductInfoDTO.setProductTypeTwoId(productTypeTwoId);
         shopProductInfoDTO.setProductName(productName);
+        shopProductInfoDTO.setStatus(status);
 
         pageParamVoDTO.setRequestData(shopProductInfoDTO);
         pageParamVoDTO.setPageNo(0);
@@ -243,7 +245,7 @@ public class ProductController {
 
     public
     @ResponseBody
-    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
+    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr,@RequestParam(required = false) String status) {
 
         String sysShopId = null;
         if (StringUtils.isBlank(sysShopId)) {
@@ -266,7 +268,7 @@ public class ProductController {
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
         shopProductInfoDTO.setSysShopId(sysShopId);
         shopProductInfoDTO.setProductName(filterStr);
-
+        shopProductInfoDTO.setStatus(status);
         HashMap<String, Object> returnMap = new HashMap<>(16);
         List<ShopProductInfoDTO> shopProductInfo = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
 

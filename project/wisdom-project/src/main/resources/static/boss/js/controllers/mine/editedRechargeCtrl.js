@@ -106,7 +106,11 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                     alert("请检查信息");
                     return
                 }
-*/
+*/              if ($scope.param.status == true) {
+                    $rootScope.settingAddsome.editedRecharge.status = '0'
+                } else {
+                    $rootScope.settingAddsome.editedRecharge.status = '1'
+                }
 
                 UpdateRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge,function (data) {
                     if(data.result==Global.SUCCESS){

@@ -119,9 +119,11 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         chooseProductItem:"",
     };
 
-
+    $scope.status = '0';
     //一级商品列表接口
-    OneLevelProduct.get(function (data) {
+    OneLevelProduct.get(({
+        status:$scope.status
+    }),function (data) {
         $scope.selectSingleData=data.responseData;
         $scope.selectSingleData[0].status=3;
         console.log(data);
@@ -160,7 +162,8 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
             pageSize:$scope.param.pageSize,
             productTypeOneId:$scope.param.productTypeOneId,
             productTypeTwoId:id,
-            productName:$scope.param.productName
+            productName:$scope.param.productName,
+            status:$scope.status
         },function (data) {
             $scope.product3List = data.responseData;
             // $scope.param.productAppear=false;
@@ -178,7 +181,8 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
                 pageSize:$scope.param.pageSize,
                 productTypeOneId:oneId,
                 productTypeTwoId:$scope.product2List[0].id,
-                productName:$scope.param.productName
+                productName:$scope.param.productName,
+                status:$scope.status
             },function (data) {
                 $scope.product3List=data.responseData;
                 $scope.param.productAppear=false;

@@ -1282,9 +1282,26 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
 
-        //套卡划卡详情
+        //消费详情
         .state('pad-web.left_nav.completeCardDetail', {
             url: '/completeCardDetail/:userId/:flowNo',
+            templateUrl: root + '/cashier/completeCardDetail.html',
+            controller: 'completeCardDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡划卡详情",
+                        files: [root + "cashier/completeCardDetail.js?version=" + version,
+                            root + "cashier/completeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //套卡划卡详情
+        .state('pad-web.left_nav.consumeGroupCardDetail', {
+            url: '/consumeGroupCardDetail/:userId/:flowNo',
             templateUrl: root + '/cashier/consumeGroupCardDetail.html',
             controller: 'consumeGroupCardDetail',
             resolve: {

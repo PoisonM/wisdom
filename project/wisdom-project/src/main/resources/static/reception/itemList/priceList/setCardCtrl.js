@@ -30,7 +30,12 @@ PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScop
         pageSize:"10",
         cardList:{}
     }
-    GetRechargeCardList.get({name:$scope.param.name,pageSize:$scope.param.pageSize},function (data) {
+    $scope.status = '0';
+    GetRechargeCardList.get({
+        name:$scope.param.name,
+        pageSize:$scope.param.pageSize,
+        status:$scope.status
+    },function (data) {
         $scope.cardList=data.responseData;
         console.log(data)
     })

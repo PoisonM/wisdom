@@ -90,6 +90,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             c.andProjectGroupNameLike("%" + shopProjectGroupDTO.getProjectGroupName() + "%");
         }
 
+        if (StringUtils.isNotBlank(shopProjectGroupDTO.getStatus())) {
+            c.andStatusEqualTo(shopProjectGroupDTO.getStatus());
+        }
+
         List<ShopProjectGroupDTO> groupDTOS = shopProjectGroupMapper.selectByCriteria(criteria);
 
         List<ProjectInfoGroupResponseDTO> response = new ArrayList();
