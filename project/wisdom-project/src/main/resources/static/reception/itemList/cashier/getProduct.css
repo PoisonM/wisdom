@@ -165,7 +165,7 @@
     border-left: 1px solid #E5E5E5;
 }
 
-.getProduct  .height100Num  ul li{
+.getProduct .height100Num  ul li{
     /*height: 0.65625rem;*/
     line-height: 0.65625rem;
     font-size: 0.25rem;
@@ -176,6 +176,28 @@
     overflow: hidden;
 }
 
+.getProduct .rele_people div{
+    margin: 5px 0 0 0px;
+    float: left;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+
+.getProduct .rele_people span{
+    margin: 10px 40px 0 16px;
+    float: right;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.getProduct .rele_people span e{
+    margin-right: 3px;
+}
 .getProduct  .go_set {
     position: absolute;
     top: 40%;
