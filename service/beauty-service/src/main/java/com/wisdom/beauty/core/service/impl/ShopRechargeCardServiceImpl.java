@@ -76,6 +76,9 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 		if (StringUtils.isNotBlank(shopRechargeCardDTO.getName())) {
 			criteria.andNameLike("%" + shopRechargeCardDTO.getName() + "%");
 		}
+		if (StringUtils.isNotBlank(shopRechargeCardDTO.getStatus())) {
+			criteria.andStatusEqualTo(shopRechargeCardDTO.getStatus());
+		}
 
 		List<ShopRechargeCardDTO> list = shopRechargeCardMapper.selectByCriteria(shopRechargeCardCriteria);
 		// 遍历list,将折扣信息和充值卡信息放入到新的list中

@@ -163,7 +163,7 @@ public class ProjectController {
 		ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
 
 		// 缓存一级
-		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
+		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId,"");
 		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			return responseDTO;
@@ -366,7 +366,7 @@ public class ProjectController {
 	 */
 	@RequestMapping(value = "/oneLevelProject", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject() {
+	ResponseDTO<List<ShopProjectTypeDTO>> findOneLevelProject(@RequestParam(required = false) String status) {
 		String sysShopId = null;
 		if (StringUtils.isBlank(sysShopId)) {
 			SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
@@ -381,7 +381,7 @@ public class ProjectController {
 			}
 		}
 		ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
-		List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId);
+		List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId,status);
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
@@ -419,7 +419,7 @@ public class ProjectController {
 	@ResponseBody
 	ResponseDTO<List<ShopProjectInfoResponseDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
 			@RequestParam String ProjectTypeTwoId, @RequestParam(required = false) String projectName,
-			@RequestParam int pageSize, @RequestParam(required = false) String useStyle) {
+			@RequestParam int pageSize, @RequestParam(required = false) String useStyle, @RequestParam(required = false) String status) {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -429,6 +429,7 @@ public class ProjectController {
 		shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
 		shopProjectInfoDTO.setProjectTypeTwoId(ProjectTypeTwoId);
 		shopProjectInfoDTO.setProjectName(projectName);
+		shopProjectInfoDTO.setStatus(status);
 		shopProjectInfoDTO.setUseStyle(useStyle);
 
 		pageParamVoDTO.setRequestData(shopProjectInfoDTO);

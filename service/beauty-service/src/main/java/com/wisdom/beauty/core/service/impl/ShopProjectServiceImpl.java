@@ -224,7 +224,6 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		if (StringUtils.isNotBlank(extShopProjectInfoDTO.getId())) {
 			criteria.andIdEqualTo(extShopProjectInfoDTO.getId());
 		}
-
 		List<ShopProjectInfoDTO> dtos = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 
 		return dtos;
@@ -267,7 +266,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	}
 
 	@Override
-	public List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId) {
+	public List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId,String status) {
 		logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
 		if (StringUtils.isBlank(sysShopId)) {
 			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
@@ -276,7 +275,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
 		criteria.andSysShopIdEqualTo(sysShopId);
-		//criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
+		if(StringUtils.isNotBlank(status)){
+			criteria.andStatusEqualTo(status);
+		}
 		criteria.andParentIdIsNull();
 
 		ShopProjectTypeCriteria.Criteria or = shopProjectTypeCriteria.createCriteria();
@@ -339,8 +340,10 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
 			criteria.andUseStyleEqualTo(shopProjectInfoDTO.getUseStyle());
 		}
-		//项目为启用状态
-		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());
+		if (StringUtils.isNotBlank(shopProjectInfoDTO.getStatus())) {
+			criteria.andStatusEqualTo(shopProjectInfoDTO.getStatus());
+		}
+
 		List<ShopProjectInfoDTO> list = shopProjectInfoMapper.selectByCriteria(shopProjectInfoCriteria);
 
         List<ShopProjectInfoResponseDTO> responseDTOS = new ArrayList<>();
@@ -481,9 +484,23 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			logger.error("修改项目类别传入参数有误={}", shopProjectTypeDTO);
 			return 0;
 		}
-		ShopProjectTypeCriteria criteria = new ShopProjectTypeCriteria();
-		ShopProjectTypeCriteria.Criteria c = criteria.createCriteria();
-		c.andIdEqualTo(shopProjectTypeDTO.getId());
+		//如果是一级类别修改状态，则它下面的项目都修改状态
+		if(StringUtils.isBlank(shopProjectTypeDTO.getParentId()) && StringUtils.isNotBlank(shopProjectTypeDTO.getStatus())){
+			//项目
+			ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
+			shopProjectInfoDTO.setStatus(shopProjectTypeDTO.getStatus());
+			ShopProjectInfoCriteria projectInfoCriteria = new ShopProjectInfoCriteria();
+			ShopProjectInfoCriteria.Criteria cr = projectInfoCriteria.createCriteria();
+			cr.andProjectTypeOneIdEqualTo(shopProjectTypeDTO.getId());
+			shopProjectInfoMapper.updateByCriteriaSelective(shopProjectInfoDTO,projectInfoCriteria);
+			//二级类别
+			ShopProjectTypeDTO twoLevel = new ShopProjectTypeDTO();
+			twoLevel.setStatus(shopProjectTypeDTO.getStatus());
+			ShopProjectTypeCriteria criteria = new ShopProjectTypeCriteria();
+			ShopProjectTypeCriteria.Criteria c = criteria.createCriteria();
+			c.andParentIdEqualTo(shopProjectTypeDTO.getId());
+			shopProjectTypeMapper.updateByCriteriaSelective(twoLevel,criteria);
+		}
 		return shopProjectTypeMapper.updateByPrimaryKeySelective(shopProjectTypeDTO);
 	}
 
