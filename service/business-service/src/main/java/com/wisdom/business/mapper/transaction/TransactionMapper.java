@@ -1,6 +1,7 @@
 package com.wisdom.business.mapper.transaction;
 
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.system.ExportOrderExcelDTO;
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
@@ -85,4 +86,7 @@ public interface TransactionMapper {
 
     //编辑订单绑定相应的COP号
     void updateOrderCopRelation(OrderCopRelationDTO orderCopRelationDTO);
+
+    //查询用户在一个时间段内第一笔消费记录
+    List<PayRecordDTO> queryPayFirstOrder();
 }
