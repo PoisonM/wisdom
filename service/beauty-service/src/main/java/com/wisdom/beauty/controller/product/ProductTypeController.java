@@ -18,6 +18,7 @@ import com.wisdom.common.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -171,7 +172,7 @@ public class ProductTypeController {
 
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
-            HashMap<Object, Object> twoMap = new HashMap<>(16);
+            HashMap<Object, ShopProductInfoDTO> twoMap = new HashMap<>(16);
             HashMap<Object, HashMap<Object, Integer>> oneProductNumber = new HashMap<>();
             for (ShopProductInfoDTO dto : detailProductList) {
                twoMap.put(dto.getProductTypeTwoId(), dto);
@@ -194,23 +195,25 @@ public class ProductTypeController {
 
             }
             List<Object> twoLevelList = new ArrayList<>();
-            for (Map.Entry entry : twoMap.entrySet()) {
-                ExtShopProductInfoDTO shopProductInfoDTO1 = (ExtShopProductInfoDTO)entry.getValue();
+            for (Map.Entry<Object,ShopProductInfoDTO> entry : twoMap.entrySet()) {
+                ShopProductInfoDTO productInfoDTO = entry.getValue();
+                ExtShopProductInfoDTO extShopProductInfoDTO = new ExtShopProductInfoDTO();
+                BeanUtils.copyProperties(productInfoDTO,extShopProductInfoDTO);
                 for(Map.Entry entrySum : oneProductNumber.entrySet()){
-                    if(shopProductInfoDTO1.getProductTypeOneId()!=null){
-                        if(entrySum.getKey().equals(shopProductInfoDTO1.getProductTypeOneId())){
+                    if(extShopProductInfoDTO.getProductTypeOneId()!=null){
+                        if(entrySum.getKey().equals(extShopProductInfoDTO.getProductTypeOneId())){
                             HashMap<Object, Integer> sumMap = (HashMap<Object, Integer>)entrySum.getValue();
                             for(Map.Entry entrySumVal : sumMap.entrySet()){
                                 if(entry.getKey()!=null){
                                     if(entry.getKey().equals(entrySumVal.getKey())){
-                                        shopProductInfoDTO1.setNumber((Integer) entrySumVal.getValue());
+                                        extShopProductInfoDTO.setNumber((Integer) entrySumVal.getValue());
                                     }
                                 }
                             }
 
                         }
                     }
-                    entry.setValue(shopProductInfoDTO1);
+                    entry.setValue(extShopProductInfoDTO);
                 }
                 twoLevelList.add(entry.getValue());
 
