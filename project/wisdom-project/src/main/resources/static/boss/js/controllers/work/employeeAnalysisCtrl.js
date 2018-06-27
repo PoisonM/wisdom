@@ -6,7 +6,7 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
         function ($scope,$rootScope,$stateParams,$state,$filter,BossUtil,GetClerkAchievementList,GetBossShopList,$ionicLoading,Global) {
 
             $rootScope.title = "员工分析";
-
+             $scope.arr = [];
             /*日期插件*/
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
@@ -70,6 +70,12 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
+            var tiemInt = setInterval(function () {
+                if($("#tbTest1 thead tr td").length != 0){
+                    var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                    clearTimeout(tiemInt)
+                }
+            },100)
 
             $scope.getInfo = function(){
                 $ionicLoading.show({
@@ -115,14 +121,15 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 $scope.param.sortRule = '';
                 $scope.getInfo();
                 $scope.param.displayShopBox = false;
-            }
+            };
             $scope.sorting =function(sortBy,sortRule){
                 $scope.param.sortBy=sortBy;
                 $scope.param.sortRule=sortRule;
+
                 $scope.getInfo()
-            }
+
+            };
             $scope.noneAll = function () {
                 $scope.param.displayShopBox=false;
             }
-
         }]);

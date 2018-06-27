@@ -163,6 +163,38 @@ img {display: inline-block}
 .scheduling #ofix1_tb_top_left tbody tr:nth-child(1) td div{
  width:75px;
 }
+.employeeAnalysis #tbTest1  tbody  td div{
+
+}
+.scheduling .employeeAnalysis #ofix1_tb_top_left tbody tr:nth-child(1) td div{
+ width: 100px;
+}
+.scheduling .employeeAnalysis table tr td div{
+ width: 100px;
+ line-height: 50px;
+ height: 50px;
+}
+.scheduling .employeeAnalysis #ofix1_tb_left tbody td:nth-child(1) div{
+ width: 100px;
+}
+.scheduling .employeeAnalysis #ofix1_tb_header thead td:nth-child(1){
+   padding-left: 100px;
+}
+.scheduling .employeeAnalysis #ofix1_tb_top_left tbody tr:nth-child(1) td div{
+ width: 100px;
+}
+.scheduling .employeeAnalysis #tbTest1 tbody td:nth-child(1) div{
+ width: 100px;
+}
+
+.scheduling  .employeeAnalysis .shadow_box{    width: 99px;
+ height: 50px;
+ background-color: #ffffff;
+ position: absolute;
+ top: 40px;
+ left: 0px;
+ z-index: 99900;
+ border-bottom: 1px solid #e5e5e5;}
 /*.popup-container{
  background: rgba(0,0,0,0)!important;
 }

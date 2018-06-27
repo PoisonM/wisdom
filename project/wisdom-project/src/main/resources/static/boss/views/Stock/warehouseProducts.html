@@ -3,18 +3,18 @@
         <div class="h45 bgfff row fs14 bbl">
             <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
                 <p style="margin-top:-10px" ng-class="{'colff66':param.productType == '0'}" >
-                    <span ng-click="changeBtn('0');$event.stopPropagation()">客装产品</span>
-                    <img src="{{param.productType=='0'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('0');$event.stopPropagation()"></p>
+                    <span ng-click="selNext('0');$event.stopPropagation()">客装产品</span>
+                    <img src="{{param.productType=='0'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ></p>
             </div>
             <div class="col col-33 center" style="border-right: solid 1px #f6f6f6">
                 <p style="margin-top:-10px" ng-class="{'colff66':param.productType == '1'}">
-                    <span ng-click="changeBtn('1');$event.stopPropagation()" >院装产品</span>
-                    <img src="{{param.productType=='1'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('1');$event.stopPropagation()"></p>
+                    <span ng-click="selNext('1');$event.stopPropagation()">院装产品</span>
+                    <img src="{{param.productType=='1'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ></p>
             </div>
             <div class="col col-33 center">
                 <p style="margin-top:-10px"  ng-class="{'colff66':param.productType == '2'}">
-                    <span ng-click="changeBtn('2');$event.stopPropagation()">易耗品</span>
-                    <img src="{{param.productType=='2'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ng-click="selNext('2');$event.stopPropagation()"></p>
+                    <span  ng-click="selNext('2');$event.stopPropagation()">易耗品</span>
+                    <img src="{{param.productType=='2'?'images/inventory/triangleRed.png':'images/inventory/triangleGray.png'}}" class="trianglePic ml20" ></p>
             </div>
         </div>
         <div style="position: relative;height:100%;padding-top:10px;">

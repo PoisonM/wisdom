@@ -7,7 +7,8 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
 
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
-    $scope.$parent.param.headerPrice.title = "套卡详情"
+    $scope.$parent.param.headerPrice.title = "套卡详情";
+    $scope.$parent.param.headerPrice.saveContent = "";
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool

@@ -20,13 +20,13 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                 $state.go("modifyProduct",{id:id})
             }
 
-            $scope.changeBtn = function (type) {/*点击文字*/
+          /*  $scope.changeBtn = function (type) {/!*点击文字*!/
                 $scope.param.levelOneId = "";
                 $scope.param.levelTwoId = '';
                 $scope.param.productType = type;
                 $scope.getInfo()
 
-            };
+            };*/
             $scope.selNext = function (type) {/*点击小三角*/
                 $scope.param.levelOneId = "";
                 $scope.param.levelTwoId='';

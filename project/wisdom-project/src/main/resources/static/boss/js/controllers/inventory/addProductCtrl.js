@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 productTypeTwoId:"",
                 productName:"",
                 imageList:[],
-                marketPrice:"",
+                initialPrice:"",
                 discountPrice:"",
                 productCode:"",
                 productSpec:"",
@@ -228,7 +228,8 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 }else{
                     $rootScope.settingAddsome.product.status = '1';
                 }
-                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.marketPrice ==""||$rootScope.settingAddsome.product.initialPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
+                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.initialPrice ==""||$rootScope.settingAddsome.product.discountPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
+                    console.log($rootScope.settingAddsome.product);
                     alert('信息不完全')
                     return
                 }
