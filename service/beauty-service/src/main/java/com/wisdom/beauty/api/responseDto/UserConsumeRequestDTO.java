@@ -68,7 +68,8 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     private String flowId;
     private String searchFile;
     private List<String> flowIds;
-
+    private String endTime;
+    private String startTime;
     public String getIsCurrentDay() {
         return isCurrentDay;
     }
@@ -187,5 +188,21 @@ public class UserConsumeRequestDTO extends BaseEntity  {
 
     public void setSearchFile(String searchFile) {
         this.searchFile = searchFile;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 }
