@@ -7,6 +7,7 @@
     <result column="shop_project_group_id" property="shopProjectGroupId" jdbcType="VARCHAR" />
     <result column="shop_project_group_number" property="shopProjectGroupNumber" jdbcType="INTEGER" />
     <result column="shop_group_puchase_price" property="shopGroupPuchasePrice" jdbcType="DECIMAL" />
+    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
     <result column="sys_user_id" property="sysUserId" jdbcType="VARCHAR" />
     <result column="shop_project_info_id" property="shopProjectInfoId" jdbcType="VARCHAR" />
     <result column="shop_project_info_name" property="shopProjectInfoName" jdbcType="VARCHAR" />
@@ -86,7 +87,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_project_group_name, shop_project_group_id, shop_project_group_number, shop_group_puchase_price, 
-    sys_user_id, shop_project_info_id, shop_project_info_name, shop_project_info_group_relation_id, 
+    discount_price, sys_user_id, shop_project_info_id, shop_project_info_name, shop_project_info_group_relation_id, 
     project_init_times, project_surplus_times, project_init_amount, project_surplus_amount, 
     sys_shop_id, sys_clerk_id, sys_clerk_name, sys_boss_code, discount, consume_record_id, 
     create_by, create_date, update_user, update_date
@@ -127,22 +128,24 @@
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
     insert into shop_user_project_group_rel_relation (id, shop_project_group_name, shop_project_group_id, 
       shop_project_group_number, shop_group_puchase_price, 
-      sys_user_id, shop_project_info_id, shop_project_info_name, 
-      shop_project_info_group_relation_id, project_init_times, 
-      project_surplus_times, project_init_amount, 
-      project_surplus_amount, sys_shop_id, sys_clerk_id, 
-      sys_clerk_name, sys_boss_code, discount, 
-      consume_record_id, create_by, create_date, 
-      update_user, update_date)
+      discount_price, sys_user_id, shop_project_info_id, 
+      shop_project_info_name, shop_project_info_group_relation_id, 
+      project_init_times, project_surplus_times, 
+      project_init_amount, project_surplus_amount, 
+      sys_shop_id, sys_clerk_id, sys_clerk_name, 
+      sys_boss_code, discount, consume_record_id, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopProjectGroupName,jdbcType=VARCHAR}, #{shopProjectGroupId,jdbcType=VARCHAR}, 
       #{shopProjectGroupNumber,jdbcType=INTEGER}, #{shopGroupPuchasePrice,jdbcType=DECIMAL}, 
-      #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoId,jdbcType=VARCHAR}, #{shopProjectInfoName,jdbcType=VARCHAR}, 
-      #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR}, #{projectInitTimes,jdbcType=INTEGER}, 
-      #{projectSurplusTimes,jdbcType=INTEGER}, #{projectInitAmount,jdbcType=DECIMAL}, 
-      #{projectSurplusAmount,jdbcType=DECIMAL}, #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, 
-      #{sysClerkName,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, 
-      #{consumeRecordId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+      #{discountPrice,jdbcType=DECIMAL}, #{sysUserId,jdbcType=VARCHAR}, #{shopProjectInfoId,jdbcType=VARCHAR}, 
+      #{shopProjectInfoName,jdbcType=VARCHAR}, #{shopProjectInfoGroupRelationId,jdbcType=VARCHAR}, 
+      #{projectInitTimes,jdbcType=INTEGER}, #{projectSurplusTimes,jdbcType=INTEGER}, 
+      #{projectInitAmount,jdbcType=DECIMAL}, #{projectSurplusAmount,jdbcType=DECIMAL}, 
+      #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, 
+      #{sysBossCode,jdbcType=VARCHAR}, #{discount,jdbcType=REAL}, #{consumeRecordId,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO" >
     insert into shop_user_project_group_rel_relation
@@ -161,6 +164,9 @@
       </if>
       <if test="shopGroupPuchasePrice != null" >
         shop_group_puchase_price,
+      </if>
+      <if test="discountPrice != null" >
+        discount_price,
       </if>
       <if test="sysUserId != null" >
         sys_user_id,
@@ -232,6 +238,9 @@
       </if>
       <if test="shopGroupPuchasePrice != null" >
         #{shopGroupPuchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null" >
+        #{discountPrice,jdbcType=DECIMAL},
       </if>
       <if test="sysUserId != null" >
         #{sysUserId,jdbcType=VARCHAR},
@@ -313,6 +322,9 @@
       <if test="record.shopGroupPuchasePrice != null" >
         shop_group_puchase_price = #{record.shopGroupPuchasePrice,jdbcType=DECIMAL},
       </if>
+      <if test="record.discountPrice != null" >
+        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      </if>
       <if test="record.sysUserId != null" >
         sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       </if>
@@ -379,6 +391,7 @@
       shop_project_group_id = #{record.shopProjectGroupId,jdbcType=VARCHAR},
       shop_project_group_number = #{record.shopProjectGroupNumber,jdbcType=INTEGER},
       shop_group_puchase_price = #{record.shopGroupPuchasePrice,jdbcType=DECIMAL},
+      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
       sys_user_id = #{record.sysUserId,jdbcType=VARCHAR},
       shop_project_info_id = #{record.shopProjectInfoId,jdbcType=VARCHAR},
       shop_project_info_name = #{record.shopProjectInfoName,jdbcType=VARCHAR},
@@ -415,6 +428,9 @@
       </if>
       <if test="shopGroupPuchasePrice != null" >
         shop_group_puchase_price = #{shopGroupPuchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="discountPrice != null" >
+        discount_price = #{discountPrice,jdbcType=DECIMAL},
       </if>
       <if test="sysUserId != null" >
         sys_user_id = #{sysUserId,jdbcType=VARCHAR},
@@ -479,6 +495,7 @@
       shop_project_group_id = #{shopProjectGroupId,jdbcType=VARCHAR},
       shop_project_group_number = #{shopProjectGroupNumber,jdbcType=INTEGER},
       shop_group_puchase_price = #{shopGroupPuchasePrice,jdbcType=DECIMAL},
+      discount_price = #{discountPrice,jdbcType=DECIMAL},
       sys_user_id = #{sysUserId,jdbcType=VARCHAR},
       shop_project_info_id = #{shopProjectInfoId,jdbcType=VARCHAR},
       shop_project_info_name = #{shopProjectInfoName,jdbcType=VARCHAR},
