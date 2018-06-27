@@ -163,7 +163,9 @@ public class AppointmentController {
 			shopAppointMap.put("sysClerkDTO", SysClerkDTO);
 			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
 		}
-		responseMap.putAll(responseMapDev);
+		if(responseMapDev!=null){
+			responseMap.putAll(responseMapDev);
+		}
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(responseMap);
 		return responseDTO;
