@@ -177,6 +177,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         TwoLevelProduct.get({id:oneId},function (data) {
             $scope.product2List=data.responseData;
             // $scope.param.chooseProductItem = $scope.product2List[0].id//默认选中第一个
+            $scope.param.productAppear=false;
             ThreeLevelProduct.get({
                 pageSize:$scope.param.pageSize,
                 productTypeOneId:oneId,
@@ -185,7 +186,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
                 status:$scope.status
             },function (data) {
                 $scope.product3List=data.responseData;
-                $scope.param.productAppear=false;
+
             })
         });
         $scope.param.childrenFlag = index;
