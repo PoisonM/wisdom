@@ -634,6 +634,12 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 						expenditureAndIncomeResponseDTO.setExpenditure(
 								expenditureAndIncomeResponseDTO.getExpenditure().add(shopClerkWorkRecord.getPrice()));
 					}
+					//服务次数
+					if(expenditureAndIncomeResponseDTO.getServiceNumber()==null){
+						expenditureAndIncomeResponseDTO.setServiceNumber(1);
+					}else {
+						expenditureAndIncomeResponseDTO.setServiceNumber(1+expenditureAndIncomeResponseDTO.getServiceNumber());
+					}
 				}
 			}
 			// 耗卡 --- 单次消费
@@ -642,6 +648,12 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 				if (shopClerkWorkRecord.getPrice() != null) {
 					expenditureAndIncomeResponseDTO.setExpenditure(
 							expenditureAndIncomeResponseDTO.getExpenditure().add(shopClerkWorkRecord.getPrice()));
+				}
+				//服务次数
+				if(expenditureAndIncomeResponseDTO.getServiceNumber()==null){
+					expenditureAndIncomeResponseDTO.setServiceNumber(1);
+				}else {
+					expenditureAndIncomeResponseDTO.setServiceNumber(1+expenditureAndIncomeResponseDTO.getServiceNumber());
 				}
 			}
 			// 卡耗 --- 单次消费
@@ -659,11 +671,13 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		for (ExpenditureAndIncomeResponseDTO dto : expenditureAndIncomeResponseDTOs) {
 			if (map.containsKey(dto.getSysShopClerkId())) {
 				ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponse = map.get(dto.getSysShopClerkId());
+				expenditureAndIncomeResponse.setConsumeTime(expenditureAndIncomeResponse.getConsumeTime()+1);
 				expenditureAndIncomeResponse
 						.setExpenditure(expenditureAndIncomeResponse.getExpenditure().add(dto.getExpenditure()));
 				expenditureAndIncomeResponse.setIncome(expenditureAndIncomeResponse.getIncome().add(dto.getIncome()));
 				expenditureAndIncomeResponse.setKahao(expenditureAndIncomeResponse.getKahao().add(dto.getKahao()));
 			} else {
+				dto.setConsumeTime(1);
 				map.put(dto.getSysShopClerkId(), dto);
 			}
 
