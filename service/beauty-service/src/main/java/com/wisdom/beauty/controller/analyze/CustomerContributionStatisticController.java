@@ -92,9 +92,16 @@ public class CustomerContributionStatisticController {
                             return i.setScale(0,BigDecimal.ROUND_UP).intValue();
                         }
                         if("kahao".equals(sortBy)){
-
                             BigDecimal i = o1.getKahao().subtract(o2.getKahao());
                             return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                        }
+                        if("consumeTime".equals(sortBy)){
+                            Integer i = o1.getConsumeTime()-(o2.getConsumeTime());
+                            return i;
+                        }
+                        if("serviceNumber".equals(sortBy)){
+                            Integer i = o1.getServiceNumber()-(o2.getServiceNumber());
+                            return i;
                         }
 
                     }else {
@@ -109,6 +116,14 @@ public class CustomerContributionStatisticController {
                         if("kahao".equals(sortBy)){
                             BigDecimal i = o2.getKahao().subtract(o1.getKahao());
                             return i.setScale(0,BigDecimal.ROUND_UP).intValue();
+                        }
+                        if("consumeTime".equals(sortBy)){
+                            Integer i = o2.getConsumeTime()-(o1.getConsumeTime());
+                            return i;
+                        }
+                        if("serviceNumber".equals(sortBy)){
+                            Integer i = o2.getServiceNumber()-(o1.getServiceNumber());
+                            return i;
                         }
                     }
                     return 0;

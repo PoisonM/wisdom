@@ -307,7 +307,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 }
                 //更新用户的充值卡记录,先查询再更新
                 ShopUserRechargeCardDTO shopUserRechargeCardDTOById = shopRechargeCardService.getShopUserRechargeCardDTOById(dto.getId());
-                shopUserRechargeCardDTOById.setSurplusAmount(shopUserRechargeCardDTOById.getSurplusAmount().subtract(new BigDecimal(consumePrice)));
+                BigDecimal consumeAmount = new BigDecimal(consumePrice);
+                shopUserRechargeCardDTOById.setSurplusAmount(shopUserRechargeCardDTOById.getSurplusAmount().subtract(consumeAmount));
                 shopRechargeCardService.updateRechargeCard(shopUserRechargeCardDTOById);
 
                 ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
@@ -325,7 +326,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
                 userConsumeRecordDTO.setSignUrl(shopUserPayDTO.getSignUrl());
                 userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
-                userConsumeRecordDTO.setPrice(dto.getSurplusAmount());
+                userConsumeRecordDTO.setPrice(consumeAmount);
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                 userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
                 logger.info("订单号={},更新用户的充值卡信息={}", orderId, userConsumeRecordDTO);
@@ -831,7 +832,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         if(StringUtils.isBlank(userConsumeRecordDTO.getId())){
             userConsumeRecordDTO.setId(uuid);
         }
-        userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
+        userConsumeRecordDTO.setCreateBy(clerkInfo.getName());
         userConsumeRecordDTO.setFlowNo(transactionCodeNumber);
         userConsumeRecordDTO.setSysUserName(archivesInfo.getSysUserName());
         userConsumeRecordDTO.setSysUserId(archivesInfo.getSysUserId());

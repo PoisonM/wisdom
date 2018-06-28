@@ -392,9 +392,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 		//开始执行入库/出库
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 		Date date = null;
-
 		try {
 			date = sdfp.parse(shopStockDto.getProductDateString());
 		} catch (ParseException e) {
@@ -418,24 +418,34 @@ public class ShopStockServiceImpl implements ShopStockService {
 		//生成单据号
 		Random random = new Random();
 		String result="";
-		for (int i=0;i<6;i++)
+		for (int i=0;i<8;i++)
 		{
 			result+=random.nextInt(10);
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuilder flowNo = new StringBuilder();
 		// 判断是出库还是入库
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 
+			//入库多个产品时拼备注
+			StringBuilder detail = new StringBuilder();
+			for(ShopStockRequestDTO shopStock :shopStockRequestDTO){
+				detail.append(shopStock.getProductName()).append("产品:").append(shopStock.getDetail()).append(";");
+			}
+			shopStockDto.setDetail(detail.toString());
+			shopStockRecordDTO.setDetail(shopStockDto.getDetail());
+
 			shopStockRecordDTO.setStockType(StockTypeEnum.PURCHASE_IN_STORAGE.getCode());
-			flowNo.append("RK").append("-").append(sdf.format(new Date())).append("-").append(result);
+			flowNo.append("RK").append("-").append(sdf1.format(new Date())).append("-").append(result);
 			shopStockRecordDTO.setFlowNo(flowNo.toString());
 		}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
+
 
 			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
 			shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 			shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
-			flowNo.append("CK").append("-").append(sdf.format(new Date())).append("-").append(result);
+			flowNo.append("CK").append("-").append(sdf1.format(new Date())).append("-").append(result);
 			shopStockRecordDTO.setFlowNo(flowNo.toString());
 		}
 
@@ -805,7 +815,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		// 更新该产品的库存
 		int updateResult = extShopStockNumberMapper.updateBatchShopStockNumberCondition(shopStockNumberDTOs);
 		logger.info("updateBatchShopStockNumberCondition方法更新的条数updateResult={}", updateResult);
-		;
+
 		return flowNo;
 	}
 
@@ -834,11 +844,16 @@ public class ShopStockServiceImpl implements ShopStockService {
 					.equals(productInfoMap.get(shopStockNumber.getShopProcId()).getId())) {
 				// 计算所选择产品的占用成本
 				if (useCost == null) {
-					useCost = shopStockNumber.getStockPrice()
-							.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+					if(shopStockNumber.getStockPrice()!=null&&shopStockNumber.getStockNumber()!=null){
+						useCost = shopStockNumber.getStockPrice()
+								.multiply(new BigDecimal(shopStockNumber.getStockNumber()));
+					}
 				} else {
-					useCost = useCost.add(
-							shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber())));
+					if(shopStockNumber.getStockPrice()!=null&&shopStockNumber.getStockNumber()!=null){
+						useCost = useCost.add(
+								shopStockNumber.getStockPrice().multiply(new BigDecimal(shopStockNumber.getStockNumber())));
+					}
+
 				}
 			}
 			//计算占用总成
