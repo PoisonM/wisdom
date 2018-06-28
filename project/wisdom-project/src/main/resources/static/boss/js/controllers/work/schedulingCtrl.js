@@ -63,7 +63,6 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 $scope.compileDateFn()
             };
             $scope.addMonth = function () {
-                console.log(2);
                 $scope.dataYear = parseInt($scope.param.nowdate.split("年")[0])
                 $scope.dataMonth = parseInt($scope.param.nowdate.split("年")[1].split("月")[0])
                 $scope.param.nowdate = $scope.dataYear+"年"+($scope.dataMonth+1)+"月"

@@ -193,6 +193,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         TwoLevelProject.get({id:oneId},function (data) {
             $scope.project2List=data.responseData;
             // $scope.param.chooseProjectItem = $scope.project2List[0].id//默认选中第一个
+            $scope.param.projectAppear=false;
 
             //默认调去三级展示
             ThreeLevelProject.get({
@@ -204,7 +205,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
                 status:$scope.status
             },function (data) {
                 $scope.threeList=data.responseData;
-                $scope.param.projectAppear=false;
+
             });
         });
         $scope.param.childrenFlag = index;

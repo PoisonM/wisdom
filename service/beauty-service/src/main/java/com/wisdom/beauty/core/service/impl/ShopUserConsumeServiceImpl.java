@@ -910,6 +910,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 shopUserRechargeInfo.setTimeDiscount(orderDTO.getTimeDiscount());
                 shopUserRechargeInfo.setPeriodDiscount(orderDTO.getPeriodDiscount());
                 shopUserRechargeInfo.setProductDiscount(orderDTO.getProductDiscount());
+                shopUserRechargeInfo.setUpdateDate(new Date());
                 int i = shopRechargeCardService.updateRechargeCard(shopUserRechargeInfo);
                 logger.info("更新用户的充值卡记录操作{}", i > 0 ? "成功" : "失败");
             }
@@ -1005,6 +1006,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setPeriodDiscount(orderDTO.getPeriodDiscount());
         shopUserConsumeRecordDTO.setConsumeNumber(1);
         shopUserConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+        shopUserConsumeRecordDTO.setCreateBy(clerkInfo.getName());
         return shopUerConsumeRecordService.saveCustomerConsumeRecord(shopUserConsumeRecordDTO);
     }
 
