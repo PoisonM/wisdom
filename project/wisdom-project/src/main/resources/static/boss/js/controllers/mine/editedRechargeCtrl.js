@@ -92,7 +92,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
             }
 
             $scope.discount = function(style){
-                $rootScope.settingAddsome.editedRecharge[style] = $rootScope.settingAddsome.editedRecharge[style].replace(/[^\d]/g,'')
+                $rootScope.settingAddsome.editedRecharge[style] = $rootScope.settingAddsome.editedRecharge[style].replace(/[^\d.]/g,'')
 
             }
             $scope.discounts = function (style) {
