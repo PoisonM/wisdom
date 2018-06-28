@@ -14,7 +14,7 @@
             <ul>
                 <li>
                     <span class="name">充值类型</span>
-                    <span class="type">充值卡</span>
+                    <span class="type">{{responseData.rechargeCardType=='0'?'余额充值':"充值卡"}}</span>
                 </li>
                 <li>
                     <span class="name">名称</span>
@@ -221,6 +221,10 @@
                 <li>
                     <span class="name">现金支付</span>
                     <span class="type">¥{{shopUserPayDTO.cashPayPrice==null?'0':shopUserPayDTO.cashPayPrice}}</span>
+                </li>
+                <li>
+                    <span class="name">充值卡支付</span>
+                    <span class="type">¥{{shopUserPayDTO.rechargeCardPay==null?'0':shopUserPayDTO.rechargeCardPay}}</span>
                 </li>
             </ul>
         </div>

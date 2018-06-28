@@ -1282,7 +1282,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
 
-        //消费详情
+        //划卡消费详情
         .state('pad-web.left_nav.completeCardDetail', {
             url: '/completeCardDetail/:userId/:flowNo',
             templateUrl: root + '/cashier/completeCardDetail.html',
@@ -1292,6 +1292,23 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                     return $ocLazyLoad.load({
                         name: "套卡划卡详情",
                         files: [root + "cashier/completeCardDetail.js?version=" + version,
+                            root + "cashier/completeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //消费详情
+        .state('pad-web.left_nav.completeConsumeDetail', {
+            url: '/completeConsumeDetail/:userId/:flowNo',
+            templateUrl: root + '/cashier/completeConsumeDetail.html',
+            controller: 'completeConsumeDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡划卡详情",
+                        files: [root + "cashier/completeConsumeDetail.js?version=" + version,
                             root + "cashier/completeCardDetail.css?version=" + version,
                         ]
                     })

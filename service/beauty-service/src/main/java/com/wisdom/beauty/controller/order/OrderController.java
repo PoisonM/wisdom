@@ -343,6 +343,7 @@ public class OrderController {
             //支付金额相关
             responseDTO.setResponseData(responseMap);
             ShopUserPayDTO shopUserPayDTO = userOrderDTO.getShopUserPayDTO();
+            shopUserPayDTO.setRechargeCardPay(userOrderDTO.getRechargeCardPay());
             responseMap.put("shopUserPayDTO",shopUserPayDTO);
             //查询用户信息
             ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
