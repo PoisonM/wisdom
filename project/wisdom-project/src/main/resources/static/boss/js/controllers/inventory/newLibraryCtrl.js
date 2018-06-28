@@ -59,7 +59,6 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                     $scope.param.shopStock.push(value);
                 })
             }
-            alert($rootScope.shopInfo.shopStoreId);
             var disabledDates = [
                 new Date(1437719836326),
                 new Date(),
