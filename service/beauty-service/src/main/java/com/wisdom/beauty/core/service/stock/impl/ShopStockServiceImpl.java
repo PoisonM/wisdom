@@ -392,16 +392,17 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 		//开始执行入库/出库
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		for(ShopStockRequestDTO ssr :shopStockRequestDTO){
+			Date date = null;
+			try {
+				date = sdfp.parse(ssr.getProductDateString());
+			} catch (ParseException e) {
+				logger.error(e.getMessage(),e);
+			}
 
-		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
-		Date date = null;
-		try {
-			date = sdfp.parse(shopStockDto.getProductDateString());
-		} catch (ParseException e) {
-			logger.error(e.getMessage(),e);
+			ssr.setProductDate(date);
 		}
-
-		shopStockDto.setProductDate(date);
+		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id = IdGen.uuid();
 		if(sysBossDTO!=null){
