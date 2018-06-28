@@ -155,6 +155,17 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 SaveProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")
+                        $rootScope.settingAddsome.editorCard = {
+                            projectGroupName:'',
+                            shopProjectInfoDTOS:null,
+                            imageList:[],
+                            marketPrice:"",
+                            discountPrice:'',
+                            expirationDate:$filter('date')(new Date(), 'yyyy-MM-dd'),
+                            detail:'',
+                            status:'',
+                            effectiveDate:$filter('date')(new Date(), 'yyyy-MM-dd')
+                        }
                     }
                 })
             }
