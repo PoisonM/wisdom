@@ -301,13 +301,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         BigDecimal totalAmount = new BigDecimal(0);
         if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
             for (ExtShopUserRechargeCardDTO dto : rechargeCardDTOS) {
-                int consumePrice = Integer.parseInt(dto.getConsumePrice());
-                if(StringUtils.isBlank(dto.getConsumePrice()) || consumePrice ==0){
+                BigDecimal consumeAmount = new BigDecimal(dto.getConsumePrice());
+                if(consumeAmount.doubleValue()<=0){
                     continue;
                 }
                 //更新用户的充值卡记录,先查询再更新
                 ShopUserRechargeCardDTO shopUserRechargeCardDTOById = shopRechargeCardService.getShopUserRechargeCardDTOById(dto.getId());
-                BigDecimal consumeAmount = new BigDecimal(consumePrice);
                 shopUserRechargeCardDTOById.setSurplusAmount(shopUserRechargeCardDTOById.getSurplusAmount().subtract(consumeAmount));
                 shopRechargeCardService.updateRechargeCard(shopUserRechargeCardDTOById);
 
@@ -910,6 +909,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 shopUserRechargeInfo.setTimeDiscount(orderDTO.getTimeDiscount());
                 shopUserRechargeInfo.setPeriodDiscount(orderDTO.getPeriodDiscount());
                 shopUserRechargeInfo.setProductDiscount(orderDTO.getProductDiscount());
+                shopUserRechargeInfo.setUpdateDate(new Date());
                 int i = shopRechargeCardService.updateRechargeCard(shopUserRechargeInfo);
                 logger.info("更新用户的充值卡记录操作{}", i > 0 ? "成功" : "失败");
             }
@@ -1005,6 +1005,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setPeriodDiscount(orderDTO.getPeriodDiscount());
         shopUserConsumeRecordDTO.setConsumeNumber(1);
         shopUserConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+        shopUserConsumeRecordDTO.setCreateBy(clerkInfo.getName());
         return shopUerConsumeRecordService.saveCustomerConsumeRecord(shopUserConsumeRecordDTO);
     }
 
