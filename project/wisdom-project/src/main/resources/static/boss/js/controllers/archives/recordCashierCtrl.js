@@ -10,7 +10,9 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                startDate:"",
                endDate: "",
                startEndIndex:'',
-               picFlag:false
+               picFlag:false,
+                 startValue:"",
+                 endValue:""
            };
             /*日期插件*/
             var disabledDates = [
@@ -30,13 +32,14 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     if($scope.param.startEndIndex==0){
-                        $scope.param.startDate = $filter('date')(val, 'yyyy-MM-dd')
+                        $scope.param.startDate = $filter('date')(val, 'yyyy-MM-dd');
+                        $scope.param.startValue = $filter('date')(val, 'yyyy-MM-dd')+' 00:00:00'
+
                     }else{
-                        $scope.param.endDate = $filter('date')(val, 'yyyy-MM-dd')
+                        $scope.param.endDate = $filter('date')(val, 'yyyy-MM-dd');
+                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd')+'23:59:59'
                     }
-                   if( $scope.param.startDate!==""&&$scope.param.endDate!=''){
-                      /* $scope.getInfo(); */
-                   }
+
 
                 }
             };
@@ -130,18 +133,18 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
             }
             $scope.getInfo = function(){
                 if($scope.param.startDate!=''){
-                    $scope.param.startDate=$scope.param.startDate+' 00:00:00'
+                    $scope.param.startDate=$scope.param.startDate
                 }
                 if($scope.param.endDate!=''){
-                    $scope.param.endDate=$scope.param.endDate+' 23:59:59'
+                    $scope.param.endDate=$scope.param.endDate
                 }
                 $scope.userConsumeRequest = {
                     consumeType:'0',
                     goodType:$scope.param.goodType,
                     pageSize:1000,
                     sysUserId:$stateParams.sysUserId,
-                    startTime:$scope.param.startDate,
-                    endTime:$scope.param.endDate
+                    startTime:$scope.param.startValue,
+                    endTime:$scope.param.endValue
                 }
                 $ionicLoading.show({
                     content: 'Loading',
