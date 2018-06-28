@@ -25,7 +25,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                     if(data.result == "0x00001"){
                         $scope.fileList = [];
                         $ionicLoading.hide();
-                        $rootScope.info = data.responseData.info;
+                        $scope.info = data.responseData.info;
                     }
                 });
             })
@@ -57,7 +57,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
               FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                   if(data.result == "0x00001"){
                       $scope.fileList = [];
-                      $rootScope.info = data.responseData.info;
+                      $scope.info = data.responseData.info;
                   }
               });
               $scope.param.blackBox=false;

@@ -36,7 +36,8 @@
                 <p class="  ml30 h40 fs14 col888 bbl"><span class="fs16">设置折扣(折)</span><input type="text" placeholder="请输入0.1-10.0的折扣值" class="fr col99 fs14 tr mr15" ng-model="settingAddsome.editedRecharge.timeDiscount" ng-change="discount('timeDiscount')" ng-blur="discounts('timeDiscount')"></p>
                 <p class="  ml30 h40 fs14 col888">
                     <span class="fs16">设置适用范围</span>
-                    <span class="fr col99 fs14 tr mr15" ui-sref="oneTime({url:'addrechargeCard'})">自定义适用范围 <img src="images/more.png" class="more"></span>
+                    <span class="fr col99 fs14 tr mr15" ng-if='settingAddsome.editedRecharge.timesList.length<=0' ui-sref="oneTime({url:'addrechargeCard',id:param.id})">请选择适用范围 <img src="images/more.png" class="more"></span>
+                    <span class="fr col99 fs14 tr mr15" ng-if='settingAddsome.editedRecharge.timesList.length>0' ui-sref="oneTime({url:'addrechargeCard',id:param.id})">自定义适用范围 <img src="images/more.png" class="more"></span>
 
 
                 </p>
@@ -47,8 +48,8 @@
                 <p class="  ml30 h40 fs14 col888 bbl"><span class="fs16">设置折扣(折)</span><input type="text" placeholder="请输入0.1-10.0的折扣值" class="fr col99 fs14 tr mr15" ng-model="settingAddsome.editedRecharge.periodDiscount" ng-change="discount('periodDiscount')" ng-blur="discounts('periodDiscount')"></p>
                 <p class="  ml30 h40 fs14 col888">
                     <span class="fs16">设置适用范围</span>
-                    <span class="fr col99 fs14 tr mr15" ui-sref="treatment({url:'addrechargeCard'})">自定义适用范围 <img src="images/more.png" class="more"></span>
-
+                    <span class="fr col99 fs14 tr mr15" ng-if='settingAddsome.editedRecharge.periodList.length<=0' ui-sref="treatment({url:'addrechargeCard',id:param.id})">请选择适用范围 <img src="images/more.png" class="more"></span>
+                    <span class="fr col99 fs14 tr mr15" ng-if='settingAddsome.editedRecharge.periodList.length>0' ui-sref="treatment({url:'addrechargeCard',id:param.id})">自定义适用范围 <img src="images/more.png" class="more"></span>
 
                 </p>
             </div>
@@ -58,8 +59,8 @@
                 <p class="  ml30 h40 fs14 col888 bbl"><span class="fs16">设置折扣(折)</span><input type="text" placeholder="请输入0.1-10.0的折扣值" class="fr col99 fs14 tr mr15" ng-model="settingAddsome.editedRecharge.productDiscount" ng-change="discount('productDiscount')" ng-blur="discounts('productDiscount')"></p>
                 <p class="  ml30 h40 fs14 col888">
                     <span class="fs16">设置适用范围</span>
-                    <span class="fr col99 fs14 tr mr15" ui-sref="productScope({url:'addrechargeCard'})">自定义适用范围 <img src="images/more.png" class="more"></span>
-
+                    <span class="fr col99 fs14 tr mr15" ng-if="settingAddsome.editedRecharge.productList.length<=0"  ui-sref="productScope({url:'addrechargeCard',id:param.id})">请选择适用范围 <img src="images/more.png" class="more"></span>
+                    <span class="fr col99 fs14 tr mr15" ng-if="settingAddsome.editedRecharge.productList.length>0"  ui-sref="productScope({url:'addrechargeCard',id:param.id})">自定义适用范围 <img src="images/more.png" class="more"></span>
 
                 </p>
             </div>

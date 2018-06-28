@@ -22,8 +22,6 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 timeDiscount:'',/*单次折扣*/
                 periodDiscount:'',/*疗程卡折扣*/
                 productDiscount:''/*产品折扣*/
-
-
             }
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
@@ -81,6 +79,19 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 SaveRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge, function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")
+                        $rootScope.settingAddsome.editedRecharge={
+                            name:'',
+                            amount:"",
+                            imageList:[],
+                            introduce:'',
+                            status:'0',
+                            timesList:[],/*次卡数组id*/
+                            periodList:[],/*疗程卡数组id*/
+                            productList:[]/*产品数组id*/,
+                            timeDiscount:'',/*单次折扣*/
+                            periodDiscount:'',/*疗程卡折扣*/
+                            productDiscount:''/*产品折扣*/
+                        }
                     }
 
                 })

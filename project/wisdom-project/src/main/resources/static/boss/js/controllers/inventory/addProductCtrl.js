@@ -2,30 +2,34 @@ angular.module('controllers',[]).controller('addProductCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','GetProductInfoByScanCode',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
             $rootScope.title = "添加产品";
-            $scope.selFlag =true
-            $rootScope.settingAddsome.product ={
-                productType:"0",
-                productTypeOneName:"",
-                productTypeOneId:"",
-                productTypeTwoName:"",
-                productTypeTwoId:"",
-                productName:"",
-                imageList:[],
-                initialPrice:"",
-                marketPrice:"",
-                productCode:"",
-                productSpec:"",
-                productUnit:"",
-                productPosition:"",
-                productFunction:"",
-                status:'0',
-                introduce:"",
-                effectDate:'2017-04-07',
-                qualityPeriod:"",
-                productWarningDay:"",
-                productWarningNum:"",
+            $scope.selFlag =true;
+            $scope.$on('$ionicView.enter', function() {
+            })
 
-            }
+
+            $rootScope.settingAddsome.product ={
+            productType:"0",
+            productTypeOneName:"",
+            productTypeOneId:"",
+            productTypeTwoName:"",
+            productTypeTwoId:"",
+            productName:"",
+            imageList:[],
+            initialPrice:"",
+            marketPrice:"",
+            productCode:"",
+            productSpec:"",
+            productUnit:"",
+            productPosition:"",
+            productFunction:"",
+            status:'0',
+            introduce:"",
+            effectDate:'2017-04-07',
+            qualityPeriod:"",
+            productWarningDay:"",
+            productWarningNum:"",
+
+        }
 
                $.ajax({
                  url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
@@ -237,6 +241,29 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 SaveProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
+                        $rootScope.settingAddsome.product ={
+                            productType:"0",
+                            productTypeOneName:"",
+                            productTypeOneId:"",
+                            productTypeTwoName:"",
+                            productTypeTwoId:"",
+                            productName:"",
+                            imageList:[],
+                            initialPrice:"",
+                            marketPrice:"",
+                            productCode:"",
+                            productSpec:"",
+                            productUnit:"",
+                            productPosition:"",
+                            productFunction:"",
+                            status:'0',
+                            introduce:"",
+                            effectDate:'2017-04-07',
+                            qualityPeriod:"",
+                            productWarningDay:"",
+                            productWarningNum:"",
+
+                        }
                     }
                 })
             }
