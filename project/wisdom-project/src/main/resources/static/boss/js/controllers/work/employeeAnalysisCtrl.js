@@ -15,7 +15,7 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                 sysShopId:'',
                 sortBy:"",
                 sortRule:"",
-                flag:false
+                picFlag:false
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -89,13 +89,13 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.employeeAnalysis = data.responseData;
-                        $scope.param.flag=false;
+                        $scope.param.picFlag=false;
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else {
                         $ionicLoading.hide();
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                     }
                 })
             }
@@ -111,6 +111,8 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
             };
             $scope.choseShop = function(id){
                 $scope.param.sysShopId = id;
+                $scope.param.sortBy = "";
+                $scope.param.sortRule = '';
                 $scope.getInfo();
                 $scope.param.displayShopBox = false;
             }

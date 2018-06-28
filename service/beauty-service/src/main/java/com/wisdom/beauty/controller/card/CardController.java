@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.ShopRechargeCardDTO;
 import com.wisdom.beauty.api.dto.ShopUserArchivesDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
+import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopRechargeCardOrderDTO;
@@ -40,7 +41,7 @@ import java.util.List;
 /**
  * FileName: card
  *
- * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 预约相关
+ * @author: 赵得良 Date: 2018/4/3 0003 15:06 Description: 充值卡相关
  */
 @Controller
 @LoginAnnotations
@@ -145,7 +146,7 @@ public class CardController {
 	 */
 	@RequestMapping(value = "/getRechargeCardList", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<Object> findRechargeCardList(@RequestParam(required = false) String name,
+	ResponseDTO<Object> findRechargeCardList(@RequestParam(required = false) String name,@RequestParam(required = false) String sysUserId,
 											 int pageSize) {
         String sysShopId = redisUtils.getShopId();
 		PageParamVoDTO<ShopRechargeCardDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -158,6 +159,21 @@ public class CardController {
 		pageParamVoDTO.setPageSize(pageSize);
 		// 查询数据
 		List<ShopRechargeCardOrderDTO> list = shopRechargeCardService.getShopRechargeCardList(pageParamVoDTO);
+		//处理特殊充值卡，默认为用户的特殊充值卡而非店的特殊充值卡
+		if(StringUtils.isNotBlank(sysUserId)){
+			ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+			shopUserRechargeCardDTO.setSysUserId(sysUserId);
+			shopUserRechargeCardDTO.setSysShopId(sysShopId);
+			List<ShopUserRechargeCardDTO> userRechargeCardList = cardService
+					.getUserRechargeCardList(shopUserRechargeCardDTO);
+			//特殊
+			ShopUserRechargeCardDTO specialRechargeCard = userRechargeCardList.get(0);
+			ShopRechargeCardOrderDTO shopSpecialRechargeCard = list.get(0);
+			shopSpecialRechargeCard.setTimeDiscount(specialRechargeCard.getTimeDiscount());
+			shopSpecialRechargeCard.setPeriodDiscount(specialRechargeCard.getPeriodDiscount());
+			shopSpecialRechargeCard.setProductDiscount(specialRechargeCard.getProductDiscount());
+		}
+
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -173,15 +189,28 @@ public class CardController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<Object> findRechargeCard(@PathVariable String id) {
+	ResponseDTO<Object> findRechargeCard(@PathVariable String id,@RequestParam(required = false) String sysUserId) {
 		// 查询数据
 		ShopRechargeCardDTO shopRechargeCardDTO = new ShopRechargeCardDTO();
 		shopRechargeCardDTO.setId(id);
 		ShopRechargeCardResponseDTO shopRechargeCardResponseDTO = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
+
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		if(shopRechargeCardResponseDTO!=null){
 			ShopRechargeCardOrderDTO shopRechargeCardOrderDTO = new ShopRechargeCardOrderDTO();
 			BeanUtils.copyProperties(shopRechargeCardResponseDTO, shopRechargeCardOrderDTO);
+			//特殊账户特殊处理
+			if(StringUtils.isNotBlank(sysUserId) && RechargeCardTypeEnum.SPECIAL.getCode().equals(shopRechargeCardResponseDTO.getRechargeCardType())){
+				ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
+				shopUserRechargeCardDTO.setSysUserId(sysUserId);
+				shopUserRechargeCardDTO.setSysShopId(redisUtils.getShopId());
+				List<ShopUserRechargeCardDTO> userRechargeCardList = cardService
+						.getUserRechargeCardList(shopUserRechargeCardDTO);
+				ShopUserRechargeCardDTO specialRechargeCard = userRechargeCardList.get(0);
+				shopRechargeCardOrderDTO.setProductDiscount(specialRechargeCard.getProductDiscount());
+				shopRechargeCardOrderDTO.setTimeDiscount(specialRechargeCard.getTimeDiscount());
+				shopRechargeCardOrderDTO.setPeriodDiscount(specialRechargeCard.getPeriodDiscount());
+			}
 			responseDTO.setResponseData(shopRechargeCardOrderDTO);
 		}
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -311,7 +340,7 @@ public class CardController {
 	@ResponseBody
 	ResponseDTO<Object> searchRechargeConfirm(@RequestParam String transactionId) {
 		Query query = new Query(Criteria.where("transactionId").is(transactionId));
-		ShopRechargeCardOrderDTO shopUserRechargeCardDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "extShopUserRechargeCardDTO");
+		ShopRechargeCardOrderDTO shopUserRechargeCardDTO = mongoTemplate.findOne(query, ShopRechargeCardOrderDTO.class, "shopRechargeCardOrderDTO");
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResponseData(shopUserRechargeCardDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
@@ -334,8 +363,10 @@ public class CardController {
 			lock = new RedisLock("recharge_" + transactionId);
 			responseDTO = shopUserConsumeService.rechargeRechargeCard(transactionId, imageUrl);
 		} catch (Exception e) {
+			logger.error("异常信息为={}"+e.getMessage(),e);
 			responseDTO.setErrorInfo("异常数据");
 			responseDTO.setResult(StatusConstant.FAILURE);
+			return responseDTO;
 		}finally {
 			lock.unlock();
 		}

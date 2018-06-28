@@ -117,7 +117,9 @@ public class ClerkWorkRecordController {
      */
     @RequestMapping(value = "/getClerkPerformanceList", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getClerkPerformanceList(@RequestParam(required = false) String sysClerkId,
+    ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getClerkPerformanceList(@RequestParam String startTime,
+                                                                              @RequestParam String endTime,
+                                                                              @RequestParam(required = false) String sysClerkId,
                                                                               @RequestParam String searchFile,
                                                                               int pageSize) {
         String clerkId=null;
@@ -136,46 +138,16 @@ public class ClerkWorkRecordController {
         ShopClerkWorkRecordRequestDTO shopClerkWorkRecordRequestDTO = new ShopClerkWorkRecordRequestDTO();
         shopClerkWorkRecordRequestDTO.setSysClerkId(clerkId);
         //设置为true 这样需要通过consumeType和goodType做为条件来查询
-        shopClerkWorkRecordRequestDTO.setTypeRequire(true);
-        if("1".equals(searchFile)){
-            List<String> consumeType=new ArrayList<>();
-            consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
-            shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
-            List<String> goodsType=new ArrayList<>();
-            goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
-            goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-            goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
-            goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-            goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
-            shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
-        }
-        if("2".equals(searchFile)){
-            shopClerkWorkRecordRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
-            List<String> goodsType=new ArrayList<>();
-            goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
-            goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-            goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-            shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
-            List<String> consumeType=new ArrayList<>();
-            consumeType.add(ConsumeTypeEnum.RECHARGE.getCode());
-            consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
-            shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
-        }
-        if("3".equals(searchFile)){
-            shopClerkWorkRecordRequestDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
-            List<String> goodsType=new ArrayList<>();
-            goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
-            shopClerkWorkRecordRequestDTO.setGoodsTypeList(goodsType);
-            List<String> consumeType=new ArrayList<>();
-            consumeType.add(ConsumeTypeEnum.CONSUME.getCode());
-            shopClerkWorkRecordRequestDTO.setConsumeTypeList(consumeType);
-        }
+        shopClerkWorkRecordRequestDTO.setSearchFile(searchFile);
+
         PageParamVoDTO<ShopClerkWorkRecordRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
         pageParamVoDTO.setRequestData(shopClerkWorkRecordRequestDTO);
         pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(pageSize);
 
+        pageParamVoDTO.setStartTime(startTime);
+        pageParamVoDTO.setEndTime(endTime);
         List<ShopClerkWorkRecordResponseDTO> shopClerkWorkRecordResponseDTOs = shopClerkWorkService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 

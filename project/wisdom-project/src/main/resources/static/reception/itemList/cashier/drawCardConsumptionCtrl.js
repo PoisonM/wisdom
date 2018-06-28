@@ -49,12 +49,13 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
     //初始划卡参数
     $scope.shopUserConsumeDTO = []
     $scope.shopUserConsumeDTO.push({
-        clerkId: '',
+        sysClerkId: '',
         consumeId: '1',
         consumeNum: 0,
         consumePrice: 0,
         consumeOncePrice:0,
         imageUrl:'',
+        detail:''
     })
     //查询用户套卡
     if ($scope.params.type == 2) {
@@ -113,7 +114,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
         }
 
         ImageBase64UploadToOSS.save({
-            imageStr: $("#signConfirmRight").jSignature("getData")
+            imageStr: $("#signConfirmRight").jSignature("getData"),
         }, function(data) {
             $scope.shopUserConsumeDTO[0].imageUrl = data.responseData
             if($scope.staffListIds == undefined){
@@ -123,6 +124,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
                 $scope.shopUserConsumeDTO[0].sysClerkId = $scope.staffListIds.join(";");
                 $scope.shopUserConsumeDTO[0].sysClerkName = $scope.staffListNames.join(";");
             }
+            $scope.shopUserConsumeDTO.imageUrl = $("#signConfirmRight").jSignature("getData")
 
             //疗程卡划卡
             if($scope.params.type== 1){
@@ -133,6 +135,23 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
                         $rootScope.staffListNames=[]//保存清除关联员工
                         $rootScope.staffListIds=[]
                         alert("保存成功")
+                        window.history.go(-1)
+                    }else{
+                        alert(data.errorInfo);
+                    }
+                })
+            }
+
+            //套卡划卡
+            if($scope.params.type == 2){
+                ConsumesDaughterCard.save({
+                    shopUserConsumeDTO: $scope.shopUserConsumeDTO
+                }, function(data) {
+                    if('0x00001' == data.result){
+                        $rootScope.staffListNames=[]//保存清除关联员工
+                        $rootScope.staffListIds=[]
+                        alert("保存成功")
+                        window.history.go(-1)
                     }else{
                         alert(data.errorInfo);
                     }
@@ -140,21 +159,6 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
             }
         })
 
-
-        //套卡划卡
-        if($scope.params.type == 2){
-            ConsumesDaughterCard.save({
-                shopUserConsumeDTO: $scope.shopUserConsumeDTO
-            }, function(data) {
-                if('0x00001' == data.result){
-                    $rootScope.staffListNames=[]//保存清除关联员工
-                    $rootScope.staffListIds=[]
-                    alert("保存成功")
-                }else{
-                    alert(data.errorInfo);
-                }
-            })
-        }
 
     }
 

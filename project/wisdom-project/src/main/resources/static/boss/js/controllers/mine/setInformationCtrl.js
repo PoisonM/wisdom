@@ -19,13 +19,14 @@ angular.module('controllers',[]).controller('setInformationCtrl',
                     showDelay: 0
                 })
                 GetBossShopList.get({},function(data){
-                    $ionicLoading.hide()
                     if(data.result==Global.SUCCESS&&data.responseData==null){
+                        $ionicLoading.hide()
                          alert('请先添加店铺')
                     }else if(data.result==Global.SUCCESS&&data.responseData!=null){
                         GetBossShopList.get({
                         },function(data){
                             if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                                $ionicLoading.hide()
                                 $scope.setInformation = data.responseData
                                 $scope.param.flag = true;
                             }
@@ -36,12 +37,12 @@ angular.module('controllers',[]).controller('setInformationCtrl',
                 })
 
             };
-            $scope.swichShop = function (sysShopId) {
+            $scope.swichShop = function (sysShopId,sysShopName) {
                 BossSwitchShops.get({
                     sysShopId:sysShopId
                 },function (data) {
                     if(data.result==Global.SUCCESS) {
-                        $state.go("basicSetting")
+                        $state.go("basicSetting",{sysShopName:sysShopName})
                         $scope.param.flag = false;
                     }
                 })

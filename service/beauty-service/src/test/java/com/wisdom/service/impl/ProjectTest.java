@@ -118,12 +118,12 @@ public class ProjectTest {
         extShopProjectInfoDTO.setProjectDuration(60);
         extShopProjectInfoDTO.setMarketPrice(new BigDecimal(1000));
         extShopProjectInfoDTO.setFunctionIntr("对足部很有好处");
-        extShopProjectInfoDTO.setDiscountPrice(new BigDecimal(800));
+        extShopProjectInfoDTO.setMarketPrice(new BigDecimal(800));
         extShopProjectInfoDTO.setCardType(CardTypeEnum.HALF_YEAR_CARD.getCode());
         extShopProjectInfoDTO.setUseStyle(GoodsTypeEnum.TREATMENT_CARD.getCode());
         extShopProjectInfoDTO.setOncePrice(new BigDecimal(100));
         extShopProjectInfoDTO.setVisitDateTime(12);
-        extShopProjectInfoDTO.setDiscountPrice(new BigDecimal(1000));
+        extShopProjectInfoDTO.setMarketPrice(new BigDecimal(1000));
         extShopProjectInfoDTO.setId("1");
         String toJSONString = JSONObject.toJSONString(extShopProjectInfoDTO);
         System.out.println(toJSONString);
@@ -182,7 +182,7 @@ public class ProjectTest {
         images.add("https://mxavi.oss-cn-beijing.aliyuncs.com/jmcpavi/%E5%A5%97%E5%8D%A1.png");
         extShopProjectGroupDTO.setImageList(images);
         extShopProjectGroupDTO.setMarketPrice(new BigDecimal(1000));
-        extShopProjectGroupDTO.setDiscountPrice(new BigDecimal(900));
+        extShopProjectGroupDTO.setMarketPrice(new BigDecimal(900));
         extShopProjectGroupDTO.setEffectiveDate("2018-05-10");
         //expirationDate 不限制传1
         extShopProjectGroupDTO.setExpirationDate("2018-05-10");

@@ -1,4 +1,4 @@
-<div class="stillOwedBox clearfix">
+<div class="getProduct stillOwedBox clearfix">
     <div class="stillOwedPorduct clearfix">
         <span class="name">{{productInfo.shopProductName}}</span>
         <span class="number">购买数量 <b>{{productInfo.initTimes}}</b></span>
@@ -7,7 +7,7 @@
     <div class="get_num_sty">
         <span>领取数量</span>
         <span class="rightContent">
-            <div class="reduction" ng-click="productNumSub()">-</div>
+            <div ng-class="{'cccc':cccFlag == true}" class="reduction" ng-click="productNumSub()">-</div>
             <input type="text" ng-change="changeProductNum()" ng-model='shopUserConsumeDTO.consumeNum' >
             <div class="addBtn" ng-click="productNumInc()" style="border-left: 1px solid #E5E5E5;">+</div>
         </span>
@@ -16,10 +16,22 @@
     <div class="stillOwedTitle"></div>
     <div class="height100Num color333FS34 ">
         <ul>
-            <li class="space-between paddingLeft30">
+            <li ng-click="goHousekeeper()" class="space-between paddingLeft30">
                 <span>关联员工</span>
-                {{responseData.sysClerkName}}
-                <div ng-click="relatedStaff()" class="go_set"></div>
+                <span ng-repeat="useItem in staffListNames">{{useItem}}</span>
+                <div class="go_set"></div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="stillOwedTitle"></div>
+    <div class="height100Num color333FS34 ">
+        <ul>
+            <li class="space-between paddingLeft30">
+                <span>用户签字</span>
+                <div class="signConfirmRight">
+                    <div class="signConfirmRightContent" id="signConfirmRight"></div>
+                </div>
             </li>
         </ul>
     </div>

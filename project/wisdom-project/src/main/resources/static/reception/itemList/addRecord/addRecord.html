@@ -38,7 +38,7 @@
                     </li>
                     <li>
                         <label for="">星座 </label>
-                        <input ng-model="param.selectContentConstellation" type="text" placeholder="请输入顾客生日">
+                        <input ng-model="param.selectContentConstellation" type="text" placeholder="请输入顾客星座">
                     </li>
                     <li ng-click="openSelect('bloodType','血型')">
                         <label for="">血型 </label>
@@ -49,6 +49,19 @@
                         <label for="">身高 </label>
                         <input ng-model="param.selectContentHeight" type="text" placeholder="请输入顾客身高">
                     </li>
+
+                    <li ng-click="openSelect('channel','渠道')">
+                        <label for="">来源渠道 </label>
+                        <!--{{param.selectContentChannel}}-->
+                        <span> > </span>
+                        <span ng-if="param.selectContentChannel == '0' ">美团</span>
+                        <span ng-if="param.selectContentChannel == '1' ">大众点评</span>
+                        <span ng-if="param.selectContentChannel == '2' ">百度糯米</span>
+                        <span ng-if="param.selectContentChannel == '3' ">朋友推荐</span>
+                        <span ng-if="param.selectContentChannel == '4' ">高德地图</span>
+                        <span ng-if="param.selectContentChannel == '5' ">自己过来</span>
+
+                    </li>
                 </ul>
             </div>
         </div>
@@ -56,18 +69,29 @@
     <div ng-if = "param.openSelectFlag" class="addRecord_select">
         <div ng-if="param.select_type == 'sex'" class="sex select_public">
             <ul>
-                <li ng-click="selectFn('sex','男')">男 <i></i> </li>
-                <li ng-click="selectFn('sex','女')">女 <i></i> </li>
+                <li ng-click="selectFn('sex','男')">男 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('sex','女')">女 <div class="go_set"></div> </li>
 
             </ul>
         </div>
         <div ng-if="param.select_type == 'bloodType'" class="sex select_public">
             <ul>
-                <li ng-click="selectFn('bloodType','未知')">未知 <i></i> </li>
-                <li ng-click="selectFn('bloodType','A')">A <i></i> </li>
-                <li ng-click="selectFn('bloodType','B')">B <i></i> </li>
-                <li ng-click="selectFn('bloodType','AB')">AB <i></i> </li>
-                <li ng-click="selectFn('bloodType','O')">O <i></i> </li>
+                <li ng-click="selectFn('bloodType','未知')">未知 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('bloodType','A')">A <div class="go_set"></div> </li>
+                <li ng-click="selectFn('bloodType','B')">B <div class="go_set"></div> </li>
+                <li ng-click="selectFn('bloodType','AB')">AB <div class="go_set"></div> </li>
+                <li ng-click="selectFn('bloodType','O')">O <div class="go_set"></div> </li>
+            </ul>
+        </div>
+        <div ng-if="param.select_type == 'channel'" class="sex select_public">
+            <ul>
+                <!--0 美团  1大众点评  2 百度糯米 3 朋友推荐 4 高德地图  5 自己过来-->
+                <li ng-click="selectFn('channel','0')">美团 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('channel','1')">大众点评 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('channel','2')">百度糯米 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('channel','3')">朋友推荐 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('channel','4')">高德地图 <div class="go_set"></div> </li>
+                <li ng-click="selectFn('channel','5')">自己过来 <div class="go_set"></div> </li>
             </ul>
         </div>
 

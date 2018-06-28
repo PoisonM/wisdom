@@ -25,17 +25,22 @@ PADWeb.controller('prepaidRecordsCtrl', function($scope, $state, $stateParams, n
     $scope.flagFn(true)
 
     $scope.goAccountDetails = function(flowNo) {
-        $state.go('pad-web.left_nav.accountDetails',{
+        $state.go("pad-web.left_nav.completeCardDetail",{
             userId:$stateParams.userId,
             flowNo:flowNo
         })
+    }
+
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
     }
 
     Consumes.save({
         consumeType:"0",
         sysUserId:$stateParams.userId,
         pageSize:"100",
-        goodsType:"6"
+        goodsType:"6",
+        isCurrentDay:"1"
     },function (data) {
         $scope.itemList = data.responseData
     })

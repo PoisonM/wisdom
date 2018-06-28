@@ -2,24 +2,47 @@
  * Created by Administrator on 2018/6/15.
  */
 angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate',
-        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate) {
+    ['$scope','$rootScope','$stateParams','$state',"GetBossPerformanceList","Global",'GetClerkPerformanceListClerk','$ionicScrollDelegate','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetBossPerformanceList,Global,GetClerkPerformanceListClerk,$ionicScrollDelegate,$ionicLoading) {
 
             $rootScope.title = "业绩明细";
-            $scope.flag = false;
+            $scope.flag = false;/*点击筛选出现的数据div*/
+
             $scope.userConsumeRequest = {
                 pageSize:1000,
-                searchFile:$stateParams.searchFile
+                searchFile:$stateParams.searchFile,
+                startTime:$stateParams.date+' 00:00:00',
+                endTime:$stateParams.date+' 23:59:59'
             };
-
-                GetClerkPerformanceListClerk.get({pageSize:$scope.userConsumeRequest.pageSize,searchFile:$scope.userConsumeRequest.searchFile},function(data){
+            $scope.$on('$ionicView.enter', function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
+                $scope.param={
+                    picFlag:false/*空白页面的显示*/
+                };
+                GetClerkPerformanceListClerk.get($scope.userConsumeRequest,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {
+                        $ionicLoading.hide();
                         $scope.list = data.responseData;
                         $scope.detailedPerformance = data.responseData;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.picFlag=true;
                     }
 
-                });
+                })
+            });
+
+
             $scope.expenditureDetailsGo = function(flowNo){
                 $state.go("details",{flowNo:flowNo})
             };
@@ -44,8 +67,14 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                 }else{
                     $scope.detailedPerformance=$scope.list
                 }
+                if( $scope.detailedPerformance.length<=0){
+                    $scope.param.picFlag=true;
+                }else{
+                    $scope.param.picFlag=false
+                }
                 $scope.flag = false
 
             };
+
 
         }]);

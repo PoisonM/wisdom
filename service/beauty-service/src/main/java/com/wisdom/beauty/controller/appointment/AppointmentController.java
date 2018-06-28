@@ -268,11 +268,14 @@ public class AppointmentController {
 		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
 		if (Objects.nonNull(shopAppointInfoFromRedis)) {
 			BeanUtils.copyProperties(shopAppointInfoFromRedis, extShopAppointServiceDTO);
-			SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(extShopAppointServiceDTO.getSysClerkId());
-			extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
-			extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
+			if(StringUtils.isNotEmpty(extShopAppointServiceDTO.getSysClerkId())){
+				SysClerkDTO sysClerkDTO = redisUtils.getSysClerkDTO(extShopAppointServiceDTO.getSysClerkId());
+				extShopAppointServiceDTO.setSysClerkName(sysClerkDTO.getName());
+				extShopAppointServiceDTO.setScore(sysClerkDTO.getScore());
+				extShopAppointServiceDTO.setClerkImage(sysClerkDTO.getPhoto());
+			}
+			extShopAppointServiceDTO.setAppointStartTimeS(DateUtils.DateToStr(extShopAppointServiceDTO.getAppointStartTime(), "time"));
 			extShopAppointServiceDTO.setAppointEndTimeE(DateUtils.DateToStr(extShopAppointServiceDTO.getAppointEndTime(), "datetime"));
-			extShopAppointServiceDTO.setClerkImage(sysClerkDTO.getPhoto());
 			String[] split = extShopAppointServiceDTO.getShopProjectId().split(";");
 			List<String> list = Arrays.asList(split);
 			List<ShopProjectInfoDTO> projectList = shopProjectService.getProjectDetails(list);
@@ -301,10 +304,8 @@ public class AppointmentController {
 		shopAppointServiceDTO.setStatus(status);
 		int info = appointmentService.updateAppointmentInfo(shopAppointServiceDTO);
 		logger.debug("根据预约主键修改此次预约信息，执行结果为{}", info);
-
 		//更新redis
-		redisUtils.updateShopAppointInfoToRedis(shopAppointServiceDTO);
-
+		redisUtils.updateShopAppointInfoToRedis(appointmentService.getShopAppointService(shopAppointServiceDTO));
 		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 		return responseDTO;
 	}
@@ -553,7 +554,7 @@ public class AppointmentController {
 				hashMap.put("sysClerkInfo", redisUtils.getSysClerkDTO(serviceDTO.getSysClerkId()));
 				hashMap.put("appointmentInfo", serviceDTO);
 				int length = serviceDTO.getShopProjectId().split(";").length;
-				hashMap.put("projectNumber", length-1);
+				hashMap.put("projectNumber", length);
 				arrayList.add(hashMap);
 			}
 		}

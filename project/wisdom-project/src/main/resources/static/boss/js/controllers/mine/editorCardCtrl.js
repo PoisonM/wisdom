@@ -159,7 +159,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                          $rootScope.settingAddsome.editorCard.status ='1'
                      }
                 }
-                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.discountPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.marketPrice ==null||$rootScope.settingAddsome.editorCard.discountPrice ==null){
+                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.marketPrice ==null||$rootScope.settingAddsome.editorCard.marketPrice ==null){
                     alert('信息不完整');
                     return
                 }
@@ -172,7 +172,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 var d2 =  new Date(Date.parse(expirationDate));
 
                 if(d1>d2 &&$rootScope.settingAddsome.editorCard.expirationDate!='0'){
-                    alert("生效日期大于活动有效期");
+                    alert("活动有效期小于生效日期");
                     return
                 }
                 UpdateProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){

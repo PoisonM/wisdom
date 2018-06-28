@@ -104,7 +104,7 @@ public class ProductTest {
         dto.setProductName("产品名称");
         dto.setProductUrl("图片url地址");
         dto.setMarketPrice(new BigDecimal(1000));
-        dto.setDiscountPrice(new BigDecimal(900));
+        dto.setMarketPrice(new BigDecimal(900));
         dto.setProductCode("产品编号");
         dto.setProductSpec("100");
         dto.setProductSpecUnit("ml");

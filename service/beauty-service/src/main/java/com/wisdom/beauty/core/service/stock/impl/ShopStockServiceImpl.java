@@ -14,6 +14,7 @@ import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
+import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -21,7 +22,6 @@ import com.wisdom.common.util.StringUtils;
 import net.sf.json.JSONArray;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.poi.hssf.record.RKRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -29,8 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.wisdom.beauty.client.UserServiceClient;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -70,6 +72,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private ShopStoreMapper shopStoreMapper;
+
+	@Autowired
+	private  UserServiceClient userServiceClient;
 
 	/**
 	 * 查询仓库列表
@@ -186,6 +191,14 @@ public class ShopStockServiceImpl implements ShopStockService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		ShopStockRecordDTO shopStockRecord = list.get(0);
+
+		if(list.get(0).getReceiver()!=null){
+			List<SysClerkDTO> sysClerkDTOList = userServiceClient.getClerkInfoByClerkId(list.get(0).getReceiver());
+			if(sysClerkDTOList!=null&&sysClerkDTOList.size()>0){
+				shopStockRecord.setReceiver(sysClerkDTOList.get(0).getName());
+			}
+		}
+
 		shopStockRecord.setCreateDateTime(sdf.format(list.get(0).getCreateDate()));
 		String id = shopStockRecord.getId();
 		// 根据id查询，shop_stock的入库，出库产品记录
@@ -244,14 +257,19 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 			shopStockResponses.add(shopStockResponseDTO);
 		}
-
+		SysBossDTO sysBoss = new SysBossDTO();
+		sysBoss.setId(shopStockRecord.getManagerId());
+		SysBossDTO sysBossDTO = userServiceClient.getBossInfo(sysBoss);
 		shopStockResponseDTO = new ShopStockResponseDTO();
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
+		shopStockResponseDTO.setReceiver(shopStockRecord.getReceiver());
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setName(shopStockRecord.getName());
 		shopStockResponseDTO.setStockType(shopStockRecord.getStockType());
-		shopStockResponseDTO.setApplayUser(shopStockRecord.getManagerId());
+		if(sysBossDTO!=null) {
+			shopStockResponseDTO.setApplayUser(sysBossDTO.getName());
+		}
 		shopStockResponseDTO.setDetail(shopStockRecord.getDetail());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
@@ -370,20 +388,32 @@ public class ShopStockServiceImpl implements ShopStockService {
 			logger.info("转换出来的集合shopStocks为空");
 			return null;
 		}
+		SimpleDateFormat sdfp = new SimpleDateFormat("yyyy-MM-dd");
 
 		//开始执行入库/出库
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
+		Date date = null;
+
+		try {
+			date = sdfp.parse(shopStockDto.getProductDateString());
+		} catch (ParseException e) {
+			logger.error(e.getMessage(),e);
+		}
+
+		shopStockDto.setProductDate(date);
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id = IdGen.uuid();
-		shopStockRecordDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+		if(sysBossDTO!=null){
+			shopStockRecordDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+			shopStockRecordDTO.setManagerId(sysBossDTO.getSysBossCode());
+		}
 		shopStockRecordDTO.setShopStoreId(shopStockDto.getShopStoreId());
 		shopStockRecordDTO.setId(id);
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
-		shopStockRecordDTO.setManagerId(sysBossDTO.getSysBossCode());
-		shopStockRecordDTO.setCreateDate(new Date());
+
 
 		//生成单据号
 		Random random = new Random();
@@ -424,8 +454,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockDTO.setId(IdGen.uuid());
 			shopStockDTO.setCreateDate(new Date());
 			shopStockDTO.setUpdateDate(new Date());
-			shopStock.setShopBossId(sysBossDTO.getId());
-
+			if(sysBossDTO!=null){
+				shopStock.setShopBossId(sysBossDTO.getId());
+			}
 			// 将record表总的id放入shopStockDTO中
 			shopStockDTO.setShopStockRecordId(shopStockRecordDTO.getId());
 
@@ -437,7 +468,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 				// 此时是出库
 				shopStockDTO.setOutStockNumber(shopStock.getStockOutNumber());
 			}
-			shopStockDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+			if(sysBossDTO!=null){
+				shopStockDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+			}
 			shopStockDTO.setFlowNo(flowNo.toString());
 			shopStockDTOList.add(shopStockDTO);
 			productIds.add(shopStock.getShopProcId());
@@ -448,7 +481,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 
 		// 根据产品查询
-		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getShopStockNumberBy(productIds);
+		List<ShopStockNumberDTO> shopStockNumberDTOs = this.getStockNumberList(shopStockDto.getShopStoreId(),productIds);
 		// 需要更新的List集合
 		List<ShopStockNumberDTO> updateShopStockNumber = new ArrayList<>();
 
@@ -492,7 +525,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockNumberDTO = new ShopStockNumberDTO();
 			shopStockNumberDTO.setId(IdGen.uuid());
 			shopStockNumberDTO.setStockNumber(addShopStockRequest.getStockNumber());
-			shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
+			if(sysBossDTO!=null){
+				shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
+			}
 			shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
 			shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());
 			shopStockNumberDTO.setStockPrice(addShopStockRequest.getStockPrice());

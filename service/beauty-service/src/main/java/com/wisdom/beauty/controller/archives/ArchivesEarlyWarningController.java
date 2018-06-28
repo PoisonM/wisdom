@@ -127,7 +127,6 @@ public class ArchivesEarlyWarningController {
 					iterator.remove();
 					removeFlag = true;
 				}
-				archivesDTO.setUpdateDate(serviceDTO.getAppointStartTime());
 			}
 		}
 

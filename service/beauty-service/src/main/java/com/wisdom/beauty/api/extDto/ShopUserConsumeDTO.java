@@ -11,7 +11,8 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     private String consumeId;
 
     //关联员工
-    private String clerkId;
+    private String sysClerkId;
+    private String sysClerkName;
 
     private String sysUserId;
 
@@ -26,6 +27,32 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
     private String flowId;
 
     private String imageUrl;
+    //产品id
+    private String shopProductId;
+
+    //备注
+    private String detail;
+
+
+    private T shopUserConsumeDTO;
+
+    private String goodsType;
+
+    public String getSysClerkId() {
+        return sysClerkId;
+    }
+
+    public void setSysClerkId(String sysClerkId) {
+        this.sysClerkId = sysClerkId;
+    }
+
+    public String getSysClerkName() {
+        return sysClerkName;
+    }
+
+    public void setSysClerkName(String sysClerkName) {
+        this.sysClerkName = sysClerkName;
+    }
 
     public String getImageUrl() {
         return imageUrl;
@@ -51,9 +78,13 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
         this.flowId = flowId;
     }
 
-    private T shopUserConsumeDTO;
+    public String getDetail() {
+        return detail;
+    }
 
-    private String goodsType;
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public String getGoodsType() {
         return goodsType;
@@ -87,15 +118,6 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
         this.consumeId = consumeId;
     }
 
-    public String getClerkId() {
-        return clerkId;
-    }
-
-    public void setClerkId(String clerkId) {
-        this.clerkId = clerkId;
-    }
-
-
     public int getConsumeNum() {
         return consumeNum;
     }
@@ -110,5 +132,13 @@ public class ShopUserConsumeDTO<T> extends BaseEntity implements Serializable {
 
     public void setConsumePrice(BigDecimal consumePrice) {
         this.consumePrice = consumePrice;
+    }
+
+    public String getShopProductId() {
+        return shopProductId;
+    }
+
+    public void setShopProductId(String shopProductId) {
+        this.shopProductId = shopProductId;
     }
 }

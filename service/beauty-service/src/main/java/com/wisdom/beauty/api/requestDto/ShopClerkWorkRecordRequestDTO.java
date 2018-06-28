@@ -22,6 +22,10 @@ public class ShopClerkWorkRecordRequestDTO extends ShopClerkWorkRecordDTO {
      * consumeType集合
      */
     private List<String> consumeTypeList;
+    /**
+     * 查询类型
+     */
+    private String searchFile;
 
     public Boolean getTypeRequire() {
         return typeRequire;
@@ -45,5 +49,13 @@ public class ShopClerkWorkRecordRequestDTO extends ShopClerkWorkRecordDTO {
 
     public void setConsumeTypeList(List<String> consumeTypeList) {
         this.consumeTypeList = consumeTypeList;
+    }
+
+    public String getSearchFile() {
+        return searchFile;
+    }
+
+    public void setSearchFile(String searchFile) {
+        this.searchFile = searchFile;
     }
 }

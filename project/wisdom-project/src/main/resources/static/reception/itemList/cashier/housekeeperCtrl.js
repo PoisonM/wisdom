@@ -1,4 +1,5 @@
-PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, ngDialog, GetShopClerkList) {
+PADWeb.controller('housekeeperCtrl', function($scope, $state,$rootScope,$stateParams, ngDialog
+    , GetShopClerkList,UpdateShopUserOrderInfo,GetShopUserRecentlyOrderInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -23,8 +24,10 @@ PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, n
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
-
-
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
+    /*非消费关联员工*/
     $rootScope.staffListIds = []
     $rootScope.staffListNames = []
     $scope.housekeeperCheck = function(index,id,name) {
@@ -37,7 +40,7 @@ PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, n
             $rootScope.staffListNames.push(name)
         }
     }
-
+    //获取员工列表
     GetShopClerkList.get({
         pageNo: "1",
         pageSize: "100"
@@ -46,22 +49,33 @@ PADWeb.controller('housekeeperCtrl', function($scope, $rootScope,$stateParams, n
             $scope.UserList = data.responseData
         }
     })
-    
+    //保存
     $scope.$parent.$parent.leftTipFn = function () {
-        window.history.go(-1)
+        console.log($scope.car)
+        $scope.importData = {
+            orderId: $stateParams.orderId,
+            projectGroupRelRelationDTOS: $rootScope.projectGroupRelRelationDTOS,//套卡
+            shopUserProductRelationDTOS: $rootScope.shopUserProductRelationDTOS,//产品
+            shopUserProjectRelationDTOS: $rootScope.shopUserProjectRelationDTOS,//项目
+            status: 1,
+            shopUserRechargeCardDTO: $rootScope.shopUserRechargeCardDTO,
+            orderPrice: $stateParams.tempAll, //总金额
+            sysClerkId:"",
+            sysClerkName:""
+        }
+
+        UpdateShopUserOrderInfo.save($scope.importData, function(data) {
+            if(data.result == "0x00001"){
+                window.history.go(-1)
+            }
+        })
+
     }
-    
 });
 
 
-/*
- * 方法:Array.remove(dx) 通过遍历,重构数组
- * 功能:删除数组元素.
- * 参数:dx删除元素的下标.
- */
 Array.prototype.remove=function(dx)
 {
-    if(isNaN(dx)||dx>this.length){return false;}
     for(var i=0,n=0;i<this.length;i++)
     {
         if(this[i]!=this[dx])

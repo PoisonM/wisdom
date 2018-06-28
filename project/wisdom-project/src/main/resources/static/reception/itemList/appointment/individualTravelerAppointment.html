@@ -25,7 +25,7 @@
         </div>
 
         <div>
-            <p class=" mt30" ng-if="param.changeYuyueFlag == 0"><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">{{param.week.details.sysUserName}}</span><span class="giveContent fs32"  data-flag="{{param.changeYuyueFlag}}" ng-click ="modifyingAppointment()">修改预约</span></p>
+            <p class=" mt30" ><span class="redPoint ml30"></span><span class="fs38 color333 ml20 ">{{param.week.details.sysUserName}}</span><span ng-if="param.changeYuyueFlag == 0" class="giveContent fs32"  data-flag="{{param.changeYuyueFlag}}" ng-click ="modifyingAppointment()">修改预约</span></p>
             <div class="contentTime mt44 space-between">
                 <P ><img src="images/ic_point.png" alt="" class=" w16 h16 ml60"> <span class="minute fs30">{{param.week.details.appointStartTime|date:'HH:mm'}}~{{param.week.details.appointEndTime|date:'HH:mm'}}</span></P>
                 <p class="fs32 mr60">美容师 <span class="fs28 color333">{{param.week.details.sysClerkName}}</span></p>
@@ -35,26 +35,35 @@
             <div class="pb60 bte5">
                 <p class="space-around mt44">
                     <button class="btn br8 fs32 colff6666 bgfff" ng-click="startAppointmentIndivdual()" ng-class="{'startAppointmentActive':param.changeYuyueFlag != 0}">确定预约</button>
-                    <button class="btn br8 fs32 btnActive" ng-click="startSevier()" ng-class="{'startAppointmentActive':param.changeYuyueFlag != 1}">开始服务</button>
+                    <button ng-if="param.changeYuyueFlag == 0 ||param.changeYuyueFlag == 1" class="btn br8 fs32 btnActive" ng-click="startSevier()" ng-class="{'startAppointmentActive':param.changeYuyueFlag != 1}">开始服务</button>
+                    <button ng-if="param.changeYuyueFlag == 2 ||param.changeYuyueFlag == 3" class="btn br8 fs32 btnActive" ng-click="endSevier()" ng-class="{'startAppointmentActive':param.changeYuyueFlag != 2}">服务完成</button>
                 </p>
             </div>
         </div>
-        <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0"class=" fs28 colaaa  h70 bte5">
+        <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0"class=" fs28 colaaa  h70 bte5">
             <span class="ml30">预约项目</span>
         </p>
-        <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0" class="bte5">
-            <p class="mt20 ml30 fs30"><span ng-repeat="item in param.individualTravelerAppointmentObj.individualTravelerAppointment.consume" style="width:50%;display: inline-block">{{item.sysShopProjectName}}</span></p>
+        <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0" class="bte5">
+            <p class="mt20 ml30 fs30">
+                <span ng-repeat="item in param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard" style="width:50%;display: inline-block">
+                    {{item.sysShopProjectName}}
+                </span>
+            </p>
             <p class="pb60 floatC">
-                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile()">去消费</button>
+                <button ng-disabled="param.changeYuyueFlag != 3" class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile('xf')" ng-class="{'startAppointmentActive':param.changeYuyueFlag != 3}">去消费</button>
             </p>
         </div>
-        <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0" class=" fs28 colaaa  h70 bte5">
+        <p ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0" class=" fs28 colaaa  h70 bte5">
             <span class="ml30">预约卡项</span>
         </p>
-        <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard.length != 0">
-            <p class="mt20 ml30 fs30"><span  ng-repeat="item in param.individualTravelerAppointmentObj.individualTravelerAppointment.punchCard">{{item.sysShopProjectName}}</span></p>
+        <div ng-if = "param.individualTravelerAppointmentObj.individualTravelerAppointment.consume.length != 0">
+            <p class="mt20 ml30 fs30">
+                <span  ng-repeat="item in param.individualTravelerAppointmentObj.individualTravelerAppointment.consume">
+                    {{item.sysShopProjectName}}
+                </span>
+            </p>
             <p class="pb60 floatC">
-                <button class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-click = "personalFile()">去划卡</button>
+                <button ng-disabled="param.changeYuyueFlag != 3" class="btn br8 fs32 btnActive mt30 mr60  mr30 floatR " ng-class="{'startAppointmentActive':param.changeYuyueFlag != 3}" ng-click = "personalFile('hk')">去划卡</button>
             </p>
         </div>
     </div>

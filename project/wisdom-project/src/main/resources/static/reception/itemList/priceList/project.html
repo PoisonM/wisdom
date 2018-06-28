@@ -1,22 +1,35 @@
 <div style="position:fixed;z-index: 999;top: 50%;left: 40%;font-size: 50px;color: red;" ng-show="loading">
     <div class="mask"></div>
-    <div class="alert alert-info">
-        <strong>数据加载中......</strong>
-    </div>
+    <!--<div class="alert alert-info">-->
+        <!--<strong>数据加载中......</strong>-->
+    <!--</div>-->
 </div>
 <div class="projectWrap">
     <!--导航-->
-    <div class="projectHeader">
+    <!--<div class="projectHeader">
         <ul class="tab-head">
             <li ng-repeat="items in selectSingleList" class="tab-head-item" ng-click="selection($index,items.id)">
                 <span ng-class="{'bg_box_sty':param.selection == $index}" class="bg_box">{{items.projectTypeName}}</span>
+                <span
+                        ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status,items.id);" ></span>
+            </li>
+        </ul>
+    </div>-->
+
+    <div class="projectHeader">
+        <ul class="tab-head">
+            <li ng-repeat="items in selectSingleList" class="tab-head-item" >
+                <span ng-class="{'bg_box_sty' : param.selection == $index}" class="bg_box" ng-click="selection($index,items.id)">{{items.projectTypeName}}</span>
+
+                <span ng-class="{'check_img':items.status == 1,'check_img_bottom':items.status == 3,'check_img_top':items.status == 4}" class="check_img" ng-click="checkImg($index,items.status,items.id);" ></span>
             </li>
         </ul>
     </div>
     <!--点击导航栏的任意商品出现相对应的弹框-->
     <div ng-show="param.projectAppear" class="projectAppear">
         <ul>
-            <li ng-class="{'project-red':param.chooseProjectItem==items.id,'project-white':param.chooseProjectItem!=items.id}"
+            <!--ng-class="{'project-red':param.chooseProjectItem==items.id,'project-white':param.chooseProjectItem!=items.id}"-->
+            <li ng-class="{'project-red':param.chooseProjectItem==items.id}"
                 ng-repeat="items in project2List" ng-click="refreshGoods(items.id)">
                 {{items.projectTypeName}}
             </li>
@@ -33,6 +46,7 @@
                     <p class="textName">{{item.projectName}}</p>
                     <p class="textMoney">单次价格：￥{{item.oncePrice}}</p>
                     <p>
+                        <span class="cards bff6666" ng-if="item.cardType=='0'">次卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='1'">月卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='2'">季卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='3'">半年卡</span>

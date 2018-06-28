@@ -1,6 +1,9 @@
 <div class="arrangeWorkList">
     <div class="arrangeWorkList_header">
         <div class="header_box">
+            <div ng-click="arrangeWorkListBack()" class="header_back">
+                返回
+            </div>
             <div class="header_left">
                 <span ng-click="subMonth()"> < </span> {{param.nowdate}} <span ng-click="addMonth()"> > </span>
             </div>
@@ -24,9 +27,13 @@
             </thead>
             <tbody>
                 <tr ng-repeat="item4 in tempUser">
+                    <td class="clerkName">
+                        <div class="">
+                            <p class="" >{{item4.clerkInfo.name}}</p>
+                        </div>
+                    </td>
                     <td ng-repeat="infoItem in item4.clerkSchInfo">
-                        <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
-                        <div ng-if="$index != 0" ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" >
+                        <div ng-class="{'bg_all':infoItem.scheduleType == 3,'bg_morning':infoItem.scheduleType == 0,'bg_noon':infoItem.scheduleType == 1,'bg_night':infoItem.scheduleType == 2,'bg_no':infoItem.scheduleType == 4}" >
                             <span ng-if="infoItem.scheduleType == 3">全</span>
                             <span ng-if="infoItem.scheduleType == 0">早</span>
                             <span ng-if="infoItem.scheduleType == 1">中</span>

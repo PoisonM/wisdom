@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.wisdom.beauty.api.dto.ShopUserConsumeRecordDTO;
+import com.wisdom.beauty.api.requestDto.ShopClerkWorkRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ExpenditureAndIncomeResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopClerkWorkRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserInfoDTOResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -90,15 +92,6 @@ public interface ShopStatisticsAnalysisService {
      * @Date:2018/4/25 14:54
      */
     BigDecimal getShopConsumeAndRecharge(String shopId, String goodType, String consumeType, Boolean isCardConsume, Date startDate, Date endDate);
-
-    /**
-     * @Author:zhanghuan
-     * @Param:
-     * @Return:
-     * @Description: 查看全部家人中店员信息和业绩情况
-     * @Date:2018/4/25 19:21
-     */
-    List<ExpenditureAndIncomeResponseDTO> getClerkExpenditureAndIncomeList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
     /**
     *@Author:zhanghuan
     *@Param:
@@ -147,4 +140,12 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/5/15 18:32
     */
     Map<String,Object> getShopCustomerArriveList(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO, String condition);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  业绩，耗卡，卡耗的消费记录明细
+    *@Date:2018/6/24 14:35
+    */
+    List<ShopClerkWorkRecordResponseDTO> getShopMoneyConsumeDetail(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
 }

@@ -1,9 +1,9 @@
 <ion-view>
-    <ion-content class="partialFiles bgf6">
-        <div>
-            <p class="h45 bgfff fs16 colff66">
-                <span ng-click="sel()"><img src="images/screening.png" class="screeningPic ml10 mr10">筛选</span>
-            </p>
+    <p class="h45 bgfff fs16 colff66">
+        <span ng-click="sel()"><img src="images/screening.png" class="screeningPic ml10 mr10">筛选</span>
+    </p>
+    <ion-content class="partialFiles bgf6" delegate-handle="dashboard" style="margin-top:45px;">
+        <div ng-class="{'hidden':param.flag==true}">
             <ion-list ng-repeat="item in collectionCar" ng-show="!param.picFlag">
                 <ion-item style="height:80px;margin-top: 10px">
                     <div class="sb mt10"  ng-click="treatmentCardDtailsGo(item.consumeRecordId,$index)">
@@ -15,18 +15,17 @@
                         <span class="mt5">备注：</span>
                         <img src="images/refund.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;" ng-show="false">
                         <img src="images/candel.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;" ng-show="false">
+                        <img src="images/over.png" class="refundPic" style="margin-top:-5px;position: absolute;right:10px;top:34px;" ng-show="param.isUseUp=='0'">
                     </p>
                 </ion-item>
                 <ion-item class="h50 sb" ng-repeat="item1 in item.projectList">
-                    <p class="fs15 ml20 col666">{{item1.shopProjectGroupName}}</p>
-                    <p class="fa15 col888 mr10">{{item1.projectInitTimes}}/{{item1.projectSurplusTimes}}</p>
+                    <p class="fs15 ml20 col666">{{item1.shopProjectInfoName}}</p>
+                    <p class="fa15 col888 mr10">{{item1.projectSurplusTimes }}/{{item1.projectInitTimes}}</p>
                 </ion-item>
             </ion-list>
-            <!--空  图片-->
-            <div style="width:100%;height:100%" ng-show="param.picFlag">
-                <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
-            </div>
         </div>
+        <!--空  图片-->
+        <void-pic></void-pic>
         <!--筛选-->
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;" ng-show="param.flag" ng-click="disNone()"></div>
         <div style="position: absolute;right:0;top:0;z-index: 101;width:80%;height:100%; "class="bgf6" ng-show="param.flag">

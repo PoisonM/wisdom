@@ -17,7 +17,9 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
+                $scope.param.flag=false
                 $scope.getInfo()
+                $scope.search()
             })
             $scope.getInfo=function(){
                 GetClerkInfoList.get({
@@ -55,7 +57,8 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 $scope.param.flag = false;
             }
             $scope.clearSearch = function () {
-                $scope.param.searchFile = ''
+                $scope.param.searchFile = '';
+                $scope.search()
             }
             $scope.search = function () {
                 GetClerkBySearchFile.get({

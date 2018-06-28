@@ -58,10 +58,10 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     //商标
     private String tradeMark;
 
-    //
+    //生效日期
     private String effectDate;
 
-    //
+    //失效日期
     private String invalidDate;
 
     //产品有效期预警（天）
@@ -74,7 +74,7 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
     private BigDecimal marketPrice;
 
     //优惠价格
-    private BigDecimal discountPrice;
+    private BigDecimal initialPrice;
 
     //产品编号
     private String productCode;
@@ -290,12 +290,12 @@ public class ShopProductInfoDTO extends BaseEntity implements Serializable {
         this.marketPrice = marketPrice;
     }
 
-    public BigDecimal getDiscountPrice() {
-        return discountPrice;
+    public BigDecimal getInitialPrice() {
+        return initialPrice;
     }
 
-    public void setDiscountPrice(BigDecimal discountPrice) {
-        this.discountPrice = discountPrice;
+    public void setInitialPrice(BigDecimal initialPrice) {
+        this.initialPrice = initialPrice;
     }
 
     public String getProductCode() {

@@ -2,7 +2,6 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
@@ -13,6 +12,7 @@ import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
@@ -26,11 +26,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
 
 /**
  * ClassName: ShopProjectGroupServiceImpl
@@ -155,7 +158,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     public int updateShopUserProjectGroupRelRelation(
             ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
 
-        if (CommonUtils.objectIsNotEmpty(shopUserProjectGroupRelRelation)) {
+        if (null == shopUserProjectGroupRelRelation) {
             logger.error("根据条件查询用户与套卡与项目关系的关系表传入参数为空，{}",
                     "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
             return 0;
@@ -188,6 +191,8 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             shopProjectInfoDTO=new ShopProjectInfoDTO();
             shopProjectInfoDTO.setProjectName(shopProjectInfoGroupRelationDTO.getShopProjectInfoName());
             shopProjectInfoDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
+            shopProjectInfoDTO.setMarketPrice(shopProjectInfoGroupRelationDTO.getShopProjectPrice());
+            shopProjectInfoDTO.setId(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
             shopProjectInfos.add(shopProjectInfoDTO);
         }
         // 获取套卡信息
@@ -372,7 +377,8 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
             relationDTO.setShopProjectGroupId(groupId);
             relationDTO.setShopProjectInfoId(shopProjectInfoDTO.getId());
             relationDTO.setShopProjectInfoName(shopProjectInfoDTO.getProjectName());
-            relationDTO.setShopProjectPrice(shopProjectInfoDTO.getMarketPrice());
+            //每个项目的价格 = 套卡的折扣价格/项目的数量
+            relationDTO.setShopProjectPrice(extShopProjectGroupDTO.getMarketPrice().divide(new BigDecimal(shopProjectIds.size()),2, ROUND_HALF_DOWN));
             relationDTO.setShopProjectServiceTimes(shopProjectInfoDTO.getServiceTimes());
             shopProjectInfoGroupRelationMapper.insertSelective(relationDTO);
         }

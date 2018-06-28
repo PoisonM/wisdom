@@ -1,4 +1,4 @@
-PADWeb.controller('cashProductDetailsCtrl', function($scope, $stateParams, $state, ngDialog) {
+PADWeb.controller('cashProductDetailsCtrl', function($scope, $stateParams, $state, ngDialog,ConsumeFlowNo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.mainSwitch.headerCashAllFlag = true;
     $scope.$parent.$parent.mainSwitch.headerReservationAllFlag = false;
@@ -14,4 +14,9 @@ PADWeb.controller('cashProductDetailsCtrl', function($scope, $stateParams, $stat
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
     }
+
+    ConsumeFlowNo.get({consumeFlowNo:$stateParams.flowNo},function (data) {
+        $scope.dataInfo = data.responseData;
+    })
+
 });

@@ -1,17 +1,22 @@
 angular.module('controllers',[]).controller('newUserCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail','Global','UpdateArchiveInfo','SaveArchiveInfo','ImageBase64UploadToOSS',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global,UpdateArchiveInfo,SaveArchiveInfo,ImageBase64UploadToOSS) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','Detail','Global','UpdateArchiveInfo','SaveArchiveInfo','ImageBase64UploadToOSS','GetBossShopList',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,Detail,Global,UpdateArchiveInfo,SaveArchiveInfo,ImageBase64UploadToOSS,GetBossShopList) {
             $rootScope.title = "";
             //手机号码格式验证
             var phoneReg=/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9]|147|177)\d{8}$/;
+            $scope.param={
+                flag:false
+            }
             $scope.newUser={
                     sex:"女",
                     birthday:"",
                     constellation:"",
                     detail:"",
                     sysUserName:"",
-                    phone:""
-
+                    phone:"",
+                    sysShopId:"",
+                    sysShopName:"",
+                    imageUrl:'images/headPhone.png'
             };
 
             /*点击女*/
@@ -66,7 +71,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
 
             /*更新保存*/
             $scope.preservation=function () {
-                if($scope.newUser.phone==''||$scope.newUser.sysUserName==""){
+                if($scope.newUser.phone==''||$scope.newUser.sysUserName==""||$scope.newUser.sysShopId==""){
                     alert("请检查您的档案信息");
                     return
                 }
@@ -74,7 +79,19 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     $scope.shopUserArchivesDTO=$scope.newUser;
                     /*新建保存接口*/
                     SaveArchiveInfo.save($scope.shopUserArchivesDTO,function (data) {
-                        $state.go("partialFiles");
+                        if(Global.SUCCESS=data.result){
+                            $scope.newUser={
+                                sex:"女",
+                                birthday:"",
+                                constellation:"",
+                                detail:"",
+                                sysUserName:"",
+                                phone:""
+
+                            };
+                            $state.go("partialFiles");
+                        }
+
                     })
                 }else {
                     $scope.userInformation=$scope.newUser;
@@ -82,11 +99,27 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     UpdateArchiveInfo.save($scope.userInformation,function (data) {
                         if(Global.SUCCESS=data.result){
                             $state.go("archives",{id:$stateParams.id})
+
                         }
                     });
                 }
+            }
+            $scope.shop = function(){
+                GetBossShopList.get({},function(data){
+                    if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        $scope.fenShop = data.responseData
+                        $scope.param.flag = true;
 
-
+                    }
+                })
+            }
+            $scope.selShop = function(id,sysShopName){
+                $scope.param.flag = false;
+                $scope.newUser.sysShopId = id;
+                $scope.newUser.sysShopName = sysShopName
+            }
+            $scope.disNone = function () {
+                $scope.param.flag = false;
             }
 
 

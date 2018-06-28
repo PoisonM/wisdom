@@ -11,8 +11,6 @@ public class ExtShopProjectGroupDTO extends ShopProjectGroupDTO {
 
     private List<String> imageList;
 
-
-
     public List<String> getImageList() {
         return imageList;
     }

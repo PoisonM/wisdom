@@ -3,13 +3,14 @@
  */
 package com.wisdom.system.service;
 
+import com.wisdom.common.constant.SuggestionTypeEnum;
 import com.wisdom.common.dto.system.SuggestionDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
@@ -19,17 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class FeedbackService {
-	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	public SuggestionDto addSuggestion(String userId, String suggestion) {
-		logger.info("service == 用户={}提交建议,addSuggestion方法执行");
-
+	public SuggestionDto addSuggestion(String userId, String suggestion,String type) {
 		SuggestionDto suggestionDto=new SuggestionDto();
 		suggestionDto.setUserId(userId);
 		suggestionDto.setSuggestion(suggestion);
+		suggestionDto.setType(type);
+		suggestionDto.setCreatTime(new Date());
 		this.mongoTemplate.insert(suggestionDto, "suggestion");
 		return suggestionDto;
 	}

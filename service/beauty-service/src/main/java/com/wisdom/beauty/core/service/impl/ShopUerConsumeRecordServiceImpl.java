@@ -10,7 +10,6 @@ import com.wisdom.beauty.core.mapper.ShopUserConsumeRecordMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -25,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+
+import static java.math.BigDecimal.ROUND_HALF_DOWN;
 
 /**
  * ClassName: ShopUerConsumeRecordServiceImpl
@@ -59,6 +60,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Autowired
 	private UserServiceClient userServiceClient;
 
+	@Autowired
+	private ShopCustomerArchivesService shopCustomerArchivesService;
+
+	@Autowired
+	private ShopCustomerProductRelationService shopCustomerProductRelationService;
+
 	@Override
 	public List<UserConsumeRecordResponseDTO> getShopCustomerConsumeRecordList(
 			PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
@@ -73,7 +80,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
 		// 排序
-		criteria.setOrderByClause("create_date");
+		criteria.setOrderByClause("create_date desc");
 		// 分页
 		if (pageParamVoDTO.getPaging()) {
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
@@ -164,6 +171,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
 			userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 			if (map.get(shopUserConsumeRecord.getFlowNo()) == null) {
+				userConsumeRecordResponseDTO.setId(shopUserConsumeRecord.getId());
+				userConsumeRecordResponseDTO.setFlowId(shopUserConsumeRecord.getFlowId());
+				userConsumeRecordResponseDTO.setSysUserId(shopUserConsumeRecord.getSysUserId());
 				userConsumeRecordResponseDTO.setSumAmount(shopUserConsumeRecord.getPrice());
 				userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
 				userConsumeRecordResponseDTO.setFlowNo(shopUserConsumeRecord.getFlowNo());
@@ -195,8 +205,12 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 		}
 		logger.info("getShopCustomerConsumeRecordList执行完成");
-		List values = Arrays.asList(map.values().toArray());
-		return values;
+		List<UserConsumeRecordResponseDTO>  responseDTOs=new ArrayList<>();
+		for (Map.Entry<String, UserConsumeRecordResponseDTO> entry:map.entrySet()){
+			responseDTOs.add(entry.getValue());
+		}
+		Collections.sort(responseDTOs);
+		return responseDTOs;
 	}
 
 	@Override
@@ -290,8 +304,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-					shopProjectInfoDTO.setDiscountPrice(
-							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+					shopProjectInfoDTO.setMarketPrice(
+							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
 					map.put(dto.getShopProjectGroupId(), devDto);
@@ -310,8 +324,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-						shopProjectInfoDTO.setDiscountPrice(
-								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+						shopProjectInfoDTO.setMarketPrice(
+								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 					}
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
@@ -341,15 +355,11 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
 			for (ShopUserConsumeRecordDTO dto : treatmentCardList) {
 				userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
+				BeanUtils.copyProperties(dto,userConsumeRecordResponse);
 				userConsumeRecordResponse.setIncludeTimes(map.get(dto.getFlowId()));
 				if (dto.getPrice() != null && dto.getConsumeNumber() != null) {
-					userConsumeRecordResponse.setPrice(dto.getPrice().divide(new BigDecimal(dto.getConsumeNumber())));
+					userConsumeRecordResponse.setPrice(dto.getPrice().divide(new BigDecimal(dto.getConsumeNumber()),2, ROUND_HALF_DOWN));
 				}
-				userConsumeRecordResponse.setSumAmount(dto.getPrice());
-				userConsumeRecordResponse.setPeriodDiscount(dto.getPeriodDiscount());
-				userConsumeRecordResponse.setConsumeNumber(dto.getConsumeNumber());
-				userConsumeRecordResponse.setFlowName(dto.getFlowName());
-				userConsumeRecordResponse.setGoodsType(dto.getGoodsType());
 				userConsumeRecordResponses.add(userConsumeRecordResponse);
 			}
 			list.removeAll(treatmentCardList);
@@ -419,8 +429,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 				shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 				if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-					shopProjectInfoDTO.setDiscountPrice(
-							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes())));
+					shopProjectInfoDTO.setMarketPrice(
+							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
 				}
 
 				shopProjectInfos.add(shopProjectInfoDTO);
@@ -431,7 +441,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 		dto.setFlowName(shopUserConsumeRecord.getFlowName());
 		dto.setIncludeTimes(includeTimes);
-		dto.setPrice(shopUserConsumeRecord.getPrice().divide(new BigDecimal(shopUserConsumeRecord.getConsumeNumber())));
+		dto.setPrice(shopUserConsumeRecord.getPrice().divide(new BigDecimal(shopUserConsumeRecord.getConsumeNumber()),2, ROUND_HALF_DOWN));
 		dto.setDiscount(shopUserConsumeRecord.getDiscount());
 		dto.setConsumeNumber(shopUserConsumeRecord.getConsumeNumber());
 		dto.setSumAmount(shopUserConsumeRecord.getPrice());
@@ -473,6 +483,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowId())) {
 			c.andFlowIdEqualTo(shopUserConsumeRecordDTO.getFlowId());
 		}
+		if (StringUtils.isNotBlank(shopUserConsumeRecordDTO.getSysUserId())) {
+			c.andSysUserIdEqualTo(shopUserConsumeRecordDTO.getSysUserId());
+		}
+		criteria.setOrderByClause(" create_date desc");
 		List<ShopUserConsumeRecordDTO> shopUserConsumeRecordDTOS = shopUserConsumeRecordMapper
 				.selectByCriteria(criteria);
 
@@ -495,9 +509,13 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			shopUserConsumeRecordDTO.setSysShopName(beauty.getName());
 		}
 		if (StringUtils.isBlank(shopUserConsumeRecordDTO.getSysUserName())) {
-			UserInfoDTO userInfoFromUserId = userServiceClient
-					.getUserInfoFromUserId(shopUserConsumeRecordDTO.getSysUserId());
-			shopUserConsumeRecordDTO.setSysUserName(userInfoFromUserId.getNickname());
+			ShopUserArchivesDTO archivesDTO = new ShopUserArchivesDTO();
+			archivesDTO.setSysUserId(shopUserConsumeRecordDTO.getSysUserId());
+			archivesDTO.setShopid(shopUserConsumeRecordDTO.getSysShopId());
+			List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService.getShopUserArchivesInfo(archivesDTO);
+			if(CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)){
+				shopUserConsumeRecordDTO.setSysUserName(shopUserArchivesInfo.get(0).getSysUserName());
+			}
 		}
 		shopUserConsumeRecordDTO.setCreateDate(new Date());
 		shopUserConsumeRecordDTO.setOperDate(new Date());
@@ -518,7 +536,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			List<ShopClerkWorkRecordDTO> recordDTOS = new ArrayList<>();
 			for (String clerk : clerks) {
 				ShopClerkWorkRecordDTO recordDTO = new ShopClerkWorkRecordDTO();
-				recordDTO.setPrice(consumeRecordDTO.getPrice());
+				//平均分配业绩金额
+				if(consumeRecordDTO.getPrice()!=null){
+					recordDTO.setPrice(consumeRecordDTO.getPrice().divide(new BigDecimal(clerks.length),2, ROUND_HALF_DOWN));
+				}
 				recordDTO.setId(IdGen.uuid());
 				recordDTO.setPayType(consumeRecordDTO.getPayType());
 				recordDTO.setFlowNo(consumeRecordDTO.getFlowNo());
@@ -530,7 +551,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				recordDTO.setConsumeType(consumeRecordDTO.getConsumeType());
 				recordDTO.setFlowId(consumeRecordDTO.getFlowId());
 				recordDTO.setConsumeRecordId(consumeRecordDTO.getId());
-				recordDTO.setSysClerkName(consumeRecordDTO.getSysClerkName());
+				//recordDTO.setSysClerkName(consumeRecordDTO.getSysClerkName());
 				recordDTOS.add(recordDTO);
 			}
 			shopClerkWorkService.saveClerkWorkRecord(recordDTOS);
@@ -546,7 +567,15 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 	@Override
 	public int updateConsumeRecord(ShopUserConsumeRecordDTO shopUserConsumeRecordDTO) {
 		logger.info("更新用户的消费记录传入参数={}", "shopUserConsumeRecordDTO = [" + shopUserConsumeRecordDTO + "]");
-		return shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
+		if(StringUtils.isNotBlank(shopUserConsumeRecordDTO.getFlowNo())){
+			ShopUserConsumeRecordCriteria shopUserConsumeRecordCriteria = new ShopUserConsumeRecordCriteria();
+			ShopUserConsumeRecordCriteria.Criteria criteria = shopUserConsumeRecordCriteria.createCriteria();
+			criteria.andFlowNoEqualTo(shopUserConsumeRecordDTO.getFlowNo());
+			shopUserConsumeRecordMapper.updateByCriteriaSelective(shopUserConsumeRecordDTO,shopUserConsumeRecordCriteria);
+		}else{
+			shopUserConsumeRecordMapper.updateByPrimaryKeySelective(shopUserConsumeRecordDTO);
+		}
+		return 1;
 	}
 
 	@Override
@@ -651,7 +680,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecord : list) {
 			if (ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecord.getConsumeType())) {
 				if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())
-						|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
+						|| GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecord.getGoodsType())
+						|| GoodsTypeEnum.PRODUCT.getCode().equals(shopUserConsumeRecord.getGoodsType())) {
 					userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
 					userConsumeRecordResponseDTO.setCreateDate(shopUserConsumeRecord.getCreateDate());
 					userConsumeRecordResponseDTO.setFlowName(shopUserConsumeRecord.getFlowName());
@@ -750,6 +780,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			return null;
 		}
 		c.andFlowIdIn(flowIds);
+		criteria.setOrderByClause("create_date desc");
 		return shopUserConsumeRecordMapper.selectByCriteria(criteria);
 
 	}
@@ -804,9 +835,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 			dto.setIncludeTimes(shopUserProjectRelation.getServiceTime());
 			dto.setPrice(userConsumeRecordResponseDTO.getPrice()
-					.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
+					.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber()),2, ROUND_HALF_DOWN));
 			dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 			dto.setPeriodDiscount(userConsumeRecordResponseDTO.getPeriodDiscount());
+			dto.setDiscount(userConsumeRecordResponseDTO.getDiscount());
 			dto.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
 			dto.setFlowName(userConsumeRecordResponseDTO.getFlowName());
 			userConsumeRecordResponses.add(dto);
@@ -869,7 +901,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 		UserConsumeRecordResponseDTO dto = new UserConsumeRecordResponseDTO();
 		dto.setPrice(userConsumeRecordResponseDTO.getPrice()
-				.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber())));
+				.divide(new BigDecimal(userConsumeRecordResponseDTO.getConsumeNumber()),2, ROUND_HALF_DOWN));
 		dto.setSumAmount(userConsumeRecordResponseDTO.getPrice());
 		dto.setConsumeNumber(userConsumeRecordResponseDTO.getConsumeNumber());
 		dto.setProductDiscount(userConsumeRecordResponseDTO.getProductDiscount());
@@ -911,6 +943,41 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 
 		return shopUserConsumeRecordDTOS;
 	}
+
+	@Override
+	public UserConsumeRecordResponseDTO getProductDrawRecordDetail(String consumeFlowNo) {
+		logger.info("getProductDrawRecordDetail方法传入的参数,consumeFlowNo={}", consumeFlowNo);
+		if (StringUtils.isBlank(consumeFlowNo)) {
+			logger.info("getProductDrawRecordDetail方法传入的参数consumeFlowNo为空");
+			return null;
+		}
+		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
+		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
+		c.andFlowNoEqualTo(consumeFlowNo);
+
+		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
+		if (CollectionUtils.isEmpty(list)) {
+			logger.info("getShopCustomerConsumeRecord方法获取list集合为空");
+			return null;
+		}
+		UserConsumeRecordResponseDTO userConsumeRecordResponseDTO = new UserConsumeRecordResponseDTO();
+		// 获取第一条记录，为了获取到基础信息,因为同一个流水的所有记录的基础信息都是一样的
+		BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
+
+		BigDecimal totalAmount = null;
+		List<String> flowIds = new ArrayList<>();
+		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
+		}
+		//查询购买数量和未领取数量
+		ShopUserProductRelationDTO shopUserProductRelationDTO=shopCustomerProductRelationService.getShopProductInfo(userConsumeRecordResponseDTO.getFlowId());
+		if(shopUserProductRelationDTO!=null){
+			userConsumeRecordResponseDTO.setWaitReceiveNumber(shopUserProductRelationDTO.getWaitReceiveNumber());//未领取数量
+			userConsumeRecordResponseDTO.setInitTimes(shopUserProductRelationDTO.getInitTimes());//购买数量
+		}
+		return userConsumeRecordResponseDTO;
+	}
+
 
 	private Map<String, Object> getPayMap(String flowNo) {
 		logger.info("getPayMap方法传入的参数flowNo={}", flowNo);

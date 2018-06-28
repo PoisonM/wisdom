@@ -1,19 +1,9 @@
 angular.module('controllers',[]).controller('recordCashierCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','$ionicPopup','Consumes','Global','BossUtil','$filter',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,$ionicPopup,Consumes,Global,BossUtil,$filter) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','$ionicPopup','Consumes','Global','BossUtil','$filter','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,$ionicPopup,Consumes,Global,BossUtil,$filter,$ionicScrollDelegate) {
             $rootScope.title = "收银记录";
-           /* $scope.showAlert = function() {
-                var alertPopup = $ionicPopup.alert({
-                    title:"提示",
-                    template: '<p class="fs17 col333 center">起始时间不能大于结束时间</p>'
 
-                });
-                alertPopup.then(function(res) {
-                    console.log('Thank you for not eating my delicious ice cream cone');
-                });
-            };*/
-
-           $scope.param={
+             $scope.param={
                flag:false,
                goodType:'6',
                timeIndex:0,
@@ -23,7 +13,6 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                picFlag:false
            };
             /*日期插件*/
-
             var disabledDates = [
                 new Date(1437719836326),
                 new Date(),
@@ -80,7 +69,9 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
             };
 
            $scope.sel = function(){
-               $scope.param.flag = true
+               $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
+               $scope.param.flag = true;
+
            };
            $scope.selType = function(type){
                $scope.param.goodType = type
@@ -100,6 +91,16 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
            }
            $scope.selTrue = function(){
+               var startDate=$scope.param.startDate;
+               startDate = startDate.replace(/-/g,"/");//替换字符，变成标准格式
+               var endDate = $scope.param.endDate;
+               endDate = endDate.replace(/-/g,"/");//替换字符，变成标准格式
+               var d1 = new Date(Date.parse(startDate));
+               var d2 =  new Date(Date.parse(endDate));
+               if(d1>d2){
+                   alert("开始时间大于结束时间");
+                   return
+               }
                $scope.getInfo();
                $scope.param.flag = false;
            };
@@ -116,8 +117,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
 
             function fun_date(aa){
-                var date1 = new Date(),
-                    time1=date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();//time1表示当前时间
+                var date1 = new Date(), time1=date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();//time1表示当前时间
                 $scope.param.endDate = time1
                 var date2 = new Date(date1);
                 date2.setDate(date1.getDate()+aa);
@@ -133,7 +133,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     consumeType:'0',
                     goodType:$scope.param.goodType,
                     pageSize:1000,
-                    shopUserId:$stateParams.sysUserId,
+                    sysUserId:$stateParams.sysUserId,
                     startTime:$scope.param.startDate,
                     endTime:$scope.param.endDate
                 }

@@ -50,6 +50,11 @@ public class UserConsumeRequestDTO extends BaseEntity  {
      * 店员表主键
      */
     private String sysClerkId;
+
+    /**
+     * 0 当天  1 非当天
+     */
+    private String isCurrentDay;
     /**
      * 请求来源，用于区分是否需要设置goodsType条件
      */
@@ -61,7 +66,17 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     private int pageSize ; //每页的条目
     //单次卡为当前用户与项目的关系 id ,疗程卡也为当前项目跟用户的关系id,用户与套卡跟项目的关系表的关系表,产品为当前产品跟用户的关系 id ,充值卡为用户与的当前充值卡关系的id
     private String flowId;
+    private String searchFile;
     private List<String> flowIds;
+
+    public String getIsCurrentDay() {
+        return isCurrentDay;
+    }
+
+    public void setIsCurrentDay(String isCurrentDay) {
+        this.isCurrentDay = isCurrentDay;
+    }
+
     public String getId() {
         return id;
     }
@@ -164,5 +179,13 @@ public class UserConsumeRequestDTO extends BaseEntity  {
 
     public void setFlowIds(List<String> flowIds) {
         this.flowIds = flowIds;
+    }
+
+    public String getSearchFile() {
+        return searchFile;
+    }
+
+    public void setSearchFile(String searchFile) {
+        this.searchFile = searchFile;
     }
 }

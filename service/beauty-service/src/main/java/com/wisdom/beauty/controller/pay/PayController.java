@@ -1,17 +1,22 @@
 package com.wisdom.beauty.controller.pay;
 
+import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserRechargeCardDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.core.service.ShopRechargeCardService;
 import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserConsumeService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * FileName: OrderController
@@ -41,6 +48,9 @@ public class PayController {
 
     @Resource
     private MongoTemplate mongoTemplate;
+
+    @Resource
+    private ShopRechargeCardService shopRechargeCardService;
 
     @Resource
     private ShopUerConsumeRecordService shopUerConsumeRecordService;
@@ -70,7 +80,8 @@ public class PayController {
             Query query = new Query(Criteria.where("orderId").is(shopUserPayDTO.getOrderId()));
             ShopUserOrderDTO shopUserOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
             //用户为待支付的状态才能执行签字确认操作
-            if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus())){
+            if(OrderStatusEnum.WAIT_PAY.getCode().equals(shopUserOrderDTO.getStatus()) ||
+                    OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
                 Update update = new Update();
                 update.set("status", OrderStatusEnum.WAIT_SIGN.getCode());
                 update.set("statusDesc",OrderStatusEnum.WAIT_SIGN.getDesc());
@@ -119,6 +130,7 @@ public class PayController {
             //进入待签字确认状态之后才能签字确认
             if(OrderStatusEnum.WAIT_SIGN.getCode().equals(shopUserOrderDTO.getStatus())){
                 //mongodb中更新订单的状态
+                shopUserOrderDTO.getShopUserPayDTO().setSignUrl(shopUserPayDTO.getSignUrl());
                 responseDTO = shopUserConsumeService.userRechargeOperation(shopUserOrderDTO);
             }else{
                 responseDTO.setErrorInfo("订单已失效，请勿重复提交");
@@ -146,11 +158,28 @@ public class PayController {
     ResponseDTO<String> updateShopUserOrderPayInfo(@RequestBody ShopUserOrderDTO shopUserOrderDTO) {
 
         ResponseDTO responseDTO = new ResponseDTO<String>();
-
+        if(StringUtils.isBlank(shopUserOrderDTO.getOrderId())){
+            responseDTO.setErrorInfo("订单号为空");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+        List<ExtShopUserRechargeCardDTO> userPayRechargeCardList = shopUserOrderDTO.getUserPayRechargeCardList();
+        List<ExtShopUserRechargeCardDTO> filterList = new ArrayList<>();
+        if(CommonUtils.objectIsNotEmpty(userPayRechargeCardList)){
+            userPayRechargeCardList.forEach(e->{
+                ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(e);
+                ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO = new ExtShopUserRechargeCardDTO();
+                BeanUtils.copyProperties(shopUserRechargeInfo,extShopUserRechargeCardDTO);
+                extShopUserRechargeCardDTO.setConsumePrice(e.getConsumePrice());
+                filterList.add(extShopUserRechargeCardDTO);
+            });
+        }
         //mongodb中更新订单的状态
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
-        update.set("userPayRechargeCardList", shopUserOrderDTO.getUserPayRechargeCardList());
+        update.set("userPayRechargeCardList", filterList);
+        update.set("updateDate",new Date());
+        update.set("detail",shopUserOrderDTO.getDetail());
         mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);
         responseDTO.setResult(StatusConstant.SUCCESS);

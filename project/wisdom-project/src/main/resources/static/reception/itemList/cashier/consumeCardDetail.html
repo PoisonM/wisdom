@@ -5,7 +5,7 @@
             <ul>
                 <li>
                     <label for="">时间</label>
-                    <span>{{dataInfo.createDate |date:'yyyy-MM-dd HH:MM:ss'}}</span>
+                    <span>{{dataInfo.createDate |date:'yyyy-MM-dd HH:mm:ss'}}</span>
                 </li>
                 <li>
                     <label for="">顾客</label>
@@ -16,23 +16,23 @@
                     <span>{{dataInfo.sysShopName}}</span>
                 </li>
                 <li>
-                    <label for="">前台</label>
+                    <label for="">关联员工</label>
                     <span>{{dataInfo.sysClerkName}}</span>
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
-                    <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
-                    <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信</span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝</span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行支付金额</span>
                 </li>
             </ul>
         </div>
         <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList">
             <div class="basic">
-                <p ng-if="listItem.goodsType == '0'">单次</p>
-                <p ng-if="listItem.goodsType == '1'">疗程卡</p>
-                <p ng-if="listItem.goodsType == '2'">充值卡</p>
-                <p ng-if="listItem.goodsType == '3'">套卡</p>
+                <p ng-if="dataInfo.goodsType == '0'">单次</p>
+                <p ng-if="dataInfo.goodsType == '1'">疗程卡</p>
+                <p ng-if="dataInfo.goodsType == '2'">充值卡</p>
+                <p ng-if="dataInfo.goodsType == '3'">套卡</p>
                 <ul>
                     <li>
                         <label for="">{{listItem.flowName}}</label>
@@ -48,7 +48,7 @@
                     </li>
                     <li>
                         <label for="">折扣</label>
-                        <span>{{listItem.discount}}</span>
+                        <span>{{listItem.discount=='1'?'无折扣':listItem.discount+'折'}}</span>
                     </li>
                     <li>
                         <label for="">数量</label>
@@ -65,18 +65,35 @@
                 </ul>
             </div>
             <div class="basic">
-                <p>支付明细</p>
+                <p>总金额</p>
                 <ul>
                     <li>
-                        <label for="">
-                            <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
-                            <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
-                            <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
-                        </label>
+                        <span>{{dataInfo.sumAmount}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="basic">
+                <p>支付明细</p>
+                <ul>
+                    <li ng-if="dataInfo.payMap.cashAmount!=''">
+                        <label for="">现金支付</label>
+                        <span>{{dataInfo.payMap.cashAmount}}</span>
+                    </li>
+                    <li ng-if="dataInfo.payMap.balanceAmount!='' ">
+                        <label for="">余额支付</label>
+                        <span>{{dataInfo.payMap.balanceAmount}}</span>
+                    </li>
+
+                    <li ng-if="dataInfo.payMap.payType!=''">
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
                         <span>{{dataInfo.payMap.payTypeAmount}}</span>
                     </li>
                 </ul>
             </div>
+
+
             <div class="basic">
                 <p>顾客签字</p>
                 <ul>

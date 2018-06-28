@@ -40,6 +40,12 @@
                             <p class="mr10 col888" ng-if="info.type == '1'">
                                 充值
                             </p>
+                            <p class="mr10 col888" ng-if="info.type == '3'">
+                                划卡
+                            </p>
+                            <p class="mr10 col888" ng-if="info.type == '4'">
+                                产品领取
+                            </p>
                         </ion-item>
                     </ion-list>
                 </div>
@@ -54,7 +60,7 @@
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml20">充值金额</p>
                             <p class="mr10 col888">
-                                {{item.price}}
+                                ￥{{item.price}}
                             </p>
                         </ion-item>
                         <ion-item  class=" bgfff" >
@@ -62,15 +68,15 @@
                             <div class="ml30">
                                 <p class="sb">
                                     <span>单次</span>
-                                    <span class="mr10">{{item.timeDiscount}}折</span>
+                                    <span class="mr10">{{(item.timeDiscount==null)||(item.timeDiscount==1)?'无折':item.timeDiscount*10+'折'}}</span>
                                 </p>
                                 <p class="sb">
                                     <span>疗程卡</span>
-                                    <span class="mr10">{{item.periodDiscount}}折</span>
+                                    <span class="mr10">{{(item.periodDiscount==null)||(item.periodDiscount==1)?'无折':item.periodDiscount*10+'折'}}</span>
                                 </p>
                                 <p class="sb">
                                     <span>产品</span>
-                                    <span class="mr10">{{item.productDiscount}}折</span>
+                                    <span class="mr10">{{(item.productDiscount==null)||(item.productDiscount==1)?'无折':item.productDiscount*10+'折'}}</span>
                                 </p>
                             </div>
                         </ion-item>
@@ -91,12 +97,18 @@
                 <p class="h50 ml10">支付明细</p>
                 <div>
                     <opn-list >
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml10"  ng-if="info.payMap.payType=='0'"> 微信</p>
-                            <p class="ml10"  ng-if="info.payMap.payType=='1'"> 支付宝</p>
-                            <p class="ml10"  ng-if="info.payMap.payType=='2'"> 银行卡</p>
-                            <p class="mr10 col888">
-                                ￥{{info.payMap.payTypeAmount}}
+                        <ion-item  class="h50 bgfff" ng-if="info.payMap.payType!=null&&info.payMap.payType!=''">
+                            <p class="ml10"  ng-if="info.payMap.payType=='0'" style="display: flex;justify-content: space-between">
+                                <span>微信</span>
+                                <span class="mr10"> ￥{{info.payMap.payTypeAmount}}</span>
+                            </p>
+                            <p class="ml10"  ng-if="info.payMap.payType=='1'" style="display: flex;justify-content: space-between">
+                                <span>支付宝</span>
+                                <span class="mr10"> ￥{{info.payMap.payTypeAmount}}</span>
+                            </p>
+                            <p class="ml10"  ng-if="info.payMap.payType=='2'" style="display: flex;justify-content: space-between">
+                                <span>银行卡</span>
+                                <span class="mr10"> ￥{{info.payMap.payTypeAmount}}</span>
                             </p>
                         </ion-item>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.balanceAmount != null">
@@ -120,9 +132,12 @@
                     </opn-list>
                 </div>
                 <p class="h50 ml10">顾客签字</p>
-                <div style="height:156px;background: url('{{info.signUrl}}');background-size: contain;background-repeat: no-repeat;background-position: center center" class="bgfff" >
+                <div style="background: #fff;height:156px;">
+                    <div style="height:156px;background: url('{{info.signUrl}}');background-size: contain;background-repeat: no-repeat;background-position: center center" class="bgfff" >
 
+                    </div>
                 </div>
+
                 <p class="h50 ml10 fs14">备注</p>
                 <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff">
                      {{info.detail}}

@@ -11,51 +11,54 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                 status:true,
                 id:$stateParams.id
             };
-            $ionicLoading.show({
-                content: 'Loading',
-                animation: 'fade-in',
-                showBackdrop: true,
-                maxWidth: 200,
-                showDelay: 0
-            })
+            $scope.$on('$ionicView.enter', function() {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                })
                 RechargeCardDetail.get({
-                    id:$stateParams.id
-                },function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $ionicLoading.hide()
+                    id: $stateParams.id
+                }, function (data) {
+                    if (data.result == Global.SUCCESS && data.responseData != null) {
                         $rootScope.settingAddsome.editedRecharge = data.responseData;
-                        if($rootScope.settingAddsome.editedRecharge.status == '0'){
+                        if ($rootScope.settingAddsome.editedRecharge.status == '0') {
                             $scope.param.status = true
-                        }else{
+                        } else {
                             $scope.param.status = false
                         }
                         GetGoodsUseScope.get({
-                            shopRechargeCardId:$stateParams.id
-                        },function (data) {
-                            if(data.responseData.timesList!=undefined||data.responseData.periodList!=undefined||data.responseData.productList!=undefined){
-                                $rootScope.settingAddsome.editedRecharge.timesList =data.responseData.timesList;
-                                $rootScope.settingAddsome.editedRecharge.periodList =data.responseData.periodList;
-                                $rootScope.settingAddsome.editedRecharge.productList =data.responseData.productList;
-                            }else{
-                                $rootScope.settingAddsome.editedRecharge.timesList =new Array;
-                                $rootScope.settingAddsome.editedRecharge.periodList =new Array;
-                                $rootScope.settingAddsome.editedRecharge.productList =new Array;
+                            shopRechargeCardId: $stateParams.id
+                        }, function (data) {
+                            if (data.responseData.timesList != undefined || data.responseData.periodList != undefined || data.responseData.productList != undefined) {
+                                $rootScope.settingAddsome.editedRecharge.timesList = data.responseData.timesList;
+                                $rootScope.settingAddsome.editedRecharge.periodList = data.responseData.periodList;
+                                $rootScope.settingAddsome.editedRecharge.productList = data.responseData.productList;
+                            } else {
+                                $rootScope.settingAddsome.editedRecharge.timesList = new Array;
+                                $rootScope.settingAddsome.editedRecharge.periodList = new Array;
+                                $rootScope.settingAddsome.editedRecharge.productList = new Array;
                             }
-                            if($rootScope.settingAddsome.editedRecharge.productList.length>0||($rootScope.settingAddsome.editedRecharge.productList!=''&&$rootScope.settingAddsome.editedRecharge.productList!=null)){
-                                $scope.param.appearArr[2]=true
+                            if ($rootScope.settingAddsome.editedRecharge.productList.length > 0 || ($rootScope.settingAddsome.editedRecharge.productList != '' && $rootScope.settingAddsome.editedRecharge.productList != null)) {
+                                $scope.param.appearArr[2] = true
                             }
-                            if($rootScope.settingAddsome.editedRecharge.periodList.length>0||($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)){
-                                $scope.param.appearArr[1]=true
+                            if ($rootScope.settingAddsome.editedRecharge.periodList.length > 0 || ($rootScope.settingAddsome.editedRecharge.periodDiscount != '' && $rootScope.settingAddsome.editedRecharge.periodDiscount != null)) {
+                                $scope.param.appearArr[1] = true
                             }
-                            if($rootScope.settingAddsome.editedRecharge.timesList.length>0||($rootScope.settingAddsome.editedRecharge.timeDiscount!=""&&$rootScope.settingAddsome.editedRecharge.timeDiscount!=null)){
-                                $scope.param.appearArr[0]=true
+                            if ($rootScope.settingAddsome.editedRecharge.timesList.length > 0 || ($rootScope.settingAddsome.editedRecharge.timeDiscount != "" && $rootScope.settingAddsome.editedRecharge.timeDiscount != null)) {
+                                $scope.param.appearArr[0] = true
                             }
+
+                            $ionicLoading.hide()
 
 
                         })
 
                     }
                 });
+            })
 
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
@@ -74,16 +77,12 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.editedRecharge.imageList.push(data.responseData)
                             }
-
                         })
                     };
                     fr.readAsDataURL(file);
-
                 }else {
                     alert("浏览器不支持")
                 }
-
-
             };
             $scope.delPic = function(index){
                 $rootScope.settingAddsome.editedRecharge.imageList.splice(index,1)

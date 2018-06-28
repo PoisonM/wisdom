@@ -10,7 +10,8 @@ angular.module('controllers',[]).controller('reminderCtrl',
                 settingStatus:true,
                 statusArr:[],
                 displayShopBox:false,
-                sysShopId:''
+                sysShopId:'',
+                sysShopName:$stateParams.sysShopName
             }
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
@@ -95,6 +96,20 @@ angular.module('controllers',[]).controller('reminderCtrl',
                     }
 
                 })
+            }
+            
+            $scope.depaly=function (typeName) {
+                if(typeName == '4'){
+                    setTimeout(function(){
+                        document.body.scrollTop = document.body.scrollHeight;
+                    },300);
+                }
+            }
+            $('body').bind('touchmove', function(e) {
+                $("input").blur()
+            });
+            $scope.num = function (time,index,type) {
+                $scope.reminder[index][type]=time.replace(/[^0-9:0-9]+/,'')
             }
 
         }]);

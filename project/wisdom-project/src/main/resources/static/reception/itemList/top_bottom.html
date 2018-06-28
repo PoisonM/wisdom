@@ -1,6 +1,5 @@
 <div ng-class="{'header_top_nor':!mainSwitch.headerBoxFlag,'header_bottom_nor':!mainSwitch.footerBoxFlag}" class="top_bottom">
     <div ng-if="mainSwitch.headerBoxFlag" class="header">
-
         <!--预约头部-->
         <div ng-if="mainSwitch.headerReservationAllFlag" class="header_box">
             <div ng-if = "mainSwitch.headerReservationFlag.headerReservationLeftFlag" class="header_reservation_left">
@@ -16,7 +15,6 @@
                 排班
             </div>
         </div>
-
         <!--收银头部/档案头部/我的头部-->
         <div ng-if="mainSwitch.headerCashAllFlag" class="header_box">
             <div class="header_cash_left">
@@ -31,13 +29,10 @@
                 <span ng-if = "mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag" class="save" ng-click="leftTipFn()">{{param.headerCash.leftTip}}</span>
             </div>
         </div>
-
-
         <!--登录头部-->
         <div ng-if="mainSwitch.headerLoginFlag" class="header_box">
             <div class="header_login">登录</div>
         </div>
-
         <!--价目表头部-->
         <div ng-if = "mainSwitch.headerPriceListAllFlag" class="header_box">
             <div ng-if = "!mainSwitch.headerPriceListBlackFlag" class="header_price_box">
@@ -53,9 +48,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
     <!--中心切换区域-->
     <div ui-view style="height: 100%"></div>
     <div ng-if = "mainSwitch.footerBoxFlag" class="footer">
@@ -63,10 +56,11 @@
             <ul>
                 <li ng-click="selectSty('yuyue')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'yuyue'}"><span style="width: 23px;height: 22px;"></span>预约</li>
                 <li ng-click="selectSty('shouyin')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'shouyin'}"><span style="width: 20px;height: 21px;"></span>收银</li>
-                <li ng-click="selectSty('kaoqin')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'kaoqin'}"><span style="width: 19px;height: 21px;margin-top: 3px;"></span>考勤</li>
+                <!--<li ng-click="selectSty('kaoqin')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'kaoqin'}"><span style="width: 19px;height: 21px;margin-top: 3px;"></span>考勤</li>-->
                 <li ng-click="selectSty('jiamubiao')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'jiamubiao'}"><span style="width: 18px;height: 22px;"></span>价目表</li>
                 <li ng-click="selectSty('wo')" ng-class="{'top_bottom_select':param.top_bottomSelect == 'wo'}"><span style="width: 18px;height: 22px;"></span>我</li>
             </ul>
         </div>
     </div>
+
 </div>

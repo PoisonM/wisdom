@@ -1,33 +1,64 @@
 angular.module('controllers',[]).controller('newLibraryCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global','GetProductInfo',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global,GetProductInfo) {
             $rootScope.title = "新增入库";
             $scope.sum = $stateParams.sum;
+            $scope.productDate ="";
+            $scope.flag = true;
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: [],
                 index:"",
-                shopStock:[]
+                shopStock:[],
+                productInfoDate:[]
             };
 
-            angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
+            if($stateParams.stockStyle=='1'){
+                $scope.sum = 1;
+                GetProductInfo.get({
+                    productCode:$stateParams.productCode
+                },function(data){
+                    if(data.result == "0x00001"){
+                        $scope.param.productInfoDate = data.responseData;
+                        angular.forEach($scope.param.productInfoDate,function (val,index) {
+                            var value = {
+                                detail:"",
+                                productDate:val.effectDate,
+                                stockPrice:val.marketPrice,/*进货单价*/
+                                shopProcId:val.id,/*产品id*/
+                                shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                                stockNumber: "",
+                                productUrl : val.productUrl,
+                                productName: val.productName,
+                                productUnit: val.productUnit,
+                                productSpec: val.productSpec,
+                                productDateString: val.effectDate,
+                                stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                            }
+                            $scope.param.shopStock.push(value);
+                        })
+                    }
+                })
+            }else{
+                angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
 
-                var value = {
-                    detail:"",
-                    productDate:val.effectDate,
-                    stockPrice:val.marketPrice,/*进货单价*/
-                    shopProcId:val.id,/*产品id*/
-                    shopStoreId:$stateParams.shopStoreId,/*仓库id*/
-                    stockNumber: "",
-                    productUrl : val.productUrl,
-                    productName: val.productName,
-                    productUnit: val.productUnit,
-                    productSpec: val.productSpec,
-                    stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
-                }
-                $scope.param.shopStock.push(value);
-            })
-
+                    var value = {
+                        detail:"",
+                        productDate:val.effectDate,
+                        stockPrice:val.marketPrice,/*进货单价*/
+                        shopProcId:val.id,/*产品id*/
+                        shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                        stockNumber: "",
+                        productUrl : val.productUrl,
+                        productName: val.productName,
+                        productUnit: val.productUnit,
+                        productSpec: val.productSpec,
+                        productDateString: val.effectDate,
+                        stockStyle:$stateParams.stockStyle /*0、手动入库 1、扫码入库 2、手动出库 3、扫码出库	*/
+                    }
+                    $scope.param.shopStock.push(value);
+                })
+            }
             var disabledDates = [
                 new Date(1437719836326),
                 new Date(),
@@ -44,6 +75,16 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             var dateShopProductId = '';
             $scope.selDate = function(productDate,shopProcId){
                 dateShopProductId = shopProcId;
+                var shopStock = [];
+                angular.forEach($scope.param.shopStock,function (val,index) {
+                    if(val.shopProcId == shopProcId){
+                        val.productDateString = productDate;
+                        shopStock.push(val);
+                    }else{
+                        shopStock.push(val);
+                    }
+                });
+                $scope.param.shopStock = shopStock;
             }
 
             console.log($rootScope.shopInfo.entryShopProductList);
@@ -98,24 +139,28 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                     }
                 });
                 $scope.param.shopStock = shopStock;
-                $rootScope.shopInfo.entryShopProductList = shopStock;
                 $scope.sum = $scope.sum-1;
             }
 
             $scope.successfulInventoryGo=function(){
                 if($scope.sum>0){
-                    var list = $scope.param.shopStock;
-                    for(var i=0;i<list.length;i++){
-                        if(list[i].stockNumber == ''||list[i].productDate == ''||list[i].stockPrice == ''){
-                            alert("请检查信息")
-                            return
+                    if($scope.flag){
+                        $scope.flag=false;
+                        var list = $scope.param.shopStock;
+                        for(var i=0;i<list.length;i++){
+                            if(list[i].stockNumber == ''||list[i].productDate == ''||list[i].stockPrice == ''){
+                                alert("请检查信息");
+                                $scope.flag=true;
+                                return
+                            }
                         }
+                        AddStock.save($scope.param.shopStock,function(data){
+                            if(data.result==Global.SUCCESS){
+                                $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
+                            }
+                        })
                     }
-                    AddStock.save($scope.param.shopStock,function(data){
-                        if(data.result==Global.SUCCESS){
-                            $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
-                        }
-                    })
+
                 }else{
                      alert("入库商品列表不能为空！");
                      $state.go('putInStorage',{name:$stateParams.name});

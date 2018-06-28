@@ -7,26 +7,26 @@
             <ul>
                 <li>
                     <label for="">时间</label>
-                    <span>{{dataInfo.createDate}}</span>
+                    <span>{{dataInfo.createDate| date: "yyyy-MM-dd HH:mm:ss"}}</span>
                 </li>
                 <li>
                     <label for="">顾客</label>
-                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+                    <span>{{dataInfo.sysUserName}}</span>
                 </li>
                 <li>
                     <label for="">操作门店</label>
                     <span>{{dataInfo.sysShopName}}</span>
                 </li>
+                <!--<li>-->
+                    <!--<label for="">关联员工</label>-->
+                    <!--<span>{{dataInfo.sysClerkName}}</span>-->
+                <!--</li>-->
                 <li>
-                    <label for="">前台</label>
-                    <span>{{dataInfo.sysClerkName}}</span>
-                </li>
-                <li>
-                    <label for="">类型</label>
+                    <label for="">支付类型</label>
                     <!--0:微信 1：支付宝 2:银行支付金额-->
-                    <span ng-if="dataInfo.payMap.payType == '0'">微信</span>
-                    <span ng-if="dataInfo.payMap.payType == '1'">支付宝</span>
-                    <span ng-if="dataInfo.payMap.payType == '2'">银行支付金额</span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信</span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝</span>
+                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行支付金额</span>
                 </li>
             </ul>
         </div>

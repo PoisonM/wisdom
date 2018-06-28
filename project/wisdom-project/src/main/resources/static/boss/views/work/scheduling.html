@@ -1,3 +1,4 @@
+
 <ion-view class="scheduling bgf66">
        <!--头部切换时间 切换店铺-->
         <div style="width: 100%;height: 40px;line-height: 40px;position: relative">
@@ -9,24 +10,35 @@
             <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
                 <thead>
                     <tr class="listHead">
+
                         <td ng-repeat="item1 in tempWeek">
                             <div>
-                                {{item1[0]}}
+                                {{item1[0]}} {{$index}}
                                 </br>{{item1[1]}}
+
                             </div>
                         </td>
                     </tr>
                 </thead>
                 <tbody >
-                    <tr ng-repeat="item4 in tempUser" class="list">
+                    <tr ng-repeat="item4 in tempUser" class="list ">
+                        <td class="clerkName">
+                            <div class=" center" >
+                                <p>
+                                    <span class="" >{{item4.clerkInfo.name.substring(0,3)}}</span>
+                                    <span ng-if="item4.clerkInfo.name.length>3">...</span>
+                                </p>
+                            </div>
+
+                        </td>
                         <td ng-repeat="infoItem in item4.clerkSchInfo">
-                            <div ng-if="$index == 0">{{item4.clerkInfo.name}}</div>
-                            <div ng-if="$index != 0">
+                               <div >
                                 <img ng-if="infoItem.scheduleType == 0" src="images/work/morning.png">
                                 <img ng-if="infoItem.scheduleType == 1" src="images/work/middle.png">
                                 <img ng-if="infoItem.scheduleType == 2" src="images/work/night.png">
                                 <img ng-if="infoItem.scheduleType == 3" src="images/work/all.png">
                                 <img ng-if="infoItem.scheduleType == 4" src="images/work/Rest.png">
+                                   {{$index}}
                             </div>
                         </td>
                     </tr>

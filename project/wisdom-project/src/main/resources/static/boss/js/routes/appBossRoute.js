@@ -63,7 +63,7 @@ define(['appBoss'], function(app){
                 /*收支明细*/
                 $stateProvider
                     .state('incomeDetails', {
-                        url: '/incomeDetails',
+                        url: '/incomeDetails,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'incomeDetailsCtrl',
                         resolve: {
@@ -77,7 +77,7 @@ define(['appBoss'], function(app){
                 /*业绩明细*/
 
                     .state('detailedPerformance', {
-                        url: '/detailedPerformance/:sysShopId,:searchFile,:sysClerkId',
+                        url: '/detailedPerformance/:sysShopId,:searchFile,:sysClerkId,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailedPerformanceCtrl',
                         resolve: {
@@ -90,7 +90,7 @@ define(['appBoss'], function(app){
                     })
                         /*员工端的业绩明细*/
                     .state('employeeDetailedPerformance', {
-                        url: '/employeeDetailedPerformance/:searchFile',
+                        url: '/employeeDetailedPerformance/:searchFile,:date',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'employeeDetailedPerformanceCtrl',
                         resolve: {
@@ -104,7 +104,7 @@ define(['appBoss'], function(app){
                 /*全部家人*/
 
                     .state('allFamily', {
-                        url: '/allFamily/:date',
+                        url: '/allFamily/:date,:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'allFamilyCtrl',
                         resolve: {
@@ -561,7 +561,7 @@ define(['appBoss'], function(app){
                     })
                 /*基础资料设置*/
                     .state('basicSetting', {
-                        url: '/basicSetting',
+                        url: '/basicSetting,:sysShopName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'basicSettingCtrl',
                         resolve: {
@@ -600,7 +600,7 @@ define(['appBoss'], function(app){
                     })
                 /*提醒设置*/
                     .state('reminder', {
-                        url: '/reminder',
+                        url: '/reminder/:sysShopName',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'reminderCtrl',
                         resolve: {
@@ -1514,6 +1514,22 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+
+                    //领取人
+                    .state('receiver', {
+                        url: '/receiver/:id/:sum/:shopStoreId/:stockStyle/:productCode',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'receiverCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.receiverCtrl',
+                                    ['js/controllers/inventory/receiverCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/receiver.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
+
                     /* reservoirRunningWater 出入库流水*/
                     .state('reservoirRunningWater', {
                         url: '/reservoirRunningWater',
@@ -1887,7 +1903,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum',
+                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum/:ids/:names/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {
@@ -1900,7 +1916,7 @@ define(['appBoss'], function(app){
                     })
                 /* newLibrary  新增入库*/
                     .state('newLibrary', {
-                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name',
+                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newLibraryCtrl',
                         resolve: {
@@ -1953,7 +1969,7 @@ define(['appBoss'], function(app){
                     })
                 /*selectTheOutboundType 选择出库类型*/
                     .state('selectTheOutboundType', {
-                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle/:name/:sum',
+                        url: '/selectTheOutboundType/:shopStoreId/:stockStyle/:name/:sum/:productCode',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'selectTheOutboundTypeCtrl',
                         resolve: {
@@ -2489,6 +2505,19 @@ define(['appBoss'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.employeeAboutMineCtrl',
                                     ['js/controllers/employee/employeeAboutMineCtrl.js?ver='+ bossVersion],
                                     'views/employee/employeeAboutMine.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+                /* 产品-领取详情 getTheDetails*/
+                    .state('getTheDetails', {
+                        url: '/getTheDetails,:flowNo',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'getTheDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.getTheDetailsCtrl',
+                                    ['js/controllers/work/getTheDetailsCtrl.js?ver='+ bossVersion],
+                                    'views/work/getTheDetails.html?ver=' + bossVersion);
                             }
                         }
                     })

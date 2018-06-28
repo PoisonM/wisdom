@@ -2,8 +2,9 @@
  * Created by Administrator on 2018/5/31.
  */
 angular.module('controllers',[]).controller('employeeAppointListCtrl',
-    ['$scope','$rootScope','$stateParams','$state','BossUtil','$filter','GetClerkScheduleOneDayInfo','GetShopAppointmentInfoByStatus',
-        function ($scope,$rootScope,$stateParams,$state,BossUtil,$filter,GetClerkScheduleOneDayInfo,GetShopAppointmentInfoByStatus) {
+    ['$scope','$rootScope','$stateParams','$state','BossUtil','$filter','GetClerkScheduleOneDayInfo','GetShopAppointmentInfoByStatus','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,$filter,GetClerkScheduleOneDayInfo,GetShopAppointmentInfoByStatus,$ionicLoading,Global) {
+          $rootScope.title="我的预约";
 
             /*日期插件*/
             var date = new Date();
@@ -23,17 +24,25 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 date: currentdate,
                 week:'',
                 scheduleDate:'',
-                appointList : []
+                appointList : [],
+                picFlag:false/*空白页面的展示 */
             };
-
-            GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
-                $scope.param.week = data.responseData.week;
-                $scope.param.scheduleDate = data.responseData.scheduleDate;
-                GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
-                    $scope.param.appointList = data.responseData;
-                    console.log($scope.param.appointList);
-                })
-            });
+                GetClerkScheduleOneDayInfo.get({searchDate:$scope.param.date},function (data) {
+                    $scope.param.week = data.responseData.week;
+                    $scope.param.scheduleDate = data.responseData.scheduleDate;
+                    GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
+                        if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                            $scope.param.appointList = data.responseData;
+                            $scope.param.picFlag=false;
+                            if(data.responseData.length<=0){
+                                $scope.param.picFlag=true;
+                            }
+                        }else {
+                            $scope.param.picFlag=true;
+                        }
+                        console.log($scope.param.appointList);
+                    })
+                });
 
             var disabledDates = [
                 new Date(1437719836326),
@@ -58,7 +67,15 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                         $scope.param.week = data.responseData.week;
                         $scope.param.scheduleDate = data.responseData.scheduleDate;
                         GetShopAppointmentInfoByStatus.get({searchDate:$scope.param.date},function (data) {
-                            $scope.param.appointList = data.responseData;
+                            if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                                $scope.param.appointList = data.responseData;
+                                $scope.param.picFlag=false;
+                                if(data.responseData.length<=0){
+                                    $scope.param.picFlag=true;
+                                }
+                            }else {
+                                $scope.param.picFlag=true;
+                            }
                             console.log($scope.param.appointList);
                         })
                     })
@@ -91,14 +108,18 @@ angular.module('controllers',[]).controller('employeeAppointListCtrl',
                 dateFormat: 'yyyy-MM-dd', //可选
                 closeOnSelect: true //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
+
+            $scope.pho=function(num){
+                window.location.href = "tel:" + num;
+            }
             
             $scope.confirmedGo = function(shopAppointServiceId){
                 //这一期暂停
-                // $state.go("employeeConfirmed",{shopAppointServiceId:shopAppointServiceId})
+               /*  $state.go("employeeConfirmed",{shopAppointServiceId:shopAppointServiceId})*/
             };
-
-            // $scope.employeeReservation = function(){
-            //     $state.go("employeeReservation")
-            // }
+           /*点击已取消预约按钮 查看取消的预约情况*/
+            /*$scope.employeeReservation = function(){
+               $state.go("employeeReservation")
+             }*/
 
 }]);

@@ -1,13 +1,13 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.service.ShopProjectService;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -72,7 +72,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		ShopUserProjectRelationCriteria shopUserProjectRelationCriteria = new ShopUserProjectRelationCriteria();
 		ShopUserProjectRelationCriteria.Criteria criteria = shopUserProjectRelationCriteria.createCriteria();
-
+        //根据创建时间排序
+		shopUserProjectRelationCriteria.setOrderByClause("create_date desc");
 		// 根据预约主键查询用户的预约项目
 		if (StringUtils.isNotBlank(shopUserProjectRelationDTO.getShopAppointmentId())) {
 			criteria.andShopAppointmentIdEqualTo(shopUserProjectRelationDTO.getShopAppointmentId());
@@ -101,7 +102,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 
 		if (null != shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()
 				&& shopUserProjectRelationDTO.getSysShopProjectSurplusTimes() > 0) {
-			criteria.andSysShopProjectSurplusTimesGreaterThan(
+			criteria.andSysShopProjectSurplusTimesGreaterThanOrEqualTo(
 					shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
 		}
 
@@ -212,7 +213,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 			}
 		}else {
 			if (StringUtils.isNotBlank(extShopProjectInfoDTO.getProjectName())) {
-				criteria.andProjectNameLike(extShopProjectInfoDTO.getProjectName());
+				criteria.andProjectNameLike("%"+extShopProjectInfoDTO.getProjectName()+"%");
 			}
 		}
 
@@ -247,7 +248,8 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		ShopUserProjectGroupRelRelationCriteria shopUserProjectGroupRelRelationCriteria = new ShopUserProjectGroupRelRelationCriteria();
 		ShopUserProjectGroupRelRelationCriteria.Criteria criteria = shopUserProjectGroupRelRelationCriteria
 				.createCriteria();
-
+		//根据创建时间排序
+		shopUserProjectGroupRelRelationCriteria.setOrderByClause("create_date");
 		if (StringUtils.isNotBlank(shopUserProjectGroupRelRelationDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(shopUserProjectGroupRelRelationDTO.getSysShopId());
 		}
@@ -333,6 +335,9 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		}
 		if (StringUtils.isNotBlank(shopProjectInfoDTO.getProjectName())) {
 			criteria.andProjectNameLike("%" + shopProjectInfoDTO.getProjectName() + "%");
+		}
+		if (StringUtils.isNotBlank(shopProjectInfoDTO.getUseStyle())) {
+			criteria.andUseStyleEqualTo(shopProjectInfoDTO.getUseStyle());
 		}
 		//项目为启用状态
 		criteria.andStatusEqualTo(CommonCodeEnum.SUCCESS.getCode());

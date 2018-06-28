@@ -1,11 +1,11 @@
-.stillOwedBox {
+.getProduct  {
     width: 100%;
     height: 100%;
     background: #ffffff;
     overflow: scroll;
 }
 
-.stillOwedBox .stillOwedTitle {
+.getProduct  .stillOwedTitle {
     background: #EEEEEE;
     font-size: 13px;
     color: #888888;
@@ -13,23 +13,23 @@
     padding: 20px 0 6px 17px;
 }
 
-.stillOwedBox .stillOwedUl {
+.getProduct  .stillOwedUl {
     width: 100%;
     background: #fff;
 }
 
-.stillOwedBox .stillOwedUl li {
+.getProduct  .stillOwedUl li {
     height: 45px;
     border-bottom: 1px solid #E5E5E5;
 }
 
-.stillOwedBox .stillOwedUl li input {
+.getProduct  .stillOwedUl li input {
     display: block;
     float: left;
     margin: 16px 0px 0px 10px;
 }
 
-.stillOwedBox .stillOwedUl li div {
+.getProduct  .stillOwedUl li div {
     margin: 13px 0 0 16px;
     float: left;
     font-family: PingFangSC-Regular;
@@ -38,7 +38,7 @@
     letter-spacing: 0;
 }
 
-.stillOwedBox .stillOwedUl li span {
+.getProduct  .stillOwedUl li span {
     margin: 13px 16px 0 0;
     float: right;
     font-family: PingFangSC-Regular;
@@ -47,7 +47,7 @@
     letter-spacing: 0;
 }
 
-.stillOwedBox .stillOwedUl li span input {
+.getProduct  .stillOwedUl li span input {
     background: #F4F4F4;
     border: 0 solid #EBEBEB;
     width: 150px;
@@ -60,11 +60,11 @@
     padding-left: 9px;
 }
 
-.stillOwedBox textarea {
+.getProduct  textarea {
     width: 100%;
 }
 
-.stillOwedBox button {
+.getProduct  button {
     background: #FF6666;
     border-radius: 4px;
     font-family: PingFangSC-Regular;
@@ -77,7 +77,7 @@
     height: 44px;
 }
 
-.checkBox {
+.getProduct .checkBox {
     width: 22px;
     height: 22px;
     border-radius: 50%;
@@ -87,14 +87,14 @@
     border: 1px solid #FF6666;
 }
 
-.checkBox img {
+.getProduct .checkBox img {
     width: 100%;
     height: 100%;
     display: block;
 }
 
 
-.stillOwedBox .stillOwedPorduct {
+.getProduct  .stillOwedPorduct {
     width: 673px;
     height: 148px;
     margin: 18px 0 0 15px;
@@ -102,7 +102,7 @@
     background-size: cover;
 }
 
-.stillOwedBox .stillOwedPorduct .name {
+.getProduct  .stillOwedPorduct .name {
     font-family: PingFangSC-Regular;
     font-size: 18px;
     color: #FFFFFF;
@@ -111,7 +111,7 @@
     display: block;
 }
 
-.stillOwedBox .stillOwedPorduct .number {
+.getProduct  .stillOwedPorduct .number {
     font-family: PingFangSC-Regular;
     font-size: 13px;
     color: #FFFFFF;
@@ -123,10 +123,10 @@
     margin-top: 39px;
 }
 
-.stillOwedBox .stillOwedPorduct .number b {
+.getProduct  .stillOwedPorduct .number b {
     display: block;
 }
-.stillOwedBox .get_num_sty{
+.getProduct  .get_num_sty{
     font-size: 0.25rem;
     color: #333333;
     letter-spacing: 0.45px;
@@ -138,44 +138,45 @@
     padding-left: 15px;
     padding-bottom: 15px;
 }
-.stillOwedBox .get_num_sty .rightContent{
+.getProduct  .get_num_sty .rightContent{
     float: right;
     height: 80%;
     border: 1px solid;
     margin-right: 20px;
     border: 1px solid #E5E5E5;
 }
-.stillOwedBox .get_num_sty .rightContent input{
+.getProduct  .get_num_sty .rightContent input{
     float: left;
     width: 100px;
     padding-left: 10px;
 }
-.stillOwedBox .get_num_sty .rightContent div{
+.getProduct  .get_num_sty .rightContent div{
     float: left;
     width: 30px;
     height: 100%;
     text-align: center;
 }
 
-.stillOwedBox .get_num_sty .rightContent div:nth-child(1){
+.getProduct  .get_num_sty .rightContent div:nth-child(1){
     border-right: 1px solid #E5E5E5;
 }
 
-.stillOwedBox .get_num_sty .rightContent div:nth-child(2){
+.getProduct  .get_num_sty .rightContent div:nth-child(2){
     border-left: 1px solid #E5E5E5;
 }
 
-.stillOwedBox .height100Num  ul li{
-    height: 0.65625rem;
+.getProduct  .height100Num  ul li{
+    /*height: 0.65625rem;*/
     line-height: 0.65625rem;
     font-size: 0.25rem;
     color: #333333;
     letter-spacing: 0.45px;
     padding-left: 0.265625rem;
     position: relative;
+    overflow: hidden;
 }
 
-.stillOwedBox .go_set {
+.getProduct  .go_set {
     position: absolute;
     top: 40%;
     right: 0.3125rem;
@@ -183,4 +184,7 @@
     background-size: 100%;
     width: 0.1171875rem;
     height: 0.2109375rem;
+}
+.getProduct  .cccc{
+    color: #CCCCCC;
 }

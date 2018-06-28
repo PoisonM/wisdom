@@ -29,7 +29,8 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
         if (type == 0) { //疗程卡
             GetUserCourseProjectList.get({
                 sysUserId: $stateParams.sysUserId,
-                cardStyle: 1
+                cardStyle: 1,
+                surplusTimes:1
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("疗程卡:" + data)
@@ -76,7 +77,8 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
             })
         } else if (type == 4) { //产品
             GetUserProductList.get({
-                sysUserId: $stateParams.sysUserId
+                sysUserId: $stateParams.sysUserId,
+                surplusTimes :'1'
             }, function(data) {
                 if (data.result == "0x00001") {
                     console.log("产品:" + data)
@@ -86,23 +88,31 @@ PADWeb.controller('personalFileCtrl', function($scope,$rootScope,$stateParams, $
         }
 
     }
-
-    $scope.select = 4;
+    //记录tab点击
+    $scope.select = (localStorage.getItem('tabType'));
+    $scope.queruList(localStorage.getItem('tabType'))
     $scope.tabclick = function(e) {
-        $scope.select = e;
+        localStorage.setItem('tabType', JSON.stringify(e))
+        $scope.select = localStorage.getItem('tabType');
         $scope.queruList(e)
     }
-    $scope.tabclick(0);
+    // $scope.tabclick(0);
 
-    $scope.goConsumptionList = function(type, id) {
-        $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
+    $scope.goConsumptionList = function(type, id,expirationDate,$event) {
+        $event.stopPropagation();//阻止事件冒泡
+        if(expirationDate!='0' && expirationDate<$rootScope.currentTime){
+            // alert("对不起，你的卡项已过期^_^");
+            return false;
+        }else{
+            $state.go('pad-web.left_nav.drawCardConsumption', { type: type, id: id });
+        }
     };
 
     $scope.goGetProduct = function(id) {
         $state.go('pad-web.left_nav.getProduct', { id: id })
     }
+    $scope.goCureCardRecords = function (id,$event) {
 
-    $scope.goCureCardRecords = function (id) {
         $state.go('pad-web.left_nav.cureCardRecords',{id:id,userId:$stateParams.sysUserId})
     }
 

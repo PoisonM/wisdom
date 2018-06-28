@@ -115,7 +115,6 @@ public class PayCoreService {
 
                 businessMessageQueueSender.sendRecordMonthTransaction(userInfoDTO,instanceReturnMoneySignalDTO,expenseMoney);
 
-                businessMessageQueueSender.sendHandleUserLevelPromotion(userInfoDTO,expenseMoney);
             }
             catch (Exception e)
             {

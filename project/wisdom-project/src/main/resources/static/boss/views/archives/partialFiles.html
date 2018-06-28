@@ -1,17 +1,17 @@
 <ion-view >
-    <ion-content class="partialFiles bgf6">
-        <ion-list>
-            <ion-list>
-                <ion-item class="item-input" style="background: border-box;height: 40px; ">
-                <span class="item-input-wrapper" style="margin-right:16px;height:30px;margin-left:10px;" >
+    <ion-list>
+        <ion-item class="item-input" style="background: border-box;height: 40px; ">
+                <span class="item-input-wrapper" style="margin-right:12px;height:30px;" >
                         <i class="icon ion-ios-search placeholder-icon" ></i>
                         <input id="search" type="search" placeholder="请输入顾客姓名或者手机号码" ng-model="param.queryField" ng-change="search()">
                         <i class="icon ion-close-circled placeholder-icon" style="vertical-align: middle;"
                            on-tap="clearSearch()"></i>
                  </span>
-                    <i  class="changeArchivesBtn fs15 col333" ng-click="tabSwitching()">切换档案</i>
-                </ion-item>
-            </ion-list>
+            <i  class="changeArchivesBtn fs15 col333 mr10" ng-click="tabSwitching()">切换档案</i>
+        </ion-item>
+    </ion-list>
+    <ion-content class="partialFiles bgf6" style="margin-top:40px;" delegate-handle="dashboard">
+        <ion-list>
             <div style="position: relative;height:100%;">
                 <ion-list>
                     <ion-item  style="background: #ffffff;" class="h45" ng-click="newUser()">
@@ -44,9 +44,12 @@
                                         <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：{{item.createDate|date:'yyyy-MM-dd'}}</p>
                                     </div>
                                 </div>
-                                <div class="col col-25" style="line-height: 49px;">
-                                    <img src="images/associated.png" class="associated ml20 ">
-                                    <span class="fs11 colff66">{{item.sysClerkName}}</span>
+                                <div class="col col-25" style="line-height: 49px;" ng-show="false">
+                                    <div ng-if="item.sysClerkName!=null&&item.sysClerkName!=''">
+                                        <img src="images/associated.png" class="associated ml20 ">
+                                        <span class="fs11 colff66">{{item.sysClerkName}}</span>
+                                    </div>
+
                                 </div>
                             </ion-item>
                         </div>

@@ -1,13 +1,24 @@
 <!--商品-->
 <div class="setCardGoods">
     <ul>
-        <li ng-repeat="item in cardList" ng-click="goCardDetails(item.id)">
+        <li ng-repeat="item in cardList" ng-if="item.rechargeCardType != '0'" ng-click="goCardDetails(item.id)">
             <div class="imgDiv">
                 <img ng-src="{{item.imageUrl}}" alt="">
             </div>
             <div class="textDiv">
                 <p class="textName bold">{{item.name}}</p>
-                <p class="textMoney cff6666 mb">{{item.discountDesc}}</p>
+                <p class="textMoney cff6666 mb">价格:{{item.amount}}</p>
+                <p class="textDiscount">折扣:
+                    <span class="" ng-if="item.timeDiscount==1">次卡无折|</span>
+                    <span class="" ng-if="item.timeDiscount<1">次卡{{item.timeDiscount*10}}折|</span>
+
+                    <span class="" ng-if="item.periodDiscount==1">疗程卡无折|</span>
+                    <span class="" ng-if="item.periodDiscount<1">疗程卡{{item.periodDiscount*10}}折|</span>
+
+                    <span class="" ng-if="item.productDiscount==1">产品无折</span>
+                    <span class="" ng-if="item.productDiscount<1">产品{{item.productDiscount*10}}折</span>
+
+                </p>
             </div>
         </li>
     </ul>

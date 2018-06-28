@@ -53,7 +53,7 @@ define(['appBoss'], function (app) {
         .factory('GetShopAppointmentInfoByStatus',['$resource',function ($resource){
             return $resource(appointmentInfo + 'getShopAppointmentInfoByStatus')
        }])
-        /*根据预约主键获取预约详情*/
+        /*根据预约主键获取预约*/
         .factory('GetAppointmentInfoById',['$resource',function ($resource){
             return $resource(appointmentInfo + 'getAppointmentInfoById')
         }])
@@ -539,6 +539,23 @@ define(['appBoss'], function (app) {
         //获取当前老板下面对应的店铺
         .factory('FindStoreList',['$resource',function ($resource){
             return $resource(stock + "findStoreList")
+        }])
+
+
+        //获取产品详细信息根据扫描编码
+        .factory('GetProductInfoByScanCode',['$resource',function ($resource){
+            return $resource(productInfo + "getProductInfoByScanCode")
+        }])
+
+
+        //获取产品详细信息根据扫描编码
+        .factory('GetProductInfo',['$resource',function ($resource){
+            return $resource(productInfo + "getProductInfo")
+        }])
+
+        //产品领取记录详情
+        .factory('getProductDrawRecordDetail',['$resource',function ($resource){
+            return $resource(consume + "getProductDrawRecord/detail")
         }])
 
 

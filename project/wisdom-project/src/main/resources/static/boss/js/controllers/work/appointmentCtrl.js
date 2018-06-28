@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('appointmentCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
-                flag:false
+                picFlag:false
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'');
             $scope.param.date=$scope.param.date.replace(/:/g,'');
@@ -80,12 +80,12 @@ angular.module('controllers',[]).controller('appointmentCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide()
                         $scope.appointment = data.responseData;
-                        $scope.param.flag=false
+                        $scope.param.picFlag=false
                         if(data.responseData.length<=0){
-                            $scope.param.flag=true;
+                            $scope.param.picFlag=true;
                         }
                     }else {
-                        $scope.param.flag=true;
+                        $scope.param.picFlag=true;
                         $ionicLoading.hide()
                     }
                 })

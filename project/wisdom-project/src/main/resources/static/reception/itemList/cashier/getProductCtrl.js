@@ -1,10 +1,12 @@
-PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDialog, Archives, GetUserProductInfo, ConsumesUserProduct) {
+PADWeb.controller('getProductCtrl', function($scope,$rootScope, $stateParams, $state, ngDialog, Archives
+    , GetUserProductInfo, ConsumesUserProduct,ImageBase64UploadToOSS) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     // $scope.$parent.$parent.param.headerCash.leftContent = "档案(9010)";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
-    $scope.$parent.$parent.param.headerCash.backContent = "充值记录";
+    $scope.$parent.$parent.param.headerCash.backContent = "返回";
     $scope.$parent.$parent.param.headerCash.leftTip = "保存";
+    $scope.$parent.$parent.param.headerCash.title = "领取产品"
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.middleFlag = true;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
@@ -24,37 +26,88 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    $scope.$parent.$parent.backHeaderCashFn = function () {
+        window.history.go(-1)
+    }
+
     $scope.goHousekeeper = function() {
         $state.go('pad-web.left_nav.housekeeper')
     }
+    $scope.staffListNames = $rootScope.staffListNames//关联员工
+    $scope.staffListIds = $rootScope.staffListIds
 
     $scope.shopUserConsumeDTO ={
         clerkId: '',
         consumeId: '',
         consumeNum: 1,
         imageUrl:'',
-        consumePrice: ''
+        consumePrice: '',
+        sysUserId: ''
     }
 
+    var $signature = $("#signConfirmRight").jSignature({
+        'height': 400,
+    });
+    $signature.jSignature('reset')
+
+    //获取数据
+    var data = $signature.jSignature('getData', 'default')
+    //图片展示
+    var img = new Image()
+    img.src = data
+    $(img).appendTo($('#signimg'))
+    //将数据显示在文本框
+    $('#text').val(data)
+
+    ImageBase64UploadToOSS.save({
+        imageStr: $("#signConfirmRight").jSignature("getData")
+    }, function(data) {
+       /* UpdateConsumeRecord.get({
+            consumeId: $state.params.consumeId,
+            image: data.responseData,
+        }, function(data) {
+            $state.go("pad-web.left_nav.personalFile");
+        })*/
+
+    })
+
     $scope.goConfirmations = function() {
-        ConsumesUserProduct.save(
-            $scope.shopUserConsumeDTO
-        , function(data) {
-            if(data.result == '0x00001'){
-                $state.go('pad-web.confirmations', { consumeId: data.responseData, shopProjectInfoName: $scope.getproduct.shopProductName })
+        ImageBase64UploadToOSS.save({
+            imageStr: $("#signConfirmRight").jSignature("getData")
+        }, function(data) {
+            $scope.shopUserConsumeDTO.imageUrl = data.responseData;
+            if($scope.staffListIds == undefined){
+                $scope.shopUserConsumeDTO.sysClerkId = "";
+                $scope.shopUserConsumeDTO.sysClerkName = ""
+            }else {
+                $scope.shopUserConsumeDTO.sysClerkId = $scope.staffListIds.join(";");
+                $scope.shopUserConsumeDTO.sysClerkName = $scope.staffListNames.join(";");
             }
-            else{
-                alert(data.errorInfo);
-            }
+            ConsumesUserProduct.save(
+                $scope.shopUserConsumeDTO
+                , function(data) {
+                    if(data.result == '0x00001'){
+                        alert("领取成功")
+                        window.history.go(-1)
+                        $rootScope.staffListNames=[]//保存清除关联员工
+                        $rootScope.staffListIds=[]
+                    }
+                    else{
+                        alert(data.errorInfo);
+                    }
+                })
         })
+
+
     }
     $scope.checkBoxChek = function(e) {
         $(e.target).children('.checkBox').css('background', '#FF6666')
     }
 
     $scope.productNumSub = function () {
-        if($scope.shopUserConsumeDTO.consumeNum<=0){
-            alert("领取数量不能小于0");
+        if($scope.shopUserConsumeDTO.consumeNum<=1){
+            $scope.cccFlag = true
+            alert("领取数量不能小于1");
             return;
         }
         $scope.shopUserConsumeDTO.consumeNum = $scope.shopUserConsumeDTO.consumeNum -1;
@@ -74,6 +127,12 @@ PADWeb.controller('getProductCtrl', function($scope, $stateParams, $state, ngDia
     }, function(data) {
         $scope.productInfo = data.responseData;
         $scope.shopUserConsumeDTO.consumeId = data.id;
+        $scope.shopUserConsumeDTO.shopProductId = $scope.productInfo.shopProductId;
+        $scope.shopUserConsumeDTO.sysUserId = $scope.productInfo.sysUserId;
         $scope.shopUserConsumeDTO.consumeId = $state.params.id;
     })
+    
+    $scope.goHousekeeper = function () {
+        $state.go("pad-web.left_nav.housekeeper")
+    }
 });

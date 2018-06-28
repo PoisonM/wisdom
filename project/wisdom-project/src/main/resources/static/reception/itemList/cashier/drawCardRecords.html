@@ -2,9 +2,13 @@
     <ul class="prepaidRecordsUl">
         <li ng-click="goDrawCardRecordsDetail(item.flowNo)" ng-repeat="item in itemList">
             <div>{{item.title}}</br>
-                <b>{{item.createDate |date:"yyyy-MM-dd HH:MM:ss"}}</b>
+                <b>{{item.createDate |date:"yyyy-MM-dd HH:mm:ss"}}</b>
             </div>
-            <span>{{item.sumAmount}}</span>
+            <!--<span>{{item.sumAmount}}</span>-->
+            <div class="go_detail">
+                划卡{{item.consumeNumber}}
+                <span class="go_set"></span>
+            </div>
         </li>
     </ul>
 </div>

@@ -7,6 +7,7 @@ import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
 import com.wisdom.beauty.core.mapper.ShopAppointServiceMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopAppointmentService;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.SpringUtil;
@@ -76,10 +77,14 @@ public class AppointmentTest {
 
     @Test
     public void initOrderShouldReturnInitializedOrder() throws Exception {
-        ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
-        shopAppointServiceDTO.setAppointEndTime(new Date());
-        shopAppointServiceDTO.setId("242dfsfdfg34");
-        shopAppointServiceMapper.insert(shopAppointServiceDTO);
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        if("aaaa".equals(userInfoDTO.getId())){
+
+            System.out.print("chengg");
+        }else{
+
+            System.out.print("shibai");
+        }
 
     }
 

@@ -9,7 +9,7 @@
             </ionic-datepicker>
             <span  class="fs15 fr mr10 colfff" ng-click="tabShop()">切换店铺</span>
         </div>
-        <div ng-show="!param.flag">
+        <div ng-show="!param.picFlag">
             <div class="list employeeAnalysisBox">
                 <div class="row tc bgfff col33 p0 fs14">
                     <div class="col col-25 bre5e5"  >
@@ -54,17 +54,12 @@
                     </div>
                 </div>
             </div>
-            <div style="width:100%;height:100%;background:rgba(0,0,0,0.2);position: absolute;top:0" ng-if="param.displayShopBox" ng-click="noneAll()"></div>
-            <!--点击切换店铺显示的店铺列表-->
-            <div class="list " ng-if="param.displayShopBox" style="position: absolute;bottom:0;width:100%;">
-                <p class="item" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
-            </div>
         </div>
-        <div style="width:100%;height:100%" ng-show="param.flag">
-            <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
+        <div style="width:100%;height:100%;background:rgba(0,0,0,0.2);position: absolute;top:0;z-index:100" ng-if="param.displayShopBox" ng-click="noneAll()"></div>
+        <!--点击切换店铺显示的店铺列表-->
+        <div class="list " ng-if="param.displayShopBox" style="position: absolute;bottom:0;width:100%;z-index:101;margin:0">
+            <p class="item" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
         </div>
-
-
-
+        <void-pic></void-pic>
     </ion-content>
 </ion-view>

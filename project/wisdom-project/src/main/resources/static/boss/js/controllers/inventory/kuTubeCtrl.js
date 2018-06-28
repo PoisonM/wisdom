@@ -40,6 +40,7 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                 $scope.param.sysShopId=sysShopId;
                 $scope.getInfo()
             }
+
             $scope.all = function(){
                 $scope.param.flag = false;
             }
@@ -58,21 +59,27 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
                         key++;
                     })
                 } else {
-                    if($scope.param.ids.length>=3)return
+                    $scope.param.ids = [];
+                    $scope.param.names =[];
+                    if($scope.param.ids.length>=1)return
                     $scope.param.ids.push(domIndex);
                     $scope.param.names.push(name);
                 }
             }
+
             $scope.clearSearch = function () {
                 $scope.param.searchFile = ''
             }
+
             $scope.search = function () {
+
                 GetClerkBySearchFile.get({
                     searchFile:$scope.param.searchFile
                 },function(data){
-                    $scope.addFamily = data.responseData
+                    $scope.param.addFamily = data.responseData;
                 })
             }
+
             $scope.save = function () {
                   $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),shopStoreId:$stateParams.id})
             }

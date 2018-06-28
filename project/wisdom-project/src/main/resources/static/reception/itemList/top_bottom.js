@@ -1,4 +1,4 @@
-PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
+PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) {
     console.log("top")
 
     /*------------------------------------初始化参数-----------------------------------------------*/
@@ -20,6 +20,35 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
             saveContent:"确认"
         }
     }
+
+    //虚拟商品类型
+    $rootScope.goodsType = {
+        product : '4',
+        periodCard :'1',
+        rechargeCard :'2',
+        timeCard :'0',
+        groupCard:'3',
+        project:'8'
+    }
+    //虚拟商品类型
+    $rootScope.rootScopeGoodsType = {
+        product : '4',
+        periodCard :'1',
+        rechargeCard :'2',
+        timeCard :'0',
+        groupCard:'3',
+        project:'8'
+    }
+    $rootScope.currentTime = (new Date()).valueOf();
+    //支付方式
+    $rootScope.rootScopePayType = {
+        weChatPay : "0",
+        aliPay :'1',
+        bankPay :"2",
+        cashPay:'3',
+        all:"4"//包括所有支付方式
+    }
+
     //公共部分开关管理
     $scope.mainSwitch = {
         //头部总开关
@@ -82,12 +111,12 @@ PADWeb.controller("mallCtrl", function($scope, $state, $stateParams) {
         }
     }
 
-    /*$scope.backHeaderCashFn = function () {
+    $scope.backHeaderCashFn = function () {
         if($scope.param.headerCash.leftAddContent == "添加档案"){
             // $state.go("pad-web.left_nav.addRecord")
         }else {
             window.history.back()
         }
 
-    }*/
+    }
 })

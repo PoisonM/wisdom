@@ -45,4 +45,20 @@ public class BossServiceController {
     }
 
 
+    /**
+     * 更新老板信息
+     *
+     * @param sysBossDTO
+     * @return
+     */
+    @RequestMapping(value = "getBossInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    SysBossDTO  getBossInfo(@RequestBody SysBossDTO sysBossDTO) {
+        ResponseDTO responseDTO = new ResponseDTO();
+        logger.info("获取老板信息传入参数={}", "sysBossDTO = [" + sysBossDTO + "]");
+        SysBossDTO bossInfo = bossInfoService.getBossInfo(sysBossDTO);
+        return bossInfo;
+    }
+
+
 }

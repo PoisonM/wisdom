@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
             $rootScope.title = "全院档案";
             $scope.param={
                 sysShopId:"11",
-                pageSize:"100",
+                pageSize:"1000",
                 pageNo:"1",
                 queryField:"",
                 blackBox:false,
@@ -19,7 +19,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,
+                FindArchives.get({pageSize:$scope.param.pageSize,
                     pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                     BossUtil.checkResponseData(data,'partialFiles');
                     if(data.result == "0x00001"){
@@ -77,6 +77,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
               FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                   if(data.result == "0x00001"){
                       $scope.fileList = [];
+                      $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                       $scope.info = data.responseData.info;
                   }else{
                       $scope.info=[]

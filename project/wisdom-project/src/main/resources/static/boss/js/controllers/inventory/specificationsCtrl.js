@@ -16,9 +16,7 @@ angular.module('controllers',[]).controller('specificationsCtrl',
             $scope.selSpec=function (type) {
                 $scope.param.spec = type
             }
-            $scope.num = function () {
-                $scope.param.num = $scope.param.num.replace(/[^\d]/g,'')
-            }
+
             $scope.save=function () {
                     $state.go($stateParams.url)
                     $rootScope.settingAddsome.product.productSpec = $scope.param.num+$scope.param.spec

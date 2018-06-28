@@ -81,6 +81,16 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
     //
     private Date updateDate;
 
+    private String workinglife;
+
+    private String speciality;
+
+    private String dream;
+
+    private String wechat;
+
+    private String qq;
+
     private static final long serialVersionUID = 1L;
 
     public String getId() {
@@ -281,5 +291,48 @@ public class SysClerkDTO extends BaseEntity implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getWorkinglife() {
+        return workinglife;
+    }
+
+    public void setWorkinglife(String workinglife) {
+        this.workinglife = workinglife;
+    }
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
+    }
+
+    public String getDream() {
+        return dream;
+    }
+
+    public void setDream(String dream) {
+        this.dream = dream;
+    }
+
+    public String getWechat() {
+        return wechat;
+    }
+
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

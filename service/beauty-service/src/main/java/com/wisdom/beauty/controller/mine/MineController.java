@@ -8,6 +8,7 @@ import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
+import com.wisdom.beauty.client.FeedBackServiceClient;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.client.WeixinServiceClient;
 import com.wisdom.beauty.core.redis.RedisUtils;
@@ -17,9 +18,12 @@ import com.wisdom.beauty.core.service.ShopUerConsumeRecordService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.constant.SuggestionTypeEnum;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.system.SuggestionDto;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -74,6 +78,8 @@ public class MineController {
 
     @Resource
     private UserServiceClient userServiceClient;
+    @Autowired
+    private FeedBackServiceClient feedBackServiceClient;
 
     @Value("${test.msg}")
     private String msg;
@@ -100,9 +106,12 @@ public class MineController {
         pageParamVoDTO.setPageNo(0);
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
 
-        // 设置当天的开始时间和结束时间
-        pageParamVoDTO.setStartTime(DateUtils.getStartTime());
-        pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+        // 不设置当天为查询条件
+        if(!CommonCodeEnum.UN_CURRENT_DATE.getCode().equals(userConsumeRequest.getIsCurrentDay())){
+            pageParamVoDTO.setStartTime(DateUtils.getStartTime());
+            pageParamVoDTO.setEndTime(DateUtils.getEndTime());
+        }
+
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
@@ -301,6 +310,21 @@ public class MineController {
         userServiceClient.updateBossInfo(extShopBossDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
+    }
+
+    /**
+     * 提交建议
+     */
+    @RequestMapping(value = "feedback", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO feedback(@RequestParam String suggestion) {
+        SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+        String userId=sysClerkDTO.getId();
+        ResponseDTO<SuggestionDto> result = new ResponseDTO<>();
+        result.setResponseData(feedBackServiceClient.addSuggestion(suggestion,userId,SuggestionTypeEnum.RECEPTION.getValue()).getResponseData());
+        result.setResult(StatusConstant.SUCCESS);
+        return result;
     }
 
 }

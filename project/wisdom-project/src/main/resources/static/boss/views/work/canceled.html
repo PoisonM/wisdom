@@ -8,7 +8,7 @@
                 <img src="images/work/drop-down.png" class="dropImg">
             </ionic-datepicker>
         </div>
-        <div ng-show="!param.flag">
+        <div ng-show="!param.picFlag">
             <ion-item  class="bgfff row mb10" ng-repeat="item in canceled"  ng-click="confirmedGo(item.appointmentInfo.id)" ng-if="item.appointmentInfo.status != 4" >
                 <div class="col col-20" style="line-height: 49px;">
                     <p style="height:42px;width:42px;border-radius: 50%;">
@@ -22,7 +22,7 @@
                     <p>{{item.projectNumber}}个项目</p>
                     <p>状态：
                         <span ng-if="item.appointmentInfo.status == 0">未开始</span>
-                        <span ng-if="item.appointmentInfo.status == 1">"已确认</span>
+                        <span ng-if="item.appointmentInfo.status == 1">已确认</span>
                         <span ng-if="item.appointmentInfo.status == 2">服务中</span>
                         <span ng-if="item.appointmentInfo.status == 3">已完成</span>
                         <span ng-if="item.appointmentInfo.status == 4">取消预约</span>
@@ -33,11 +33,7 @@
                 </div>
             </ion-item>
         </div>
-
-        <div style="width:100%;height:100%" ng-show="param.flag">
-            <img src="images/viod.png" style="width:100%;position: absolute;top:50%;margin-top:-200px;">
-        </div>
-
+        <void-pic></void-pic>
     </ion-content>
     <div class="tabs " style="padding-top: 0px;background: #eeeeee" ng-click="cancelReservationGo()">
         <a class="tab-item colff66 fs16">

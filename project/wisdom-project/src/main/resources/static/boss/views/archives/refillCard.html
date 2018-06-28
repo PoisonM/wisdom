@@ -2,26 +2,30 @@
     <ion-content class="partialFiles bgfff">
      <div>
          <p style="" class="h40 center">
-             总余额 {{refillCard.totalBalance}}
+             总余额: {{refillCard.totalBalance}}
          </p>
          <ion-list>
              <div class="" style="position:absolute; right:20px;z-index: 1000">
                  <img src="images/help.png" class="helpPic ml10" ng-click="help()">
              </div>
-             <ion-item  class=" bgfff row" style="height:98px;" ng-repeat="item in refillCard.userRechargeCardList"ng-click="prepaidPhoneRecordsGo(item.id,item.rechargeCardType)">
-                 <div class="col col30 center" style="line-height: 82px;">
-                     <img src="images/banbleCard.png" class="banbleCardPic">
+             <ion-item  class=" bgfff row" style="" ng-repeat="item in refillCard.userRechargeCardList"ng-click="prepaidPhoneRecordsGo(item.id,item.rechargeCardType)">
+                 <div class="col col-25 center" style="line-height: 82px;">
+                     <div style="border: solid 1px #e6e6e6;margin-top: 10px; height: 60px;">
+                         <p style="width:82px;height:50px;background: url('{{item.imageUrl}}');background-position: center center;background-repeat: no-repeat;background-size: contain;  margin-top: 5px; "></p>
+                     </div>
+
                  </div>
-                 <div class="col col68" >
+                 <div class="col col-67" >
                      <p>{{item.shopRechargeCardName}}</p>
-                     <p class="col666 fs12">充值金额：{{item.initAmount}}</p>
+                     <p class="col666 fs12">充值金额：¥{{item.initAmount}}</p>
                      <p class="fs12 colff66">剩余金额：¥{{item.surplusAmount}}</p>
-                     <p class="fs12">折扣：{{item.discount}}</p>
-                     <p class="fs12 col888">购买时间：{{item.createDate|date:'yyyy-MM-dd'}}</p>
+                     <p class="fs12">折扣：单次:{{(item.timeDiscount==null)||(item.timeDiscount==1)?'无折':item.timeDiscount*10+'折'}} |
+                         疗程卡:{{(item.periodDiscount==null)||(item.periodDiscount==1)?'无折':item.periodDiscount*10+'折'}} |
+                         产品:{{(item.productDiscount==null)||(item.productDiscount==1)?'无折':item.productDiscount*10+'折'}}
+                     </p>
+                     <p class="fs12 col888" ng-if="item.rechargeCardType!='0'">购买时间：{{item.createDate|date:'yyyy-MM-dd'}}</p>
                  </div>
-
                  <div class="col col1" >
-
                  </div>
              </ion-item>
 

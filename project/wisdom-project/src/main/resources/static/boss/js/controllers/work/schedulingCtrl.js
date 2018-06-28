@@ -9,7 +9,8 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 nowdate:new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月",//初始化时间
                 compileDateFlag:true,
                 displayShopBox:false,
-                displayShop:false
+                displayShop:false,
+                shopId:""
             };
 
             $scope.queryScheduleList = function (searchDate) {
@@ -22,16 +23,18 @@ angular.module('controllers',[]).controller('schedulingCtrl',
                 });
                 GetShopClerkScheduleList.get({
                     searchDate:searchDate,
-                    sysShopId:"11"
+                    sysShopId:$scope.param.shopId
                 },function (data) {
                     if(data.result == "0x00001"){
                         $ionicLoading.hide()
-                        $scope.tempWeek = data.responseData.dateDetail;
-                        for(var i = 0; i < $scope.tempWeek.length; i++){
-                            $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")
+                        var tempWeek = data.responseData.dateDetail;
+                        for(var i = 0; i < tempWeek.length; i++){
+                            tempWeek[i] = (tempWeek[i].split("||")[0].substr(tempWeek[i].split("||")[0].length-2,2)+","+tempWeek[i].split("||")[1].replace("星期","周")).split(",")
                         }
                         $scope.tempUser = data.responseData.responseList;
-                        $scope.tempWeek.push()
+                        $scope.tempWeek = tempWeek
+                        console.log($scope.tempWeek);
+
                     }
                 })
             };
@@ -89,6 +92,7 @@ angular.module('controllers',[]).controller('schedulingCtrl',
 
             /*点击店铺名字切换店铺*/
             $scope.choseShop=function (id) {
+                $scope.param.shopId =id
                 $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"));
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;

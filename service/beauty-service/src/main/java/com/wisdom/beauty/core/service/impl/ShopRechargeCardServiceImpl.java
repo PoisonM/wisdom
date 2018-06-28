@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -188,6 +189,16 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	}
 
 	/**
+	 * 查询用户充值卡
+	 * @param userRechargeCardId
+	 * @return
+	 */
+	@Override
+	public ShopUserRechargeCardDTO getShopUserRechargeCardDTOById(String userRechargeCardId){
+		return shopUserRechargeCardMapper.selectByPrimaryKey(userRechargeCardId);
+	}
+
+	/**
 	 * 生产用户的充值卡
 	 *
 	 * @param userRechargeCardDTO
@@ -195,6 +206,7 @@ public class ShopRechargeCardServiceImpl implements ShopRechargeCardService {
 	 */
 	@Override
 	public int saveShopUserRechargeCardInfo(ShopUserRechargeCardDTO userRechargeCardDTO) {
+		userRechargeCardDTO.setCreateDate(new Date());
 		return shopUserRechargeCardMapper.insert(userRechargeCardDTO);
 	}
 }

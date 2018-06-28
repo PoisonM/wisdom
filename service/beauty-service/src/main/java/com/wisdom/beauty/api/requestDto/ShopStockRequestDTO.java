@@ -41,13 +41,15 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 	/** 生产日期 */
 	private Date productDate;
 
+	private String productDateString;
+
 	/** 库存单价（元） */
 	private BigDecimal stockPrice;
 
 	/** 0、手动入库 1、扫码入库 2、手动出库 3、扫码出库 */
 	private String stockStyle;
 
-	/** 0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商 7、下发到店 */
+	/** 0、采购入库 1、内部员工出库 2、顾客出库 3、赠送 4、报废 5、院用 6、退回供货商 7、下发到店  8 寄存出库*/
 	private String stockType;
 	private String receiver;
 
@@ -60,6 +62,14 @@ public class ShopStockRequestDTO extends ShopProductInfoDTO {
 
 	public void setStockOutNumber(Integer stockOutNumber) {
 		this.stockOutNumber = stockOutNumber;
+	}
+
+	public String getProductDateString() {
+		return productDateString;
+	}
+
+	public void setProductDateString(String productDateString) {
+		this.productDateString = productDateString;
 	}
 
 	public String getShopBossId() {

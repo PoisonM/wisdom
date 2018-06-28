@@ -73,8 +73,15 @@ public class ShopCardServiceImpl implements ShopCardService {
         ShopUserRechargeCardCriteria shopUserRechargeCardCriteria = new ShopUserRechargeCardCriteria();
         ShopUserRechargeCardCriteria.Criteria criteria = shopUserRechargeCardCriteria.createCriteria();
 
+        //根据创建时间排序
+        shopUserRechargeCardCriteria.setOrderByClause("create_date desc");
+
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysUserId())) {
             criteria.andSysUserIdEqualTo(shopUserRechargeCardDTO.getSysUserId());
+        }
+
+        if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getShopRechargeCardId())) {
+            criteria.andShopRechargeCardIdEqualTo(shopUserRechargeCardDTO.getShopRechargeCardId());
         }
 
         if (StringUtils.isNotBlank(shopUserRechargeCardDTO.getSysShopId())) {
@@ -157,6 +164,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         }else{
             imageUrls = new ArrayList<>();
             imageUrls.add(ImageEnum.COMMON_CARD.getDesc());
+            extShopRechargeCardDTO.setImageUrl(ImageEnum.COMMON_CARD.getDesc());
         }
         //保存图片信息
         mongoUtils.saveImageUrl(imageUrls, rechargeCardId);

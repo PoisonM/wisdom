@@ -44,7 +44,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
 
                 }
                 if($scope.param.managerStatus == true){
-                    $scope.sysClerkDTO.role += "店员 "
+                    $scope.sysClerkDTO.role += "店长 "
 
                 }
                 if($scope.param.fontDeskStatus == true){
@@ -53,7 +53,7 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 }
                 $scope.sysClerkDTO.role = $scope.sysClerkDTO.role.slice(0, $scope.sysClerkDTO.role.length-1);
 
-                if($scope.sysClerkDTO.sysShopId ==''||$scope.sysClerkDTO.mobile==''||$scope.sysClerkDTO.name==""){
+                if($scope.sysClerkDTO.sysShopId ==''||$scope.sysClerkDTO.mobile==''||$scope.sysClerkDTO.name==""|| $scope.sysClerkDTO.role==''){
                     alert('请检查信息')
                     $scope.sysClerkDTO.role=''
                     return

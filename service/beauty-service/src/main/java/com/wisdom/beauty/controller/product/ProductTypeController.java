@@ -3,6 +3,7 @@ package com.wisdom.beauty.controller.product;
 import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopProductTypeDTO;
 import com.wisdom.beauty.api.dto.ShopStockNumberDTO;
+import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.extDto.RequestDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
@@ -171,16 +172,53 @@ public class ProductTypeController {
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
             HashMap<Object, Object> twoMap = new HashMap<>(16);
-            twoMap.put("","全部");
+            HashMap<Object, HashMap<Object, Integer>> oneProductNumber = new HashMap<>();
             for (ShopProductInfoDTO dto : detailProductList) {
-                twoMap.put(dto.getProductTypeTwoId(), dto);
+               twoMap.put(dto.getProductTypeTwoId(), dto);
+               if(dto.getProductTypeOneId()!=null&&oneProductNumber.get(dto.getProductTypeOneId())==null){
+                   HashMap<Object, Integer> twoProductNumber = new HashMap<>();
+                   for (ShopProductInfoDTO dto2 : detailProductList){
+                       if(dto2.getProductTypeOneId()!=null&&dto2.getProductTypeOneId().equals(dto.getProductTypeOneId())){
+                           if(dto2.getProductTypeTwoId()!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())!=0){
+
+                               int sum = twoProductNumber.get(dto2.getProductTypeTwoId())+1;
+                               twoProductNumber.put(dto2.getProductTypeTwoId(),sum);
+
+                           }else if(dto2.getProductTypeTwoId()!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())==null){
+                               twoProductNumber.put(dto2.getProductTypeTwoId(),1);
+                           }
+                       }
+                   }
+                   oneProductNumber.put(dto.getProductTypeOneId(),twoProductNumber);
+               }
+
             }
             List<Object> twoLevelList = new ArrayList<>();
             for (Map.Entry entry : twoMap.entrySet()) {
+                ExtShopProductInfoDTO shopProductInfoDTO1 = (ExtShopProductInfoDTO)entry.getValue();
+                for(Map.Entry entrySum : oneProductNumber.entrySet()){
+                    if(shopProductInfoDTO1.getProductTypeOneId()!=null){
+                        if(entrySum.getKey().equals(shopProductInfoDTO1.getProductTypeOneId())){
+                            HashMap<Object, Integer> sumMap = (HashMap<Object, Integer>)entrySum.getValue();
+                            for(Map.Entry entrySumVal : sumMap.entrySet()){
+                                if(entry.getKey()!=null){
+                                    if(entry.getKey().equals(entrySumVal.getKey())){
+                                        shopProductInfoDTO1.setNumber((Integer) entrySumVal.getValue());
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    entry.setValue(shopProductInfoDTO1);
+                }
                 twoLevelList.add(entry.getValue());
+
             }
             responseMap.put("twoLevelList", twoLevelList);
+            responseMap.put("oneProductNumber",oneProductNumber);
         }
+
 
         responseMap.put("detailProductList", detailProductList);
         //查询产品的库存信息

@@ -8,7 +8,6 @@ import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * ClassName: ShopRechargeCard
@@ -54,6 +53,13 @@ public interface ShopRechargeCardService {
      * @return
      */
     ShopUserRechargeCardDTO getShopUserRechargeInfo(ShopUserRechargeCardDTO shopUserRechargeCardDTO);
+
+    /**
+     * 查询用户充值卡
+     * @param userRechargeCardId
+     * @return
+     */
+    ShopUserRechargeCardDTO getShopUserRechargeCardDTOById(String userRechargeCardId);
 
     /**
      * 生产用户的充值卡

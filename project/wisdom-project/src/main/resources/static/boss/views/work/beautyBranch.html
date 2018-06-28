@@ -1,3 +1,8 @@
+<style>
+    table tr:nth-child(even){
+        background: #fbfeff;
+    }
+</style>
 <ion-view class="bg">
     <ion-content>
         <!--日期部分-->
@@ -46,41 +51,27 @@
                 </ion-item>
             </div>
 
-            <div ng-if="param.current == 0">
-                <ion-item  class=" bgfff row p0">
-                    <div class="col col-33 tc br" >
-                        渠道
-                    </div>
-                    <div class="col col-33 tc br">
-                        人数
-                    </div>
-                    <div class="col col-33 tc ">
-                        渠道占比率
-                    </div>
-                </ion-item>
-                <ion-item  class=" bgfff row p0">
-                    <div ng-show="false">
-                        <br>
-                        <center>
-                            <h1>
-                               新客渠道占比图
-                            </h1>
-                        </center>
-                        <br>
-                        <highchart style="width:100%;height:300px"
-                                   series="cardSeries"
-                                   options="cardOptions">
-                        </highchart>
-                    </div>
-                    <div class="col col-33 tc br" >
-                        未定义
-                    </div>
-                    <div class="col col-33 tc br">
-                        16
-                    </div>
-                    <div class="col col-33 tc ">
-                        100%
-                    </div>
+            <div ng-if="param.current == 3&&beautyBranch.shopNewUserNumber!=0">
+                <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
+                <table class="table  text-center bgfff mt20" style="width:100%;table-layout: fixed;">
+                    <tr>
+                        <th style="border: solid #e6e6ea 1px;" class="h40">渠道</th>
+                        <th style="border: solid #e6e6ea 1px;" class="h40">人数</th>
+                        <th style="border: solid #e6e6ea 1px;" class="h40">渠道占比率</th>
+                    </tr>
+                    <tr ng-repeat="item in beautyBranch.shopChannelResponseList">
+                        <td style="border-right: solid #e6e6ea 1px;border-bottom: solid #e6e6ea 1px;" class="h40">
+                            {{item.channelName}}
+                        </td>
+                        <td style="border-right: solid #e6e6ea 1px;border-bottom: solid #e6e6ea 1px;" class="h40">
+                            {{item.channelPeopleNumber}}
+                        </td>
+                        <td style="border-right: solid #e6e6ea 1px;border-bottom: solid #e6e6ea 1px;" class="h40">
+                            {{item.channelPeopleProportionr}}%
+                        </td>
+                    </tr>
+                </table>
+
                 </ion-item>
             </div>
             <div ng-if="param.current == 2">

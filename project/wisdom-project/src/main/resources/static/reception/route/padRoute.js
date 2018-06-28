@@ -122,6 +122,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "充值记录",
                         files: [
                             root + "userInfo/rechargeRecord.css?version=" + version,
+                            root + "userInfo/cardRecords.css?version=" + version,
                             root + "userInfo/rechargeRecord.js?version=" + version,
                         ]
                     })
@@ -260,7 +261,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
 
         .state('pad-web.left_nav.addRecord', {
-            url: '/addRecord',
+            url: '/addRecord/:id',
             templateUrl: root + '/addRecord/addRecord.html',
             controller: 'addRecordCtrl',
             resolve: {
@@ -356,7 +357,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         })
 
         .state('pad-web.left_nav.selectRechargeType', {
-            url: '/selectRechargeType/:type/:userId',
+            url: '/selectRechargeType/:type/:userId/:orderId',
             templateUrl: root + '/cashier/selectRechargeType.html',
             controller: 'selectRechargeTypeCtrl',
             resolve: {
@@ -371,7 +372,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.selectRechargeCard', {
-            url: '/selectRechargeCard/:type/:userId',
+            url: '/selectRechargeCard/:type/:userId/:rechargeCardType',
             templateUrl: root + '/cashier/selectRechargeCard.html',
             controller: 'selectRechargeCardCtrl',
             resolve: {
@@ -416,7 +417,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.makeSureOrder', {
-            url: '/makeSureOrder/:userId',
+            url: '/makeSureOrder/:orderId/:userId',
             templateUrl: root + '/cashier/makeSureOrder.html',
             controller: 'makeSureOrderCtrl',
             resolve: {
@@ -482,7 +483,7 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
         .state('pad-web.left_nav.housekeeper', {
-            url: '/housekeeper',
+            url: '/housekeeper/:type/:index/:orderId/:tempAll/:clerkIds/:clerkNames',
             templateUrl: root + '/cashier/housekeeper.html',
             controller: 'housekeeperCtrl',
             resolve: {
@@ -525,6 +526,9 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
                         name: "领取产品",
                         files: [root + "cashier/getProductCtrl.js?version=" + version,
                             root + "cashier/getProduct.css?version=" + version,
+                            root + "cashier/flashcanvas.min.js?version=" + version,
+                            root + "cashier/jSignature.min.js?version=" + version,
+                            root + "cashier/flashcanvas.swf?version=" + version,
                         ]
                     })
                 }]
@@ -1281,13 +1285,13 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         //套卡划卡详情
         .state('pad-web.left_nav.completeCardDetail', {
             url: '/completeCardDetail/:userId/:flowNo',
-            templateUrl: root + '/cashier/completeCardDetail.html',
-            controller: 'completeCardDetailCtrl',
+            templateUrl: root + '/cashier/consumeGroupCardDetail.html',
+            controller: 'consumeGroupCardDetail',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
                         name: "套卡划卡详情",
-                        files: [root + "cashier/completeCardDetail.js?version=" + version,
+                        files: [root + "cashier/consumeGroupCardDetail.js?version=" + version,
                             root + "cashier/completeCardDetail.css?version=" + version,
                         ]
                     })
@@ -1367,15 +1371,46 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
         //产品详情
         .state('pad-web.left_nav.cashProductDetails', {
-            url: '/cashProductDetails/:userId',
-            templateUrl: root + '/cashier/cashProductDetails.html',
-            controller: 'cashProductDetailsCtrl',
+        url: '/cashProductDetails/:userId/:flowNo',
+        templateUrl: root + '/cashier/cashProductDetails.html',
+        controller: 'cashProductDetailsCtrl',
+        resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load({
+                    name: "产品详情",
+                    files: [root + "cashier/cashProductDetails.js?version=" + version,
+                        root + "cashier/cashProductDetails.css?version=" + version,
+                    ]
+                })
+            }]
+         }
+       })
+        .state('pad-web.userInfo.cardRecords', {
+            url: '/cardRecords/:id',
+            templateUrl: root + '/userInfo/cardRecords.html',
+            controller: 'cardRecordsCtrl',
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
-                        name: "产品详情",
-                        files: [root + "cashier/cashProductDetails.js?version=" + version,
-                            root + "cashier/cashProductDetails.css?version=" + version,
+                        name: "我的-充值记录",
+                        files: [root + "userInfo/cardRecordsCtrl.js?version=" + version,
+                            root + "userInfo/cardRecords.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('pad-web.userInfo.guide', {
+            url: '/guide',
+            templateUrl: root + '/userInfo/guide.html',
+            controller: 'guideCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "我的-操作指南",
+                        files: [root + "userInfo/guideCtrl.js?version=" + version,
+                            root + "userInfo/guide.css?version=" + version,
+                            root + "userInfo/cardRecords.css?version=" + version,
                         ]
                     })
                 }]

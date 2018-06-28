@@ -93,7 +93,7 @@
                     <td>
                         <div style="height: 1.1rem;font-size: 0.25rem;color: #888888;width: 1.21875rem;"></div>
                     </td>
-                    <td data-cccc="{{value.appointmentInfo}}" ng-repeat="(key,value) in memeda">
+                    <td data-cccc="{{value.appointmentInfo}}" ng-repeat="(key,value) in param.memeda">
                         <div  class="mr_info">
                             <p>{{key}}</p>
                             <div class="info_num">
@@ -113,19 +113,15 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td  ng-onHold = "onHold()" ng-repeat="item in value" class="bor_e5">
+                    <td  ng-onHold = "onHold($index)" ng-repeat="item in value" class="bor_e5">
                         <div class="td_box" style="position: relative;width: 100%">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
                             <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}"
                                   ng-click="detailsWrap(indexItem,indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
                                 <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
                                 <div class="havedata">
-                                    <div>
-                                        <!--<p>{{indexItem.sysUserName}}</p>
-                                        <span>{{indexItem.shopProjectName}}</span>
-                                        <span>{{indexItem.status}}</span>-->
+                                    <div ng-if="key == (indexItem.appointStartTime | date: 'HH:mm')">
                                         <p class="user_name">{{indexItem.sysUserName}}</p>
-                                        <!--index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2]-->
                                         <div class="user_info">
                                             <em>客</em>
                                             <span class="time">{{indexItem.appointStartTime | date: "HH:mm"}}</span>
@@ -172,14 +168,15 @@
                     </div>
                     <div ng-repeat="(key ,val) in param.week.weekData" class="infoitem_sty">
                         <ul>
-                            <li ng-repeat="item in val" data-ccccc="{{item}}">
+                            <li ng-repeat="item in val" data-ccccc="{{item}}" ng-click="detailsWeepWrap(item.info)">
                                 <div style="position:relative;height:100%">
-                                    <p class="ovInfo" ng-repeat="item1 in item.info" ng-class="{'pinkC':item1.status == 0 || item1.status == 1,'blueC':item1.status == 2 || item1.status == 5,'grayC':item1.status == 3 || item1.status == 4 || item1.status ==6}" >
+                                    <p ng-show="$index <= 2" class="ovInfo" ng-repeat="item1 in item.info"
+                                       ng-class="{'pinkC':item1.status == 0 || item1.status == 1,'blueC':item1.status == 2 || item1.status == 5,'grayC':item1.status == 3 || item1.status == 4 || item1.status ==6}" >
                                         <span class="info_sty ml5">{{item1.sysUserName}}</span>
                                         <span class="info_sty">{{item1.shopProjectName}}</span>
                                         <span class="info_sty">{{item1.appointStartTime |date: "HH:mm"}}</span>
                                     </p>
-                                    <p ng-if ="item.info.length > 3" class="morapp ml5" style="position: absolute;bottom: 0px">还有1个预约...</p>
+                                    <p ng-if ="item.info.length > 3" class="morapp ml5" style="position: absolute;bottom: 0px">还有{{item.info.length-3}}个预约...</p>
                                 </div>
                             </li>
                         </ul>
@@ -287,7 +284,7 @@
             <ul>
                 <li class="h100 col333 fs32  bte5 space-between bgfff" ng-repeat="item in param.timeLength" ng-click="selectbeauticianIndex($index,item.name,item.id)">
                     <span class="ml30"> {{item.name}}</span>
-                    <img src="images/redTrue.png" class="redTrue mr30" ng-show="param.beauticianIndex==$index">
+                    <img src="images/redTrue.png" class="redTrue mr30" ng-show="item.id == param.selectMrsId ">
                 </li>
             </ul>
         </div>
@@ -553,7 +550,7 @@
         <div ng-include="'itemList/appointment/CtreatmentCard.html'" class="h1012 bblr bbrr"></div>
     </div>
 </script>
-<!--日预约--新建预约-->
+<!--日预约--新建预约--废除-->
 <script type="text/ng-template" id="appointmentType">
     <div class="appointmentType btrr btlr  br36 detailsWrap w780">
         <div class="space-between h104 bgf5f5f5  btrr btlr">

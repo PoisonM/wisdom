@@ -67,7 +67,7 @@ public class ProductController {
 //    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId) {
+    ResponseDTO<List<ShopUserProductRelationDTO>> getUserProductList(@RequestParam String sysUserId,@RequestParam(required = false) String surplusTimes) {
         String sysShopId=null;
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         if(clerkInfo!=null){
@@ -86,6 +86,9 @@ public class ProductController {
         ShopUserProductRelationDTO shopUserProductRelationDTO = new ShopUserProductRelationDTO();
         shopUserProductRelationDTO.setSysShopId(sysShopId);
         shopUserProductRelationDTO.setSysUserId(sysUserId);
+        if(StringUtils.isNotBlank(surplusTimes)){
+            shopUserProductRelationDTO.setSurplusTimes(Integer.parseInt(surplusTimes));
+        }
         List<ShopUserProductRelationDTO> userProductInfoList = shopProductInfoService.getUserProductInfoList(shopUserProductRelationDTO);
 
         responseDTO.setResponseData(userProductInfoList);
@@ -321,7 +324,9 @@ public class ProductController {
             }
             helperMap.put("levelTwoDetail", twoLevelMap);
             helperMap.put("levelOneDetail", shopProductTypeDTO);
-            levelList.add(helperMap);
+            if(twoLevelMap.size()>0){
+                levelList.add(helperMap);
+            }
 
             oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
             oneAndTwoHelperMap.put("levelOneDetail", shopProductTypeDTO);
@@ -348,37 +353,45 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> getProductInfoByScanCode(@RequestParam String code) {
 
+        String[] codeArray =code.split(",");
         ResponseDTO responseDTO = new ResponseDTO();
-        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(code);
+        ExtShopProductInfoDTO scanShopProductInfo = mongoUtils.getScanShopProductInfo(codeArray[1]);
         logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
         ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
         if (null != extShopScanProductInfoDTO) {
-            //查询出来的信息转换为产品对象
-            ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
-            productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
-            productInfoDTO.setManuName(extShopScanProductInfoDTO.getManuName());
-            productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
-            productInfoDTO.setProductUrl(extShopScanProductInfoDTO.getImg());
-            productInfoDTO.setNote(extShopScanProductInfoDTO.getNote());
-            productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
-            String price = extShopScanProductInfoDTO.getPrice();
-            if (StringUtils.isNotBlank(price)) {
-                productInfoDTO.setMarketPrice(new BigDecimal(price));
+            if(extShopScanProductInfoDTO.getFlag().equals("true")){
+                //查询出来的信息转换为产品对象
+                ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
+                productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
+                productInfoDTO.setManuName(extShopScanProductInfoDTO.getManuName());
+                productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
+                productInfoDTO.setProductUrl(extShopScanProductInfoDTO.getImg());
+                productInfoDTO.setNote(extShopScanProductInfoDTO.getNote());
+                productInfoDTO.setTradeMark(extShopScanProductInfoDTO.getTrademark());
+                String price = extShopScanProductInfoDTO.getPrice();
+                if (StringUtils.isNotBlank(price)) {
+                    productInfoDTO.setMarketPrice(new BigDecimal(price));
+                }
+                productInfoDTO.setCode(codeArray[1]);
+                productInfoDTO.setProductCode(codeArray[1]);
+                String spec = extShopScanProductInfoDTO.getSpec();
+                if (StringUtils.isNotBlank(spec)) {
+                    String regEx = "[^0-9]";
+                    Pattern p = Pattern.compile(regEx);
+                    Matcher m = p.matcher(spec);
+                    productInfoDTO.setProductSpec(m.replaceAll("").trim());
+                    productInfoDTO.setProductSpecUnit(spec.replaceAll("\\d+", ""));
+                }
+                List<String> imageList = new ArrayList<>();
+                imageList.add(extShopScanProductInfoDTO.getImg());
+                productInfoDTO.setImageList(imageList);
+                responseDTO.setResponseData(productInfoDTO);
+                responseDTO.setResult(StatusConstant.SUCCESS);
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
             }
-            String spec = extShopScanProductInfoDTO.getSpec();
-            if (StringUtils.isNotBlank(spec)) {
-                String regEx = "[^0-9]";
-                Pattern p = Pattern.compile(regEx);
-                Matcher m = p.matcher(spec);
-                productInfoDTO.setProductSpec(m.replaceAll("").trim());
-                productInfoDTO.setProductSpecUnit(spec.replaceAll("\\d+", ""));
-            }
-            List<String> imageList = new ArrayList<>();
-            imageList.add(extShopScanProductInfoDTO.getImg());
-            productInfoDTO.setImageList(imageList);
-            responseDTO.setResponseData(productInfoDTO);
         }
-        responseDTO.setResult(StatusConstant.SUCCESS);
+
         return responseDTO;
     }
 
@@ -395,6 +408,27 @@ public class ProductController {
         int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
         responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         responseDTO.setResponseData(productInfo);
+        return responseDTO;
+    }
+
+    /**
+     * 获取产品详情
+     *
+     * @param productCode
+     *
+     * @return
+     * */
+    @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
+
+        String[] codeArray =productCode.split(",");
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        shopProductInfoDTO.setProductCode(codeArray[1]);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+        responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(shopProductInfos);
         return responseDTO;
     }
 

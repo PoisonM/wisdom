@@ -150,7 +150,7 @@
                                 <div class="sb ml10 " ng-repeat="items in item.shopProjectInfoDTOList">
                                     <p class="W33 ml20 fs13 col88">{{items.projectName}}</p>
                                     <p class="W33 ml20 center fs13 col88">X{{items.serviceTimes}}</p>
-                                    <p class="W33 ml20 mr10 fs13 col88" style="text-align: right">￥{{items.discountPrice}}</p>
+                                    <p class="W33 ml20 mr10 fs13 col88" style="text-align: right">￥{{items.marketPrice}}</p>
                                 </div>
                             </div>
                         </ion-item>
@@ -172,9 +172,9 @@
                 <div>
                     <opn-list >
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
-                            <p class="ml10"  ng-if="details.payMap.payType=='0'"> 微信</p>
-                            <p class="ml10"  ng-if="details.payMap.payType=='1'"> 支付宝</p>
-                            <p class="ml10"  ng-if="details.payMap.payType=='2'"> 银行卡</p>
+                            <p class="ml10"  ng-if="details.payMap.payType==rootScopePayType.weChatPay"> 微信</p>
+                            <p class="ml10"  ng-if="details.payMap.payType==rootScopePayType.aliPay"> 支付宝</p>
+                            <p class="ml10"  ng-if="details.payMap.payType==rootScopePayType.bankPay"> 银行卡</p>
                             <p class="mr10 col888">
                                 ￥{{details.payMap.payTypeAmount}}
                             </p>

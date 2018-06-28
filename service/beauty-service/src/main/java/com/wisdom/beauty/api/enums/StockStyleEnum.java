@@ -8,7 +8,7 @@ public enum StockStyleEnum {
     MANUAL_IN_STORAGE("0", "手动入库"),
     SCAN_IN_STORAGE("1", "扫码入库"),
     MANUAL_OUT_STORAGE("2", "手动出库"),
-    SCAN_CARD_OUT_STORAGE("4", "扫码出库"),
+    SCAN_CARD_OUT_STORAGE("3", "扫码出库"),
     IN_STORAGE("5", "入库"),
     OUT_STORAGE("6", "出库");
 

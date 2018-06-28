@@ -1,7 +1,7 @@
 <ion-view class="bg">
     <ion-content>
         <div class="list col33">
-            <li class="item"><span class="fs16">套卡名称 <span class="colff66">*</span></span><input type="text" placeholder="请输入套卡名称"  class="fr col66 tr" ng-model="settingAddsome.editorCard.projectGroupName"></li>
+            <li class="item"><span class="fs16">套卡名称 <span class="colff66">*</span></span><input type="text" placeholder="请输入套卡名称"  class="fr col66 tr" ng-model="settingAddsome.editorCard.projectGroupName"  style="width:75%"></li>
             <li class="item" >
                 <span class="fs16">包含项目 <span class="colff66">*</span></span>
                 <span class="fr" ng-click="listOfItemsGo()">
@@ -13,7 +13,7 @@
                 <img src="images/mine/delete.png" style="width: 11px;height: 11px;display: inline-block " ng-click="delList($index)">
                 <span class="fs12 col99 ml10">{{item.projectName}}</span>
                 <span class="fr">
-                    <input type="text" ng-model="item.serviceTimes" class="center mr10" style=" width: 50px; display: inline-block;border: solid 1px #999; border-radius: 5px;"ng-change="numMarkerPrice()" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" >
+                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" ng-model="item.serviceTimes" class="center mr10" style=" width: 50px; display: inline-block;border: solid 1px #999; border-radius: 5px;"ng-change="numMarkerPrice()" >
                   <!--  <span class="col33 fs14">{{}}</span>-->
                     <span class="fs12 col99">次</span>
                 </span></li>
@@ -39,17 +39,9 @@
 
             </li>
             <li class="item"><span class="fs16">市场价格 <span class="colff66">*</span></span>
-                <input type="text" placeholder="请输入市场价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.marketPrice" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"></li>
+                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="请输入市场价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.initialPrice" ></li>
             <li class="item"><span class="fs16">优惠价格<span class="colff66">*</span></span>
-                <input type="text" placeholder="请输入优惠价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.discountPrice" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"></li>
-            <li class="item"><span class="fs16">套卡活动生效日期<span class="colff66">*</span></span>
-                <p class="fr">
-                    <span class=" ml10 col99 fs14">
-                        <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="type('effectiveDate')">
-                            <span> {{settingAddsome.editorCard.expirationDate=='0'?'':settingAddsome.editorCard.effectiveDate}}<img src="images/more.png" class="more"></span>
-                        </ionic-datepicker>
-                    </span>
-                </p></li>
+                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="请输入优惠价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.marketPrice" ></li>
             <li class="item"><span class="fs16">套卡活动有效期<span class="colff66">*</span></span>
                 <p class="fr">
                     <i class="icon ion-android-radio-button-off" style="color:#FF6666;font-size:20px;" ng-if="settingAddsome.editorCard.expirationDate!='0'" ng-click="expirationDate()"></i>

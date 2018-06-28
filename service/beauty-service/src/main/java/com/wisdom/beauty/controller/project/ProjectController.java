@@ -1,7 +1,7 @@
 package com.wisdom.beauty.controller.project;
 
 import com.wisdom.beauty.api.dto.*;
-import com.wisdom.beauty.api.enums.CardTypeEnum;
+import com.wisdom.beauty.api.enums.ExtCardTypeEnum;
 import com.wisdom.beauty.api.enums.IsUseUpEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.RelationIds;
@@ -12,13 +12,16 @@ import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +94,7 @@ public class ProjectController {
 				shopUserProjectRelationDTO = projectList.get(0);
 			}
 
-			if(CardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
+			if(ExtCardTypeEnum.TREATMENT_CARD.getCode().equals(shopUserProjectRelationDTO.getUseStyle()) && shopUserProjectRelationDTO.getSysShopProjectSurplusTimes()>0){
 				consume.add(shopUserProjectRelationDTO);
 			}else{
 				punchCard.add(shopUserProjectRelationDTO);
@@ -112,7 +115,7 @@ public class ProjectController {
 	@RequestMapping(value = "searchShopProjectList", method = { RequestMethod.POST, RequestMethod.GET })
 
 	public @ResponseBody ResponseDTO<HashMap<String, Object>> searchShopProjectList(@RequestParam String useStyle,
-			@RequestParam String filterStr) {
+			@RequestParam(required = false) String filterStr) {
         String sysShopId = redisUtils.getShopId();
 
 		logger.info("查询某个店的疗程卡列表信息传入参数={}", "sysShopId = [" + sysShopId + "]");
@@ -121,7 +124,8 @@ public class ProjectController {
 		ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
 		extShopProjectInfoDTO.setSysShopId(sysShopId);
 		extShopProjectInfoDTO.setProjectName(filterStr);
-		if (StringUtils.isNotBlank(useStyle) && (!CardTypeEnum.ALL.getCode().equals(useStyle))) {
+		extShopProjectInfoDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
+		if (StringUtils.isNotBlank(useStyle) && (!ExtCardTypeEnum.ALL.getCode().equals(useStyle))) {
 			extShopProjectInfoDTO.setUseStyle(useStyle);
 		}
 
@@ -133,12 +137,6 @@ public class ProjectController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 
-		// 缓存一级
-		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
-		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
-			responseDTO.setResult(StatusConstant.SUCCESS);
-			return responseDTO;
-		}
 		//获取二级和三级
 		ShopProjectTypeDTO shopProjectType=new ShopProjectTypeDTO();
 		shopProjectType.setSysShopId(sysShopId);
@@ -163,6 +161,13 @@ public class ProjectController {
 		}
 		ArrayList<Object> levelList = new ArrayList<>();
 		ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
+
+		// 缓存一级
+		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId);
+		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			return responseDTO;
+		}
 		// 遍历缓存的一级
 		for (ShopProjectTypeDTO shopProjectTypeDTO : shopProjectTypeDTOList) {
 			HashMap<Object, Object> helperMap = new HashMap<>(16);
@@ -180,12 +185,14 @@ public class ProjectController {
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);
-			levelList.add(helperMap);
+			if(twoLevelMap.size()>0){
+				levelList.add(helperMap);
+			}
 			oneAndTwoHelperMap.put("levelTwoDetail", oneAndTwoLevelMap);
 			oneAndTwoHelperMap.put("levelOneDetail", shopProjectTypeDTO);
 			oneAndTwoLevelList.add(oneAndTwoHelperMap);
 		}
-		// detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表
+		// detailLevel集合中包含了一级二级的关联信息，detailProject集合是所有项目的列表；oneAndTwoLevelList是最全的，detailLevel、detailProject是三级you才有
 		returnMap.put("detailLevel", levelList);
 		returnMap.put("detailProject", projectList);
 		returnMap.put("oneAndTwoLevelList", oneAndTwoLevelList);
@@ -206,7 +213,7 @@ public class ProjectController {
 
 	public @ResponseBody ResponseDTO<List<ShopUserProjectRelationResponseDTO>> getUserCourseProjectList(
 			@RequestParam(required = false) String sysUserId, @RequestParam(required = false) String cardStyle,
-			@RequestParam(required = false) String id) {
+			@RequestParam(required = false) String id,@RequestParam(required = false) String surplusTimes) {
 
 		String sysBossCode = redisUtils.getBossCode();
         String sysShopId = redisUtils.getShopId();
@@ -221,6 +228,10 @@ public class ProjectController {
 		relationDTO.setUseStyle(cardStyle);
 		relationDTO.setSysBossCode(sysBossCode);
 		relationDTO.setId(id);
+		if(StringUtils.isNotBlank(surplusTimes)){
+			relationDTO.setSysShopProjectSurplusTimes(Integer.parseInt(surplusTimes));
+		}
+
 		List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
 		if (CommonUtils.objectIsEmpty(userProjectList)) {
 			logger.debug("查询某个用户的卡片列表信息为空, {}", "sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId
@@ -333,6 +344,8 @@ public class ProjectController {
 				map.put("marketPrice", shopProjectGroupDTO.getMarketPrice());
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
+				String expirationDate = shopProjectGroupDTO.getExpirationDate();
+				map.put("expirationDate", !expirationDate.equals("0")?DateUtils.StrToDate(expirationDate,"date").getTime():"0" );
 				map.put("projectGroupName", projectGroupName);
 				map.put("consumeRecordId", consumeRecordId);
 				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());
@@ -406,7 +419,7 @@ public class ProjectController {
 	@ResponseBody
 	ResponseDTO<List<ShopProjectInfoResponseDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
 			@RequestParam String ProjectTypeTwoId, @RequestParam(required = false) String projectName,
-			@RequestParam int pageSize) {
+			@RequestParam int pageSize, @RequestParam(required = false) String useStyle) {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -416,6 +429,7 @@ public class ProjectController {
 		shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
 		shopProjectInfoDTO.setProjectTypeTwoId(ProjectTypeTwoId);
 		shopProjectInfoDTO.setProjectName(projectName);
+		shopProjectInfoDTO.setUseStyle(useStyle);
 
 		pageParamVoDTO.setRequestData(shopProjectInfoDTO);
 		pageParamVoDTO.setPageNo(0);
@@ -652,8 +666,8 @@ public class ProjectController {
 		}
 		extShopProjectInfoDTO.setSysShopId(bossInfo.getCurrentShopId());
 		extShopProjectInfoDTO.setCreateDate(new Date());
-		if (!CardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
-			extShopProjectInfoDTO.setUseStyle(CardTypeEnum.TREATMENT_CARD.getCode());
+		if (!ExtCardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
+			extShopProjectInfoDTO.setUseStyle(ExtCardTypeEnum.TREATMENT_CARD.getCode());
 		}
 		extShopProjectInfoDTO.setMarketPrice(
 				extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
@@ -702,4 +716,61 @@ public class ProjectController {
 		return false;
 	}
 
+
+	/**
+	 * 查询顾客疗程卡信息(疗程卡+套卡)
+	 *
+	 * @param sysUserId
+	 * @return
+	 */
+	@RequestMapping(value = "getCourseProjectList", method = { RequestMethod.POST, RequestMethod.GET })
+
+	public @ResponseBody ResponseDTO<List<Map>> getCourseProjectList(
+			@RequestParam(required = false) String sysUserId) {
+
+		String sysBossCode = redisUtils.getBossCode();
+		String sysShopId = redisUtils.getShopId();
+
+		logger.info("传入参数={}",
+				"sysUserId = [" + sysUserId + "], sysShopId = [" + sysShopId + "]");
+		ResponseDTO<List<Map>> responseDTO = new ResponseDTO<>();
+
+		//查询用户疗程卡信息
+		ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
+		relationDTO.setSysUserId(sysUserId);
+		relationDTO.setSysShopId(sysShopId);
+		relationDTO.setUseStyle("1");
+		relationDTO.setSysBossCode(sysBossCode);
+
+		List<ShopUserProjectRelationDTO> userProjectList = projectService.getUserProjectList(relationDTO);
+		List<Map> shopUserProjectRResponseDTO = new ArrayList<>();
+		for (ShopUserProjectRelationDTO shopUserProjectRelationDTO : userProjectList) {
+		  if (shopUserProjectRelationDTO.getInvalidDays().getTime() > System.currentTimeMillis()) {
+			  Map projectMap = new HashedMap();
+			  projectMap.put("projectName",shopUserProjectRelationDTO.getSysShopProjectName());
+			  projectMap.put("id",shopUserProjectRelationDTO.getId());
+			  projectMap.put("projectId", shopUserProjectRelationDTO.getSysShopProjectId());
+			  projectMap.put("surplusTimes", shopUserProjectRelationDTO.getSysShopProjectSurplusTimes());
+			  shopUserProjectRResponseDTO.add(projectMap);
+		  }
+		}
+
+		// 查询用户的套卡信息
+		ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelationDTO = new ShopUserProjectGroupRelRelationDTO();
+		shopUserProjectGroupRelRelationDTO.setSysUserId(sysUserId);
+		shopUserProjectGroupRelRelationDTO.setSysShopId(sysShopId);
+		List<ShopUserProjectGroupRelRelationDTO> userCollectionCardProjectList = projectService
+				.getUserCollectionCardProjectList(shopUserProjectGroupRelRelationDTO);
+		for(ShopUserProjectGroupRelRelationDTO groupRelRelationDTO : userCollectionCardProjectList){
+			Map projectMap = new HashedMap();
+			projectMap.put("projectName",groupRelRelationDTO.getShopProjectInfoName());
+			projectMap.put("id",groupRelRelationDTO.getId());
+			projectMap.put("projectId", groupRelRelationDTO.getShopProjectInfoId());
+			projectMap.put("surplusTimes", groupRelRelationDTO.getProjectSurplusTimes());
+			shopUserProjectRResponseDTO.add(projectMap);
+		}
+		responseDTO.setResponseData(shopUserProjectRResponseDTO);
+		responseDTO.setResult(StatusConstant.SUCCESS);
+		return responseDTO;
+	}
 }

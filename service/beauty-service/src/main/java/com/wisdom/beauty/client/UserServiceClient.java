@@ -1,6 +1,5 @@
 package com.wisdom.beauty.client;
 
-import com.wisdom.beauty.interceptor.FeignConfigInterceptor;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
@@ -22,6 +21,14 @@ public interface UserServiceClient {
 	@RequestMapping(value = "/beauty/getUserInfo", method = RequestMethod.POST)
 	List<UserInfoDTO> getUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 
+
+	/**
+	 * 更新用户信息
+	 * @param userInfoDTO
+	 */
+	@RequestMapping(value = "/updateBeautyUserInfo", method = RequestMethod.POST)
+	void updateBeautyUserInfo(@RequestBody UserInfoDTO userInfoDTO);
+
 	/**
 	 * 更新老板信息
 	 *
@@ -30,6 +37,15 @@ public interface UserServiceClient {
 	 */
 	@RequestMapping(value = "/updateBossInfo", method = RequestMethod.POST)
 	ResponseDTO<Object> updateBossInfo(@RequestBody SysBossDTO sysBossDTO);
+
+	/**
+	 * 获取老板信息
+	 *
+	 * @param sysBossDTO
+	 * @return
+	 */
+	@RequestMapping(value = "/getBossInfo", method = RequestMethod.GET)
+	SysBossDTO getBossInfo(@RequestBody SysBossDTO sysBossDTO);
 
 	/**
 	 * 获取店员、美容师相关信息
@@ -89,4 +105,18 @@ public interface UserServiceClient {
 	@RequestMapping(value = "/beauty/getUserInfoListFromUserId", method = RequestMethod.GET)
 	List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
 			                                    @RequestParam(required = false, value = "searchFile") String searchFile);
+
+	/**
+	 * @Author:zhanghuan
+	 * @Param:
+	 * @Return:
+	 * @Description: 根据条件获取店员信息
+	 * @Date:2018/4/25 18:32
+	 */
+	@RequestMapping(value = "/getClerkInfoListByClerkIds", method = RequestMethod.GET)
+	ResponseDTO<List<SysClerkDTO>>   getClerkInfoListByClerkIds(@RequestParam(value = "clerkIds") List<String> clerkIds);
+
+
+
+
 }

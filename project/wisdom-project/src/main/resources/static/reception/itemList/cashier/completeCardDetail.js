@@ -7,7 +7,7 @@ PADWeb.controller('completeCardDetailCtrl', function($scope, $stateParams, $stat
     $scope.$parent.mainLeftSwitch.peopleListFlag = true;
     $scope.$parent.mainLeftSwitch.priceListFlag = false;
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
-    $scope.$parent.$parent.param.headerCash.title = "套卡详情";
+    $scope.$parent.$parent.param.headerCash.title = "详情";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.param.selectSty = $stateParams.userId
