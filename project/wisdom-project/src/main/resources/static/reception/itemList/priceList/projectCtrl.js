@@ -192,11 +192,12 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.selection  = function (index,oneId) {
         TwoLevelProject.get({id:oneId},function (data) {
             $scope.project2List=data.responseData;
-            $scope.param.chooseProjectItem = $scope.project2List[0].id//默认选中第一个
+            // $scope.param.chooseProjectItem = $scope.project2List[0].id//默认选中第一个
 
             //默认调去三级展示
             ThreeLevelProject.get({
-                ProjectTypeTwoId:data.responseData[0].id,
+                // ProjectTypeTwoId:data.responseData[0].id,
+                ProjectTypeTwoId:"",//默认查一级下面所有的三级 不需要二级id
                 projectTypeOneId:oneId,
                 projectName:$scope.param.projectName,
                 pageSize:$scope.param.pageSize,
