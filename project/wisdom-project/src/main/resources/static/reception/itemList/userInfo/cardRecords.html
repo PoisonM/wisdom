@@ -93,12 +93,28 @@
     <p class="h50 ml10">支付明细</p>
     <div>
         <opn-list class="fs30">
-            <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+            <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="dataInfo.payMap.cashAmount > 0">
+                <p class="ml10" >
+                现金支付
+                </p>
+                <p class="mr10 col888">
+                    ￥ {{dataInfo.payMap.cashAmount}}
+                </p>
+            </ion-item>
+            <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="dataInfo.payMap.balanceAmount > 0">
+                <p class="ml10" >
+                余额支付
+                </p>
+                <p class="mr10 col888">
+                    ￥ {{dataInfo.payMap.balanceAmount}}
+                </p>
+            </ion-item>
+            <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="dataInfo.payMap.payTypeAmount > 0">
                 <p class="ml10" ng-if="dataInfo.payType == '0'"> 微信</p>
                 <p class="ml10" ng-if="dataInfo.payType == '1'"> 支付宝</p>
                 <p class="ml10" ng-if="dataInfo.payType == '2'"> 现金</p>
                 <p class="mr10 col888">
-                    ￥ {{dataInfo.price}}
+                ￥ {{dataInfo.payMap.payTypeAmount}}
                 </p>
             </ion-item>
         </opn-list>
