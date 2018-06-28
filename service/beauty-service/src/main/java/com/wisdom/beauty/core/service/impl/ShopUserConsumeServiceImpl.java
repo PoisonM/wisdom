@@ -1006,6 +1006,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserConsumeRecordDTO.setPeriodDiscount(orderDTO.getPeriodDiscount());
         shopUserConsumeRecordDTO.setConsumeNumber(1);
         shopUserConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.RECHARGE.getCode());
+        shopUserConsumeRecordDTO.setCreateBy(clerkInfo.getName());
         return shopUerConsumeRecordService.saveCustomerConsumeRecord(shopUserConsumeRecordDTO);
     }
 
