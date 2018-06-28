@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -165,20 +166,24 @@ public class PayController {
         }
         List<ExtShopUserRechargeCardDTO> userPayRechargeCardList = shopUserOrderDTO.getUserPayRechargeCardList();
         List<ExtShopUserRechargeCardDTO> filterList = new ArrayList<>();
+        //记录充值卡支付的总金额
+        BigDecimal rechargeCardPay = new BigDecimal(0);
         if(CommonUtils.objectIsNotEmpty(userPayRechargeCardList)){
-            userPayRechargeCardList.forEach(e->{
-                ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(e);
+            for(ExtShopUserRechargeCardDTO rechargeCardDTO: userPayRechargeCardList){
+                ShopUserRechargeCardDTO shopUserRechargeInfo = shopRechargeCardService.getShopUserRechargeInfo(rechargeCardDTO);
                 ExtShopUserRechargeCardDTO extShopUserRechargeCardDTO = new ExtShopUserRechargeCardDTO();
                 BeanUtils.copyProperties(shopUserRechargeInfo,extShopUserRechargeCardDTO);
-                extShopUserRechargeCardDTO.setConsumePrice(e.getConsumePrice());
+                extShopUserRechargeCardDTO.setConsumePrice(rechargeCardDTO.getConsumePrice());
+                rechargeCardPay = rechargeCardPay.add(new BigDecimal(rechargeCardDTO.getConsumePrice()));
                 filterList.add(extShopUserRechargeCardDTO);
-            });
+            }
         }
         //mongodb中更新订单的状态
         Query query = new Query().addCriteria(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         Update update = new Update();
         update.set("userPayRechargeCardList", filterList);
         update.set("updateDate",new Date());
+        update.set("rechargeCardPay",rechargeCardPay);
         update.set("detail",shopUserOrderDTO.getDetail());
         mongoTemplate.upsert(query, update, "shopUserOrderDTO");
         responseDTO.setResponseData(StatusConstant.SUCCESS);

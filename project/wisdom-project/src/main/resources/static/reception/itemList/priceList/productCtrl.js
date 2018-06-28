@@ -112,7 +112,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
         selectSingleData:{},//产品的一级商品列表
         product2List:{},//点击一级产品列表出现二级列表
         product3List:{},//最终展示的商品列表
-        pageSize:"10",//页码大小
+        pageSize:"100",//页码大小
         productName:"",//产品名称
         productTypeOneId:"",//一级产品id
         productTypeTwoId:"",//二级产品id
@@ -176,11 +176,11 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.selection  = function (index,oneId) {
         TwoLevelProduct.get({id:oneId},function (data) {
             $scope.product2List=data.responseData;
-            $scope.param.chooseProductItem = $scope.product2List[0].id//默认选中第一个
+            // $scope.param.chooseProductItem = $scope.product2List[0].id//默认选中第一个
             ThreeLevelProduct.get({
                 pageSize:$scope.param.pageSize,
                 productTypeOneId:oneId,
-                productTypeTwoId:$scope.product2List[0].id,
+                productTypeTwoId:"",//默认查一级下面所有的三级 不需要二级id
                 productName:$scope.param.productName,
                 status:$scope.status
             },function (data) {
