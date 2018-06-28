@@ -481,7 +481,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             $scope.leftTimeList = data.responseData[$scope.tempMr[0]]
             var weekTime = setInterval(function () {
                 if($(".infoitem_sty").length != 0){
-                    $(".week_right_box").width($(".infoitem_sty").width()*$(".infoitem_sty").length)
+                    $(".week_right_box").width($(".infoitem_sty").width()*$(".infoitem_sty").length+100)
                     clearInterval(weekTime)
                 }
             },100)

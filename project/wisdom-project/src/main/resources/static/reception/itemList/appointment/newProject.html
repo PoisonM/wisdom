@@ -29,7 +29,7 @@
             </div>
 
 
-            <div ng-repeat="item in param.newProductObject.newProjectData"  class="bgfff" ng-show="!param.newProductObject.titleFlag">
+            <div ng-repeat="item in param.newProductObject.newProjectData"  class="bgfff" ng-show="!param.newProductObject.titleFlag&&item.surplusTimes>0">
                 <div>
                     <ul class="bgfff" >
                         <li class="h100 space-between bte5 "  ng-click="selectTheProduct(item,$parent.$index,$index,'疗程')" >
