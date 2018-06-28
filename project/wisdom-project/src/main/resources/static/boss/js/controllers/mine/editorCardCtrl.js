@@ -159,7 +159,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                          $rootScope.settingAddsome.editorCard.status ='1'
                      }
                 }
-                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.marketPrice ==null||$rootScope.settingAddsome.editorCard.marketPrice ==null){
+                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.initialPrice ==''|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.initialPrice ==null||$rootScope.settingAddsome.editorCard.marketPrice ==null){
                     alert('信息不完整');
                     return
                 }

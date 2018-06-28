@@ -75,6 +75,14 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             };
             $scope.delPic = function(index){
                 $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.splice(index,1)
+            };
+            $scope.projectTheLength = function (type) {
+                if(type==0){
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1==30)return
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1-30
+                }else{
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1+30
+                }
             }
             /*点击保存调取接口*/
 

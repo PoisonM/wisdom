@@ -22,7 +22,7 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                     status:"0",/*不启动*/
                     visitDateTime:"",/*回访次数*/
                     projectName:"",/*项目名称*/
-                    projectDuration:"",/*时长*/
+                    projectDuration:"30",/*时长*/
                     imageList:[],/*图片*/
                     cardType:"0"/*卡的类型*/,
                     effectiveNumberMonth:12/*有效期*/
@@ -104,13 +104,22 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
                     $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
                 }
-               if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
                    alert("填入的数据不完整")
+                   return
                }
 
                    SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
                        $state.go("basicSetting")
                    })
                
+            }
+            $scope.projectTheLength = function (type) {
+                if(type==0){
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1==30)return
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1-30
+                }else{
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1+30
+                }
             }
         }]);
