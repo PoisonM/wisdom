@@ -832,7 +832,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         if(StringUtils.isBlank(userConsumeRecordDTO.getId())){
             userConsumeRecordDTO.setId(uuid);
         }
-        userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
+        userConsumeRecordDTO.setCreateBy(clerkInfo.getName());
         userConsumeRecordDTO.setFlowNo(transactionCodeNumber);
         userConsumeRecordDTO.setSysUserName(archivesInfo.getSysUserName());
         userConsumeRecordDTO.setSysUserId(archivesInfo.getSysUserId());
