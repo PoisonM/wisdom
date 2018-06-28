@@ -418,11 +418,12 @@ public class ShopStockServiceImpl implements ShopStockService {
 		//生成单据号
 		Random random = new Random();
 		String result="";
-		for (int i=0;i<6;i++)
+		for (int i=0;i<8;i++)
 		{
 			result+=random.nextInt(10);
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuilder flowNo = new StringBuilder();
 		// 判断是出库还是入库
 		if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
@@ -436,7 +437,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockRecordDTO.setDetail(shopStockDto.getDetail());
 
 			shopStockRecordDTO.setStockType(StockTypeEnum.PURCHASE_IN_STORAGE.getCode());
-			flowNo.append("RK").append("-").append(sdf.format(new Date())).append("-").append(result);
+			flowNo.append("RK").append("-").append(sdf1.format(new Date())).append("-").append(result);
 			shopStockRecordDTO.setFlowNo(flowNo.toString());
 		}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 
@@ -444,7 +445,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			shopStockRecordDTO.setStockType(shopStockDto.getStockType());
 			shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 			shopStockRecordDTO.setReceiver(shopStockDto.getReceiver());
-			flowNo.append("CK").append("-").append(sdf.format(new Date())).append("-").append(result);
+			flowNo.append("CK").append("-").append(sdf1.format(new Date())).append("-").append(result);
 			shopStockRecordDTO.setFlowNo(flowNo.toString());
 		}
 
