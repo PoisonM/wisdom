@@ -223,6 +223,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
 		c.andFlowNoEqualTo(consumeFlowNo);
+		//排除充值卡
+		c.andConsumeTypeNotEqualTo(ConsumeTypeEnum.CONSUME.getCode());
+		c.andGoodsTypeNotEqualTo(GoodsTypeEnum.RECHARGE_CARD.getCode());
 
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
 		if (CollectionUtils.isEmpty(list)) {
