@@ -392,16 +392,17 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 		//开始执行入库/出库
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
+		for(ShopStockRequestDTO ssr :shopStockRequestDTO){
+			Date date = null;
+			try {
+				date = sdfp.parse(ssr.getProductDateString());
+			} catch (ParseException e) {
+				logger.error(e.getMessage(),e);
+			}
 
-		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
-		Date date = null;
-		try {
-			date = sdfp.parse(shopStockDto.getProductDateString());
-		} catch (ParseException e) {
-			logger.error(e.getMessage(),e);
+			ssr.setProductDate(date);
 		}
-
-		shopStockDto.setProductDate(date);
+		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id = IdGen.uuid();
 		if(sysBossDTO!=null){
@@ -501,6 +502,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 				// 判断是出库还是入库。入库需要加，出库需要减
 				if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 					// 此时是入库
+					if(shopStockNumber.getStockNumber()==null){
+						shopStockNumber.setStockNumber(0);
+					}
 					shopStockNumber.setStockNumber(shopStockNumber.getStockNumber()
 							+ map.get(shopStockNumber.getShopProcId()).getStockNumber());
 				}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
