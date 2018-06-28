@@ -301,13 +301,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         BigDecimal totalAmount = new BigDecimal(0);
         if (CommonUtils.objectIsNotEmpty(rechargeCardDTOS)) {
             for (ExtShopUserRechargeCardDTO dto : rechargeCardDTOS) {
-                int consumePrice = Integer.parseInt(dto.getConsumePrice());
-                if(StringUtils.isBlank(dto.getConsumePrice()) || consumePrice ==0){
+                BigDecimal consumeAmount = new BigDecimal(dto.getConsumePrice());
+                if(consumeAmount.doubleValue()<=0){
                     continue;
                 }
                 //更新用户的充值卡记录,先查询再更新
                 ShopUserRechargeCardDTO shopUserRechargeCardDTOById = shopRechargeCardService.getShopUserRechargeCardDTOById(dto.getId());
-                BigDecimal consumeAmount = new BigDecimal(consumePrice);
                 shopUserRechargeCardDTOById.setSurplusAmount(shopUserRechargeCardDTOById.getSurplusAmount().subtract(consumeAmount));
                 shopRechargeCardService.updateRechargeCard(shopUserRechargeCardDTOById);
 

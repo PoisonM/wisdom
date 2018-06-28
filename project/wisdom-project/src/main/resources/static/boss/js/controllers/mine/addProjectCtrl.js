@@ -10,23 +10,24 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 selFlag:true
             }
             $scope.cardBox=false;/*点击次卡 点击时效卡显示的卡项*/
+
             $rootScope.settingAddsome.extShopProjectInfoDTO={
-                    functionIntr:"",/*功能介绍*/
-                    oncePrice:"",/*单次价格*/
-                    discountPrice:"",/*办卡价格*/
-                    projectTypeOneId:'',/*类型id*/
-                    projectTypeOneName:"",/*类型名称*/
-                    projectTypeTwoId:"",/*系列id*/
-                    projectTypeTwoName:"",/*系列名称*/
-                    serviceTimes:"",/*包含次数*/
-                    status:"0",/*不启动*/
-                    visitDateTime:"",/*回访次数*/
-                    projectName:"",/*项目名称*/
-                    projectDuration:"30",/*时长*/
-                    imageList:[],/*图片*/
-                    cardType:"0"/*卡的类型*/,
-                    effectiveNumberMonth:12/*有效期*/
-                }
+                functionIntr:"",/*功能介绍*/
+                oncePrice:"",/*单次价格*/
+                discountPrice:"",/*办卡价格*/
+                projectTypeOneId:'',/*类型id*/
+                projectTypeOneName:"",/*类型名称*/
+                projectTypeTwoId:"",/*系列id*/
+                projectTypeTwoName:"",/*系列名称*/
+                serviceTimes:"",/*包含次数*/
+                status:"0",/*不启动*/
+                visitDateTime:"",/*回访次数*/
+                projectName:"",/*项目名称*/
+                projectDuration:"30",/*时长*/
+                imageList:[],/*图片*/
+                cardType:"0"/*卡的类型*/,
+                effectiveNumberMonth:12/*有效期*/
+            }
 
 
             if($rootScope.settingAddsome.extShopProjectInfoDTO.status =='0'){
@@ -103,14 +104,38 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 }
                 if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
                     $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
+                }else{
+                    if(rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""){
+                         alert("请输入包含次数")
+                        return
+                    }
                 }
-                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
+
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.marketPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
                    alert("填入的数据不完整")
                    return
                }
 
                    SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
                        $state.go("basicSetting")
+                       $rootScope.settingAddsome.extShopProjectInfoDTO={
+                           functionIntr:"",/*功能介绍*/
+                           oncePrice:"",/*单次价格*/
+                           discountPrice:"",/*办卡价格*/
+                           projectTypeOneId:'',/*类型id*/
+                           projectTypeOneName:"",/*类型名称*/
+                           projectTypeTwoId:"",/*系列id*/
+                           projectTypeTwoName:"",/*系列名称*/
+                           serviceTimes:"",/*包含次数*/
+                           status:"0",/*不启动*/
+                           visitDateTime:"",/*回访次数*/
+                           projectName:"",/*项目名称*/
+                           projectDuration:"30",/*时长*/
+                           imageList:[],/*图片*/
+                           cardType:"0"/*卡的类型*/,
+                           effectiveNumberMonth:12/*有效期*/
+                       }
+
                    })
                
             }

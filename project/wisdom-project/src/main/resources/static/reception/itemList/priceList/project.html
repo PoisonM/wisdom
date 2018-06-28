@@ -29,7 +29,7 @@
     <div ng-show="param.projectAppear" class="projectAppear">
         <ul>
             <!--ng-class="{'project-red':param.chooseProjectItem==items.id,'project-white':param.chooseProjectItem!=items.id}"-->
-            <li ng-class="{'project-red':param.chooseProjectItem==items.id}"
+            <li ng-if="items.status != 1" ng-class="{'project-red':param.chooseProjectItem==items.id}"
                 ng-repeat="items in project2List" ng-click="refreshGoods(items.id)">
                 {{items.projectTypeName}}
             </li>

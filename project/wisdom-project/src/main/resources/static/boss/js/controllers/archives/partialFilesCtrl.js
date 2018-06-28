@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('partialFilesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','FindArchives','GetBossShopList','BossUtil',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList,BossUtil) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','FindArchives','GetBossShopList','BossUtil','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,FindArchives,GetBossShopList,BossUtil,$ionicScrollDelegate) {
             $rootScope.title = "全院档案";
             $scope.param={
                 sysShopId:"11",
@@ -43,9 +43,9 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                $scope.param.fileBOx=true;
                GetBossShopList.get(function (data) {
                    if(data.result == "0x00001"){
+                       $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                        $scope.switchingList = [];
                        $scope.switchingList = data.responseData;
-                       console.log(data)
                    }
                })
            };

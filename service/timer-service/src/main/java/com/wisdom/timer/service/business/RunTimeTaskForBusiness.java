@@ -50,8 +50,7 @@ public class RunTimeTaskForBusiness {
         //判断是不是本月的25号，若是25号，则进行月度提成计算
         Calendar now = Calendar.getInstance();
         String day = now.get(Calendar.DAY_OF_MONTH) + "";
-        if(day.equals("26"))
-        {
+        if(day.equals("26")){
             transactionRunTimeService.autoMonthlyIncomeCalc();
         }
     }
