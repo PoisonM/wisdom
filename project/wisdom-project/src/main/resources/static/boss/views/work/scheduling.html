@@ -7,8 +7,7 @@
             <span class="ml10 mr10">{{param.nowdate}}</span>
             <img  src="images/work/rightSlip.png" style="width: 14px;height: 14px;display: inline-block"  ng-click="addMonth()"></div>
     </div>
-    <span style="position: absolute;right: 20px;top: 10px;color: #ffffff" ng-click="tabShop()">切换店
-铺</span>
+    <span style="position: absolute;right: 20px;top: 10px;color: #ffffff" ng-click="tabShop()">切换店铺</span>
     <!--排班的具体内容-->
     <div class="bgfff" style=" overflow: auto;height: 100%;width: 100%;float: left;">
         <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
@@ -16,20 +15,20 @@
             <tr class="listHead">
 
                 <td ng-repeat="item1 in tempWeek">
-                   <!-- <div >
-                        {{item1[0]}} {{$index}}
+                    <div >
+                        {{item1[0]}}
                         </br>{{item1[1]}}
 
-                    </div>-->
+                    </div>
                 </td>
             </tr>
             </thead>
             <tbody >
             <tr ng-repeat="item4 in tempUser" class="list ">
-                <td class="clerkName">
-                    <div class=" center" >
-                        <p>
-                            <span class="" >{{item4.clerkInfo.name.substring(0,3)}}</span>
+                <td class="clerkName" >
+                    <div class=" center">
+                        <p >
+                            <span class='' >{{item4.clerkInfo.name.substring(0,3)}}</span>
                             <span ng-if="item4.clerkInfo.name.length>3">...</span>
                         </p>
                     </div>

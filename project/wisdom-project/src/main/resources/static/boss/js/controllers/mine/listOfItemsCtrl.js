@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('listOfItemsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopTwoLevelProjectList','Global',
-        function ($scope,$rootScope,$stateParams,$state,GetShopTwoLevelProjectList,Global) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopTwoLevelProjectList','Global','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetShopTwoLevelProjectList,Global,$ionicLoading) {
 
             $scope.param = {
                 filterStr:"",
@@ -15,16 +15,23 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
                 $scope.getInfo()
             }
             $scope.getInfo = function(){
+                    $ionicLoading.show({
+                        content: 'Loading',
+                        animation: 'fade-in',
+                        showBackdrop: true,
+                        maxWidth: 200,
+                        showDelay: 0
+                    });
                 GetShopTwoLevelProjectList.get({
                     filterStr:$scope.param.filterStr,
                     pageNo:1,
                     pageSize:1000,
                     fuzzyQuery:$scope.param.fuzzyQuery
                 },function (data) {
+                    $ionicLoading.hide();
                     if(data.responseData==null){$scope.listOfItems=[]}
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.listOfItems = data.responseData;
-
                         if($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS !=null){
                             $scope.param.list = $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS
                             for(var i=0;i<$scope.param.list.length;i++){
@@ -38,8 +45,11 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
 
                     }
                 })
-            }
-            $scope.getInfo()
+            };
+
+                $scope.getInfo()
+
+
 
 
             $scope.addProject = function (items,index,indexs) {
@@ -65,6 +75,10 @@ angular.module('controllers',[]).controller('listOfItemsCtrl',
                     $rootScope.settingAddsome.editorCard.marketPrice =$rootScope.settingAddsome.editorCard.marketPrice+($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].marketPrice)*($rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes)
 
                 }
+            }
+            $scope.clearSearch = function () {
+                $scope.param.filterStr='';
+                $scope.getInfo()
             }
             $scope.editorCardGo = function(){
                 $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS=$scope.param.list

@@ -38,7 +38,7 @@
                             </p>
                         </div>
                     </td>
-                    <td class="" >
+                   <!-- <td class="" >
                         <div style="display: flex;justify-content: space-around">
                             <p>卡耗</p>
                             <p>
@@ -47,7 +47,7 @@
 
                             </p>
                         </div>
-                    </td>
+                    </td>-->
                     <td class="">
                         <div style="display: flex;justify-content: space-around">
                             <p>耗卡</p>
@@ -62,8 +62,8 @@
                         <div style="display: flex;justify-content: space-around">
                             <p>人次数</p>
                             <p >
-                                <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('expenditure','asc')" ng-class="{'colff66':param.sortBy == 'expenditure'&&param.sortRule=='asc'}" ></i>
-                                <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('expenditure','desc')" ng-class="{'colff66':param.sortBy == 'expenditure'&&param.sortRule=='desc'}"></i>
+                                <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('consumeTime','asc')" ng-class="{'colff66':param.sortBy == 'consumeTime'&&param.sortRule=='asc'}" ></i>
+                                <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('consumeTime','desc')" ng-class="{'colff66':param.sortBy == 'consumeTime'&&param.sortRule=='desc'}"></i>
                             </p>
                         </div>
                     </td>
@@ -71,8 +71,8 @@
                         <div style="display: flex;justify-content: space-around">
                             <p>服务次数</p>
                             <p>
-                                <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('expenditure','asc')" ng-class="{'colff66':param.sortBy == 'expenditure'&&param.sortRule=='asc'}" ></i>
-                                <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('expenditure','desc')" ng-class="{'colff66':param.sortBy == 'expenditure'&&param.sortRule=='desc'}"></i>
+                                <i class="ion-arrow-up-b col999" style='display: block;height: 10px;' ng-click=" sorting('serviceNumber','asc')" ng-class="{'colff66':param.sortBy == 'serviceNumber'&&param.sortRule=='asc'}" ></i>
+                                <i class="ion-arrow-down-b col999" style='display: block;height: 10px;' ng-click=" sorting('serviceNumber','desc')" ng-class="{'colff66':param.sortBy == 'serviceNumber'&&param.sortRule=='desc'}"></i>
                             </p>
                         </div>
                     </td>
@@ -86,27 +86,27 @@
                     </td>
                     <td class="" >
                         <div>
-                            {{item.income}}
+                            {{item.income==null?0:item.income}}
                         </div>
                     </td>
-                    <td class="">
+                    <!--<td class="">
                         <div>
                             {{item.kahao}}
                         </div>
-                    </td>
+                    </td>-->
                     <td class="">
                         <div>
-                            {{item.expenditure}}
+                            {{item.expenditure==null?0:item.expenditure}}
                         </div>
                     </td>
                     <td class="">
                         <div>
-                            {{item.expenditure}}
+                            {{item.consumeTime==null?0:item.consumeTime}}
                         </div>
                     </td>
                     <td class="">
                         <div>
-                            {{item.expenditure}}
+                            {{item.serviceNumber==null?0:item.serviceNumber}}
                         </div>
                     </td>
                 </tr>
