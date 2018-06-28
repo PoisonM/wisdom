@@ -501,6 +501,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 				// 判断是出库还是入库。入库需要加，出库需要减
 				if (StockStyleEnum.MANUAL_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_IN_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {
 					// 此时是入库
+					if(shopStockNumber.getStockNumber()==null){
+						shopStockNumber.setStockNumber(0);
+					}
 					shopStockNumber.setStockNumber(shopStockNumber.getStockNumber()
 							+ map.get(shopStockNumber.getShopProcId()).getStockNumber());
 				}else if (StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())|| StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())) {

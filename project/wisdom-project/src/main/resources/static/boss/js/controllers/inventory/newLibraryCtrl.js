@@ -26,7 +26,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                                 productDate:val.effectDate,
                                 stockPrice:val.marketPrice,/*进货单价*/
                                 shopProcId:val.id,/*产品id*/
-                                shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                                shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
                                 stockNumber: "",
                                 productUrl : val.productUrl,
                                 productName: val.productName,
@@ -47,7 +47,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                         productDate:val.effectDate,
                         stockPrice:val.marketPrice,/*进货单价*/
                         shopProcId:val.id,/*产品id*/
-                        shopStoreId:$stateParams.shopStoreId,/*仓库id*/
+                        shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
                         stockNumber: "",
                         productUrl : val.productUrl,
                         productName: val.productName,
@@ -59,6 +59,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                     $scope.param.shopStock.push(value);
                 })
             }
+            alert($rootScope.shopInfo.shopStoreId);
             var disabledDates = [
                 new Date(1437719836326),
                 new Date(),
