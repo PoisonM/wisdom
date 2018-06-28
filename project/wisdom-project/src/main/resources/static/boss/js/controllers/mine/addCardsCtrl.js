@@ -137,7 +137,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                     $rootScope.settingAddsome.editorCard.status ='1'
                 }
                 console.log($rootScope.settingAddsome.editorCard)
-                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.discountPrice ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS==null){
+                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.initialPrice ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS==null){
                     alert('信息不完整');
                     return
                 }
