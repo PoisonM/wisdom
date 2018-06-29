@@ -75,10 +75,10 @@
                     <div class="signConfirmLeftContentTitle">单次</div>
                     <p>{{timeItem.sysShopProjectName}}</p>
                     <ul>
-                        <li ng-if="consumeItem.goodsType != 0">
+                        <!--<li ng-if="consumeItem.goodsType != 0">
                             <span class="name">包含次数</span>
                             <span class="type">{{timeItem.serviceTime}}</span>
-                        </li>
+                        </li>-->
                         <li>
                             <span class="name">折后价</span>
                             <span class="type">¥{{timeItem.discountPrice}}</span>
@@ -89,7 +89,7 @@
                         </li>
                         <li>
                             <span class="name">数量</span>
-                            <span class="type">¥{{timeItem.sysShopProjectInitTimes}}</span>
+                            <span class="type">{{timeItem.sysShopProjectInitTimes}}</span>
                         </li>
                         <li>
                             <span class="name">金额</span>
@@ -114,12 +114,12 @@
                         </li>
                         <li>
                             <span class="name">折扣</span>
-                            <span class="type">¥{{periodItem.discount == '1'?'无折扣':periodItem.discount*10}}</span>
+                            <span class="type">{{periodItem.discount == '1'?'无折扣':periodItem.discount*10}}</span>
 
                         </li>
                         <li>
                             <span class="name">数量</span>
-                            <span class="type">¥{{periodItem.sysShopProjectInitTimes}}</span>
+                            <span class="type">{{periodItem.sysShopProjectInitTimes}}</span>
                         </li>
                         <li>
                             <span class="name">金额</span>
@@ -148,7 +148,7 @@
                         </li>
                         <li>
                             <span class="name">数量</span>
-                            <span class="type">¥{{groupItem.number}}</span>
+                            <span class="type">{{groupItem.number}}</span>
                         </li>
                         <li>
                             <span class="name">金额</span>
@@ -173,10 +173,10 @@
                     <div class="signConfirmLeftContentTitle">产品</div>
                     <p>{{productItem.shopProductName}}</p>
                     <ul>
-                        <li ng-if="consumeItem.goodsType != 0">
+                        <!--<li ng-if="consumeItem.goodsType != 0">
                             <span class="name">包含次数</span>
                             <span class="type">{{productItem.initTimes}}</span>
-                        </li>
+                        </li>-->
                         <li>
                             <span class="name">折后价</span>
                             <span class="type">¥{{productItem.discountPrice}}</span>
@@ -187,7 +187,7 @@
                         </li>
                         <li>
                             <span class="name">数量</span>
-                            <span class="type">¥{{productItem.initTimes}}</span>
+                            <span class="type">{{productItem.initTimes}}</span>
                         </li>
                         <li>
                             <span class="name">金额</span>

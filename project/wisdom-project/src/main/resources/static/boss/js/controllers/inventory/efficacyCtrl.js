@@ -10,12 +10,13 @@ angular.module('controllers',[]).controller('efficacyCtrl',
             }
             $scope.save = function(){
                 if($scope.param.func !=""){
-                    var func = $scope.param.productFunc+";"+$scope.param.func
+                    $scope.param.productFunc =  $scope.param.productFunc+";"+$scope.param.func
                 }else{
-                    var func = $scope.param.productFunc
+                    $scope.param.productFunc = $scope.param.productFunc
                 }
                 $state.go($stateParams.url);
-                $rootScope.settingAddsome.product.productFunction = func
+                $rootScope.settingAddsome.product.productFunction = $scope.param.productFunc
+                $scope.param.func = ''
             };
             $scope.selFunc = function(name){
                 if($scope.param.productFunc.search(name) != -1){
@@ -26,7 +27,6 @@ angular.module('controllers',[]).controller('efficacyCtrl',
                         }
                     }
                     $scope.param.productFunc = a.join(";")
-
                 }else{
                     if($scope.param.productFunc == ""){
                         $scope.param.productFunc= name

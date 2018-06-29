@@ -33,7 +33,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
                 console.log(err)
             },
             response: function (res) {
-                if(res.data.result=="0x00002"){
+                if(res.data.errorInfo=="0x00006"){
                     alert("登录已经失效,请重新登录")
                     window.location.href = window.location.href.split("pad-web")[0]+"pad-web/login"
                 }

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/6.
  */
 angular.module('controllers',[]).controller('warehouseProductsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopProductLevelInfo','Global','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetShopProductLevelInfo,Global,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopProductLevelInfo','Global','$ionicLoading','$ionicScrollDelegate',
+        function ($scope,$rootScope,$stateParams,$state,GetShopProductLevelInfo,Global,$ionicLoading,$ionicScrollDelegate) {
 
             $rootScope.title = "产品";
             $scope.param = {
@@ -28,6 +28,7 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
 
             };*/
             $scope.selNext = function (type) {/*点击小三角*/
+                $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                 $scope.param.levelOneId = "";
                 $scope.param.levelTwoId='';
                 $scope.param.productType = type;

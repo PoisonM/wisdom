@@ -14,6 +14,7 @@ PADWeb.controller('consumeCardDetailCtrl', function($scope, $stateParams, $state
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
     }
+    $scope.type = $stateParams.type
 
     if($stateParams.type == "lck"){
         GetCureByflowId.get({
