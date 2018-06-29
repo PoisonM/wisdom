@@ -18,7 +18,6 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.JedisUtils;
@@ -154,13 +153,13 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
             JedisUtils.set(shopId+"_"+userId,"notArchives", ConfigConstant.logintokenPeriod);
         }else{
             //判断是否本人操作(userId和openId查出唯一条数据)
-            UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setUserOpenid(openId);
-            List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-            if(userInfoDTOS.size()>1){
-                logger.info("非当前用户操作，或此用户有多个微信,多条数据证明已存用户又扫了一次绑定二维码，openId={}",openId);
-                JedisUtils.set(shopId+"_"+userId,"otherUser", ConfigConstant.logintokenPeriod);
-            }else{
+//            UserInfoDTO userInfoDTO = new UserInfoDTO();
+//            userInfoDTO.setUserOpenid(openId);
+//            List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+//            if(userInfoDTOS.size()>1){
+//                logger.info("非当前用户操作，或此用户有多个微信,多条数据证明已存用户又扫了一次绑定二维码，openId={}",openId);
+//                JedisUtils.set(shopId+"_"+userId,"otherUser", ConfigConstant.logintokenPeriod);
+//            }else{
                 //查询此用户与本店的绑定关系
                 ShopUserRelationDTO shopUserRelationDTO = new ShopUserRelationDTO();
                 shopUserRelationDTO.setSysUserId(userId);
@@ -172,7 +171,7 @@ public class ShopUserRelationServiceImpl implements ShopUserRelationService {
                     shopUserRelationService.saveUserShopRelation(shopUserRelationDTO);
                 }
                 JedisUtils.set(shopId+"_"+userId,"alreadyBind", ConfigConstant.logintokenPeriod);
-            }
+//            }
 
         }
         ResponseDTO<String> responseDTO = new ResponseDTO<>();

@@ -366,9 +366,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	}
 
 	@Override
-	public BigDecimal getShopConsumeAndRecharge(String shopId, String goodType, String consumeType,
+	public BigDecimal getShopConsumeAndRecharge(String shopId, String goodsType, String consumeType,
 			Boolean isCardConsume, Date startDate, Date endDate) {
-		logger.info("getShopConsumeAndRecharge方法传入的参数shopId={},goodType={},startDate={},endDate={}", shopId, goodType,
+		logger.info("getShopConsumeAndRecharge方法传入的参数shopId={},goodsType={},startDate={},endDate={}", shopId, goodsType,
 				startDate, endDate);
 		ShopUserConsumeRecordCriteria recordCriteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria criteria = recordCriteria.createCriteria();
@@ -377,9 +377,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		criteria.andSysShopIdEqualTo(shopId);
 		// 充值
 		if (ConsumeTypeEnum.RECHARGE.getCode().equals(consumeType)) {
-			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(goodType)) {
+			if (GoodsTypeEnum.RECHARGE_CARD.getCode().equals(goodsType)) {
 				// 充值卡
-				criteria.andGoodsTypeEqualTo(goodType);
+				criteria.andGoodsTypeEqualTo(goodsType);
 			} else {
 				List<String> goods = new ArrayList<>();
 				// 套卡
@@ -397,9 +397,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		}
 		// 消费
 		if (ConsumeTypeEnum.CONSUME.getCode().equals(consumeType)) {
-			if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodType)) {
+			if (GoodsTypeEnum.TIME_CARD.getCode().equals(goodsType)) {
 				// 单次
-				criteria.andGoodsTypeEqualTo(goodType);
+				criteria.andGoodsTypeEqualTo(goodsType);
 			} else {
 				List<String> goods = new ArrayList<>();
 				// 套卡
