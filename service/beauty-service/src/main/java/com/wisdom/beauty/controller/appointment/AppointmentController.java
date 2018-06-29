@@ -127,19 +127,7 @@ public class AppointmentController {
 		}
 		//优化，查询某个店某段时间的预约列表
 		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
-		Map<String, List<ShopAppointServiceDTO>> clerkMap = new HashMap<>(16);
-		if(CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)){
-			for(ShopAppointServiceDTO serviceDTO:shopAppointServiceDTOS){
-				List<ShopAppointServiceDTO> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
-				if(null == clerkServiceList){
-					List<ShopAppointServiceDTO> clerkService = new ArrayList<>();
-					clerkService.add(serviceDTO);
-					clerkMap.put(serviceDTO.getSysClerkId(),clerkService);
-				}else{
-					clerkServiceList.add(serviceDTO);
-				}
-			}
-		}
+		Map<String, List<ShopAppointServiceDTO>> clerkMap = getClerkAppointListMap(shopAppointServiceDTOS);
 		//遍历美容师获取预约详情
 		for (SysClerkDTO SysClerkDTO : clerkInfo) {
 
@@ -183,6 +171,23 @@ public class AppointmentController {
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(responseMap);
 		return responseDTO;
+	}
+
+	private Map<String, List<ShopAppointServiceDTO>> getClerkAppointListMap(List<ShopAppointServiceDTO> shopAppointServiceDTOS) {
+		Map<String, List<ShopAppointServiceDTO>> clerkMap = new HashMap<>(16);
+		if(CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)){
+			for(ShopAppointServiceDTO serviceDTO:shopAppointServiceDTOS){
+				List<ShopAppointServiceDTO> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
+				if(null == clerkServiceList){
+					List<ShopAppointServiceDTO> clerkService = new ArrayList<>();
+					clerkService.add(serviceDTO);
+					clerkMap.put(serviceDTO.getSysClerkId(),clerkService);
+				}else{
+					clerkServiceList.add(serviceDTO);
+				}
+			}
+		}
+		return clerkMap;
 	}
 
 	/**
