@@ -5,7 +5,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
              $scope.param={
                flag:false,
-               goodType:'6',
+               goodsType:'6',
                timeIndex:0,
                startDate:"",
                endDate: "",
@@ -109,7 +109,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                $scope.param.flag = false;
            };
            $scope.reset = function() {
-               $scope.param.goodType = '6'
+               $scope.param.goodsType = '6'
                $scope.param.timeIndex = 0
                $scope.param.startDate = ''
                $scope.param.endDate = ''
@@ -142,7 +142,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                 }
                 $scope.userConsumeRequest = {
                     consumeType:'0',
-                    goodType:$scope.param.goodType,
+                    goodsType:$scope.param.goodsType,
                     pageSize:1000,
                     sysUserId:$stateParams.sysUserId,
                     startTime:$scope.param.startValue,

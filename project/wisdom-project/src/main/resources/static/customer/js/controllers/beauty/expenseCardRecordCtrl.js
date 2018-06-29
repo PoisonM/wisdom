@@ -11,7 +11,7 @@ angular.module('controllers',[]).controller('expenseCardRecordCtrl',
                 expenseCardDetailData :'true'
             }
 
-            GetProjectConsumes.save({consumeType:'0',goodType:'6',
+            GetProjectConsumes.save({consumeType:'0',goodsType:'6',
                 pageSize:$scope.param.pageSize,sysUserId:$rootScope.shopAppointInfo.shopUserInfo.id},function (data) {
                 if(data.result==Global.SUCCESS)
                 {
