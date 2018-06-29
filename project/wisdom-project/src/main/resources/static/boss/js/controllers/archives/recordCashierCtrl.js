@@ -12,7 +12,8 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                startEndIndex:'',
                picFlag:false,
                  startValue:"",
-                 endValue:""
+                 endValue:"",
+                 searchState:'5'
            };
             /*日期插件*/
             var disabledDates = [
@@ -146,7 +147,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     sysUserId:$stateParams.sysUserId,
                     startTime:$scope.param.startValue,
                     endTime:$scope.param.endValue,
-                    searchState:"5"
+                    searchState:$scope.param.searchState
 
                 }
                 $ionicLoading.show({
