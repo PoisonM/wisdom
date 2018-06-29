@@ -34,7 +34,7 @@
                             </li>
                             <li>
                             <span class="subtotal xiaoji">
-                                <e style="float: left">小计¥{{(item.projectInitAmount*item.discount*item.projectInitTimes)|number:2}}</e>
+                                <e style="float: left">小计¥{{(item.discountPrice*item.discount*item.projectInitTimes)|number:2}}</e>
                                 <input readonly>
                             </span>
                             </li>
@@ -76,7 +76,7 @@
                             </li>
                             <li>
                             <span class="subtotal xiaoji">
-                                <e style="float: left">小计¥{{(item.initAmount*item.initTimes)|number:2}}</e>
+                                <e style="float: left">小计¥{{(item.discountPrice*item.initTimes)|number:2}}</e>
                                 <input readonly >
                             </span>
                             </li>
@@ -117,7 +117,7 @@
                             </li>
                             <li>
                             <span class="subtotal xiaoji">
-                                <e style="float: left">小计¥{{(item.sysShopProjectInitAmount*item.sysShopProjectInitTimes)|number:2}}</e>
+                                <e style="float: left">小计¥{{(item.discountPrice*item.sysShopProjectInitTimes)|number:2}}</e>
                                 <input readonly >
                             </span>
                             </li>

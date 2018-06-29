@@ -228,7 +228,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		rechargeCardDTO.setSysShopId(shopUserArchivesDTO.getSysShopId());
 		rechargeCardDTO.setSysUserId(shopUserArchivesDTO.getSysUserId());
 		rechargeCardDTO.setSurplusAmount(new BigDecimal(0));
-		rechargeCardDTO.setCreateBy(shopUserArchivesDTO.getSysClerkId());
+		rechargeCardDTO.setCreateBy(shopUserArchivesDTO.getSysClerkName());
 		rechargeCardDTO.setSysClerkName(shopUserArchivesDTO.getSysClerkName());
 		rechargeCardDTO.setSysBossCode(shopUserArchivesDTO.getSysBossCode());
 		rechargeCardDTO.setRechargeCardType(RechargeCardTypeEnum.SPECIAL.getCode());

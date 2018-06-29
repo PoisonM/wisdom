@@ -48,7 +48,7 @@
                     </li>
                     <li>
                         <label for="">折扣</label>
-                        <span>{{listItem.discount=='1'?'无折扣':listItem.discount+'折'}}</span>
+                        <span>{{(item1.discount==null)||(item1.discount==1)?'无折':item1.discount*10+'折'}}</span>
                     </li>
                     <li>
                         <label for="">数量</label>
@@ -58,10 +58,15 @@
                         <label for="">金额</label>
                         <span>{{listItem.sumAmount}}</span>
                     </li>
-                    <!--<li>
-                        <label for="">员工业绩</label>
-                        <span>店内消费</span>
-                    </li>-->
+                    <li ng-if="dataInfo.goodsType == 3">
+                        <label for="">包含项目</label>
+                        <ul>
+                            <li ng-repeat="item2 in listItem.shopProjectInfoDTOList" class="com_detail_list">
+                                <label for="">{{item2.projectName}}  * {{item2.serviceTimes}}</label>
+                                <span>{{item2.marketPrice}}</span>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div class="basic">

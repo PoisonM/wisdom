@@ -19,8 +19,8 @@
                         <span class="treatmentCardTopUsed">{{item0.sysShopProjectSurplusTimes}}</span>
                         <span class="treatmentCardTopTotal">/{{item0.sysShopProjectInitTimes}}</span>
                     </div>
-                    <button ng-if="!(item0.invalidDays!='0' && (item0.invalidDays<currentTime))" ng-click="goConsumptionList('1',item0.id,item0.invalidDays,$event)">划卡</button>
-                    <button ng-if="item0.invalidDays!='0' && (item0.invalidDays<currentTime)" ng-click="goConsumptionList('1',item0.id,item0.invalidDays,$event)" style="color: #333333;background-color: #eeeeee;">已过期</button>
+                    <button ng-if="!(item0.invalidDays!='0' && (item0.invalidDays<currentTime))" ng-click="goConsumptionList('1',item0.id,item0.invalidDays,item0.sysShopProjectSurplusTimes,$event)">划卡</button>
+                    <button ng-if="item0.invalidDays!='0' && (item0.invalidDays<currentTime)" ng-click="goConsumptionList('1',item0.id,item0.invalidDays,item0.sysShopProjectSurplusTimes,$event)" style="color: #333333;background-color: #eeeeee;">已过期</button>
                 </div>
                 <!--<div class="treatmentCardBottom">
                     <span>备注：</span>
@@ -46,8 +46,8 @@
                                 <span class="recorderCardContentUsed">{{item1Sm.projectSurplusTimes}}</span>
                                 <span class="recorderCardContentTotal">/{{item1Sm.projectInitTimes}}</span>
                             </div>
-                            <button ng-if="!(item1.expirationDate!='0' && (item1.expirationDate<currentTime))" ng-click="goConsumptionList('2',item1Sm.id,item1.expirationDate,$event)">划卡</button>
-                            <button ng-if="item1.expirationDate!='0' && (item1.expirationDate<currentTime)" ng-click="goConsumptionList('2',item1Sm.id,item1.expirationDate,$event)" style="color: #333333;background-color: #eeeeee;">已过期</button>
+                            <button ng-if="!(item1.expirationDate!='0' && (item1.expirationDate<currentTime))" ng-click="goConsumptionList('2',item1Sm.id,item1.expirationDate,item1Sm.projectSurplusTimes,$event)">划卡</button>
+                            <button ng-if="item1.expirationDate!='0' && (item1.expirationDate<currentTime)" ng-click="goConsumptionList('2',item1Sm.id,item1.expirationDate,item1Sm.projectSurplusTimes,$event)" style="color: #333333;background-color: #eeeeee;">已过期</button>
                         </div>
                     </div>
                 </div>

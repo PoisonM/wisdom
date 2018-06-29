@@ -116,21 +116,21 @@ public class OrderController {
             List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(projectRelationDTOS)){
                 for(ShopUserProjectRelationDTO dto:projectRelationDTOS){
-                    orderPrice = orderPrice.add(dto.getSysShopProjectInitAmount().multiply(new BigDecimal(dto.getSysShopProjectInitTimes())));
+                    orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getSysShopProjectInitTimes())));
                 }
             }
             //产品价格
             List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(productRelationDTOS)){
                 for(ShopUserProductRelationDTO dto:productRelationDTOS){
-                    orderPrice = orderPrice.add(dto.getInitAmount().multiply(new BigDecimal(dto.getInitTimes())));
+                    orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getInitTimes())));
                 }
             }
             //套卡价格
             List<ShopUserProjectGroupRelRelationDTO> group = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(group)){
                 for(ShopUserProjectGroupRelRelationDTO dto:group){
-                    orderPrice = orderPrice.add(dto.getProjectInitAmount().multiply(new BigDecimal(dto.getProjectInitTimes())));
+                    orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getProjectInitTimes())));
                 }
             }
             shopUserOrderDTO.setOrderPrice(orderPrice.toString());
@@ -312,18 +312,23 @@ public class OrderController {
                     groupDto.setDiscount(discount.floatValue());
                     eachMap.put("discount",discount);
                     //单个购买价格
-                    eachMap.put("shopGroupPuchasePrice",groupDto.getShopGroupPuchasePrice());
+                    eachMap.put("discountPrice",groupDto.getDiscountPrice());
                     eachMap.put("number",groupDto.getProjectInitTimes());
                     //总金额
-                    eachMap.put("projectInitAmount",groupDto.getProjectInitAmount());
+                    eachMap.put("projectInitAmount",groupDto.getDiscountPrice().multiply(new BigDecimal(groupDto.getProjectInitTimes())));
                     //同一种套卡购买多个，groupDto.getProjectInitTimes()存储的是购买了几个同一种套卡
                     for (int i = 0; i < groupDto.getProjectInitTimes(); i++) {
-                        serviceTime++;
+
                         //根据套卡id查询项目列表
                         ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO = new ShopProjectInfoGroupRelationDTO();
                         shopProjectInfoGroupRelationDTO.setShopProjectGroupId(groupDto.getShopProjectGroupId());
                         shopProjectInfoGroupRelationDTO.setSysShopId(shopId);
                         List<ShopProjectInfoGroupRelationDTO> groupRelations = shopProjectService.getShopProjectInfoGroupRelations(shopProjectInfoGroupRelationDTO);
+                        if(CommonUtils.objectIsNotEmpty(groupRelations)){
+                            for(ShopProjectInfoGroupRelationDTO dto:groupRelations){
+                                serviceTime = serviceTime+dto.getShopProjectServiceTimes();
+                            }
+                        }
                         eachMap.put("containProject",groupRelations);
                     }
                     eachMap.put("serviceTime",serviceTime);

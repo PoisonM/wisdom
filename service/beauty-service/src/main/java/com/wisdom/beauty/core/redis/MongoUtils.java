@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.extDto.ImageUrl;
 import com.wisdom.common.constant.CommonCodeEnum;
+import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.HttpUtils;
 import com.wisdom.common.util.JacksonUtil;
 import com.wisdom.common.util.StringUtils;
@@ -70,6 +71,10 @@ public class MongoUtils {
             return  null;
         }
         List<String> url = imageUrl.getUrl();
+        if(CommonUtils.objectIsNotEmpty(url)&&url.size()==1){
+            url.add(url.get(0));
+            url.add(url.get(0));
+        }
         return url;
     }
 
