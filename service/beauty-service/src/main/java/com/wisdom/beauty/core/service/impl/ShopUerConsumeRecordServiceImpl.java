@@ -236,7 +236,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		BigDecimal totalAmount = null;
 		Set<String> consumeTypes = new HashSet<>();
 		Set<String> goodsTypes = new HashSet<>();
-		List<String> flowIds = new ArrayList<>();
+		List<String> consumeRecordIds = new ArrayList<>();
 		List<ShopUserConsumeRecordDTO> collectionCardList = new ArrayList<>();
 		List<ShopUserConsumeRecordDTO> treatmentCardList = new ArrayList<>();
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
@@ -244,7 +244,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					&&GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())){
 				continue;
 			}
-			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
+			consumeRecordIds.add(shopUserConsumeRecordDTO.getId());
 			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
 			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
 			if (null != shopUserConsumeRecordDTO.getPrice()) {
@@ -259,9 +259,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					&& GoodsTypeEnum.COLLECTION_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
 				collectionCardList.add(shopUserConsumeRecordDTO);
 			}
-			// 获取疗程卡
-			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
-					&& GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())) {
+			// 获取疗程卡和次卡
+			if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())) {
+				if(GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())||
+						GoodsTypeEnum.TIME_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())	)
 				treatmentCardList.add(shopUserConsumeRecordDTO);
 			}
 		}
@@ -292,9 +293,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				map2.put(dto.getFlowId(), dto);
 			}
 
-			// 根据多个id查询套卡
+			// 根据多个consumeRecordIds查询套卡
 			List<ShopUserProjectGroupRelRelationDTO> shopUserProjectGroupRelRelationDTOs = shopProjectGroupService
-					.getShopUserProjectGroupRelRelation(flowIds);
+					.getShopUserProjectGroupRelRelation(consumeRecordIds);
 			// 遍历shopUserProjectGroupRelRelations将id和遍历出来的对象放入map,key是关系id，value是遍历出来的每个对象
 			// map key 存放套卡id, value该套卡的信息
 			Map<String, UserConsumeRecordResponseDTO> map = new HashMap<>();
@@ -317,9 +318,9 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					UserConsumeRecordResponseDTO devDto = new UserConsumeRecordResponseDTO();
 					devDto.setFlowName(dto.getShopProjectGroupName());
 					devDto.setIncludeTimes(dto.getProjectInitTimes());
-					devDto.setPrice(dto.getProjectInitAmount());
 					devDto.setDiscount(dto.getDiscount());
 					devDto.setConsumeNumber(map2.get(dto.getShopProjectGroupId()).getConsumeNumber());
+					devDto.setPrice(map2.get(dto.getShopProjectGroupId()).getPrice().divide(new BigDecimal(devDto.getConsumeNumber())));
 					devDto.setSumAmount(map2.get(dto.getShopProjectGroupId()).getPrice());
 					devDto.setGoodsType(map2.get(dto.getShopProjectGroupId()).getGoodsType());
 					//
@@ -369,7 +370,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 			list.removeAll(treatmentCardList);
 		}
-		// 遍历剩余的其他类型 单次和产品,充值卡
+		// 遍历剩余的其他类型,产品,充值卡
 		UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
 			if(ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
@@ -379,6 +380,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
 			BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
 			userConsumeRecordResponse.setSumAmount(shopUserConsumeRecordDTO.getPrice());
+			userConsumeRecordResponse.setPrice(shopUserConsumeRecordDTO.getPrice().divide(new BigDecimal(shopUserConsumeRecordDTO.getConsumeNumber())));
 			userConsumeRecordResponses.add(userConsumeRecordResponse);
 		}
 		userConsumeRecordResponseDTO.setSumAmount(totalAmount);

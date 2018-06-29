@@ -257,14 +257,14 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     }
 
     @Override
-    public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> flowIds) {
-        logger.info("getShopUserProjectGroupRelRelation方法出入的参数flowIds={}",flowIds );
-        if(CollectionUtils.isEmpty(flowIds)){
+    public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> consumeRecordIds) {
+        logger.info("getShopUserProjectGroupRelRelation方法出入的参数consumeRecordId={}",consumeRecordIds );
+        if(CollectionUtils.isEmpty(consumeRecordIds)){
             return  null;
         }
         ShopUserProjectGroupRelRelationCriteria relationCriteria = new ShopUserProjectGroupRelRelationCriteria();
         ShopUserProjectGroupRelRelationCriteria.Criteria criteria = relationCriteria.createCriteria();
-        criteria.andShopProjectGroupIdIn(flowIds);
+        criteria.andConsumeRecordIdIn(consumeRecordIds);
 
         return shopUserProjectGroupRelRelationMapper.selectByCriteria(relationCriteria);
 
