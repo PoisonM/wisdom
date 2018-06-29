@@ -116,21 +116,21 @@ public class OrderController {
             List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(projectRelationDTOS)){
                 for(ShopUserProjectRelationDTO dto:projectRelationDTOS){
-                    orderPrice = orderPrice.add(dto.getSysShopProjectInitAmount().multiply(new BigDecimal(dto.getSysShopProjectInitTimes())));
+                    orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getSysShopProjectInitTimes())));
                 }
             }
             //产品价格
             List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(productRelationDTOS)){
                 for(ShopUserProductRelationDTO dto:productRelationDTOS){
-                    orderPrice = orderPrice.add(dto.getInitAmount().multiply(new BigDecimal(dto.getInitTimes())));
+                    orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getInitTimes())));
                 }
             }
             //套卡价格
             List<ShopUserProjectGroupRelRelationDTO> group = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(group)){
                 for(ShopUserProjectGroupRelRelationDTO dto:group){
-                    orderPrice = orderPrice.add(dto.getProjectInitAmount().multiply(new BigDecimal(dto.getProjectInitTimes())));
+                    orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getProjectInitTimes())));
                 }
             }
             shopUserOrderDTO.setOrderPrice(orderPrice.toString());
