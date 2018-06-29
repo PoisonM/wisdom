@@ -38,7 +38,7 @@
                         <label for="">{{listItem.flowName}}</label>
                         <span>{{listItem.createDate}}</span>
                     </li>
-                    <li>
+                    <li ng-if="type != 'cp'"><!--产品没有包含次数-->
                         <label for="">包含次数</label>
                         <span>{{listItem.includeTimes}}</span>
                     </li>

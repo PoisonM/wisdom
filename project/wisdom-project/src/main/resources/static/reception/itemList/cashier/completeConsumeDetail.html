@@ -30,8 +30,8 @@
 
 
 
-        <div>
-            <div ng-repeat="item1 in dataInfo.userConsumeRecordResponseList" class="basic">
+        <div ng-repeat="item1 in dataInfo.userConsumeRecordResponseList">
+            <div  class="basic">
                 <p ng-if="item1.goodsType == 0">次卡</p>
                 <p ng-if="item1.goodsType == 1">疗程卡</p>
                 <p ng-if="item1.goodsType == 2">充值卡</p>
@@ -53,10 +53,10 @@
                         <label for="">价格</label>
                         <span>{{item1.price}}</span>
                     </li>
-                    <li>
+                    <!--<li>
                         <label for="">折扣</label>
                         <span>{{(item1.discount==null)||(item1.discount==1)?'无折':item1.discount*10+'折'}}</span>
-                    </li>
+                    </li>-->
                     <li>
                         <label for="">数量</label>
                         <span>{{item1.consumeNumber}}</span>
@@ -76,7 +76,23 @@
                     </li>
                 </ul>
             </div>
-
+            <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" class="basic">
+                <p>折扣</p>
+                <ul>
+                    <li>
+                        <label for="">单次</label>
+                        <span>{{listItem.timeDiscount=='1'?'无折扣':listItem.timeDiscount}}折</span>
+                    </li>
+                    <li>
+                        <label for="">疗程卡</label>
+                        <span>{{listItem.periodDiscount=='1'?'无折扣':listItem.periodDiscount}}折</span>
+                    </li>
+                    <li>
+                        <label for="">产品</label>
+                        <span>{{listItem.productDiscount=='1'?'无折扣':listItem.productDiscount}}折</span>
+                    </li>
+                </ul>
+            </div>
             <div>
                 <div class="basic">
                     <p></p>
