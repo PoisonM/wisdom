@@ -157,7 +157,7 @@ public class ShopCardServiceImpl implements ShopCardService {
         extShopRechargeCardDTO.setCreateDate(new Date());
         String currentShopId = UserUtils.getBossInfo().getCurrentShopId();
         extShopRechargeCardDTO.setSysShopId(currentShopId);
-        extShopRechargeCardDTO.setCreateBy(UserUtils.getBossInfo().getId());
+        extShopRechargeCardDTO.setCreateBy(UserUtils.getBossInfo().getName());
         List<String> imageUrls = extShopRechargeCardDTO.getImageList();
         if (CommonUtils.objectIsNotEmpty(imageUrls)) {
             extShopRechargeCardDTO.setImageUrl(imageUrls.get(0));
