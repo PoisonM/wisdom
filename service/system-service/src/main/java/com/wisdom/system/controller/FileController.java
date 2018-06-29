@@ -88,7 +88,7 @@ public class FileController {
     ResponseDTO imageBase64UploadToOSS(@RequestBody(required = false) String imageStr) throws IOException {
         ResponseDTO responseDTO = new ResponseDTO<>();
         if(StringUtils.isBlank(imageStr)){
-            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setResult(StatusConstant.SUCCESS);
             responseDTO.setErrorInfo("读取失败，重新上传！");
             return responseDTO;
         }
