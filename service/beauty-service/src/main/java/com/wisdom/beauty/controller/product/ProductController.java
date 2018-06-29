@@ -199,12 +199,13 @@ public class ProductController {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         if(shopProductInfos!=null&&shopProductInfos.size()>0){
 
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+        }else{
+
             int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
 
             responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        }else{
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
         }
         return responseDTO;
     }
@@ -421,12 +422,13 @@ public class ProductController {
         shopProductInfo.setProductCode(shopProductInfoDTO.getProductCode());
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
         if(shopProductInfos!=null&&shopProductInfos.size()>0){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+        }else{
             int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
             responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
             responseDTO.setResponseData(productInfo);
-        }else{
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+
         }
         return responseDTO;
     }
