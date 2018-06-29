@@ -77,7 +77,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
            };
            $scope.selType = function(type){
-               $scope.param.goodType = type
+               $scope.param.searchState = type
            }
            $scope.selTime = function(index){
                if(index!=0){
@@ -112,6 +112,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                $scope.param.timeIndex = 0
                $scope.param.startDate = ''
                $scope.param.endDate = ''
+               $scope.param.searchState = '5'
            };
            $scope.disNone = function(){
                $scope.param.flag = false;
@@ -144,7 +145,9 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     pageSize:1000,
                     sysUserId:$stateParams.sysUserId,
                     startTime:$scope.param.startValue,
-                    endTime:$scope.param.endValue
+                    endTime:$scope.param.endValue,
+                    searchState:"5"
+
                 }
                 $ionicLoading.show({
                     content: 'Loading',

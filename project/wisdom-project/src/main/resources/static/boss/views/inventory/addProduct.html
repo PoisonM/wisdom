@@ -14,22 +14,22 @@
             </ion-list>
             <p class="h45"></p>
             <ion-list>
-                <ion-item class="pd15 h50 sb">
+                <ion-item class="pd15 h50 sb" ng-click="selBrandGo()">
                     <p class="fs16 col333">选择品牌<span class="colff66">*</span></p>
-                    <p class="fs14 col999"  ng-click="selBrandGo()">
+                    <p class="fs14 col999"  >
                         <input type="text" class="textL" ng-model="settingAddsome.product.productTypeOneName" placeholder="请选择产品品牌" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span>  <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
-                <ion-item class="pd15 h50 sb">
+                <ion-item class="pd15 h50 sb" ng-click="selectionSeriesGo()">
                     <p class="fs16 col333">选择系列<span class="colff66">*</span></p>
-                    <p class="fs14 col999" ng-click="selectionSeriesGo()">
+                    <p class="fs14 col999" >
                         <span> <input type="text" class="textL" ng-model="settingAddsome.product.productTypeTwoName" placeholder="请选择产品系列" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"> <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">产品名称<span class="colff66">*</span></p>
-                    <p class="fs14 col999">
-                        <input type="text" class="textL" ng-model="settingAddsome.product.productName" placeholder="请输入名称">
+                    <p class="fs14 col999 mt5" style="width:70%;">
+                        <input type="text" class="textL" ng-model="settingAddsome.product.productName" placeholder="请输入名称" style="width:100%;">
                     </p>
                 </ion-item>
             </ion-list>
@@ -75,28 +75,28 @@
                         <input type="text" ng-model="settingAddsome.product.productCode" class="textL" placeholder="请输入编码">
                     </p>
                 </ion-item>
-                <ion-item class="pd15 h50 sb">
+                <ion-item class="pd15 h50 sb" ng-click="specificationsGo()">
                     <p class="fs16 col333">规格<span class="colff66">*</span></p>
-                    <p class="fs14 col999" ng-click="specificationsGo()">
+                    <p class="fs14 col999" >
                         <input type="text" class="textL" ng-model="settingAddsome.product.productSpec" placeholder="请选择规格" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span> <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
-                <ion-item class="pd15 h50 sb">
+                <ion-item class="pd15 h50 sb" ng-click="unitGo()">
                     <p class="fs16 col333">单位<span class="colff66">*</span></p>
-                    <p class="fs14 col999" ng-click="unitGo()">
+                    <p class="fs14 col999" >
                         <input type="text" class="textL" ng-model="settingAddsome.product.productUnit" placeholder="请选择单位" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span> <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
-                <ion-item class="pd15 h50 sb">
+                <ion-item class="pd15 h50 sb" ng-click="applicablePartsGo()">
                     <p class="fs16 col333">适用部位<span class="colff66"></span></p>
-                    <p class="fs14 col999"  ng-click="applicablePartsGo()">
+                    <p class="fs14 col999"  >
                         <input type="text" class="textL" ng-model="settingAddsome.product.productPosition" placeholder="请选择适用部位" disabled="disabled" style="background: #fff;display: inline-block;margin-top:-5px;"><span>  <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
-                <ion-item class="pd15 ">
+                <ion-item class="pd15 " ng-click="efficacyGo()">
                     <div class="h50 sb">
                         <p class="fs16 col333">功效<span class="colff66"></span></p>
-                        <p class="fs14 col999"   ng-click="efficacyGo()">
+                        <p class="fs14 col999"   >
                             <span><img src="images/more.png" class="more"></span>
                         </p>
                     </div>
@@ -109,17 +109,16 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">二维码/条形码<span class="colff66">    </span></p>
                     <p class="fs14 col999">
-                        <span ng-click="scan();$event.stopPropagation()"> 已设置 <img src="images/more.png" class="more"></span>
+                        <span ng-click="scan();$event.stopPropagation()">  <img src="images/more.png" class="more"></span>
                     </p>
                 </ion-item>
-                <ion-item class="pd15 h50 sb">
-                    <p class="fs16 col333">生产日期<span class="colff66">*</span></p>
-                    <p class="fs14 col999">
-                        <ionic-datepicker input-obj="datepickerObjectEnd">
-                            <span> {{settingAddsome.product.effectDate}}<img src="images/more.png" class="more"></span>
-                        </ionic-datepicker>
-
-                    </p>
+                <ion-item class="pd15 h50">
+                    <ionic-datepicker input-obj="datepickerObjectEnd">
+                        <div class="sb">
+                            <p class="fs16 col333">生产日期<span class="colff66">*</span></p>
+                            <p class="fs14 col999"><span> {{settingAddsome.product.effectDate}}<img src="images/more.png" class="more"></span></p>
+                        </div>
+                    </ionic-datepicker>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">保质期(月)<span class="colff66">*</span></p>
