@@ -197,9 +197,11 @@ public class CommonUtils {
 
 		//根据开始时间编号计算结束时间编号
 		StringBuffer responseStr = new StringBuffer();
-		for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo); i++) {
-			responseStr.append(i);
-			responseStr.append(",");
+		if(StringUtils.isNotBlank(startNo)){
+			for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo); i++) {
+				responseStr.append(i);
+				responseStr.append(",");
+			}
 		}
 
 		if(responseStr.length() > 0){

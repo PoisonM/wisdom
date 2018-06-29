@@ -234,6 +234,12 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 					map.put(shopCashFlowDTO.getFlowNo(), expenditureAndIncome);
 				} else {
 					ExpenditureAndIncomeResponseDTO expenditureAndIncome = new ExpenditureAndIncomeResponseDTO();
+					if(shopCashFlowDTO.getPayTypeAmount()==null){
+						shopCashFlowDTO.setPayTypeAmount(new BigDecimal(0));
+					}
+					if(shopCashFlowDTO.getCashAmount()==null){
+						shopCashFlowDTO.setCashAmount(new BigDecimal(0));
+					}
 					expenditureAndIncome.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
 					expenditureAndIncome.setCreateDate(shopCashFlowDTO.getCreateDate());
 					expenditureAndIncome.setFlowNo(shopCashFlowDTO.getFlowNo());

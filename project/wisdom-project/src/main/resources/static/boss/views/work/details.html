@@ -196,7 +196,7 @@
                 <p class="h50 ml10">支付明细</p>
                 <div>
                     <opn-list >
-                        <ion-item  class="h50 bgfff" ng-if="details.payMap.payType!=0&&details.payMap.payType!=null">
+                        <ion-item  class="h50 bgfff" ng-if="details.payMap.payType!=null&&info.payMap.payType!=''">
                             <p class="ml10"  ng-if="details.payMap.payType=='0'" style="display: flex;justify-content: space-between">
                                 <span>微信</span>
                                 <span class="mr10"> ￥{{details.payMap.payTypeAmount}}</span>

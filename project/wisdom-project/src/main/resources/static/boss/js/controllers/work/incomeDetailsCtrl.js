@@ -19,7 +19,7 @@ angular.module('controllers',[]).controller('incomeDetailsCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                GetIncomeExpenditureAnalysisDetailList.get({sysShopId:11,pageSize:$scope.param.pageSize,startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+' 23:59:59'},function (data) {
+                GetIncomeExpenditureAnalysisDetailList.get({sysShopId:$stateParams.sysShopId,pageSize:$scope.param.pageSize,startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+' 23:59:59'},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.incomeDetails=data.responseData;
