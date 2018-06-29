@@ -29,9 +29,12 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     // $scope.staffListIds = $rootScope.staffListIds
     $scope.housekeeperFlag = false
 
-    $scope.timeDiscount='';
-    $scope.periodDiscount='';
-    $scope.productDiscount='';
+    $scope.discount = {
+        timeDiscount:'',
+        periodDiscount:'',
+        productDiscount:''
+    }
+
 
     $scope.select = 0;
     $scope.tabclick = function(e) {
@@ -51,9 +54,9 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
             alert("请选择支付方式");
             return false;
         }
-        $scope.responseData.timeDiscount=('无'==$scope.timeDiscount?'1':$scope.timeDiscount);
-        $scope.responseData.periodDiscount=('无'==$scope.periodDiscount?'1':$scope.periodDiscount);
-        $scope.responseData.productDiscount=('无'==$scope.productDiscount?'1':$scope.productDiscount);
+        $scope.responseData.timeDiscount=('无'==$scope.discount.timeDiscount?'1':$scope.discount.timeDiscount);
+        $scope.responseData.periodDiscount=('无'==$scope.discount.periodDiscount?'1':$scope.discount.periodDiscount);
+        $scope.responseData.productDiscount=('无'==$scope.discount.productDiscount?'1':$scope.discount.productDiscount);
 
         UserRechargeConfirm.save($scope.responseData, function(data) {
             if(data.result=="0x00001"){
@@ -77,15 +80,15 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
         $scope.responseData = data.responseData;
         //如果是特殊充值卡
         if($stateParams.rechargeCardType == '0'){
-            $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
-            $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
-            $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
+            $scope.discount.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
+            $scope.discount.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
+            $scope.discount.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
             $scope.responseData.payType = '';//localStorage.getItem("payType") 默认为空
             $scope.responseData.amount = '0';//默认为0
         }else{
-            $scope.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
-            $scope.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
-            $scope.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
+            $scope.discount.timeDiscount= $scope.responseData.timeDiscount!='1'?$scope.responseData.timeDiscount:'无';
+            $scope.discount.periodDiscount= $scope.responseData.periodDiscount!='1'?$scope.responseData.periodDiscount:'无';
+            $scope.discount.productDiscount= $scope.responseData.productDiscount!='1'?$scope.responseData.productDiscount:'无';
         }
     })
 

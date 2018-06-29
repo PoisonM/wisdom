@@ -223,9 +223,6 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		ShopUserConsumeRecordCriteria criteria = new ShopUserConsumeRecordCriteria();
 		ShopUserConsumeRecordCriteria.Criteria c = criteria.createCriteria();
 		c.andFlowNoEqualTo(consumeFlowNo);
-		//排除充值卡
-		c.andConsumeTypeNotEqualTo(ConsumeTypeEnum.CONSUME.getCode());
-		c.andGoodsTypeNotEqualTo(GoodsTypeEnum.RECHARGE_CARD.getCode());
 
 		List<ShopUserConsumeRecordDTO> list = shopUserConsumeRecordMapper.selectByCriteria(criteria);
 		if (CollectionUtils.isEmpty(list)) {
@@ -243,6 +240,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		List<ShopUserConsumeRecordDTO> collectionCardList = new ArrayList<>();
 		List<ShopUserConsumeRecordDTO> treatmentCardList = new ArrayList<>();
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			if(ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
+					&&GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())){
+				continue;
+			}
 			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
 			consumeTypes.add(shopUserConsumeRecordDTO.getConsumeType());
 			goodsTypes.add(shopUserConsumeRecordDTO.getGoodsType());
@@ -370,6 +371,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		// 遍历剩余的其他类型 单次和产品,充值卡
 		UserConsumeRecordResponseDTO userConsumeRecordResponse = null;
 		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
+			if(ConsumeTypeEnum.CONSUME.getCode().equals(shopUserConsumeRecordDTO.getConsumeType())
+					&&GoodsTypeEnum.RECHARGE_CARD.getCode().equals(shopUserConsumeRecordDTO.getGoodsType())){
+				continue;
+			}
 			userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
 			BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
 			userConsumeRecordResponses.add(userConsumeRecordResponse);
