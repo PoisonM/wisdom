@@ -128,6 +128,9 @@ public class WeixinUserController {
         else if ("myselfCenter".equals(url)) {
             url = ConfigConstant.USER_WEB_URL + "myselfCenter";
         }
+        else if ("beautyTraining".equals(url)) {
+            url = ConfigConstant.USER_WEB_URL + "beautyTraining";
+        }
 
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
