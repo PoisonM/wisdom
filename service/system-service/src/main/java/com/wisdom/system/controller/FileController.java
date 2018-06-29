@@ -5,10 +5,7 @@ package com.wisdom.system.controller;
 
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.util.Base64Utils;
-import com.wisdom.common.util.CommonUtils;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.OSSObjectTool;
+import com.wisdom.common.util.*;
 import com.wisdom.system.interceptor.LoginRequired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
@@ -86,11 +83,16 @@ public class FileController {
      * @return
      */
     @RequestMapping(value = "/imageBase64UploadToOSS", method = {RequestMethod.POST, RequestMethod.GET})
-//    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO imageBase64UploadToOSS(@RequestBody String imageStr) throws IOException {
+    ResponseDTO imageBase64UploadToOSS(@RequestBody(required = false) String imageStr) throws IOException {
         ResponseDTO responseDTO = new ResponseDTO<>();
+        if(StringUtils.isBlank(imageStr)){
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setErrorInfo("读取失败，重新上传！");
+            return responseDTO;
+        }
+
         InputStream inputStream = null;
         try {
             inputStream = Base64Utils.getInputStream(imageStr);

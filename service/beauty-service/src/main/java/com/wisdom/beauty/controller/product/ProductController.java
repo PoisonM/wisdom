@@ -192,11 +192,21 @@ public class ProductController {
     @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateProductInfo(@RequestBody ExtShopProductInfoDTO extShopProductInfoDTO) {
+        ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
 
+        shopProductInfo.setProductCode(extShopProductInfoDTO.getProductCode());
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+        if(shopProductInfos!=null&&shopProductInfos.size()>0){
 
-        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+        }else{
+
+            int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+
+            responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        }
         return responseDTO;
     }
 
@@ -407,9 +417,19 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> saveProductInfo(@RequestBody ExtShopProductInfoDTO shopProductInfoDTO) {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
-        responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        responseDTO.setResponseData(productInfo);
+
+        ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
+        shopProductInfo.setProductCode(shopProductInfoDTO.getProductCode());
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
+        if(shopProductInfos!=null&&shopProductInfos.size()>0){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+        }else{
+            int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
+            responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            responseDTO.setResponseData(productInfo);
+
+        }
         return responseDTO;
     }
 

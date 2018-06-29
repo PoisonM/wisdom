@@ -672,6 +672,12 @@ public class ProjectController {
 		}
 		extShopProjectInfoDTO.setMarketPrice(
 				extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
+		if(extShopProjectInfoDTO.getProjectDuration()>0){
+			int projectDuration = extShopProjectInfoDTO.getProjectDuration() / 30;
+			extShopProjectInfoDTO.setProjectDuration(projectDuration*30);
+		}else {
+			extShopProjectInfoDTO.setProjectDuration(0);
+		}
 		int info = projectService.saveProjectInfo(extShopProjectInfoDTO);
 		responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
 		return responseDTO;

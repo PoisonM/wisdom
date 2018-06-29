@@ -22,7 +22,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
 
 /*----------------------------------初始化参数------------------------------------------*/
     $scope.param = {
-        imgSrc:"",
+        imgSrc:"images/default_logo.png",
         select_type:"",
         openSelectFlag:false,//选择页面开关
         selectContentName:"",
@@ -176,20 +176,18 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
         if(window.FileReader) {
             var fr = new FileReader();
             fr.onloadend = function(e) {
-                console.log(e)
                 $scope.thumb = e.target.result
+                ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                    /*if(data.result == "0x00001"){
+
+                     }*/
+                    $scope.param.imgSrc = data.responseData//图片地址
+                })
             };
             fr.readAsDataURL(file);
         }else {
             alert("浏览器不支持")
         }
-        debugger
-        console.log($scope.thumb)
-        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-            /*if(data.result == "0x00001"){
 
-            }*/
-            $scope.param.imgSrc = data.responseData//图片地址
-        })
     };
 });

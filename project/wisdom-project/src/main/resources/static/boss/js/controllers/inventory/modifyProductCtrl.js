@@ -238,6 +238,9 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                     if(data.result==Global.SUCCESS){
 
                         $state.go("warehouseProducts")
+                    }else{
+                        alert(data.errorInfo);
+                        return;
                     }
                 })
 
