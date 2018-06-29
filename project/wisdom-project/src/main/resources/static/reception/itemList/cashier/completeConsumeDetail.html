@@ -21,7 +21,9 @@
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span>店内消费</span>
+                    <span ng-if="dataInfo.type == 0">店内充值</span>
+                    <span ng-if="dataInfo.type == 1">店内消费</span>
+                    <span ng-if="dataInfo.type == 5">划卡</span>
                 </li>
             </ul>
         </div>
@@ -42,6 +44,10 @@
                     <li>
                         <label for="">{{item1.flowName}}</label>
                         <!--<span>{{dataInfo.sysClerkName}}</span>-->
+                    </li>
+                    <li>
+                        <label for="">包含次数</label>
+                        <span>{{item1.includeTimes}}</span>
                     </li>
                     <li>
                         <label for="">价格</label>
