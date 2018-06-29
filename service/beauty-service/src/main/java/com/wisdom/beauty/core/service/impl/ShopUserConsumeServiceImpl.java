@@ -142,7 +142,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 logger.info("订单号={}，查询用户的档案信息为空", orderId);
                 throw new ServiceException("查询用户的档案信息为空");
             }
-
+            String balancePay = shopUserPayDTO.getBalancePay();
+            //扣减特殊账户
+            shopUserOrderDTO.setUserName(archivesDTO.getSysUserName());
+            if (subSpecialRechargeCard(shopUserOrderDTO, responseDTO, balancePay)){
+                return responseDTO;
+            }
             //产品列表相关操作
             List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
             purchaseProduct(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, productRelationDTOS);
@@ -162,12 +167,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             //更改账户金额
             int flag = sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
             logger.info("更新账户信息传入参数={},执行结果={}", sysUserAccountDTO, flag > 0 ? "成功" : "失败");
-            String balancePay = shopUserPayDTO.getBalancePay();
-            //扣减特殊账户
-            shopUserOrderDTO.setUserName(archivesDTO.getSysUserName());
-            if (subSpecialRechargeCard(shopUserOrderDTO, responseDTO, balancePay)){
-                return responseDTO;
-            }
+
 
             ShopUserConsumeRecordDTO shopUserConsumeRecordDTO = new ShopUserConsumeRecordDTO();
             //消费记录表中添加签字图片
