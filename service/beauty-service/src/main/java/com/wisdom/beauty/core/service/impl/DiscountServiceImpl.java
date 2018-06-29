@@ -50,7 +50,7 @@ public class DiscountServiceImpl implements DiscountService {
             criteria.andGoodsTypeEqualTo(relation.getGoodsType());
         }
 
-        if (CommonUtils.objectIsEmpty(relation.getShopRechargeCardId())) {
+        if (StringUtils.isNotBlank(relation.getShopRechargeCardId())) {
             criteria.andShopRechargeCardIdEqualTo(relation.getShopRechargeCardId());
         }
 
