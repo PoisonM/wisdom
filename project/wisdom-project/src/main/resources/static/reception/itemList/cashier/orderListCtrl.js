@@ -97,7 +97,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
         var rechargePrice = 0;
         angular.forEach($scope.responseData.userPayRechargeCardList,function (date) {
             if (date.consumePrice<0) {
-                alert('不能小于0');
+                alert('对不起，抵扣金额不能小于0元');
             }
             rechargePrice = Number(date.consumePrice) + rechargePrice;
         })
