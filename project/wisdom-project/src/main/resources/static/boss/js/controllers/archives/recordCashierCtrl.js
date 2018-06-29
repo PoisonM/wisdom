@@ -4,13 +4,13 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
             $rootScope.title = "收银记录";
 
              $scope.param={
-               flag:false,
-               goodType:'6',
-               timeIndex:0,
-               startDate:"",
-               endDate: "",
-               startEndIndex:'',
-               picFlag:false,
+                 flag:false,
+                 goodType:'6',
+                 timeIndex:0,
+                 startDate:"",
+                 endDate: "",
+                 startEndIndex:'',
+                 picFlag:false,
                  startValue:"",
                  endValue:"",
                  searchState:'5'

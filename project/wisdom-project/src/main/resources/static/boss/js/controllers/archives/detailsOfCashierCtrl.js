@@ -2,7 +2,6 @@ angular.module('controllers',[]).controller('detailsOfCashierCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','ProductAndRechargeCard','Global','ConsumeFlowNo',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,ProductAndRechargeCard,Global,ConsumeFlowNo) {
             $rootScope.title = "消费详情";
-            console.log($stateParams);
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -25,7 +24,6 @@ angular.module('controllers',[]).controller('detailsOfCashierCtrl',
                             $scope.info =data.responseData
                         }
                     })
-
                 }else {
                     ProductAndRechargeCard.save(userConsumeRequestDTO,function (data) {
                         $ionicLoading.hide()
