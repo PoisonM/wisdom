@@ -272,6 +272,9 @@ define(['appCustomer'], function (app) {
         .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
             return $resource(mine + 'getCurrentLoginUserInfo')
         }])
+        .factory('GetProjectCardConsumeByFlowId',['$resource',function ($resource){
+            return $resource('/beauty/consume/getUserConsumeByFlowId')
+        }])
         .factory('GetProjectCardConsume',['$resource',function ($resource){
             return $resource('/beauty/consume/consumeFlowNo')
         }])
