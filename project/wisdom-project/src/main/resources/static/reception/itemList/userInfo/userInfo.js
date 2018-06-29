@@ -26,13 +26,17 @@ PADWeb.controller('userInfoCtrl', function($scope, $state, $stateParams, ngDialo
     /*-----------------------------------------------接口---------------------------------------------------*/
     GetClerkAchievement.get({
     }, function(data) {
+        // httpInterceptor.checkResponseData(data,"")
         if (data.result == "0x00001") {
             $scope.todayPerformance = data.responseData
         }else if(data.result == "0x00002"){//判断店员是否
+
+
+/*
             alert("登录已经失效,请重新登录")
             setTimeout(function () {
                 $state.go("pad-web.login")
-            },1000)
+            },1000)*/
         }
     })
 

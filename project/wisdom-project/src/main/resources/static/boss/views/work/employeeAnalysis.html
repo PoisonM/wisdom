@@ -8,7 +8,7 @@
             </ionic-datepicker>
             <span  class="fs15 fr mr10 colfff" ng-click="tabShop()">切换店铺</span>
         </div>
-        <div class="bgfff  employeeAnalysis" style=" overflow: auto;height: 100%;width: 100%;float: left;">
+        <div class="bgfff  employeeAnalysis" style=" overflow: auto;height: 100%;width: 100%;float: left;" ng-if="!param.picFlag" >
             <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
                 <thead>
                <!-- <tr class="listHead">
@@ -112,13 +112,13 @@
                 </tr>
                 </tbody>
             </table>
-            <!--点击切换店铺显示的店铺列表-->
-            <div style="width:100%;height:100%;background:rgba(0,0,0,0.2);position: absolute;top:0;z-index:100" ng-if="param.displayShopBox" ng-click="noneAll()"></div>
-            <div class="list " ng-if="param.displayShopBox" style="position: absolute;bottom:0;width:100%;z-index:101;margin:0">
-                <p class="item" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
-            </div>
-        </div>
 
+        </div>
+    <!--点击切换店铺显示的店铺列表-->
+        <div style="width:100%;height:100%;background:rgba(0,0,0,0.2);position: absolute;top:0;z-index:100" ng-if="param.displayShopBox" ng-click="noneAll()"></div>
+        <div class="list " ng-if="param.displayShopBox" style="position: absolute;bottom:0;width:100%;z-index:101;margin:0">
+            <p class="item" ng-click="choseShop(item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
+        </div>
         <void-pic></void-pic>
 
 </ion-view>
