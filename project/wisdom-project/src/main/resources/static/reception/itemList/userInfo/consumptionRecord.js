@@ -17,7 +17,7 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     })
     $scope.goRecordDetail = function (item) {
         // $state.go('pad-web.left_nav.completeCardDetail',{id:item.flowId,userId:})
-        $state.go("pad-web.left_nav.completeCardDetail",{
+        $state.go("pad-web.left_nav.completeConsumeDetail",{
             userId:item.sysUserId,
             flowNo:item.flowNo
         })
