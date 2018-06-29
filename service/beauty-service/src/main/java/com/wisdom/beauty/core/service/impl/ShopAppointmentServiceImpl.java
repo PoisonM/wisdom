@@ -307,7 +307,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         //如果userInfo为空，说明是pad端用户
         if (null != clerkInfo) {
-            shopAppointServiceDTO.setCreateBy(clerkInfo.getSysUserId());
+            shopAppointServiceDTO.setCreateBy(clerkInfo.getName());
             shopAppointServiceDTO.setSysBossCode(clerkInfo.getSysBossCode());
             if (org.apache.commons.lang3.StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
                 shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
@@ -320,7 +320,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         else if (null != userInfo) {
             shopAppointServiceDTO.setSysUserId(userInfo.getId());
             shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
-            shopAppointServiceDTO.setCreateBy(userInfo.getId());
+            shopAppointServiceDTO.setCreateBy(userInfo.getNickname());
             shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
             ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
             shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());

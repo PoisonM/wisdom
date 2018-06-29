@@ -312,7 +312,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
                 ShopUserConsumeRecordDTO userConsumeRecordDTO = new ShopUserConsumeRecordDTO();
                 userConsumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
-                userConsumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
+                userConsumeRecordDTO.setCreateBy(clerkInfo.getName());
                 userConsumeRecordDTO.setCreateDate(new Date());
                 userConsumeRecordDTO.setFlowId(dto.getId());
                 userConsumeRecordDTO.setFlowName(dto.getShopRechargeCardName());
@@ -401,7 +401,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         groupRelRelationDTO.setConsumeRecordId(consumeId);
                         groupRelRelationDTO.setSysClerkName(groupDto.getSysClerkName());
                         groupRelRelationDTO.setSysBossCode(clerkInfo.getSysBossCode());
-                        groupRelRelationDTO.setCreateBy(clerkInfo.getId());
+                        groupRelRelationDTO.setCreateBy(clerkInfo.getName());
                         groupRelRelationDTO.setCreateDate(new Date());
                         groupRelRelationDTO.setShopGroupPuchasePrice(shopProjectGroupDTO.getMarketPrice());
                         groupRelRelationDTO.setShopProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
@@ -632,7 +632,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             String uuid = IdGen.uuid();
             consumeRecordDTO.setFlowId(shopUserProjectRelationDTO.getId());
             consumeRecordDTO.setId(uuid);
-            consumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
+            consumeRecordDTO.setCreateBy(clerkInfo.getName());
             consumeRecordDTO.setFlowNo(transactionCodeNumber);
             consumeRecordDTO.setSysUserId(dto.getSysUserId());
             consumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
@@ -642,7 +642,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             consumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
             consumeRecordDTO.setFlowName(shopUserProjectRelationDTO.getSysShopProjectName());
             consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
-            consumeRecordDTO.setCreateBy(clerkInfo.getId());
+            consumeRecordDTO.setCreateBy(clerkInfo.getName());
             consumeRecordDTO.setSignUrl(dto.getImageUrl());
             consumeRecordDTO.setConsumeNumber(dto.getConsumeNum());
             consumeRecordDTO.setDetail(dto.getDetail());
@@ -774,7 +774,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setId(uuid);
         consumeRecordDTO.setFlowId(consumeDTO.getFlowId());
         consumeRecordDTO.setFlowName(consumeDTO.getConsumeName());
-        consumeRecordDTO.setCreateBy(clerkInfo.getSysUserId());
+        consumeRecordDTO.setCreateBy(clerkInfo.getName());
         consumeRecordDTO.setCreateDate(new Date());
         consumeRecordDTO.setFlowNo(transactionCodeNumber);
         consumeRecordDTO.setSysUserId(consumeDTO.getSysUserId());
@@ -787,7 +787,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeRecordDTO.setFlowName(consumeDTO.getConsumeName());
         consumeRecordDTO.setStatus(CommonCodeEnum.SUCCESS.getCode());
         consumeRecordDTO.setOperDate(new Date());
-        consumeRecordDTO.setCreateBy(clerkInfo.getId());
+        consumeRecordDTO.setCreateBy(clerkInfo.getName());
         consumeRecordDTO.setSignUrl(consumeDTO.getImageUrl());
         consumeRecordDTO.setConsumeNumber(consumeDTO.getConsumeNum());
         consumeRecordDTO.setConsumeType(ConsumeTypeEnum.CONSUME.getCode());
@@ -1029,7 +1029,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         //总金额 = 充值金额
         BigDecimal rechargeAmount = orderDTO.getAmount();
         rechargeCardDTO.setSurplusAmount(rechargeAmount);
-        rechargeCardDTO.setCreateBy(clerkInfo.getId());
+        rechargeCardDTO.setCreateBy(clerkInfo.getName());
         rechargeCardDTO.setSysClerkName(clerkInfo.getName());
         rechargeCardDTO.setSysClerkId(clerkInfo.getId());
         rechargeCardDTO.setSysBossCode(clerkInfo.getSysBossCode());

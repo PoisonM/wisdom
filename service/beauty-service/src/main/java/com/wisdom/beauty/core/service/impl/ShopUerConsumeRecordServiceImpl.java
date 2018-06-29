@@ -364,6 +364,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				if (dto.getPrice() != null && dto.getConsumeNumber() != null) {
 					userConsumeRecordResponse.setPrice(dto.getPrice().divide(new BigDecimal(dto.getConsumeNumber()),2, ROUND_HALF_DOWN));
 				}
+				userConsumeRecordResponse.setSumAmount(dto.getPrice());
 				userConsumeRecordResponses.add(userConsumeRecordResponse);
 			}
 			list.removeAll(treatmentCardList);
@@ -377,6 +378,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 			}
 			userConsumeRecordResponse = new UserConsumeRecordResponseDTO();
 			BeanUtils.copyProperties(shopUserConsumeRecordDTO, userConsumeRecordResponse);
+			userConsumeRecordResponse.setSumAmount(shopUserConsumeRecordDTO.getPrice());
 			userConsumeRecordResponses.add(userConsumeRecordResponse);
 		}
 		userConsumeRecordResponseDTO.setSumAmount(totalAmount);
