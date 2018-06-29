@@ -96,8 +96,8 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
         //计算充值卡抵扣的总金额
         var rechargePrice = 0;
         angular.forEach($scope.responseData.userPayRechargeCardList,function (date) {
-            if (!(/(^[0-9]\d*$)/.test(date.consumePrice))) {
-                alert('输入的不是正整数');
+            if (date.consumePrice<0) {
+                alert('不能小于0');
             }
             rechargePrice = Number(date.consumePrice) + rechargePrice;
         })
