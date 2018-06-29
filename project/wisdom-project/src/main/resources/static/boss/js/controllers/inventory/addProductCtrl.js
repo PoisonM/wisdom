@@ -3,6 +3,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
             $rootScope.title = "添加产品";
             $scope.selFlag =true;
+            $scope.setFlag = false;
             $scope.$on('$ionicView.enter', function() {
             })
 
@@ -85,6 +86,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             code:result
                         },function(data){
                              if(data.result == "0x00001"){
+                                $scope.setFlag = true;
                                 $rootScope.settingAddsome.product.productName=data.responseData.productName;
                                 $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
                                 $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
@@ -264,6 +266,9 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             productWarningNum:"",
 
                         }
+                    }else{
+                        alert(data.errorInfo);
+                        return;
                     }
                 })
             }
