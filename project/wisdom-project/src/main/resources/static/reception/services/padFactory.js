@@ -1,6 +1,7 @@
 var beautyIP = '/beauty/';
 var userIP = '/user/';
 var systemService = '/system-service/';
+var weixinService = '/weixin/';
 var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
         return {
@@ -65,7 +66,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
     }])
     //获取用户二维码
     .factory('getBeautyQRCode', ['$resource', function($resource) {
-        return $resource(beautyIP+'getBeautyQRCode')
+        return $resource(weixinService+'beauty/getBeautyQRCode')
     }])
     //http轮询
     .factory('getUserScanInfo', ['$resource', function($resource) {
