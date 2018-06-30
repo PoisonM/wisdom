@@ -758,7 +758,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         shopUserArchivesDTO.setSysUserId(consumeDTO.getSysUserId());
         List<ShopUserArchivesDTO> shopUserArchivesDTOs=shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
         if(CollectionUtils.isNotEmpty(shopUserArchivesDTOs)){
-            shopStockRequestDTO.setReceiver(shopUserArchivesDTOs.get(0).getSysUserName());//领取人,前端显示档案
+            //领取人,前端显示档案
+            shopStockRequestDTO.setReceiver(shopUserArchivesDTOs.get(0).getSysUserName());
         }
         shopStockRequestDTO.setShopStoreId(clerkInfo.getSysShopId());
         shopStockRequestDTO.setShopProcId(consumeDTO.getShopProductId());
@@ -769,7 +770,8 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         stockList.add(shopStockRequestDTO);
 
         JSONArray json = JSONArray.fromObject(stockList);
-        String toJSONString = json.toString();//把json转换为String
+        //把json转换为String
+        String toJSONString = json.toString();
         shopStockService.insertShopStockDTO(toJSONString);
         consumeDTO.setSysUserId(relationDTO.getSysUserId());
         consumeDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());

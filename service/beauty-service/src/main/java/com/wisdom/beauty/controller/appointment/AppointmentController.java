@@ -129,29 +129,29 @@ public class AppointmentController {
 		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 		Map<String, List<Object>> clerkMap = getClerkAppointListMap(shopAppointServiceDTOS);
 		//遍历美容师获取预约详情
-		for (SysClerkDTO SysClerkDTO : clerkInfo) {
+		for (SysClerkDTO sysClerkDTO : clerkInfo) {
 
 			HashMap<String, Object> shopAppointMap = new HashMap<>(16);
 
 			//某个美容师的预约列表
-			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
-			List<Object> clerkServiceInfo = clerkMap.get(SysClerkDTO.getId());
+			extShopAppointServiceDTO.setSysClerkId(sysClerkDTO.getId());
+			List<Object> clerkServiceInfo = clerkMap.get(sysClerkDTO.getId());
 
 			extShopAppointServiceDTO.setSysShopId(sysShopId);
 			if (CommonUtils.objectIsEmpty(clerkServiceInfo)) {
 				logger.info(preLog + "美容师预约列表为空");
 				shopAppointMap.put("appointmentInfo",clerkServiceInfo);
 				shopAppointMap.put("point", 0);
-				shopAppointMap.put("sysClerkDTO", SysClerkDTO);
-				responseMapDev.put(SysClerkDTO.getName(), shopAppointMap);
+				shopAppointMap.put("sysClerkDTO", sysClerkDTO);
+				responseMapDev.put(sysClerkDTO.getName(), shopAppointMap);
 				continue;
 
 			} else {
 				shopAppointMap.put("appointmentInfo", clerkServiceInfo);
 				shopAppointMap.put("point", shopAppointServiceDTOS.size());
 			}
-			shopAppointMap.put("sysClerkDTO", SysClerkDTO);
-			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
+			shopAppointMap.put("sysClerkDTO", sysClerkDTO);
+			responseMap.put(sysClerkDTO.getName(), shopAppointMap);
 		}
 		if(responseMapDev!=null){
 			responseMap.putAll(responseMapDev);

@@ -246,7 +246,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		//获取产品的库存量
 		List<ShopStockNumberDTO> shopStockNumberList= shopStockService.getStockNumberList(shopProductInfoDTO.getSysShopId(), shopProcIds);
-		Map<String,Integer> shopStockNumberMap=new HashMap<>();
+		Map<String,Integer> shopStockNumberMap=new HashMap<>(16);
 		if(CollectionUtils.isNotEmpty(shopStockNumberList)){
 			for (ShopStockNumberDTO dto:shopStockNumberList){
 				shopStockNumberMap.put(dto.getShopProcId(),dto.getStockNumber());
