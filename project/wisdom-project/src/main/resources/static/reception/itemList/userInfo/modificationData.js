@@ -25,6 +25,7 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
                 })
             }
         })
+
     }
     $scope.getUserInfo()
     /*---------------------------------------------方法--------------------------------------------------*/
@@ -79,7 +80,8 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
         },function (data) {
             if(data.result == "0x00001"){
                 alert("保存成功")
-                $scope.getUserInfo()
+                // window.location.href = "/reception#/pad-web/userInfo/todayPerformance"
+                window.location.reload();
             }
         })
     }
