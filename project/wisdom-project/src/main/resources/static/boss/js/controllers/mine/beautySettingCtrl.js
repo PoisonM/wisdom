@@ -41,6 +41,8 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $scope.beautySetting[style]=data.responseData
+                            }else{
+                                alert('上传未成功')
                             }
 
                         })

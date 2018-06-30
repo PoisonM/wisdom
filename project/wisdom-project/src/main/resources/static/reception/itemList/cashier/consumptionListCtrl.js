@@ -193,6 +193,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 sysShopProjectName: res.projectName,
                 sysUserId: $stateParams.userId,
                 useStyle: res.useStyle,
+                projectTypeTwoId:res.projectTypeTwoId
             }],
             shopUserProductRelationDTOS: [{
                 purchasePrice: res.marketPrice,
@@ -200,6 +201,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 shopProductId: res.id,
                 shopProductName: res.productName,
                 sysUserId: $stateParams.userId,
+                productTypeTwoId:res.productTypeTwoId
             }],
             projectGroupRelRelationDTOS: [{
                 shopGroupPuchasePrice: res.marketPrice,

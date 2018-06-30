@@ -127,7 +127,7 @@ public class AppointmentController {
 		}
 		//优化，查询某个店某段时间的预约列表
 		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
-		Map<String, List<ShopAppointServiceDTO>> clerkMap = getClerkAppointListMap(shopAppointServiceDTOS);
+		Map<String, List<Object>> clerkMap = getClerkAppointListMap(shopAppointServiceDTOS);
 		//遍历美容师获取预约详情
 		for (SysClerkDTO SysClerkDTO : clerkInfo) {
 
@@ -135,13 +135,12 @@ public class AppointmentController {
 
 			//某个美容师的预约列表
 			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
-			List<ShopAppointServiceDTO> clerkServiceInfo = clerkMap.get(SysClerkDTO.getId());
+			List<Object> clerkServiceInfo = clerkMap.get(SysClerkDTO.getId());
 
 			extShopAppointServiceDTO.setSysShopId(sysShopId);
-			ArrayList<Object> appointInfoList = new ArrayList<>();
 			if (CommonUtils.objectIsEmpty(clerkServiceInfo)) {
 				logger.info(preLog + "美容师预约列表为空");
-				shopAppointMap.put("appointmentInfo",appointInfoList);
+				shopAppointMap.put("appointmentInfo",clerkServiceInfo);
 				shopAppointMap.put("point", 0);
 				shopAppointMap.put("sysClerkDTO", SysClerkDTO);
 				responseMapDev.put(SysClerkDTO.getName(), shopAppointMap);
@@ -154,12 +153,12 @@ public class AppointmentController {
 						String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(), "time"),
 								DateUtils.DateToStr(serviceDTO.getAppointEndTime(), "time"));
 						hashMap.put("scheduling", str);
-						appointInfoList.add(hashMap);
+                        clerkServiceInfo.add(hashMap);
 					} catch (Exception e) {
 						logger.error(preLog + "异常，异常信息为{}" + e.getMessage(), e);
 					}
 				}
-				shopAppointMap.put("appointmentInfo", appointInfoList);
+				shopAppointMap.put("appointmentInfo", clerkServiceInfo);
 				shopAppointMap.put("point", shopAppointServiceDTOS.size());
 			}
 			shopAppointMap.put("sysClerkDTO", SysClerkDTO);
@@ -173,13 +172,13 @@ public class AppointmentController {
 		return responseDTO;
 	}
 
-	private Map<String, List<ShopAppointServiceDTO>> getClerkAppointListMap(List<ShopAppointServiceDTO> shopAppointServiceDTOS) {
-		Map<String, List<ShopAppointServiceDTO>> clerkMap = new HashMap<>(16);
+	private Map<String, List<Object>> getClerkAppointListMap(List<ShopAppointServiceDTO> shopAppointServiceDTOS) {
+		Map<String, List<Object>> clerkMap = new HashMap<>(16);
 		if(CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)){
 			for(ShopAppointServiceDTO serviceDTO:shopAppointServiceDTOS){
-				List<ShopAppointServiceDTO> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
+				List<Object> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
 				if(null == clerkServiceList){
-					List<ShopAppointServiceDTO> clerkService = new ArrayList<>();
+					List<Object> clerkService = new ArrayList<>();
 					clerkService.add(serviceDTO);
 					clerkMap.put(serviceDTO.getSysClerkId(),clerkService);
 				}else{

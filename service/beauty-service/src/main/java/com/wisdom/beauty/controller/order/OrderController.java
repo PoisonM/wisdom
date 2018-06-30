@@ -5,9 +5,7 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ExtCardTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
-import com.wisdom.beauty.api.extDto.ExtShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
-import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
+import com.wisdom.beauty.api.extDto.*;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.redis.RedisUtils;
@@ -114,14 +112,14 @@ public class OrderController {
             //计算订单价格
             BigDecimal orderPrice = new BigDecimal(0);
             //项目价格
-            List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
+            List<ExtShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(projectRelationDTOS)){
                 for(ShopUserProjectRelationDTO dto:projectRelationDTOS){
                     orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getSysShopProjectInitTimes())));
                 }
             }
             //产品价格
-            List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
+            List<ExtShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(productRelationDTOS)){
                 for(ShopUserProductRelationDTO dto:productRelationDTOS){
                     orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getInitTimes())));
@@ -277,7 +275,7 @@ public class OrderController {
         if(null != userOrderDTO){
             HashMap<Object, Object> responseMap = new HashMap<>(4);
             //解析项目
-            List<ShopUserProjectRelationDTO> projectInfo = userOrderDTO.getShopUserProjectRelationDTOS();
+            List<ExtShopUserProjectRelationDTO> projectInfo = userOrderDTO.getShopUserProjectRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(projectInfo)){
                 //存储单次列表
                 List<Object> timeProjectList = new ArrayList<>();
@@ -344,7 +342,7 @@ public class OrderController {
                 responseMap.put("groupList",groupList);
             }
             //解析产品
-            List<ShopUserProductRelationDTO> productList = userOrderDTO.getShopUserProductRelationDTOS();
+            List<ExtShopUserProductRelationDTO> productList = userOrderDTO.getShopUserProductRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(productList)){
                 for(ShopUserProductRelationDTO dto : productList){
                     ShopProductInfoResponseDTO productDetail = shopProductInfoService.getProductDetail(dto.getShopProductId());
@@ -390,7 +388,7 @@ public class OrderController {
 
         HashMap<Object, Object> returnMap = new HashMap<>(4);
         //获取项目回显数据
-        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = userOrderDTO.getShopUserProjectRelationDTOS();
+        List<ExtShopUserProjectRelationDTO> shopUserProjectRelationDTOS = userOrderDTO.getShopUserProjectRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTOS)) {
             HashMap<Object, Object> timeCardMap = new HashMap<>(5);
             ArrayList<Object> timeCardList = new ArrayList<>();
@@ -432,7 +430,7 @@ public class OrderController {
         }
 
         //获取产品回显数据
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = userOrderDTO.getShopUserProductRelationDTOS();
+        List<ExtShopUserProductRelationDTO> shopUserProductRelationDTOS = userOrderDTO.getShopUserProductRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
             HashMap<Object, Object> hashMap = new HashMap<>(5);
             hashMap.put("productSize", shopUserProductRelationDTOS.size());

@@ -153,11 +153,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 return responseDTO;
             }
             //产品列表相关操作
-            List<ShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
+            List<ExtShopUserProductRelationDTO> productRelationDTOS = shopUserOrderDTO.getShopUserProductRelationDTOS();
             purchaseProduct(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, productRelationDTOS);
 
             //项目列表相关操作
-            List<ShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
+            List<ExtShopUserProjectRelationDTO> projectRelationDTOS = shopUserOrderDTO.getShopUserProjectRelationDTOS();
             purchaseProject(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, projectRelationDTOS);
 
             //套卡列表相关操作
@@ -454,7 +454,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      * @param archivesInfo
      * @param projectRelationDTOS
      */
-    private void purchaseProject(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ShopUserProjectRelationDTO> projectRelationDTOS) {
+    private void purchaseProject(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserProjectRelationDTO> projectRelationDTOS) {
         if (CommonUtils.objectIsNotEmpty(projectRelationDTOS)) {
 
             for (ShopUserProjectRelationDTO dto : projectRelationDTOS) {
@@ -540,7 +540,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      * @param archivesInfo
      * @param productRelationDTOS
      */
-    private void purchaseProduct(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ShopUserProductRelationDTO> productRelationDTOS) {
+    private void purchaseProduct(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserProductRelationDTO> productRelationDTOS) {
         if (CommonUtils.objectIsNotEmpty(productRelationDTOS)) {
 
             for (ShopUserProductRelationDTO dto : productRelationDTOS) {

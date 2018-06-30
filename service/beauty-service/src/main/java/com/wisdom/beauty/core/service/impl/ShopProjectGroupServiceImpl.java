@@ -195,9 +195,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO : shopProjectInfoGroupRelations) {
             shopProjectInfoDTO=new ShopProjectInfoDTO();
             shopProjectInfoDTO.setProjectName(shopProjectInfoGroupRelationDTO.getShopProjectInfoName());
-            shopProjectInfoDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
             ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = shopProjectService.getProjectDetail(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
             shopProjectInfoDTO.setId(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
+            shopProjectInfoResponseDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
             shopProjectInfos.add(shopProjectInfoResponseDTO);
         }
         // 获取套卡信息

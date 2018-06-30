@@ -1,7 +1,5 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.common.entity.BaseEntity;
 
@@ -63,10 +61,10 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     private ShopUserPayDTO shopUserPayDTO;
 
     //用户与项目关系
-    private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
+    private List<ExtShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
     //用户与产品
-    private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
+    private List<ExtShopUserProductRelationDTO> shopUserProductRelationDTOS;
 
     //用户与充值卡的关系
     private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
@@ -249,19 +247,19 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
         this.createDate = createDate;
     }
 
-    public List<ShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
+    public List<ExtShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
         return shopUserProjectRelationDTOS;
     }
 
-    public void setShopUserProjectRelationDTOS(List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS) {
+    public void setShopUserProjectRelationDTOS(List<ExtShopUserProjectRelationDTO> shopUserProjectRelationDTOS) {
         this.shopUserProjectRelationDTOS = shopUserProjectRelationDTOS;
     }
 
-    public List<ShopUserProductRelationDTO> getShopUserProductRelationDTOS() {
+    public List<ExtShopUserProductRelationDTO> getShopUserProductRelationDTOS() {
         return shopUserProductRelationDTOS;
     }
 
-    public void setShopUserProductRelationDTOS(List<ShopUserProductRelationDTO> shopUserProductRelationDTOS) {
+    public void setShopUserProductRelationDTOS(List<ExtShopUserProductRelationDTO> shopUserProductRelationDTOS) {
         this.shopUserProductRelationDTOS = shopUserProductRelationDTOS;
     }
 
