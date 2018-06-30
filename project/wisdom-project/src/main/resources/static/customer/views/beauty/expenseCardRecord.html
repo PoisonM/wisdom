@@ -2,8 +2,9 @@
     <ion-content>
         <ion-list ng-if="param.expenseCardDetailData=='true'">
             <ion-item ng-repeat="item in param.projectConsumes" style="color: #333333;font-size: 15px">
-                <h>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</h>
-                <p class="item-note">1次</p>
+                <p class="item-note">{{item.flowName}}</p>
+                <p>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                <p class="item-note">{{item.consumeNumber}}次</p>
             </ion-item>
             <br><br><br><br>
         </ion-list>
