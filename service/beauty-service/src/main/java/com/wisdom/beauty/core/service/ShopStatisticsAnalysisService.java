@@ -148,4 +148,13 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/6/24 14:35
     */
     List<ShopClerkWorkRecordResponseDTO> getShopMoneyConsumeDetail(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  获取boss的人头数,人次数,新客
+    *@Date:2018/6/30 14:26
+    */
+    Map<String,Object> getBossAchievement(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
 }
