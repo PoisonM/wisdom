@@ -147,17 +147,6 @@ public class AppointmentController {
 				continue;
 
 			} else {
-				for (ShopAppointServiceDTO serviceDTO : shopAppointServiceDTOS) {
-					try {
-						HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
-						String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(), "time"),
-								DateUtils.DateToStr(serviceDTO.getAppointEndTime(), "time"));
-						hashMap.put("scheduling", str);
-                        clerkServiceInfo.add(hashMap);
-					} catch (Exception e) {
-						logger.error(preLog + "异常，异常信息为{}" + e.getMessage(), e);
-					}
-				}
 				shopAppointMap.put("appointmentInfo", clerkServiceInfo);
 				shopAppointMap.put("point", shopAppointServiceDTOS.size());
 			}
@@ -176,14 +165,25 @@ public class AppointmentController {
 		Map<String, List<Object>> clerkMap = new HashMap<>(16);
 		if(CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)){
 			for(ShopAppointServiceDTO serviceDTO:shopAppointServiceDTOS){
-				List<Object> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
-				if(null == clerkServiceList){
-					List<Object> clerkService = new ArrayList<>();
-					clerkService.add(serviceDTO);
-					clerkMap.put(serviceDTO.getSysClerkId(),clerkService);
-				}else{
-					clerkServiceList.add(serviceDTO);
+				try {
+					HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
+					String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(), "time"),
+							DateUtils.DateToStr(serviceDTO.getAppointEndTime(), "time"));
+					hashMap.put("scheduling", str);
+					List<Object> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
+					if(null == clerkServiceList){
+						List<Object> clerkService = new ArrayList<>();
+						clerkService.add(hashMap);
+						clerkMap.put(serviceDTO.getSysClerkId(),clerkService);
+					}else{
+						clerkMap.get(serviceDTO.getSysClerkId()).add(hashMap);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+
+
 			}
 		}
 		return clerkMap;
