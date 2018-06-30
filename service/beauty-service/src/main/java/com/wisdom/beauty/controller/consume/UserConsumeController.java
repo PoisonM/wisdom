@@ -15,6 +15,7 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
+import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.RedisLock;
 import com.wisdom.common.util.StringUtils;
@@ -70,6 +71,10 @@ public class UserConsumeController {
         pageParamVoDTO.setPageSize(userConsumeRequest.getPageSize());
         pageParamVoDTO.setStartTime(userConsumeRequest.getStartTime());
         pageParamVoDTO.setEndTime(userConsumeRequest.getEndTime());
+        UserInfoDTO userInfo = UserUtils.getUserInfo();
+        if(StringUtils.isBlank(userConsumeRequest.getSysUserId()) && null != userInfo){
+            userConsumeRequest.setSysUserId(userInfo.getId());
+        }
         List<UserConsumeRecordResponseDTO> userConsumeRecordResponseDTO = shopUerConsumeRecordService
                 .getShopCustomerConsumeRecordList(pageParamVoDTO);
 
