@@ -142,6 +142,10 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 logger.info("订单号={}，查询用户的档案信息为空", orderId);
                 throw new ServiceException("查询用户的档案信息为空");
             }
+            //更新档案
+            archivesInfo.setUpdateDate(new Date());
+            shopCustomerArchivesService.updateByCriteriaSelective(archivesInfo);
+
             String balancePay = shopUserPayDTO.getBalancePay();
             //扣减特殊账户
             shopUserOrderDTO.setUserName(archivesDTO.getSysUserName());
@@ -600,7 +604,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         }
         // 查询用户的账户信息
         SysUserAccountDTO sysUserAccountDTO = new SysUserAccountDTO();
-
+        String sysUserId=null;
         for (ShopUserConsumeDTO dto : shopUserConsumeDTO) {
             logger.info("开始更新用户的疗程卡={}", dto.toString());
             ShopUserProjectRelationDTO shopUserProjectRelationDTO = new ShopUserProjectRelationDTO();
@@ -630,11 +634,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
 
             ShopUserConsumeRecordDTO consumeRecordDTO = new ShopUserConsumeRecordDTO();
             String uuid = IdGen.uuid();
+            sysUserId=shopUserProjectRelationDTO.getSysUserId();
             consumeRecordDTO.setFlowId(shopUserProjectRelationDTO.getId());
             consumeRecordDTO.setId(uuid);
             consumeRecordDTO.setCreateBy(clerkInfo.getName());
             consumeRecordDTO.setFlowNo(transactionCodeNumber);
-            consumeRecordDTO.setSysUserId(dto.getSysUserId());
             consumeRecordDTO.setSysShopName(clerkInfo.getSysShopName());
             consumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
             consumeRecordDTO.setSysClerkId(dto.getSysClerkId());
@@ -655,6 +659,11 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             sysUserAccountDTO.setSumAmount(sysUserAccountDTO.getSumAmount().subtract(dto.getConsumePrice()));
             sysUserAccountService.updateSysUserAccountDTO(sysUserAccountDTO);
         }
+        ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(sysUserId);
+        shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
+        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
         return 1;
     }
 
@@ -686,7 +695,14 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         consumeDTO.setGoodsType(GoodsTypeEnum.TREATMENT_CARD.getCode());
         consumeDTO.setFlowId(relation.getId());
         consumeDTO.setConsumeName(relation.getShopProjectInfoName());
-        return updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+        String result= updateUserAccountDTO(clerkInfo, transactionCodeNumber, consumeDTO);
+        //更新档案信息
+        ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(consumeDTO.getSysUserId());
+        shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
+        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
+        return  result;
     }
 
     /**
@@ -728,7 +744,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         relationDTO.setSurplusAmount(relationDTO.getSurplusAmount().subtract(consumeAmount));
         relationDTO.setSurplusTimes(relationDTO.getSurplusTimes() - consumeDTO.getConsumeNum());
         shopProductInfoService.updateShopUserProductRelation(relationDTO);
-
+        //更新档案时间
+        ShopUserArchivesDTO shopUserArchives=new ShopUserArchivesDTO();
+        shopUserArchives.setSysUserId(consumeDTO.getSysUserId());
+        shopUserArchives.setSysShopId(clerkInfo.getSysShopId());
+        shopUserArchives.setUpdateDate(new Date());
+        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchives);
         //更新库存
         List<ShopStockRequestDTO> stockList = new ArrayList<>();
         ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
@@ -944,7 +965,12 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         update.set("orderStatusDesc", OrderStatusEnum.CONFIRM_PAY.getDesc());
         update.set("orderStatus", OrderStatusEnum.CONFIRM_PAY.getCode());
         mongoTemplate.upsert(query, update, "shopRechargeCardOrderDTO");
-
+        //更新档案信息
+        ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
+        shopUserArchivesDTO.setSysUserId(orderDTO.getSysUserId());
+        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
+        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
     }
