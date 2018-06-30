@@ -2,8 +2,8 @@
  * Created by Administrator on 2017/12/15.
  */
 angular.module('controllers',[]).controller('beautyUserCenterCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserClientInfo','Global','GetCurrentLoginUserInfo','BeautyUtil',
-        function ($scope,$rootScope,$stateParams,$state,GetUserClientInfo,Global,GetCurrentLoginUserInfo,BeautyUtil) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserClientInfo','Global','GetCurrentLoginUserInfo','BeautyUtil','BeautyLoginOut',
+        function ($scope,$rootScope,$stateParams,$state,GetUserClientInfo,Global,GetCurrentLoginUserInfo,BeautyUtil,BeautyLoginOut) {
 
             $scope.param = {
                 currentShopInfo : {}
@@ -71,6 +71,18 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
 
             $scope.chooseProject = function() {
                 $state.go("beautyAppoint");
+            }
+
+            $scope.userLoginOut = function () {
+                BeautyLoginOut.get({},function (data) {
+                    alert("退出成功")
+                    window.localStorage.removeItem("beautyUserLoginToken")
+                    window.localStorage.removeItem("beautyBossLoginToken")
+                    window.localStorage.removeItem("beautyClerkLoginToken")
+                    setTimeout(function () {
+                        $state.go("beautyLogin")
+                    },1000)
+                })
             }
 
             $scope.bindBeautyShop = function(){
