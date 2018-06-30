@@ -104,7 +104,7 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
         //计算余额支付
         // $scope.balancePay = $scope.responseData.orderPrice - rechargePrice;
         //计算剩余支付
-        $scope.surplusPrice = $scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice;
+        $scope.surplusPrice = keepTwoDecimalFull($scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice);
     }
 
     $scope.changeBalance = function () {
@@ -117,11 +117,30 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             rechargePrice = Number(date.consumePrice) + rechargePrice;
         })
         //计算剩余支付
-        $scope.surplusPrice = $scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice;
+        $scope.surplusPrice = keepTwoDecimalFull($scope.responseData.orderPrice - (Number($scope.balancePay) + Number($scope.cashPayPrice)) - rechargePrice);
     }
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
+    }
+
+    function keepTwoDecimalFull(num) {
+        var result = parseFloat(num);
+        if (isNaN(result)) {
+            alert('传递参数错误，请检查！');
+            return false;
+        }
+        result = Math.round(num * 100) / 100;
+        var s_x = result.toString();
+        var pos_decimal = s_x.indexOf('.');
+        if (pos_decimal < 0) {
+            pos_decimal = s_x.length;
+            s_x += '.';
+        }
+        while (s_x.length <= pos_decimal + 2) {
+            s_x += '0';
+        }
+        return s_x;
     }
 
 });
