@@ -9,12 +9,21 @@ angular.module('controllers',[]).controller('treatmentCtrl',
                 useStyle:'1'
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.treatment =data.responseData
+                    $scope.treatment =data.responseData;
+                    if($rootScope.settingAddsome.editedRecharge.periodList.length>0){
+                        for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.periodList.length;i++){
+                            $scope.param.periodList[i]=$rootScope.settingAddsome.editedRecharge.periodList[i].shopGoodsTypeId
+                        }
+                    }else{
+                        for(var i=0;i<$scope.treatment.detailLevel.length;i++){
+                            for(var key in $scope.treatment.detailLevel[i].levelTwoDetail){
+                                $scope.param.periodList.push($scope.treatment.detailLevel[i].levelTwoDetail[key].projectTypeTwoId)
+                            }
+                        }
+                    }
                 }
             });
-            for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.periodList.length;i++){
-                $scope.param.periodList[i]=$rootScope.settingAddsome.editedRecharge.periodList[i].shopGoodsTypeId
-            }
+
 
             $scope.selTreatment = function (domIndex) {
                 if ($scope.param.periodList.indexOf(domIndex) != -1) {
@@ -28,13 +37,15 @@ angular.module('controllers',[]).controller('treatmentCtrl',
                 } else {
                     $scope.param.periodList.push(domIndex);
                 }
-                $scope.save = function () {
+            }
+            $scope.save = function () {
+                if($scope.param.periodList.length>0){
                     for(var  i=0;i<$scope.param.periodList.length;i++){
                         $rootScope.settingAddsome.editedRecharge.periodList[i]={shopGoodsTypeId:$scope.param.periodList[i],goodsType:"1"}
                     }
-                    $state.go($stateParams.url,{id:$stateParams.id})
+                }else{
+                    $rootScope.settingAddsome.editedRecharge.periodList = $scope.param.periodList
                 }
-
-                
+                $state.go($stateParams.url,{id:$stateParams.id})
             }
         }])
