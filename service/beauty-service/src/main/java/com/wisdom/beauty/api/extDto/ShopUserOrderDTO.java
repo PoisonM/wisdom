@@ -1,7 +1,6 @@
 package com.wisdom.beauty.api.extDto;
 
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.common.entity.BaseEntity;
@@ -75,11 +74,12 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //存储用户支付抵扣充值卡对象
     private List<ExtShopUserRechargeCardDTO> userPayRechargeCardList;
 
-    //套卡
-    private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+    //套卡详细
+    private List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
 
     //充值卡抵扣金额
     private String rechargeCardPay;
+
 
     public String getRechargeCardPay() {
         return rechargeCardPay;
@@ -265,11 +265,11 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
         this.shopUserProductRelationDTOS = shopUserProductRelationDTOS;
     }
 
-    public List<ShopUserProjectGroupRelRelationDTO> getProjectGroupRelRelationDTOS() {
+    public List<ExtShopUserProjectGroupRelRelationDTO> getProjectGroupRelRelationDTOS() {
         return projectGroupRelRelationDTOS;
     }
 
-    public void setProjectGroupRelRelationDTOS(List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS) {
+    public void setProjectGroupRelRelationDTOS(List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS) {
         this.projectGroupRelRelationDTOS = projectGroupRelRelationDTOS;
     }
 
