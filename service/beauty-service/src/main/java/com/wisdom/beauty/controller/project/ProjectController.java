@@ -223,7 +223,11 @@ public class ProjectController {
 		ResponseDTO<List<ShopUserProjectRelationResponseDTO>> responseDTO = new ResponseDTO<>();
 
 		ShopUserProjectRelationDTO relationDTO = new ShopUserProjectRelationDTO();
-		relationDTO.setSysUserId(sysUserId);
+		if(StringUtils.isBlank(sysUserId) && null != UserUtils.getUserInfo()){
+			relationDTO.setSysUserId(UserUtils.getUserInfo().getId());
+		}else{
+			relationDTO.setSysUserId(sysUserId);
+		}
 		relationDTO.setSysShopId(sysShopId);
 		relationDTO.setUseStyle(cardStyle);
 		relationDTO.setSysBossCode(sysBossCode);

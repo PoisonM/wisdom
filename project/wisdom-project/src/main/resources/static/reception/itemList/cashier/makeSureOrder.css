@@ -272,3 +272,14 @@
 .stillOwedBox .housekeeper .sourcesUl li .check {
     background: #FF6666;
 }
+
+.stillOwedBox .com_project_list>e{
+    display: block;
+    float: left;
+    width: 33.33%;
+    height: 100%;
+    line-height: 45px;
+    text-align: center;
+    font-family: PingFangSC-Regular;
+    color: #333333;
+}

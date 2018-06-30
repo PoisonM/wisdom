@@ -16,12 +16,15 @@
                     <div class="contentBox">
                         <span class="name">{{item.shopProjectGroupName}}</span>
                         <span class="discount"><s>原价 {{item.shopGroupPuchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
-                        <label for="" class="marketPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
+                        <div style="margin: 10px 20px; margin-top: 25px;">
+                            <label for="" class="marketPrice">折扣价 ¥</label>
+                            <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
+                        </div>
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text" ng-model="item.projectInitTimes"> -->
                         <div class="delete" ng-click="deleteClick(goodsType.groupCard,item)">删除</div>
                     </div>
+
                     <div class="otherOperation">
                         <ul>
                             <li>
@@ -38,12 +41,21 @@
                                 <input readonly>
                             </span>
                             </li>
-                            <li data-item = "{{item}}" ng-click="goHousekeeper('group',$index)">
+                            <li ng-click="goHousekeeper('group',$index)">
                                 <div>关联员工</div>
                                 <span>
                                 <e ng-repeat="staffItem in item.sysClerkName.split(';')" style="margin-right: 3px">{{staffItem}}</e>
                                 >
                             </span>
+                            </li>
+                            <li>
+                                <div>包含项目</div>
+                            </li>
+                            <!--包含项目-->
+                            <li class="com_project_list">
+                                <e ng-repeat="projectItem in item.projectList">
+                                    {{projectItem.shopProjectInfoName}}*{{projectItem.shopProjectServiceTimes}}
+                                </e>
                             </li>
                         </ul>
                     </div>
@@ -58,8 +70,12 @@
                     <div class="contentBox">
                         <span class="name">{{item.shopProductName}}</span>
                         <span class="discount"><s>原价 {{item.purchasePrice}}</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
-                        <label for="" class="marketPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
+                        <div style="margin: 10px 20px; margin-top: 25px;">
+                            <label for="" class="marketPrice">折扣价 ¥</label>
+                            <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
+                        </div>
+                        <!--<label for="" class="marketPrice">折扣价 ¥</label>-->
+                        <!--<input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">-->
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text" ng-model="item.initTimes"> -->
                         <div class="delete" ng-click="deleteClick(goodsType.product,item)">删除</div>
@@ -99,10 +115,16 @@
                     <div class="contentBox">
                         <span class="name">{{item.sysShopProjectName}}</span>
                         <span class="discount"><s>原价 {{item.sysShopProjectPurchasePrice}}.00</s> 折扣 {{item.discount=="1"?"无":item.discount*10}}折</span>
-                        <label for="" class="marketPrice">折扣价 ¥</label>
-                        <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
+                        <!--<label for="" class="marketPrice">折扣价 ¥</label>-->
+                        <!--<input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">-->
                         <!-- <label for="" class="serviceTimes">服务次数</label>
                         <input type="text">-->
+                        <div style="margin: 10px 20px; margin-top: 25px;">
+                            <label for="" class="marketPrice">折扣价 ¥</label>
+                            <input ng-change="myChangeFn()" type="text" ng-model="item.discountPrice">
+                            <!--<label for="" class="serviceTimes">服务次数</label>-->
+                            <!--<input type="text">-->
+                        </div>
                         <div class="delete" ng-click="deleteClick(goodsType.timeCard,item)">删除</div>
                     </div>
                     <div class="otherOperation">
