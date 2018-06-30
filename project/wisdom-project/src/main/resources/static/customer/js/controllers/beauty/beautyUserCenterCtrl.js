@@ -79,9 +79,7 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
                     window.localStorage.removeItem("beautyUserLoginToken")
                     window.localStorage.removeItem("beautyBossLoginToken")
                     window.localStorage.removeItem("beautyClerkLoginToken")
-                    setTimeout(function () {
-                        $state.go("beautyLogin")
-                    },1000)
+                    $state.go(-1)
                 })
             }
 
