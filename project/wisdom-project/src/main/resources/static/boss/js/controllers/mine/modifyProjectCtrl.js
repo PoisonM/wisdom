@@ -61,6 +61,8 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.push(data.responseData)
+                            }else{
+                                alert("请重新上传")
                             }
 
                         })
