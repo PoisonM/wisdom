@@ -139,7 +139,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
                 logger.info("用户的充值卡不为空");
                 shopUserRechargeCardDTO = userRechargeCardList.get(0);
-                userRechargeId = shopUserRechargeCardDTO.getId();
+                userRechargeId = shopUserRechargeCardDTO.getShopRechargeCardId();
             }
         }
         //断定用户没有选择任何的充值卡
