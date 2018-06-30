@@ -4,6 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.DiscountService;
 import com.wisdom.beauty.core.service.ShopCardService;
@@ -234,7 +235,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 }
             }
         }
-        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
+        List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
         if(CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)){
             for(ShopUserProjectGroupRelRelationDTO dto:projectGroupRelRelationDTOS){
                 dto.setDiscountPrice(dto.getShopGroupPuchasePrice());
@@ -267,19 +268,19 @@ public class ShopOrderServiceImpl implements ShopOrderService {
      */
     private ResponseDTO updateProjectGroupInfo(ShopUserOrderDTO shopUserOrderDTO, ResponseDTO responseDTO, String operation, ShopUserOrderDTO alreadyOrderDTO) {
         logger.info("获取已存在的套卡信息");
-        List<ShopUserProjectGroupRelRelationDTO> alreadyProjectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
+        List<ExtShopUserProjectGroupRelRelationDTO> alreadyProjectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
         if (CommonUtils.objectIsEmpty(alreadyProjectGroupRelRelationDTOS)) {
             alreadyProjectGroupRelRelationDTOS = new ArrayList<>();
         }
         int updateFlag = alreadyProjectGroupRelRelationDTOS.size();
-        ShopUserProjectGroupRelRelationDTO newProjectGroupRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS().get(0);
+        ExtShopUserProjectGroupRelRelationDTO newProjectGroupRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS().get(0);
         if (CommonUtils.objectIsEmpty(newProjectGroupRelationDTOS)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setResponseData("传入的产品信息为空");
             return responseDTO;
         }
         List<ShopUserProjectGroupRelRelationDTO> helperList = new ArrayList<>();
-        Iterator<ShopUserProjectGroupRelRelationDTO> alreadyIterator = alreadyProjectGroupRelRelationDTOS.iterator();
+        Iterator<ExtShopUserProjectGroupRelRelationDTO> alreadyIterator = alreadyProjectGroupRelRelationDTOS.iterator();
         if (!alreadyIterator.hasNext()) {
             alreadyProjectGroupRelRelationDTOS.add(newProjectGroupRelationDTOS);
         } else {

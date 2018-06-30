@@ -161,7 +161,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
             purchaseProject(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, projectRelationDTOS);
 
             //套卡列表相关操作
-            List<ShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
+            List<ExtShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
             purchaseProjectGroup(shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, orderId, sysUserAccountDTO, archivesInfo, groupRelRelationDTOS);
 
             //充值卡列表相关操作
@@ -359,7 +359,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      * @param archivesInfo
      * @param groupRelRelationDTOS
      */
-    private void purchaseProjectGroup(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS) {
+    private void purchaseProjectGroup(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS) {
         if (CommonUtils.objectIsNotEmpty(groupRelRelationDTOS)) {
             //遍历每种套卡信息
             for (ShopUserProjectGroupRelRelationDTO groupDto : groupRelRelationDTOS) {
