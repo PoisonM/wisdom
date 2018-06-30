@@ -331,7 +331,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         }
         if (org.apache.commons.lang3.StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
             shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-            Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000l);
+            Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000L);
             shopAppointServiceDTO.setAppointEndTime(afterDate);
         }
         //根据预约时间查询当前美容师有没有被占用
@@ -451,14 +451,14 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     @Override
     public HashMap<String,String> findNumForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE){
 
-        HashMap<String,String> shopAppointMap = new HashMap<>();
+        HashMap<String,String> shopAppointMap = new HashMap<>(16);
         shopAppointMap.put("sysShopId",sysShopId);
         shopAppointMap.put("appointStartTimeS",appointStartTimeS);
         shopAppointMap.put("appointStartTimeE",appointStartTimeE);
         shopAppointMap.put("sysClerkId",sysClerkId);
 
         //返回结果map
-        HashMap<String,String> resultMap = new HashMap<>();
+        HashMap<String,String> resultMap = new HashMap<>(16);
         //预约总数
         Integer shopAppointNum;
 
@@ -488,7 +488,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO) {
 
 
-        HashMap<String,String> shopAppointMap = new HashMap<>();
+        HashMap<String,String> shopAppointMap = new HashMap<>(16);
         shopAppointMap.put("sysShopId",pageParamDTO.getRequestData().getSysShopId());
         shopAppointMap.put("appointStartTimeS",pageParamDTO.getRequestData().getAppointStartTimeS());
         shopAppointMap.put("appointStartTimeE", pageParamDTO.getRequestData().getAppointEndTimeE());

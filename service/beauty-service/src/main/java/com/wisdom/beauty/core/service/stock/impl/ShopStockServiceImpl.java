@@ -873,7 +873,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 				}
 			}
 		}
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(16);
 		map.put("allUseCost", allUseCost);
 		map.put("useCost", useCost);
 		return map;
