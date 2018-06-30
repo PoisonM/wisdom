@@ -13,6 +13,7 @@ var projectInfo = '/beauty/projectInfo/';
 var appointInfo = '/beauty/appointmentInfo/';
 var clerkSchedule = '/beauty/clerkSchedule/';
 var mine = '/beauty/mine/';
+var userIP = '/user/';
 var cardInfo = '/beauty/cardInfo/'
 
 define(['appCustomer'], function (app) {
@@ -271,6 +272,9 @@ define(['appCustomer'], function (app) {
         }])
         .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
             return $resource(mine + 'getCurrentLoginUserInfo')
+        }])
+        .factory('BeautyLoginOut',['$resource',function ($resource){
+            return $resource(userIP + 'beautyLoginOut')
         }])
         .factory('GetProjectCardConsumeByFlowId',['$resource',function ($resource){
             return $resource('/beauty/consume/getUserConsumeByFlowId')
