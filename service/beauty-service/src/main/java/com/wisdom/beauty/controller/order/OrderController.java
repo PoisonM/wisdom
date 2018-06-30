@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ExtCardTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.OrderStatusEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.api.extDto.ShopUserPayDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
@@ -127,10 +128,16 @@ public class OrderController {
                 }
             }
             //套卡价格
-            List<ShopUserProjectGroupRelRelationDTO> group = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
+            List<ExtShopUserProjectGroupRelRelationDTO> group = shopUserOrderDTO.getProjectGroupRelRelationDTOS();
             if(CommonUtils.objectIsNotEmpty(group)){
-                for(ShopUserProjectGroupRelRelationDTO dto:group){
+                for(ExtShopUserProjectGroupRelRelationDTO dto:group){
                     orderPrice = orderPrice.add(dto.getDiscountPrice().multiply(new BigDecimal(dto.getProjectInitTimes())));
+                    //查询套卡下的项目
+                    ShopProjectInfoGroupRelationDTO relationDTO = new ShopProjectInfoGroupRelationDTO();
+                    relationDTO.setShopProjectGroupId(dto.getShopProjectGroupId());
+                    relationDTO.setSysShopId(sysShopId);
+                    List<ShopProjectInfoGroupRelationDTO> projectList = shopProjectService.getShopProjectInfoGroupRelations(relationDTO);
+                    dto.setProjectList(projectList);
                 }
             }
             shopUserOrderDTO.setOrderPrice(orderPrice.toString());
@@ -293,7 +300,7 @@ public class OrderController {
                 responseMap.put("periodProjectList",periodProjectList);
             }
             //解析套卡
-            List<ShopUserProjectGroupRelRelationDTO> projectGroupInfo = userOrderDTO.getProjectGroupRelRelationDTOS();
+            List<ExtShopUserProjectGroupRelRelationDTO> projectGroupInfo = userOrderDTO.getProjectGroupRelRelationDTOS();
             if (CommonUtils.objectIsNotEmpty(projectGroupInfo)) {
                 List<Object> groupList = new ArrayList<>();
                 //遍历每种套卡信息
@@ -411,7 +418,7 @@ public class OrderController {
         }
 
         //获取套卡回显数据
-        List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = userOrderDTO.getProjectGroupRelRelationDTOS();
+        List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = userOrderDTO.getProjectGroupRelRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)) {
             HashMap<Object, Object> hashMap = new HashMap<>(5);
             hashMap.put("groupSize", projectGroupRelRelationDTOS.size());
