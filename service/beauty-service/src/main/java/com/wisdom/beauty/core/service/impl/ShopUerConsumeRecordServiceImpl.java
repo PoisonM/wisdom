@@ -935,6 +935,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		dto.setDiscount(userConsumeRecordResponseDTO.getDiscount());
 		dto.setTimeDiscount(userConsumeRecordResponseDTO.getTimeDiscount());
 		dto.setFlowName(userConsumeRecordResponseDTO.getFlowName());
+		dto.setGoodsType(userConsumeRecordResponseDTO.getGoodsType());
 		userConsumeRecordResponses.add(dto);
 
 		userConsumeRecordResponseDTO.setSumAmount(userConsumeRecordResponseDTO.getPrice());
