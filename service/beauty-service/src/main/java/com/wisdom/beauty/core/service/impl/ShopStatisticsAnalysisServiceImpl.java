@@ -935,26 +935,28 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 			List<ShopChannelResponseDTO> shopChannelResponseList = new ArrayList<>();
 			Map<String, ShopChannelResponseDTO> channelMap = new HashMap<>();
 			ShopChannelResponseDTO shopChannelResponseDTO = null;
-			for (ShopUserArchivesDTO dto : archivesList) {
-				if (channelMap.containsKey(dto.getChannel())) {
-					shopChannelResponseDTO = channelMap.get(dto.getChannel());
-					shopChannelResponseDTO.setChannelPeopleNumber(1 + shopChannelResponseDTO.getChannelPeopleNumber());
-					DecimalFormat fnum = new DecimalFormat("##0");
-					String dd = fnum.format(Float.valueOf(shopChannelResponseDTO.getChannelPeopleNumber())
-							/ Float.valueOf(archivesList.size()) * 100);
-					shopChannelResponseDTO.setChannelPeopleProportionr(Integer.valueOf(dd));
-					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
+			if(CollectionUtils.isNotEmpty(archivesList)){
+				for (ShopUserArchivesDTO dto : archivesList) {
+					if (channelMap.containsKey(dto.getChannel())) {
+						shopChannelResponseDTO = channelMap.get(dto.getChannel());
+						shopChannelResponseDTO.setChannelPeopleNumber(1 + shopChannelResponseDTO.getChannelPeopleNumber());
+						DecimalFormat fnum = new DecimalFormat("##0");
+						String dd = fnum.format(Float.valueOf(shopChannelResponseDTO.getChannelPeopleNumber())
+								/ Float.valueOf(archivesList.size()) * 100);
+						shopChannelResponseDTO.setChannelPeopleProportionr(Integer.valueOf(dd));
+						channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 
-				} else {
-					shopChannelResponseDTO = new ShopChannelResponseDTO();
-					if(ChannelEnum.judgeValue(dto.getChannel())!=null){
-						shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
+					} else {
+						shopChannelResponseDTO = new ShopChannelResponseDTO();
+						if(ChannelEnum.judgeValue(dto.getChannel())!=null){
+							shopChannelResponseDTO.setChannelName(ChannelEnum.judgeValue(dto.getChannel()).getDesc());
+						}
+						shopChannelResponseDTO.setChannelPeopleNumber(1);
+						DecimalFormat fnum = new DecimalFormat("##0");
+						String dd = fnum.format(1f / Float.valueOf(archivesList.size()) * 100);
+						shopChannelResponseDTO.setChannelPeopleProportionr(Integer.valueOf(dd));
+						channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 					}
-					shopChannelResponseDTO.setChannelPeopleNumber(1);
-					DecimalFormat fnum = new DecimalFormat("##0");
-					String dd = fnum.format(1f / Float.valueOf(archivesList.size()) * 100);
-					shopChannelResponseDTO.setChannelPeopleProportionr(Integer.valueOf(dd));
-					channelMap.put(dto.getChannel(), shopChannelResponseDTO);
 				}
 			}
 			for (Map.Entry<String, ShopChannelResponseDTO> entry : channelMap.entrySet()) {

@@ -300,10 +300,8 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		// 判断套卡,拿出套卡的集合
 		if (CollectionUtils.isNotEmpty(collectionCardList)) {
 			// 遍历collectionCardList获取flowId,flowId此时是套卡id
-			List<String> flowId = new ArrayList<>();
 			Map<String, ShopUserConsumeRecordDTO> map2 = new HashMap<>();
 			for (ShopUserConsumeRecordDTO dto : collectionCardList) {
-				flowId.add(dto.getFlowId());
 				map2.put(dto.getFlowId(), dto);
 			}
 
@@ -992,10 +990,6 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 		BeanUtils.copyProperties(list.get(0), userConsumeRecordResponseDTO);
 
 		BigDecimal totalAmount = null;
-		List<String> flowIds = new ArrayList<>();
-		for (ShopUserConsumeRecordDTO shopUserConsumeRecordDTO : list) {
-			flowIds.add(shopUserConsumeRecordDTO.getFlowId());
-		}
 		//查询购买数量和未领取数量
 		ShopUserProductRelationDTO shopUserProductRelationDTO=shopCustomerProductRelationService.getShopProductInfo(userConsumeRecordResponseDTO.getFlowId());
 		if(shopUserProductRelationDTO!=null){
