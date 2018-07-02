@@ -261,18 +261,18 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000L);
             shopAppointServiceDTO.setAppointEndTime(afterDate);
         }
-        //根据预约时间查询当前美容师有没有被占用
-        shopAppointServiceDTO.setSearchStartTime(shopAppointServiceDTO.getAppointStartTime());
-        shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
-        String status = shopAppointServiceDTO.getStatus();
-        shopAppointServiceDTO.setStatus("");
-        List<ShopAppointServiceDTO> appointListByCriteria = getShopClerkAppointListByCriteria(shopAppointServiceDTO);
-        shopAppointServiceDTO.setStatus(status);
-        if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("当前时间段已被预约，请您重新选择(-_-)");
-            return responseDTO;
-        }
+        //根据预约时间查询当前美容师有没有被占用(前端控制是否占用)
+//        shopAppointServiceDTO.setSearchStartTime(shopAppointServiceDTO.getAppointStartTime());
+//        shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
+//        String status = shopAppointServiceDTO.getStatus();
+//        shopAppointServiceDTO.setStatus("");
+//        List<ShopAppointServiceDTO> appointListByCriteria = getShopClerkAppointListByCriteria(shopAppointServiceDTO);
+//        shopAppointServiceDTO.setStatus(status);
+//        if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
+//            responseDTO.setResult(StatusConstant.FAILURE);
+//            responseDTO.setErrorInfo("当前时间段已被预约，请您重新选择(-_-)");
+//            return responseDTO;
+//        }
 
         logger.info("修改用户的预约信息={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
         shopAppointServiceDTO.setUpdateDate(new Date());
