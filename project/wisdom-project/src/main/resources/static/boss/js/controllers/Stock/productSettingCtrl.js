@@ -45,7 +45,7 @@ angular.module('controllers',[]).controller('productSettingCtrl',
                          if(data.result=="0x00001"){
                              $state.go("productBrand")
                          }else {
-                             alert("修改为成功")
+                             alert("修改未成功")
                          }
                       })
                  }

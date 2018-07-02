@@ -166,6 +166,8 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                             status:'',
                             effectiveDate:$filter('date')(new Date(), 'yyyy-MM-dd')
                         }
+                    }else{
+                        alert("保存未成功")
                     }
                 })
             }

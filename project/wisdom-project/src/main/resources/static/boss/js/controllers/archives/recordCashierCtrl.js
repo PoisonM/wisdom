@@ -162,10 +162,10 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.recordCashier =data.responseData
                         $scope.param.picFlag=false;
-                        if(data.responseData.length<=0){
-                            $scope.param.picFlag=true;
-                        }
                     }else{
+                        $scope.param.picFlag=true;
+                    }
+                    if(data.responseData.length<=0){
                         $scope.param.picFlag=true;
                     }
                 })

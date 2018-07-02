@@ -401,7 +401,7 @@ define(['appBoss'], function(app){
                 /*详情*/
 
                     .state('details', {
-                        url: '/details/:flowNo',
+                        url: '/details/:flowNo,:searchFile',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsCtrl',
                         resolve: {

@@ -45,11 +45,10 @@
                 </ion-list>
             </div>
             <div ng-repeat = 'item in info.userConsumeRecordResponseList'>
-                <div  ng-if="item.goodsType  == 2">
-
+                <div  ng-if="item.goodsType == '2'">
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType == 0">单次</p>
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == 1">疗程卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == 2">充值卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == '2'">充值卡</p>
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == 3">套卡</p>
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == 4">产品</p>
                     <ion-list>
@@ -111,7 +110,7 @@
                     </ion-list>
                 </div>
 
-                <div ng-if="item.goodsType != 2">
+                <div ng-if="item.goodsType != '2'">
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType == 0">单次</p>
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == 1">疗程卡</p>
                     <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType == 2">充值卡</p>
@@ -211,19 +210,19 @@
                             </p>
 
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.balanceAmount != null">
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.balanceAmount != null&&info.payMap.balanceAmount !=0">
                             <p class="ml10"> 余额</p>
                             <p class="mr10 col888">
                                 ￥{{info.payMap.balanceAmount}}
                             </p>
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.cashAmount != null">
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.cashAmount != null&&info.payMap.cashAmount !=0">
                             <p class="ml10"> 现金支付</p>
                             <p class="mr10 col888">
                                 ￥{{info.payMap.cashAmount}}
                             </p>
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.rechargeCardAmount != null">
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="info.payMap.rechargeCardAmount != null&&info.payMap.rechargeCardAmount !=0">
                             <p class="ml10"> 充值卡支付</p>
                             <p class="mr10 col888">
                                 ￥{{info.payMap.rechargeCardAmount}}

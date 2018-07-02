@@ -117,27 +117,29 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                }
 
                    SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
-                       $state.go("basicSetting")
-                       $rootScope.settingAddsome.extShopProjectInfoDTO={
-                           functionIntr:"",/*功能介绍*/
-                           oncePrice:"",/*单次价格*/
-                           discountPrice:"",/*办卡价格*/
-                           projectTypeOneId:'',/*类型id*/
-                           projectTypeOneName:"",/*类型名称*/
-                           projectTypeTwoId:"",/*系列id*/
-                           projectTypeTwoName:"",/*系列名称*/
-                           serviceTimes:"",/*包含次数*/
-                           status:"0",/*不启动*/
-                           visitDateTime:"",/*回访次数*/
-                           projectName:"",/*项目名称*/
-                           projectDuration:"30",/*时长*/
-                           imageList:[],/*图片*/
-                           cardType:"0"/*卡的类型*/,
-                           effectiveNumberMonth:12/*有效期*/
+                       if(data.result=="0x00001"){
+                           $state.go("basicSetting")
+                           $rootScope.settingAddsome.extShopProjectInfoDTO={
+                               functionIntr:"",/*功能介绍*/
+                               oncePrice:"",/*单次价格*/
+                               discountPrice:"",/*办卡价格*/
+                               projectTypeOneId:'',/*类型id*/
+                               projectTypeOneName:"",/*类型名称*/
+                               projectTypeTwoId:"",/*系列id*/
+                               projectTypeTwoName:"",/*系列名称*/
+                               serviceTimes:"",/*包含次数*/
+                               status:"0",/*不启动*/
+                               visitDateTime:"",/*回访次数*/
+                               projectName:"",/*项目名称*/
+                               projectDuration:"30",/*时长*/
+                               imageList:[],/*图片*/
+                               cardType:"0"/*卡的类型*/,
+                               effectiveNumberMonth:12/*有效期*/
+                           }
+                       }else{
+                           alert("保存未成功")
                        }
-
                    })
-               
             }
             $scope.projectTheLength = function (type) {
                 if(type==0){

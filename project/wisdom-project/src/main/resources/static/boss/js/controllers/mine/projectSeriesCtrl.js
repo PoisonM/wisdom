@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 for(var i=0;i<$scope.requestList.length;i++){
                     if($scope.requestList[i].projectTypeName==''&&$scope.requestList[i].status=='0'){
                         alert("系列名不能为空")
+                        return
                         /*var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">系列名不能为空</span>',
                             /!*okText:'确定'*!/
@@ -32,6 +33,8 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                             alertPopup.close()
                         },500);*/
                         $state.go("projectBrand")
+                    }else{
+                        alert("保存未成功")
                     }
                 })
 

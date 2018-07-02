@@ -65,7 +65,7 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
 
 
             $scope.expenditureDetailsGo = function(flowNo){
-                $state.go("details",{flowNo:flowNo})
+                $state.go("details",{flowNo:flowNo,searchFile:$stateParams.searchFile})
             }
             $scope.sel = function(){
                 $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
