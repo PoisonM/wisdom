@@ -833,6 +833,13 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         $scope.index1 = index;
                         var time=$scope.param.checkprojectDuration/60/1/0.5;
                         for(var i=index;i<time+index;i++){
+                            if($scope.param.selectedTime[i] != '0'){
+                                alert("没有足够的连续可预约时间");
+                                return false;
+                            }
+                        }
+
+                        for(var i=index;i<time+index;i++){
                             $scope.param.selectedTime[i] = "2";
                             for(var j=0;j<$scope.param.code.length;j++){
                                 for(key in $scope.param.code[j] ){
@@ -861,7 +868,10 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             detail:$scope.param.ModifyAppointmentObject.detail,
                             status:'0'
                         }
-
+                        if($scope.param.ModifyAppointmentObject.appointStartTime == ""){
+                            alert("请选择预约时间")
+                            return
+                        }
                         UpdateUserAppointInfo.save($scope.importData,function (data) {
                             if(data.result == "0x00001"){
                                 alert("修改预约成功")
@@ -1039,6 +1049,23 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                              /!*项目时长*!/
                              $scope.param.ModifyAppointmentObject.appointPeriod = timeLength;
                              console.log($scope.param.ModifyAppointmentObject.appointPeriod)*/
+                            //清空已选中的时间段
+                            $scope.chooseTime=0
+                            for (var i = 0; i < $scope.param.timeCode.length; i++) {
+                                for (timeItem in $scope.param.timeCode[i]) {
+                                    var index =0;
+                                    index++;
+                                    if($scope.param.ModifyAppointmentObject.appointStartTime == timeItem){
+                                        $scope.chooseTime=$scope.param.timeCode[i][timeItem];
+                                    }
+                                }
+                            }
+                            for (var i = parseInt($scope.chooseTime); i < parseInt($scope.chooseTime)+parseInt($scope.param.checkprojectDuration/60/1/0.5); i++) {
+                                $scope.param.selectedTime[i] = "1";
+                            }
+
+                            $scope.param.ModifyAppointmentObject.appointStartTime="";
+                            $scope.param.ModifyAppointmentObject.appointEndTime="";
                             ngDialog.close("selectCustomersWrap")
                         } else {
                             $scope.param.ModifyAppointmentObject.productNum = "0";
