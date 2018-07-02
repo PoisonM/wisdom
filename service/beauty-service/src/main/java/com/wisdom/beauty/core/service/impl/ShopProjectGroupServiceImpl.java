@@ -162,10 +162,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Override
     public int updateShopUserProjectGroupRelRelation(
             ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
-
+        logger.info("根据条件查询用户与套卡与项目关系的关系表传入参数={}",
+                "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
         if (null == shopUserProjectGroupRelRelation) {
-            logger.error("根据条件查询用户与套卡与项目关系的关系表传入参数为空，{}",
-                    "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
             return 0;
         }
 

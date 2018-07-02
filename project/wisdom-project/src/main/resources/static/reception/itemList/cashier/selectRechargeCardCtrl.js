@@ -45,6 +45,10 @@ PADWeb.controller('selectRechargeCardCtrl', function($scope,$rootScope, $state, 
     }
 
     $scope.goCustomerSignature = function() {
+        if($scope.responseData.amount<=0){
+            alert("余额充值不能小于或等于0，请核对后提交(^_^)");
+            return false
+        }
         $scope.responseData.sysUserId = $stateParams.userId;
         $scope.responseData.surplusPayPrice = $scope.responseData.amount - $scope.responseData.cashPay;
         if($scope.responseData.surplusPayPrice<0){
