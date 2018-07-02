@@ -411,7 +411,6 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		String status = shopProductTypeDTOS.getStatus();
 		String oneId = shopProductTypeDTOS.getId();
-		shopProductTypeDTOS.getId();
 		//修改二级类别和三级产品的状态
 		if(StringUtils.isBlank(shopProductTypeDTOS.getParentId()) && StringUtils.isNotBlank(status)){
 			//产品
