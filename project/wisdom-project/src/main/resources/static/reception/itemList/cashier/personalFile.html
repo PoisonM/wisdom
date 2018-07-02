@@ -61,7 +61,7 @@
                     <div class="prepaidCardInfo clearfix">
                         <span class="prepaidCardName">{{item2.shopRechargeCardName}}</span>
                         <span class="prepaidCardRAName">剩余金额：<b>￥{{item2.surplusAmount}}</b></span>
-                        <span class="prepaidCardTAName">充值金额：
+                        <span ng-if="$index != 0" class="prepaidCardTAName">充值金额：
                             <b>￥{{item2.initAmount==null?0:item2.initAmount}}</b>
                         </span>
                         <div class="prepaidCardDiscount">
