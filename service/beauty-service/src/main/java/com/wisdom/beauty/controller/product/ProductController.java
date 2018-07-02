@@ -127,11 +127,15 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct(@RequestParam(required = false) String status) {
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
         shopProductTypeDTO.setStatus(status);
         if(sysClerkDTO!=null){
             shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        }
+        if(sysBossDTO!=null){
+            shopProductTypeDTO.setSysShopId(sysBossDTO.getCurrentShopId());
         }
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
