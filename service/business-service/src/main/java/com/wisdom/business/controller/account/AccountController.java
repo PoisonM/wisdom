@@ -109,7 +109,7 @@ public class AccountController {
 		accountDTO.setTodayIncome(todayIncome);
 		accountDTO.setIdentifyNumber(userInfoDTO.getIdentifyNumber());
 
-		//为晨董设定的个人账户 手机号:18321009896 以下是根据用户id
+		//为晨董设定的个人账户 以下是根据用户id
 		if("41e654ac-961f-490d-b1a6-af08db5ecc4a".equals(userInfoDTO.getId())){
 			long nowTime = System.currentTimeMillis();
 			long outTime = nowTime - (long)accountDTO.getUpdateDate().getTime();
