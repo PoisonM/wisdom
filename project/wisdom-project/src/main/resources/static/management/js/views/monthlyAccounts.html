@@ -48,17 +48,7 @@
                                     </div>
                                 </div>
 
-                                <!--<div class="product_name" ng-if="status=='instance'" style="float:left;margin-top: 27px;margin-right: 50px;">
-                                    <div>
-                                        <span style="font-weight:600;">是否提升级别:</span>
-                                        <select class="Level_import" style="border:1px solid;height:30px;colour:#7f818a;">
-                                            <option value=""> 全部</option>
-                                            <option value="0">未升级</option>
-                                            <option value="1">升级成B</option>
-                                            <option value="2">升级成A</option>
-                                        </select>
-                                    </div>
-                                </div>-->
+
 
                                 <div class="product_name big time_box">
                                     <div style="margin-top: 84px;line-height: 31px;">
@@ -77,7 +67,10 @@
                         <div class="statusBar" align="left" style="height:60px;" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">
                             <button class="order_lis simulateBtn" style="margin-top: 50px;" ng-click="educeLis()" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
                         </div>
-                        <div class="product_name big time_box" style="width:95%;height:150px;" ng-if="status=='month'">
+                        <div  style="height:20px;margin-top:20px;">
+                            <span align="center" ng-if="status=='month' && userMoblie=='18360376558'">===============================================================================================================================================</span>
+                        </div>
+                        <div class="product_name big time_box"  style="width:95%;height:150px;margin-top:-17px;" ng-if="status=='month' && userMoblie=='18360376558'">
                             <div style="width:100%">
                                 <div style="float:left;width:50%;margin-top:50px;line-height: 31px;">
                                     <span class="bold agencyTime">生成时间段：</span>

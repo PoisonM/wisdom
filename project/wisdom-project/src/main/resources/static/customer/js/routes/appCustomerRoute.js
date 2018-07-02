@@ -254,6 +254,18 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('beautyTraining', {
+                        url: '/beautyTraining',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyTrainingCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyTrainingCtrl',
+                                    ['js/controllers/business/beautyTrainingCtrl.js?ver='+ customerVersion],
+                                    'views/business/beautyTraining.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                     .state('aboutMine', {
                         url: '/aboutMine',
                         templateProvider: function() { return lazyDeferred.promise; },

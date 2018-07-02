@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey','GetUserInfo',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey,GetUserInfo) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -14,11 +14,21 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.mum = true;
             var pageTrue = true;
             $scope.auditFlag=false;
+            $scope.userMoblie = "";
 
 
 
 
             var a = [];
+
+            /*获取用户信息*/
+            $scope.getUser = function(){
+                GetUserInfo.get({},function (data){
+                    $scope.userMoblie = data.responseData.mobile;
+                })
+            }
+
+            $scope.getUser();
             /*点击查看按钮*/
             $scope.details = function(sysUserId,createDate,incomeType,transactionId,index,id){
                 $scope.agencyIndex = index;
@@ -233,7 +243,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 },10);
                 };
 
-/*按钮的切换*/
+            /*按钮的切换*/
             $scope.bgChangeAndSearch = function(type){
                 startTime.value ="";
                 endTime.value='';

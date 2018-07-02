@@ -599,6 +599,11 @@ public class BusinessRunTimeService {
                     {
                         balanceDeny = balanceDeny + (float)0.0001;
                     }
+                    if(balanceDeny<0)
+                    {
+                        AccountDTO exceptionDTO = null;
+                        exceptionDTO.getId();
+                    }
                     logger.info("balanceDeny={}" , balanceDeny);
                     accountDTO.setBalanceDeny(balanceDeny);
                     accountDTO.setUpdateDate(new Date());
@@ -607,9 +612,7 @@ public class BusinessRunTimeService {
                     incomeRecord.setStatus("1");
                     incomeRecord.setUpdateDate(new Date());
                     businessServiceClient.updateIncomeInfo(incomeRecord);
-                }
-                catch (Exception e)
-                {
+                }catch (Exception e){
                     logger.info("解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻异常,异常信息为={}" +e.getMessage(),e);
                     e.printStackTrace();
                     throw e;
@@ -887,6 +890,8 @@ public class BusinessRunTimeService {
             }
         }
         this.sendWeixinMessage(businessType,startDateM,endDateM,isPullMessage);
+        JedisUtils.set(key,"true",3600);
+        logger.info("生成月度完成！！！！");
     }
 
     /**
@@ -918,8 +923,8 @@ public class BusinessRunTimeService {
         MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query, MonthlyIncomeSignalDTO.class, "monthlyIncomeSignal");
 
         //将范围处理成时间一天的范围
-        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder sbs  = new StringBuilder();
         sbs.append(year).append("-").append(month).append("-").append(day).append(" ").append("00:00:00");
         StringBuilder sbe  = new StringBuilder();
