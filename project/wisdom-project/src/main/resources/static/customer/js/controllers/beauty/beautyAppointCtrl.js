@@ -129,8 +129,8 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                             }
                             else
                             {
-                                $scope.param.beautyProjectName = $scope.param.beautyProjectName + value.projectName + ',';
-                                $scope.param.beautyProjectIds = $scope.param.beautyProjectIds + value.id + ',';
+                                $scope.param.beautyProjectName = $scope.param.beautyProjectName + value.projectName + ';';
+                                $scope.param.beautyProjectIds = $scope.param.beautyProjectIds + value.id + ';';
                             }
                             $scope.param.beautyProjectDuration = $scope.param.beautyProjectDuration + value.projectDuration;
                         })

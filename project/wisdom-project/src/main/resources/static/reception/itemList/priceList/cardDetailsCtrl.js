@@ -21,6 +21,17 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
 
+    $scope.timeer = setInterval(function () {
+        if($(".swiper-slide").length!=0){
+            clearInterval($scope.timeer)
+            var mySwiper = new Swiper('.swiper-container',{
+                slidesPerView : 3,
+                slidesPerGroup : 1,
+                spaceBetween : 20,
+            })
+        }
+    },100)
+
     $scope.param={
         cardDetail:{}
     }

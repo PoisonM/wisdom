@@ -287,11 +287,11 @@ public class OrderController {
                     dto.setSysShopProjectName(projectDetail.getProjectName());
                     //如果是疗程卡
                     if(ExtCardTypeEnum.TREATMENT_CARD.getCode().equals(dto.getUseStyle())){
-                        timeProjectList.add(dto);
+                        periodProjectList.add(dto);
                     }
                     //单次卡
                     else{
-                        periodProjectList.add(dto);
+                        timeProjectList.add(dto);
                     }
                 }
                 responseMap.put("timeProjectList",timeProjectList);

@@ -305,6 +305,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		if (StringUtils.isNotBlank(shopStockRecord.getShopStoreId())) {
 			c.andShopStoreIdEqualTo(shopStockRecord.getShopStoreId());
 		}
+
 		if (StringUtils.isNotBlank(shopStockRecord.getStockStyle())) {
 			if (StockStyleEnum.IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
 				List<String> styles = new ArrayList<>();
@@ -328,7 +329,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			criteria.setPageSize(pageParamVoDTO.getPageSize());
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
 		}
-
+		criteria.setOrderByClause("create_date desc");
 		return shopStockRecordMapper.selectByCriteria(criteria);
 
 	}

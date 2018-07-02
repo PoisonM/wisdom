@@ -1,10 +1,14 @@
 <ion-view style="background:white">
     <ion-content>
         <ion-list ng-if="param.expenseCardDetailData=='true'">
-            <ion-item ng-repeat="item in param.projectConsumes" style="color: #333333;font-size: 15px">
-                <p class="item-note">{{item.flowName}}</p>
-                <p>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
-                <p class="item-note">{{item.consumeNumber}}次</p>
+            <ion-item ng-repeat="item in param.projectConsumes"  class="row">
+                <div class="col col-80">
+                    <p style="color: #333333;font-size: 15px;margin-top: 5px">{{item.flowName}}</p>
+                    <p style="color:#888888;font-size: 12px;margin-top: 10px">{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                </div>
+                <div class="col col-20" >
+                    <p style="text-align: right;margin-top: 10px;color: #333333;font-size: 15px">{{item.consumeNumber}}次</p>
+                </div>
             </ion-item>
             <br><br><br><br>
         </ion-list>
