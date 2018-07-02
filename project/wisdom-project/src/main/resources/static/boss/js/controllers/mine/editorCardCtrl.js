@@ -178,6 +178,8 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 UpdateProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go('cardList')
+                    }else{
+                        alert("保存未成功")
                     }
 
                 })

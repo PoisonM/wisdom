@@ -6,6 +6,9 @@ angular.module('controllers',[]).controller('detailsCtrl',
         function ($scope,$rootScope,$stateParams,$state,ConsumeFlowNo,Global) {
 
             $rootScope.title = "详情";
+            $scope.param={
+                searchFile:$stateParams.searchFile
+            }
             ConsumeFlowNo.get({
                 consumeFlowNo:$stateParams.flowNo
             },function(data){

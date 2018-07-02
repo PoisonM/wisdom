@@ -66,6 +66,8 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
                 UpdateShopInfo.save($scope.beautySetting,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
+                    }else{
+                        alert("保存未成功")
                     }
                 })
             }

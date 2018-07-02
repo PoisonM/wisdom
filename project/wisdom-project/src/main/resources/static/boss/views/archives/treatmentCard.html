@@ -13,7 +13,7 @@
                         <span style="display: inline-block;width:130px;">金额：{{item.sysShopProjectPurchasePrice}}元</span>
                         <span>剩余：{{item.sysShopProjectSurplusTimes}}/{{item.sysShopProjectInitTimes}}</span>
                     </p>
-                    <p class="fs12 colfff ml10" style="margin-top:15px;">
+                    <p class="fs12 colfff ml10" style="margin-top:15px;overflow: hidden">
                         <label>备注</label>
                         {{item.detail}}
                     </p>
@@ -26,9 +26,9 @@
                         <span style="display: inline-block;width:130px;">金额：{{item.sysShopProjectPurchasePrice}}元</span>
                         <span>剩余：{{item.sysShopProjectSurplusTimes}}/{{item.sysShopProjectInitTimes}}</span>
                     </p>
-                    <p class="fs12 colfff ml10" style="margin-top:18px;">
+                    <p class="fs12 colfff ml10" style="margin-top:18px;overflow: hidden;">
                         <label>备注</label>
-                        <input type="text" style="display: inline-block;width:80%;">
+                        {{item.detail}}
                     </p>
                     <img src="images/over.png" class="overPic" style="position: absolute;top:10px;right:10px;">
                 </ion-item>
@@ -44,9 +44,9 @@
                          <span style="display: inline-block;width:130px;">生效期：{{item.effectiveDate|date:'yyyy-MM-dd'}}</span>
                          <span>生效时长：{{item.effectiveDays}}月</span>
                      </p>
-                    <p class="fs12 colfff ml10" style="">
+                    <p class="fs12 colfff ml10" style="overflow: hidden">
                         <label>备注</label>
-                        <input type="text" style="display: inline-block;width:80%;">
+                        {{item.detail}}
                     </p>
                     <img src="images/dateOver.png" class="overPic" style="position: absolute;top:10px;right:10px;">
                 </ion-item>

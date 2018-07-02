@@ -33,6 +33,8 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                             alertPopup.close()
                         },500)*/
                          $state.go("productBrand")
+                    }else {
+                        alert("修改未成功")
                     }
                 })
 

@@ -1,7 +1,7 @@
 
 <ion-view>
     <ion-content class="partialFiles bgf6 col333">
-        <div>
+        <div ng-if="param.searchFile ==1||param.searchFile==3">
             <div>
                 <p class="h30 ml10">
                     基础信息
@@ -211,19 +211,19 @@
                             </p>
 
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.balanceAmount != null">
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.balanceAmount != null&&details.payMap.balanceAmount != 0">
                             <p class="ml10"> 余额</p>
                             <p class="mr10 col888">
                                 ￥{{details.payMap.balanceAmount}}
                             </p>
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.cashAmount != null">
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.cashAmount != null&&details.payMap.cashAmount != 0">
                             <p class="ml10"> 现金支付</p>
                             <p class="mr10 col888">
                                 ￥{{details.payMap.cashAmount}}
                             </p>
                         </ion-item>
-                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.rechargeCardAmount != null">
+                        <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between" ng-if="details.payMap.rechargeCardAmount != null&&details.payMap.rechargeCardAmount != 0">
                             <p class="ml10"> 充值卡支付</p>
                             <p class="mr10 col888">
                                 ￥{{details.payMap.rechargeCardAmount}}
@@ -241,6 +241,75 @@
             <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff" >
                     {{details.detail}}
             </textarea>
+        </div>
+        <div ng-if="param.searchFile ==2">
+            <p class="h30 ml10">
+                基础信息
+            </p>
+            <ion-list>
+                <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                    <p class="ml10">时间</p>
+                    <p class="mr10 col888">
+                        {{details.createDate|date:'yyyy-MM-dd'}}
+                    </p>
+                </ion-item>
+                <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                    <p class="ml10">顾客</p>
+                    <p class="mr10 col888">
+                        {{details.sysUserName}}
+                    </p>
+                </ion-item>
+
+                <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                    <p class="ml10">操作门店</p>
+                    <p class="mr10 col888">
+                        {{details.sysShopName}}
+                    </p>
+                </ion-item>
+                <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                    <p class="ml10">前台</p>
+                    <p class="mr10 col888">
+                        {{details.createBy}}
+                    </p>
+                </ion-item>
+                <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
+                    <p class="ml10">类型</p>
+                    <p class="mr10 col888" ng-if="details.type == '0'">
+                        充值
+                    </p>
+                    <p class="mr10 col888" ng-if="details.type == '1'">
+                        消费
+                    </p>
+                    <p class="mr10 col888" ng-if="details.type == '5'">
+                        划卡
+                    </p>
+                    <p class="mr10 col888" ng-if="details.type == '4'">
+                        产品领取
+                    </p>
+                </ion-item>
+            </ion-list>
+            <p class="h50 ml10">划卡信息</p>
+            <ion-list>
+                <ion-item  class=" bgfff" style="display: flex;justify-content: space-between;height:70px;">
+                    <div>
+                        <p class="ml10 fs16 col333 mt10">{{details.flowName}}</p>
+                        <p class="ml10 fs15 col888">员工：{{details.sysClerkName}}</p>
+                    </div>
+                    <p class="mr10" style="line-height:70px;">
+                        划卡次数：{{details.consumeNumber}}
+                    </p>
+                </ion-item>
+            </ion-list>
+
+            <p class="h50 ml10 fs15 col888">顾客签字</p>
+            <div style="height:156px;" class="bgfff">
+                <img ng-src="{{details.signUrl}}" style="width:100%;">
+            </div>
+            <p class="h50 ml10 fs15 col888 ">备注</p>
+            <textarea style="height:80px;width:100%;margin-bottom: 50px;padding:10px;" class="bgfff">    {{details.detail}}
+            </textarea>
+
+
         </div>
     </ion-content>
 </ion-view>
