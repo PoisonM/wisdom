@@ -40,7 +40,8 @@
                         消费
                     </p>
                     <p class="mr10 col888" ng-if="drawCardRecordsDetail.type == '5'">
-                        划卡
+                        <span ng-if="drawCardRecordsDetail.goodsType==1">划疗程卡</span>
+                        <span ng-if="drawCardRecordsDetail.goodsType==3">划套卡</span>
                     </p>
                     <p class="mr10 col888" ng-if="drawCardRecordsDetail.type == '4'">
                         产品领取

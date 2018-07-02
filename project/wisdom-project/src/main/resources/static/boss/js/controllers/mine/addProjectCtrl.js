@@ -105,7 +105,7 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
                     $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
                 }else{
-                    if(rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""){
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""){
                          alert("请输入包含次数")
                         return
                     }
