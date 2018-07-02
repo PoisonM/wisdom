@@ -87,9 +87,8 @@ public class OfflineProductController {
 	@ResponseBody
 	ResponseDTO<ProductDTO<OfflineProductDTO>> getOfflineProductDetail(@RequestParam String productId) {
 		long startTime = System.currentTimeMillis();
-		logger.info("获取微商城的某个商品详情==={}开始" , startTime);
+		logger.info("获取微商城的某个商品=={}详情==={}开始" ,productId,startTime);
 		ResponseDTO<ProductDTO<OfflineProductDTO>> responseDTO = new ResponseDTO<>();
-		logger.info("获取微商城的某个商品详情===" + productId);
 		ProductDTO<OfflineProductDTO> offlineProductDTO = offlineProductService.getOfflineProductDetailById(productId);
 		logger.info("得到微商城的某个商品详情===" + offlineProductDTO);
 		responseDTO.setResponseData(offlineProductDTO);
