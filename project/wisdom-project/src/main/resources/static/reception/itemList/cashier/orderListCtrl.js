@@ -33,6 +33,10 @@ PADWeb.controller('orderListCtrl', function($scope, $stateParams, $state, ngDial
             alert("剩余支付小于0元，请核对(^_^)");
             return false;
         }
+        if($scope.responseData.availableBalance < $scope.balancePay){
+            alert("余额支付金额不能大约可用余额，请重新输入");
+            return false
+        }
 
         if($scope.surplusPrice >0 && ($scope.payType == undefined || $scope.payType == '' ||$scope.payType == null)){
             alert("请选择支付方式(^_^)");
