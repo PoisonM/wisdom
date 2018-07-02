@@ -1108,6 +1108,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
 		if (userConsumeRequestDTO == null) {
 			logger.info("getBossAchievement方法传入的userConsumeRequestDTO对象为空");
+		    return  null;
 		}
 		// 人头数,需要处理去重
 		ShopUserConsumeRecordCriteria numberCriteria = new ShopUserConsumeRecordCriteria();

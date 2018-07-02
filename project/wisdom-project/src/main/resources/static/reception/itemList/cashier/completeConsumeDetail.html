@@ -45,7 +45,7 @@
                         <label for="">{{item1.flowName}}</label>
                         <!--<span>{{dataInfo.sysClerkName}}</span>-->
                     </li>
-                    <li>
+                    <li ng-if="item1.goodsType != 4">
                         <label for="">包含次数</label>
                         <span>{{item1.includeTimes}}</span>
                     </li>

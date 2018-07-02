@@ -3,11 +3,11 @@
         <ion-list ng-if="param.expenseCardDetailData=='true'">
             <ion-item ng-repeat="item in param.projectConsumes"  class="row">
                 <div class="col col-80">
-                    <p style="color: #333333;font-size: 15px;margin-top: 5px">{{item.flowName}}</p>
-                    <p style="color:#888888;font-size: 12px;margin-top: 10px">{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+                    <p style="font-family: PingFangSC-Regular;font-size: 15px;color: #333333;letter-spacing: 0;margin-top: 10px">{{item.flowName}}</p>
+                    <p style="font-family: PingFangSC-Regular;color:#888888;font-size: 12px;letter-spacing: 0;margin-top: 10px;margin-bottom: 10px">{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
                 </div>
                 <div class="col col-20" >
-                    <p style="text-align: right;margin-top: 10px;color: #333333;font-size: 15px">{{item.consumeNumber}}次</p>
+                    <p style="font-family: PingFangSC-Regular;letter-spacing: 0;text-align: right;margin-top: 20px;color: #333333;font-size: 15px;margin-right:5px;">{{item.consumeNumber}}次</p>
                 </div>
             </ion-item>
             <br><br><br><br>
