@@ -24,6 +24,7 @@
     <result column="effective_date" property="effectiveDate" jdbcType="TIMESTAMP" />
     <result column="effective_days" property="effectiveDays" jdbcType="INTEGER" />
     <result column="invalid_days" property="invalidDays" jdbcType="TIMESTAMP" />
+    <result column="detail" property="detail" jdbcType="VARCHAR" />
     <result column="is_send" property="isSend" jdbcType="CHAR" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
@@ -93,8 +94,8 @@
     use_style, sys_shop_id, discount_price, discount, sys_shop_name, sys_shop_project_id, 
     sys_shop_project_name, sys_shop_project_purchase_price, sys_shop_project_init_amount, 
     sys_shop_project_surplus_amount, sys_shop_project_surplus_times, sys_shop_project_init_times, 
-    service_time, effective_date, effective_days, invalid_days, is_send, create_by, create_date, 
-    update_user, update_date
+    service_time, effective_date, effective_days, invalid_days, detail, is_send, create_by, 
+    create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectRelationCriteria" >
     select
@@ -138,9 +139,9 @@
       sys_shop_project_init_amount, sys_shop_project_surplus_amount, 
       sys_shop_project_surplus_times, sys_shop_project_init_times, 
       service_time, effective_date, effective_days, 
-      invalid_days, is_send, create_by, 
-      create_date, update_user, update_date
-      )
+      invalid_days, detail, is_send, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopAppointmentId,jdbcType=VARCHAR}, #{sysUserId,jdbcType=VARCHAR}, 
       #{sysClerkId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, 
       #{useStyle,jdbcType=CHAR}, #{sysShopId,jdbcType=VARCHAR}, #{discountPrice,jdbcType=DECIMAL}, 
@@ -149,9 +150,9 @@
       #{sysShopProjectInitAmount,jdbcType=DECIMAL}, #{sysShopProjectSurplusAmount,jdbcType=DECIMAL}, 
       #{sysShopProjectSurplusTimes,jdbcType=INTEGER}, #{sysShopProjectInitTimes,jdbcType=INTEGER}, 
       #{serviceTime,jdbcType=INTEGER}, #{effectiveDate,jdbcType=TIMESTAMP}, #{effectiveDays,jdbcType=INTEGER}, 
-      #{invalidDays,jdbcType=TIMESTAMP}, #{isSend,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{invalidDays,jdbcType=TIMESTAMP}, #{detail,jdbcType=VARCHAR}, #{isSend,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO" >
     insert into shop_user_project_relation
@@ -221,6 +222,9 @@
       </if>
       <if test="invalidDays != null" >
         invalid_days,
+      </if>
+      <if test="detail != null" >
+        detail,
       </if>
       <if test="isSend != null" >
         is_send,
@@ -304,6 +308,9 @@
       </if>
       <if test="invalidDays != null" >
         #{invalidDays,jdbcType=TIMESTAMP},
+      </if>
+      <if test="detail != null" >
+        #{detail,jdbcType=VARCHAR},
       </if>
       <if test="isSend != null" >
         #{isSend,jdbcType=CHAR},
@@ -397,6 +404,9 @@
       <if test="record.invalidDays != null" >
         invalid_days = #{record.invalidDays,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.detail != null" >
+        detail = #{record.detail,jdbcType=VARCHAR},
+      </if>
       <if test="record.isSend != null" >
         is_send = #{record.isSend,jdbcType=CHAR},
       </if>
@@ -441,6 +451,7 @@
       effective_date = #{record.effectiveDate,jdbcType=TIMESTAMP},
       effective_days = #{record.effectiveDays,jdbcType=INTEGER},
       invalid_days = #{record.invalidDays,jdbcType=TIMESTAMP},
+      detail = #{record.detail,jdbcType=VARCHAR},
       is_send = #{record.isSend,jdbcType=CHAR},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
@@ -516,6 +527,9 @@
       <if test="invalidDays != null" >
         invalid_days = #{invalidDays,jdbcType=TIMESTAMP},
       </if>
+      <if test="detail != null" >
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
       <if test="isSend != null" >
         is_send = #{isSend,jdbcType=CHAR},
       </if>
@@ -557,6 +571,7 @@
       effective_date = #{effectiveDate,jdbcType=TIMESTAMP},
       effective_days = #{effectiveDays,jdbcType=INTEGER},
       invalid_days = #{invalidDays,jdbcType=TIMESTAMP},
+      detail = #{detail,jdbcType=VARCHAR},
       is_send = #{isSend,jdbcType=CHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

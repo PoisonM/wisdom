@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Serializable {
     //
@@ -66,6 +66,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     //
     private String consumeRecordId;
+
+    //备注
+    private String detail;
 
     //
     private String createBy;
@@ -239,6 +242,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setConsumeRecordId(String consumeRecordId) {
         this.consumeRecordId = consumeRecordId;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getCreateBy() {

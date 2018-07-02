@@ -327,6 +327,8 @@ public class ProjectController {
 				String projectGroupName = null;
 				//套卡id
 				String consumeRecordId=null;
+				//备注
+				String detail=null;
 				ArrayList<Object> arrayList = new ArrayList<>();
 				//是否被使用完，0已用完 1使用中
 				Integer surplusTimes=null;
@@ -342,6 +344,7 @@ public class ProjectController {
 							bigDecimal = bigDecimal.add(dto.getProjectInitAmount());
 						}
 						projectGroupName = dto.getShopProjectGroupName();
+						detail=dto.getDetail();
 						consumeRecordId=dto.getConsumeRecordId();
 					}
 				}
@@ -353,6 +356,7 @@ public class ProjectController {
 				map.put("projectGroupName", projectGroupName);
 				map.put("consumeRecordId", consumeRecordId);
 				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());
+				map.put("detail", detail);
 				returnList.add(map);
 			}
 		}
