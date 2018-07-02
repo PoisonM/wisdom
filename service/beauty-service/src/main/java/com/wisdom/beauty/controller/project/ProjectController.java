@@ -432,11 +432,11 @@ public class ProjectController {
 																		@RequestParam(required = false) String useStyle,
 																		@RequestParam(required = false) String status) {
 
-		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
+		String shopId = redisUtils.getShopId();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 
-		shopProjectInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
+		shopProjectInfoDTO.setSysShopId(shopId);
 		shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
 		shopProjectInfoDTO.setProjectTypeTwoId(projectTypeTwoId);
 		shopProjectInfoDTO.setProjectName(projectName);
