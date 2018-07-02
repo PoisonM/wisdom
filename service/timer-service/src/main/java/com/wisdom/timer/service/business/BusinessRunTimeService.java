@@ -923,8 +923,8 @@ public class BusinessRunTimeService {
         MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query, MonthlyIncomeSignalDTO.class, "monthlyIncomeSignal");
 
         //将范围处理成时间一天的范围
-        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
-        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sfe = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StringBuilder sbs  = new StringBuilder();
         sbs.append(year).append("-").append(month).append("-").append(day).append(" ").append("00:00:00");
         StringBuilder sbe  = new StringBuilder();
