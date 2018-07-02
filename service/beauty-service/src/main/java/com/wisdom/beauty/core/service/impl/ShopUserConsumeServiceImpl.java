@@ -361,6 +361,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
      */
     private void purchaseProjectGroup(ShopUserOrderDTO shopUserOrderDTO, ShopUserPayDTO shopUserPayDTO, SysClerkDTO clerkInfo, String transactionCodeNumber, String orderId, SysUserAccountDTO sysUserAccountDTO, ShopUserArchivesDTO archivesInfo, List<ExtShopUserProjectGroupRelRelationDTO> groupRelRelationDTOS) {
         if (CommonUtils.objectIsNotEmpty(groupRelRelationDTOS)) {
+            String detail=shopUserOrderDTO.getDetail();
             //遍历每种套卡信息
             for (ShopUserProjectGroupRelRelationDTO groupDto : groupRelRelationDTOS) {
                 //默认一种套卡只购买一个
@@ -409,6 +410,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                         groupRelRelationDTO.setCreateDate(new Date());
                         groupRelRelationDTO.setShopGroupPuchasePrice(shopProjectGroupDTO.getMarketPrice());
                         groupRelRelationDTO.setShopProjectGroupName(shopProjectGroupDTO.getProjectGroupName());
+                        groupRelRelationDTO.setDetail(detail);
                         logger.info("订单号={}，生成用户跟套卡的关系的关系记录={}", orderId, groupRelRelationDTO);
                         shopProjectGroupService.saveShopUserProjectGroupRelRelation(groupRelRelationDTO);
                     }
@@ -502,6 +504,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                     dto.setEffectiveDate(new Date());
                     dto.setEffectiveDays(effectiveDate);
                     dto.setInvalidDays(DateUtils.dateIncDays(new Date(), effectiveDate));
+                    dto.setDetail(shopUserOrderDTO.getDetail());
                     logger.info("订单号={}，生成用户跟项目的关系={}", orderId, dto);
                     shopProjectService.saveUserProjectRelation(dto);
                     //构造消费记录
