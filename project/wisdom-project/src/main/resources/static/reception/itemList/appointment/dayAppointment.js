@@ -828,6 +828,13 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     }else if($scope.param.ModifyAppointmentObject.beauticianId == "" || $scope.param.ModifyAppointmentObject.beauticianId == undefined){
                         alert("请先选择美容师")
                     }else{
+
+                        for(var i=0;i<$scope.param.ModifyAppointmentObject.hoursType.length;i++){
+                            if(  $scope.param.ModifyAppointmentObject.hoursType[i] == "2"){
+                                $scope.param.ModifyAppointmentObject.hoursType[i] = "0"
+                            }
+                        }
+
                         $scope.param.selectedTime = $scope.param.ModifyAppointmentObject.hoursType.slice(startIndex,endIndex+1);
                         $scope.bgff9b9b = 'bgff9b9b';
                         $scope.index1 = index;
@@ -1050,18 +1057,29 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                              $scope.param.ModifyAppointmentObject.appointPeriod = timeLength;
                              console.log($scope.param.ModifyAppointmentObject.appointPeriod)*/
                             //清空已选中的时间段
-                            $scope.chooseTime=0
-                            for (var i = 0; i < $scope.param.timeCode.length; i++) {
-                                for (timeItem in $scope.param.timeCode[i]) {
-                                    var index =0;
-                                    index++;
-                                    if($scope.param.ModifyAppointmentObject.appointStartTime == timeItem){
-                                        $scope.chooseTime=$scope.param.timeCode[i][timeItem];
-                                    }
+                            // $scope.chooseTime=0
+                            // for (var i = 0; i < $scope.param.timeCode.length; i++) {
+                            //     for (timeItem in $scope.param.timeCode[i]) {
+                            //         var index =0;
+                            //         index++;
+                            //         if($scope.param.ModifyAppointmentObject.appointStartTime == timeItem){
+                            //             $scope.chooseTime=$scope.param.timeCode[i][timeItem];
+                            //         }
+                            //     }
+                            // }
+                            // for (var i = parseInt($scope.chooseTime); i < parseInt($scope.chooseTime)+parseInt($scope.param.checkprojectDuration/60/1/0.5); i++) {
+                            //     $scope.param.selectedTime[i] = "0";
+                            //     $scope.param.ModifyAppointmentObject.hoursType[i]="0";
+                            // }
+                            for(var i=0;i<$scope.param.selectedTime.length;i++){
+                                if(  $scope.param.selectedTime[i] == "2"){
+                                    $scope.param.selectedTime[i] = "0"
                                 }
                             }
-                            for (var i = parseInt($scope.chooseTime); i < parseInt($scope.chooseTime)+parseInt($scope.param.checkprojectDuration/60/1/0.5); i++) {
-                                $scope.param.selectedTime[i] = "1";
+                            for(var i=0;i<$scope.param.ModifyAppointmentObject.hoursType.length;i++){
+                                if(  $scope.param.ModifyAppointmentObject.hoursType[i] == "2"){
+                                    $scope.param.ModifyAppointmentObject.hoursType[i] = "0"
+                                }
                             }
 
                             $scope.param.ModifyAppointmentObject.appointStartTime="";
