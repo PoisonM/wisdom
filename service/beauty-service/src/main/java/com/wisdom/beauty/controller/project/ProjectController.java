@@ -422,8 +422,11 @@ public class ProjectController {
 	@RequestMapping(value = "/threeLevelProject", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopProjectInfoResponseDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
-			@RequestParam String projectTypeTwoId, @RequestParam(required = false) String projectName,
-			@RequestParam int pageSize, @RequestParam(required = false) String useStyle, @RequestParam(required = false) String status) {
+			                                                            @RequestParam(required = false) String projectTypeTwoId,
+																		@RequestParam(required = false) String projectName,
+			                                                            @RequestParam int pageSize,
+																		@RequestParam(required = false) String useStyle,
+																		@RequestParam(required = false) String status) {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
