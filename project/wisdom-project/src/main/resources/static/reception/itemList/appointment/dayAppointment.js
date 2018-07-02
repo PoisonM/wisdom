@@ -724,7 +724,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     $scope.param.selectCustomersObject.sysUserId = data.responseData.sysUserId;
                     $scope.param.selectCustomersObject.sysUserName = data.responseData.sysUserName;
                     $scope.param.ModifyAppointmentObject.beauticianName = data.responseData.sysClerkName;
-                    $scope.param.checkprojectId = data.responseData.shopProjectId+"";
+                    $scope.param.checkprojectId = data.responseData.shopProjectId+";";
                     $scope.param.checkprojectName = data.responseData.shopProjectName;
                     $scope.param.checkprojectDuration = data.responseData.appointPeriod;
                     $scope.param.ModifyAppointmentObject.detail = data.responseData.detail;

@@ -358,10 +358,10 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         //如果最后一位存在;则过滤掉
         String shopProjectId = shopAppointServiceDTO.getShopProjectId();
         String shopProjectName = shopAppointServiceDTO.getShopProjectName();
-//        if((";").equals(shopProjectId.substring(shopProjectId.length()-1,shopProjectId.length()))){
-//            shopProjectId = shopProjectId.substring(0,shopProjectId.length()-1);
-//            shopAppointServiceDTO.setShopProjectId(shopProjectId);
-//        }
+        if((";").equals(shopProjectId.substring(shopProjectId.length()-1,shopProjectId.length()))){
+            shopProjectId = shopProjectId.substring(0,shopProjectId.length()-1);
+            shopAppointServiceDTO.setShopProjectId(shopProjectId);
+        }
         if((";").equals(shopProjectName.substring(shopProjectName.length()-1,shopProjectName.length()))){
             shopProjectName = shopProjectName.substring(0,shopProjectName.length()-1);
             shopAppointServiceDTO.setShopProjectName(shopProjectName);
