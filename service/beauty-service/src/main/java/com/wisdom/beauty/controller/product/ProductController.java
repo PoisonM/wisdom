@@ -238,11 +238,11 @@ public class ProductController {
                                                                 @RequestParam(required = false) String productName,
                                                                 @RequestParam int pageSize, @RequestParam(required = false) String status) {
 
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String shopId = redisUtils.getShopId();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
 
-        shopProductInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        shopProductInfoDTO.setSysShopId(shopId);
         shopProductInfoDTO.setProductTypeOneId(productTypeOneId);
         shopProductInfoDTO.setProductTypeTwoId(productTypeTwoId);
         shopProductInfoDTO.setProductName(productName);
