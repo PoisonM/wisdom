@@ -1061,7 +1061,8 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                                 }
                             }
                             for (var i = parseInt($scope.chooseTime); i < parseInt($scope.chooseTime)+parseInt($scope.param.checkprojectDuration/60/1/0.5); i++) {
-                                $scope.param.selectedTime[i] = "1";
+                                $scope.param.selectedTime[i] = "0";
+                                $scope.param.ModifyAppointmentObject.hoursType[i]="0";
                             }
 
                             $scope.param.ModifyAppointmentObject.appointStartTime="";
