@@ -13,23 +13,22 @@
                     </a>
                 </div>
             </div>
-
             <div ng-show="param.flag">
                 <ion-list>
-                    <ion-item style="height:70px;" class="row" ng-repeat="item in treatmentCardDtails" ng-click="drawCardRecordsDetailGO(item.flowNo)">
-                        <div class="col col-80">
+                    <ion-item style="height:70px;" class="" ng-repeat="item in treatmentCardDtails" ng-click="drawCardRecordsDetailGO(item.flowNo)">
+                        <div class="">
                             <p class="fs15 col666 ml10 ">{{item.createDate|date:'yyyy-MM-dd'}}</p>
                             <div class="fs15 col333 ml10">
-                                <p style="display: inline-block" class="col col-33">{{item.flowName}}  </p>
-                                <p style="display: inline-block" class="col col-20">{{item.consumeNumber}}次 </p>
-                                <p style="display: inline-block" class="col col-40">
-                                    <span ng-repeat="items in item.sysClerkNameList">{{items}}</span>({{item.sysShopName}})
+                                <p style="display: inline-block" class="col col-30">{{item.flowName}}  </p>
+                                <p style="display: inline-block" class="col col-15">{{item.consumeNumber}}次 </p>
+                                <p style="display: inline-block" class="col col-65">
+                                    <span ng-repeat="items in item.sysClerkNameList track by $index">{{items}}</span>({{item.sysShopName}})
                                 </p>
                             </div>
                         </div>
-                        <p class="mr10 fs16 col333 col col-20" style="line-height: 70px">
+                       <!-- <p class="mr10 fs16 col333 col col-20" style="line-height: 70px">
                             <img ng-src="{{item.signUrl}}" style="width:30px;height:30px;float: right;margin-top:11px;" ng-if="item.signUrl!=null&&item.signUrl!=''">
-                        </p>
+                        </p>-->
 
                     </ion-item>
                 </ion-list>

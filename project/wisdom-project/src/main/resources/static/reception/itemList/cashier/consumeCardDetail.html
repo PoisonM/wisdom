@@ -21,9 +21,9 @@
                 </li>
                 <li>
                     <label for="">类型</label>
-                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信</span>
-                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝</span>
-                    <span ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行支付金额</span>
+                    <span ng-if="dataInfo.goodsType == 2">店内充值</span>
+                    <span ng-if="dataInfo.goodsType != 2">店内消费</span>
+
                 </li>
             </ul>
         </div>
@@ -38,7 +38,7 @@
                         <label for="">{{listItem.flowName}}</label>
                         <span>{{listItem.createDate}}</span>
                     </li>
-                    <li>
+                    <li ng-if="type != 'cp'"><!--产品没有包含次数-->
                         <label for="">包含次数</label>
                         <span>{{listItem.includeTimes}}</span>
                     </li>
@@ -107,6 +107,15 @@
                     </li>
                 </ul>
             </div>
+            <div class="basic">
+                <p>备注</p>
+                <ul>
+                    <li>
+                        <span>{{dataInfo.detail}}</span>
+                    </li>
+                </ul>
+            </div>
+
         </div>
 
     </div>

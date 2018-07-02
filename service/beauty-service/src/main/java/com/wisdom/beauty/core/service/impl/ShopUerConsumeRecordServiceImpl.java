@@ -122,10 +122,10 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				}
 				if (GoodsTypeEnum.PUNCH_CARD.getCode().equals(userConsumeRequest.getGoodsType())) {
 					// 如果查询的划卡记录
-					List goodType = new ArrayList();
-					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-					c.andGoodsTypeIn(goodType);
+					List goodsType = new ArrayList();
+					goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					c.andGoodsTypeIn(goodsType);
 				}
 			}
 			if (ConsumeTypeEnum.RECHARGE.getCode().equals(userConsumeRequest.getConsumeType())) {
@@ -136,28 +136,42 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 				}
 				// 收银记录
 				if (GoodsTypeEnum.CASHIER.getCode().equals(userConsumeRequest.getGoodsType())) {
-					List goodType = new ArrayList();
-					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
-					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-					goodType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
-					goodType.add(GoodsTypeEnum.PRODUCT.getCode());
-					c.andGoodsTypeIn(goodType);
+					List goodsType = new ArrayList();
+					if("0".equals(userConsumeRequest.getSearchState())){
+						//查询充值
+						goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+						c.andGoodsTypeIn(goodsType);
+
+					}else if("1".equals(userConsumeRequest.getSearchState())){
+						//查询消费
+						goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
+						c.andGoodsTypeIn(goodsType);
+					}else {
+						goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.RECHARGE_CARD.getCode());
+						goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
+						c.andGoodsTypeIn(goodsType);
+					}
 				}
 				// 消费记录
 				if (GoodsTypeEnum.CONSUM.getCode().equals(userConsumeRequest.getGoodsType())) {
-					List goodType = new ArrayList();
-					goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
-					goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-					goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-					goodType.add(GoodsTypeEnum.PRODUCT.getCode());
-					c.andGoodsTypeIn(goodType);
+					List goodsType = new ArrayList();
+					goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+					goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					goodsType.add(GoodsTypeEnum.PRODUCT.getCode());
+					c.andGoodsTypeIn(goodsType);
 				} /*
-					 * else { List goodType = new ArrayList();
-					 * goodType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
-					 * goodType.add(GoodsTypeEnum.TIME_CARD.getCode());
-					 * goodType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
-					 * c.andGoodsTypeIn(goodType); }
+					 * else { List goodsType = new ArrayList();
+					 * goodsType.add(GoodsTypeEnum.TREATMENT_CARD.getCode());
+					 * goodsType.add(GoodsTypeEnum.TIME_CARD.getCode());
+					 * goodsType.add(GoodsTypeEnum.COLLECTION_CARD.getCode());
+					 * c.andGoodsTypeIn(goodsType); }
 					 */
 			}
 		}

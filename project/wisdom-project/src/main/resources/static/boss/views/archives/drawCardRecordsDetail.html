@@ -39,7 +39,7 @@
                     <p class="mr10 col888" ng-if="drawCardRecordsDetail.type == '1'">
                         消费
                     </p>
-                    <p class="mr10 col888" ng-if="drawCardRecordsDetail.type == '3'">
+                    <p class="mr10 col888" ng-if="drawCardRecordsDetail.type == '5'">
                         划卡
                     </p>
                     <p class="mr10 col888" ng-if="drawCardRecordsDetail.type == '4'">
@@ -52,7 +52,7 @@
                 <ion-item  class=" bgfff" style="display: flex;justify-content: space-between;height:70px;">
                     <div>
                         <p class="ml10 fs16 col333 mt10">{{drawCardRecordsDetail.flowName}}</p>
-                        <p class="ml10 fs15 col888">美容师：{{drawCardRecordsDetail.sysClerkName}}</p>
+                        <p class="ml10 fs15 col888">员工：{{drawCardRecordsDetail.sysClerkName}}</p>
                     </div>
                     <p class="mr10" style="line-height:70px;">
                         划卡次数：{{drawCardRecordsDetail.consumeNumber}}
@@ -65,8 +65,7 @@
                    <img ng-src="{{drawCardRecordsDetail.signUrl}}" style="width:100%;">
             </div>
             <p class="h50 ml10 fs15 col888 ">备注</p>
-            <textarea style="height:80px;width:100%;margin-bottom: 50px;" class="bgfff">
-                    {{drawCardRecordsDetail.detail}}
+            <textarea style="height:80px;width:100%;margin-bottom: 50px;padding:10px;" class="bgfff">    {{drawCardRecordsDetail.detail}}
             </textarea>
 
 

@@ -8,18 +8,27 @@ angular.module('controllers',[]).controller('productScopeCtrl',
             SearchShopProductList.get({
                 filterStr:""
             },function(data){
-                if(data.result==Global.SUCCESS&&data.responseData!=null){
-                    $scope.productScope =data.responseData
+                if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                    $scope.productScope = data.responseData
+
+                    if ($rootScope.settingAddsome.editedRecharge.productList.length > 0) {
+                        for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.productList.length;i++){
+                            $scope.param.productList[i]=$rootScope.settingAddsome.editedRecharge.productList[i].shopGoodsTypeId
+                        }
+                    } else {
+                        for (var i = 0; i < $scope.productScope.detailLevel.length; i++) {
+                            for (var key in $scope.productScope.detailLevel[i].levelTwoDetail) {
+                                $scope.param.productList.push($scope.productScope.detailLevel[i].levelTwoDetail[key].productTypeTwoId)
+                            }
+                        }
+                    }
                 }
 
             });
-            for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.productList.length;i++){
-                $scope.param.productList[i]=$rootScope.settingAddsome.editedRecharge.productList[i].shopGoodsTypeId
-            }
+
 
 
             $scope.selProductScope = function (domIndex) {
-                console.log(domIndex)
                 if ($scope.param.productList.indexOf(domIndex) != -1) {
                     var key = 0;
                     angular.forEach($scope.param.productList, function (val, index) {
@@ -31,11 +40,14 @@ angular.module('controllers',[]).controller('productScopeCtrl',
                 } else {
                     $scope.param.productList.push(domIndex);
                 }
-                console.log($scope.param.productList)
             }
             $scope.save = function () {
-                for(var  i=0;i<$scope.param.productList.length;i++){
-                    $rootScope.settingAddsome.editedRecharge.productList[i]={shopGoodsTypeId:$scope.param.productList[i],goodsType:"4"}
+                if($scope.param.productList.length>0){
+                    for(var  i=0;i<$scope.param.productList.length;i++){
+                        $rootScope.settingAddsome.editedRecharge.productList[i]={shopGoodsTypeId:$scope.param.productList[i],goodsType:"4"}
+                    }
+                }else{
+                    $rootScope.settingAddsome.editedRecharge.productList=$scope.param.productList
                 }
                 $state.go($stateParams.url,{id:$stateParams.id})
             }

@@ -88,7 +88,7 @@ public class ClerkWorkRecordController {
         }
         else
         {
-            map = new HashMap<>();
+            map = new HashMap<>(16);
             map.put("income", "0");
             map.put("expenditure", "0");
             map.put("kahao", "0");

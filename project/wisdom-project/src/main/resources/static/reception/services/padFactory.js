@@ -1,6 +1,7 @@
 var beautyIP = '/beauty/';
 var userIP = '/user/';
 var systemService = '/system-service/';
+var weixinService = '/weixin/';
 var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
         return {
@@ -32,7 +33,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
                 console.log(err)
             },
             response: function (res) {
-                if(res.data.result=="0x00002"){
+                if(res.data.errorInfo=="0x00006"){
                     alert("登录已经失效,请重新登录")
                     window.location.href = window.location.href.split("pad-web")[0]+"pad-web/login"
                 }
@@ -65,7 +66,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
     }])
     //获取用户二维码
     .factory('getBeautyQRCode', ['$resource', function($resource) {
-        return $resource(beautyIP+'getBeautyQRCode')
+        return $resource(weixinService+'beauty/getBeautyQRCode')
     }])
     //http轮询
     .factory('getUserScanInfo', ['$resource', function($resource) {

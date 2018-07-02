@@ -62,8 +62,8 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
 
             }
             $scope.discounts = function (style) {
-                if($rootScope.settingAddsome.editedRecharge[style]>10||$rootScope.settingAddsome.editedRecharge[style]<0.1){
-                    $rootScope.settingAddsome.editedRecharge[style] =0.1
+                if($rootScope.settingAddsome.editedRecharge[style]>1||$rootScope.settingAddsome.editedRecharge[style]<0.1){
+                    $rootScope.settingAddsome.editedRecharge[style] =1
                 }
             }
             $scope.save = function () {
@@ -72,8 +72,15 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 }else{
                     $rootScope.settingAddsome.editedRecharge.status = '1'
                 }
-                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||( $rootScope.settingAddsome.editedRecharge.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!='')||($rootScope.settingAddsome.editedRecharge.periodList.length<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timesList!='')||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
-                    alert("信息不完全")
+                if($rootScope.settingAddsome.editedRecharge.name==""||
+                    $rootScope.settingAddsome.editedRecharge.amount==""||
+                    ($rootScope.settingAddsome.editedRecharge.timesList.length<=0)||
+                    ( $rootScope.settingAddsome.editedRecharge.periodList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.productList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.productDiscount=='')||
+                    ($rootScope.settingAddsome.editedRecharge.periodDiscount=='')||
+                    ($rootScope.settingAddsome.editedRecharge.timesList=='')){
+                    alert("信息不完全");
                     return
                 }
                 SaveRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge, function (data) {
@@ -92,6 +99,8 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                             periodDiscount:'',/*疗程卡折扣*/
                             productDiscount:''/*产品折扣*/
                         }
+                    }else{
+                        alert("保存未成功")
                     }
 
                 })

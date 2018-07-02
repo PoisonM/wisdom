@@ -1,8 +1,5 @@
 package com.wisdom.beauty.api.extDto;
 
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
 import com.wisdom.common.entity.BaseEntity;
 
@@ -64,10 +61,10 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     private ShopUserPayDTO shopUserPayDTO;
 
     //用户与项目关系
-    private List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
+    private List<ExtShopUserProjectRelationDTO> shopUserProjectRelationDTOS;
 
     //用户与产品
-    private List<ShopUserProductRelationDTO> shopUserProductRelationDTOS;
+    private List<ExtShopUserProductRelationDTO> shopUserProductRelationDTOS;
 
     //用户与充值卡的关系
     private ShopUserRechargeCardDTO shopUserRechargeCardDTO;
@@ -75,11 +72,12 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
     //存储用户支付抵扣充值卡对象
     private List<ExtShopUserRechargeCardDTO> userPayRechargeCardList;
 
-    //套卡
-    private List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
+    //套卡详细
+    private List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS;
 
     //充值卡抵扣金额
     private String rechargeCardPay;
+
 
     public String getRechargeCardPay() {
         return rechargeCardPay;
@@ -249,27 +247,27 @@ public class ShopUserOrderDTO extends BaseEntity implements Serializable {
         this.createDate = createDate;
     }
 
-    public List<ShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
+    public List<ExtShopUserProjectRelationDTO> getShopUserProjectRelationDTOS() {
         return shopUserProjectRelationDTOS;
     }
 
-    public void setShopUserProjectRelationDTOS(List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS) {
+    public void setShopUserProjectRelationDTOS(List<ExtShopUserProjectRelationDTO> shopUserProjectRelationDTOS) {
         this.shopUserProjectRelationDTOS = shopUserProjectRelationDTOS;
     }
 
-    public List<ShopUserProductRelationDTO> getShopUserProductRelationDTOS() {
+    public List<ExtShopUserProductRelationDTO> getShopUserProductRelationDTOS() {
         return shopUserProductRelationDTOS;
     }
 
-    public void setShopUserProductRelationDTOS(List<ShopUserProductRelationDTO> shopUserProductRelationDTOS) {
+    public void setShopUserProductRelationDTOS(List<ExtShopUserProductRelationDTO> shopUserProductRelationDTOS) {
         this.shopUserProductRelationDTOS = shopUserProductRelationDTOS;
     }
 
-    public List<ShopUserProjectGroupRelRelationDTO> getProjectGroupRelRelationDTOS() {
+    public List<ExtShopUserProjectGroupRelRelationDTO> getProjectGroupRelRelationDTOS() {
         return projectGroupRelRelationDTOS;
     }
 
-    public void setProjectGroupRelRelationDTOS(List<ShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS) {
+    public void setProjectGroupRelRelationDTOS(List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS) {
         this.projectGroupRelRelationDTOS = projectGroupRelRelationDTOS;
     }
 

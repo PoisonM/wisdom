@@ -176,8 +176,10 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		for (int i = 0; i < 7; i++) {
 			Calendar calendar = new GregorianCalendar();
 			calendar.setTime(new Date());
-			calendar.add(calendar.DATE, i - 7);// 把日期往后增加一天.整数往后推,负数往前移动
-			String putDate = sdf.format(calendar.getTime()); // 增加一天后的日期
+			// 把日期往后增加一天.整数往后推,负数往前移动
+			calendar.add(GregorianCalendar.DATE, i - 7);
+			// 增加一天后的日期
+			String putDate = sdf.format(calendar.getTime());
 			sevenDayList.add(putDate);
 		}
 		// 查询七日数据
@@ -223,7 +225,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		Map<String, ExpenditureAndIncomeResponseDTO> map=null;
 		if(CollectionUtils.isNotEmpty(shopCashFlowDTOs)) {
 			//过滤出现金，银行卡，微信，支付宝支付的数据，即现金支付=0 支付方式为空
-			 map = new HashMap<>();
+			 map = new HashMap<>(16);
 			for (ShopCashFlowDTO shopCashFlowDTO : shopCashFlowDTOs) {
 				if (StringUtils.isBlank(shopCashFlowDTO.getPayType()) && shopCashFlowDTO.getCashAmount().compareTo(new BigDecimal("0")) == 0) {
 					continue;

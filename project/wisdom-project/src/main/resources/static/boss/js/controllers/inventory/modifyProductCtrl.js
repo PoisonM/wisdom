@@ -236,7 +236,6 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 }
                 UpdateProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS){
-
                         $state.go("warehouseProducts")
                     }else{
                         alert(data.errorInfo);

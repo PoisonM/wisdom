@@ -108,7 +108,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
     }
 
     $scope.goConfirmations = function() {
-        if($scope.shopUserConsumeDTO[0].consumeNum > $scope.responseData.sysShopProjectSurplusTimes){
+        if(($scope.shopUserConsumeDTO[0].consumeNum > $scope.responseData.sysShopProjectSurplusTimes)||($scope.shopUserConsumeDTO[0].consumeNum > $scope.responseData.projectSurplusTimes)){
             alert("对不起，划卡数量不能大于剩余卡数^_^");
             return;
         }
