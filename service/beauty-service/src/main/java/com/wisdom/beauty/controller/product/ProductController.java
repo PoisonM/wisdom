@@ -197,10 +197,24 @@ public class ProductController {
         shopProductInfo.setProductCode(extShopProductInfoDTO.getProductCode());
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        logger.info("修改产品状态"+extShopProductInfoDTO.getStatus());
         if(shopProductInfos!=null&&shopProductInfos.size()>0){
+            if(("1").equals(extShopProductInfoDTO.getStatus())){
+                int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+                responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            }else if(shopProductInfos.size()==1&&("0").equals(extShopProductInfoDTO.getStatus())){
+                if(shopProductInfos.get(0).getId().equals(extShopProductInfoDTO.getId())){
+                    int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+                    responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+                }else{
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+                }
 
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+            }
         }else{
 
             int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
@@ -428,14 +442,12 @@ public class ProductController {
             int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
             responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
             responseDTO.setResponseData(productInfo);
-
         }
         return responseDTO;
     }
 
     /**
      * 获取产品详情
-     *
      * @param productCode
      *
      * @return
