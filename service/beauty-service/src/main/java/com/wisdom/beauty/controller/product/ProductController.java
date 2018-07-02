@@ -130,7 +130,9 @@ public class ProductController {
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
         shopProductTypeDTO.setStatus(status);
-        shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        if(sysClerkDTO!=null){
+            shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        }
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
