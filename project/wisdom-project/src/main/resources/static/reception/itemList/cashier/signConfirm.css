@@ -6,7 +6,7 @@
 .signConfirmBox .signConfirmLeft {
     float: left;
     width: 318px;
-    background: #eee;
+    /*background: #eee;*/
     height: 100%;
     overflow-y: scroll;
 }
@@ -78,7 +78,9 @@
     font-family: PingFangSC-Regular;
     font-size: 16px;
     color: #333333;
-    margin: 10px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
 }
 
 .signConfirmBox .signConfirmRight .okBtn {

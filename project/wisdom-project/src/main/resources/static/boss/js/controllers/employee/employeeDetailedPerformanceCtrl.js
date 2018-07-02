@@ -49,6 +49,7 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
             $scope.sel = function(){
                 $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                 $scope.flag = true;
+                console.log(1)
             };
             $scope.all=function () {
                 $scope.flag = false
@@ -75,6 +76,5 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                 $scope.flag = false
 
             };
-
 
         }]);
