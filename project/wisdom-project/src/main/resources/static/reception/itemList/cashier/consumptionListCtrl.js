@@ -129,7 +129,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             pageSize: 100,
             projectName: "",
             projectTypeOneId: one,
-            ProjectTypeTwoId: two,
+            projectTypeTwoId: two,
             useStyle: $scope.select,
             status:$scope.status
         }, function(data) {
