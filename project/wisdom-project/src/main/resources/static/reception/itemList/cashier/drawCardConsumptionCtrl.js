@@ -163,7 +163,7 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
     }
 
     var $signature = $("#signConfirmRight").jSignature({
-        'height': 450,
+        'height': 300,
     });
     $signature.jSignature('reset')
 

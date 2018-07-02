@@ -144,7 +144,7 @@ public class ProjectController {
 		//一个一级对应所有的二级
 		Map<String,Map<String,ShopProjectTypeDTO>> twoMap=null;
 		if(CollectionUtils.isNotEmpty(twoAndThreeTypeList)){
-			twoMap=new HashMap<>();
+			twoMap=new HashMap<>(16);
 			for (ShopProjectTypeDTO dto:twoAndThreeTypeList){
 				if(twoMap.containsKey(dto.getParentId())){
 					Map<String,ShopProjectTypeDTO> devMap=twoMap.get(dto.getParentId());
@@ -152,7 +152,7 @@ public class ProjectController {
 					twoMap.put(dto.getParentId(),devMap);
 				}else {
 					if(StringUtils.isNotBlank(dto.getParentId())){
-						Map<String,ShopProjectTypeDTO> devMap=new HashMap<>();
+						Map<String,ShopProjectTypeDTO> devMap=new HashMap<>(16);
 						devMap.put(dto.getProjectTypeName(),dto);
 						twoMap.put(dto.getParentId(),devMap);
 					}
@@ -327,6 +327,8 @@ public class ProjectController {
 				String projectGroupName = null;
 				//套卡id
 				String consumeRecordId=null;
+				//备注
+				String detail=null;
 				ArrayList<Object> arrayList = new ArrayList<>();
 				//是否被使用完，0已用完 1使用中
 				Integer surplusTimes=null;
@@ -342,6 +344,7 @@ public class ProjectController {
 							bigDecimal = bigDecimal.add(dto.getProjectInitAmount());
 						}
 						projectGroupName = dto.getShopProjectGroupName();
+						detail=dto.getDetail();
 						consumeRecordId=dto.getConsumeRecordId();
 					}
 				}
@@ -349,10 +352,11 @@ public class ProjectController {
 				map.put("projectList", arrayList);
 				map.put("totalAmount", bigDecimal);
 				String expirationDate = shopProjectGroupDTO.getExpirationDate();
-				map.put("expirationDate", !expirationDate.equals("0")?DateUtils.StrToDate(expirationDate,"date").getTime():"0" );
+				map.put("expirationDate", !"0".equals(expirationDate)?DateUtils.StrToDate(expirationDate,"date").getTime():"0" );
 				map.put("projectGroupName", projectGroupName);
 				map.put("consumeRecordId", consumeRecordId);
 				map.put("isUseUp", surplusTimes>0? IsUseUpEnum.USE_ING.getCode():IsUseUpEnum.USE_UP.getCode());
+				map.put("detail", detail);
 				returnList.add(map);
 			}
 		}
@@ -422,8 +426,11 @@ public class ProjectController {
 	@RequestMapping(value = "/threeLevelProject", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopProjectInfoResponseDTO>> findThreeLevelProject(@RequestParam String projectTypeOneId,
-			@RequestParam String ProjectTypeTwoId, @RequestParam(required = false) String projectName,
-			@RequestParam int pageSize, @RequestParam(required = false) String useStyle, @RequestParam(required = false) String status) {
+			                                                            @RequestParam(required = false) String projectTypeTwoId,
+																		@RequestParam(required = false) String projectName,
+			                                                            @RequestParam int pageSize,
+																		@RequestParam(required = false) String useStyle,
+																		@RequestParam(required = false) String status) {
 
 		SysClerkDTO sysClerkDTO = UserUtils.getClerkInfo();
 		PageParamVoDTO<ShopProjectInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
@@ -431,7 +438,7 @@ public class ProjectController {
 
 		shopProjectInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
 		shopProjectInfoDTO.setProjectTypeOneId(projectTypeOneId);
-		shopProjectInfoDTO.setProjectTypeTwoId(ProjectTypeTwoId);
+		shopProjectInfoDTO.setProjectTypeTwoId(projectTypeTwoId);
 		shopProjectInfoDTO.setProjectName(projectName);
 		shopProjectInfoDTO.setStatus(status);
 		shopProjectInfoDTO.setUseStyle(useStyle);
@@ -561,7 +568,7 @@ public class ProjectController {
 		List<Map> arrayList = new ArrayList<>();
 		// 查询一级项目下的三级项目
 		for (Map.Entry entry : twoTypeMap.entrySet()) {
-			Map<Object, Object> levelMap = new HashMap<>();
+			Map<Object, Object> levelMap = new HashMap<>(16);
 			List<ShopProjectInfoDTO> threeProjectList = new ArrayList();
 			for (ShopProjectInfoDTO infoDTO : projectList) {
 				if (infoDTO.getProjectTypeTwoId().equals(entry.getKey())) {

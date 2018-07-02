@@ -27,6 +27,6 @@ public interface ShopCustomerProjectRelationService {
      * @Description: 获取用户充值卡的客户信息
      * @Date:2018/4/4 14:25
      */
-    ShopUserProjectRelationDTO getShopCustomerProjectRelationList(ShopUserProjectRelationDTO ShopUserProjectRelationDTO);
+    ShopUserProjectRelationDTO getShopCustomerProjectRelationList(ShopUserProjectRelationDTO shopUserProjectRelationDTO);
 
 }

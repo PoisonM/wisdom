@@ -52,7 +52,7 @@
                                 <div>包含项目</div>
                             </li>
                             <!--包含项目-->
-                            <li class="com_project_list">
+                            <li class="com_project_list" style="height: auto;overflow: hidden">
                                 <e ng-repeat="projectItem in item.projectList">
                                     {{projectItem.shopProjectInfoName}}*{{projectItem.shopProjectServiceTimes}}
                                 </e>
@@ -108,8 +108,10 @@
             </ul>
         </div>
 
-        <div class="stillOwedTitle" ng-if="shopUserProjectRelationDTOS.length>0">项目</div>
+        <!--<div class="stillOwedTitle" ng-if="shopUserProjectRelationDTOS.length>0">项目</div>-->
         <div ng-repeat="item in shopUserProjectRelationDTOS">
+            <div class="stillOwedTitle" ng-if="item.useStyle == 0">单次</div>
+            <div class="stillOwedTitle" ng-if="item.useStyle == 1">疗程卡</div>
             <ul class="stillOwedContent">
                 <li>
                     <div class="contentBox">
@@ -157,7 +159,7 @@
 
         <!--<div class="stillOwedTitle">备注</div>
         <textarea name="" rows="10"></textarea>-->
-        <span class="allPrice">{{orderPrice}}</span>
+        <span class="allPrice">总金额：{{orderPrice}}</span>
         <button ng-click="goOrderListm()">确认</button>
     </div>
     <div ng-if="housekeeperFlag" class="housekeeper">

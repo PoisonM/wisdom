@@ -73,7 +73,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 	@Override
 	public List<UserProductRelationResponseDTO> getShopUserProductRelations(String sysShopId, String searchFile) {
 		logger.info("getShopProductInfo方法传入的参数,searchFile={}", searchFile);
-		Map<String, String> mapFile = new HashMap();
+		Map<String, String> mapFile = new HashMap(16);
 		mapFile.put("sysShopId", sysShopId);
 		if (StringUtils.isNotBlank(searchFile)) {
 			mapFile.put("searchFile", "%" + searchFile + "%");
@@ -92,7 +92,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 	@Override
 	public Map<String, Object> getWaitReceivePeopleAndNumber(String sysShopId) {
 		logger.info("getWaitReceivePeopleAndNumber方法传入的参数,sysShopId={}", sysShopId);
-		Map<String, String> mapFile = new HashMap();
+		Map<String, String> mapFile = new HashMap(16);
 		mapFile.put("sysShopId", sysShopId);
 		mapFile.put("searchFile", null);
 		List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
@@ -109,7 +109,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 			totalWaitReceiveNumber = totalWaitReceiveNumber + userProductRelationResponse.getWaitReceiveNumber();
 		}
 
-		Map<String, Object> mapResponse = new HashMap<>();
+		Map<String, Object> mapResponse = new HashMap<>(16);
 		mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
 		mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
 

@@ -197,10 +197,24 @@ public class ProductController {
         shopProductInfo.setProductCode(extShopProductInfoDTO.getProductCode());
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        logger.info("修改产品状态"+extShopProductInfoDTO.getStatus());
         if(shopProductInfos!=null&&shopProductInfos.size()>0){
+            if(("1").equals(extShopProductInfoDTO.getStatus())){
+                int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+                responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            }else if(shopProductInfos.size()==1&&("0").equals(extShopProductInfoDTO.getStatus())){
+                if(shopProductInfos.get(0).getId().equals(extShopProductInfoDTO.getId())){
+                    int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+                    responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+                }else{
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+                }
 
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+            }
         }else{
 
             int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
@@ -302,7 +316,7 @@ public class ProductController {
         //一个一级对应所有的二级
         Map<String,Map<String,ShopProductTypeDTO>> twoMap=null;
         if(CollectionUtils.isNotEmpty(twoAndThreeTypeList)){
-            twoMap=new HashMap<>();
+            twoMap=new HashMap<>(16);
             for (ShopProductTypeDTO dto:twoAndThreeTypeList){
                 if(twoMap.containsKey(dto.getParentId())){
                     Map<String,ShopProductTypeDTO> devMap=twoMap.get(dto.getParentId());
@@ -310,7 +324,7 @@ public class ProductController {
                     twoMap.put(dto.getParentId(),devMap);
                 }else {
                     if(StringUtils.isNotBlank(dto.getParentId())){
-                        Map<String,ShopProductTypeDTO> devMap=new HashMap<>();
+                        Map<String,ShopProductTypeDTO> devMap=new HashMap<>(16);
                         devMap.put(dto.getProductTypeName(),dto);
                         twoMap.put(dto.getParentId(),devMap);
                     }
@@ -371,7 +385,7 @@ public class ProductController {
         logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
         ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
         if (null != extShopScanProductInfoDTO) {
-            if(extShopScanProductInfoDTO.getFlag().equals("true")){
+            if("true".equals(extShopScanProductInfoDTO.getFlag())){
                 //查询出来的信息转换为产品对象
                 ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
                 productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
@@ -428,14 +442,12 @@ public class ProductController {
             int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
             responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
             responseDTO.setResponseData(productInfo);
-
         }
         return responseDTO;
     }
 
     /**
      * 获取产品详情
-     *
      * @param productCode
      *
      * @return

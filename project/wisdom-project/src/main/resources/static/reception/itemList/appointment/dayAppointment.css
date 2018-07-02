@@ -129,7 +129,7 @@
     margin-right: 4px;
 }
 .dayAppointment .complex_table table thead .info_num span:nth-child(1) i{
-    border-right: 1px solid #999;
+    /*border-right: 1px solid #999;*/
     padding-right: 5px;
 }
 

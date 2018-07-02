@@ -203,14 +203,15 @@ public class ShopStockServiceImpl implements ShopStockService {
 		String id = shopStockRecord.getId();
 		// 根据id查询，shop_stock的入库，出库产品记录
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = null;
-
-		List<ShopStoreDTO> StoreList = this.findStoreList(shopStockRecord.getSysBossCode());
-		for(ShopStoreDTO store:StoreList){
-			if(store.getId().equals(shopStockRecord.getShopStoreId())){
-				shopStockRecord.setName(store.getName());
+		// TODO: 2018/6/30  有问题
+		List<ShopStoreDTO> storeList = this.findStoreList(shopStockRecord.getSysBossCode());
+		if(CollectionUtils.isNotEmpty(storeList)){
+			for(ShopStoreDTO store:storeList){
+				if(store.getId().equals(shopStockRecord.getShopStoreId())){
+					shopStockRecord.setName(store.getName());
+				}
 			}
 		}
-
 		if (StringUtils.isBlank(id)) {
 			logger.info("库存记录为空");
 			return null;
@@ -304,6 +305,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		if (StringUtils.isNotBlank(shopStockRecord.getShopStoreId())) {
 			c.andShopStoreIdEqualTo(shopStockRecord.getShopStoreId());
 		}
+
 		if (StringUtils.isNotBlank(shopStockRecord.getStockStyle())) {
 			if (StockStyleEnum.IN_STORAGE.getCode().equals(shopStockRecord.getStockStyle())) {
 				List<String> styles = new ArrayList<>();
@@ -327,7 +329,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			criteria.setPageSize(pageParamVoDTO.getPageSize());
 			criteria.setLimitStart(pageParamVoDTO.getPageNo());
 		}
-
+		criteria.setOrderByClause("create_date desc");
 		return shopStockRecordMapper.selectByCriteria(criteria);
 
 	}
@@ -872,7 +874,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 				}
 			}
 		}
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(16);
 		map.put("allUseCost", allUseCost);
 		map.put("useCost", useCost);
 		return map;

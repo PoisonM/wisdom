@@ -139,7 +139,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
                 logger.info("用户的充值卡不为空");
                 shopUserRechargeCardDTO = userRechargeCardList.get(0);
-                userRechargeId = shopUserRechargeCardDTO.getId();
+                userRechargeId = shopUserRechargeCardDTO.getShopRechargeCardId();
             }
         }
         //断定用户没有选择任何的充值卡
@@ -149,6 +149,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             shopUserRechargeCardDTO.setProductDiscount(1f);
             shopUserRechargeCardDTO.setTimeDiscount(1f);
             shopUserRechargeCardDTO.setPeriodDiscount(1f);
+            shopUserRechargeCardDTO.setRechargeCardType("1");
         }
         //查询充值卡的适用范围
         StringBuffer scopeStr = new StringBuffer("begin:");
@@ -175,7 +176,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
                     //折扣价格，也就是单个产品的价格
                     //如果是特殊充值卡或包含在充值卡折扣范围内的产品
-                    if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())||scopeStr.toString().contains(new StringBuffer(userProductRelationDTO.getProductTypeTwoId()).append(":").append(GoodsTypeEnum.PRODUCT.getCode()))){
+                    if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())
+                            ||scopeStr.toString().contains(new StringBuffer(userProductRelationDTO.getProductTypeTwoId()).append(":").append(GoodsTypeEnum.PRODUCT.getCode()))
+                            ){
                         BigDecimal discountPrice = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
                         BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProductRelationDTO.getInitTimes()));
                         userProductRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));

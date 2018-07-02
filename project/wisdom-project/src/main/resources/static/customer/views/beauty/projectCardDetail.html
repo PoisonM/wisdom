@@ -1,8 +1,13 @@
 <ion-view style="background:white">
     <ion-content>
-        <ion-item ng-repeat="item in param.projectCardConsumes" ng-if="param.projectCardDetailData=='true'">
-            <h>{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</h>
-            <h class="item-note" style="color:black">1次</h>
+        <ion-item ng-repeat="item in param.projectCardConsumes" ng-if="param.projectCardDetailData=='true'" class="row">
+            <div class="col col-80">
+                <p style="color: #333333;font-size: 15px;margin-top: 10px;font-family: PingFangSC-Regular;letter-spacing: 0;">{{item.flowName}}</p>
+                <p style="color:#888888;font-size: 12px;margin-top: 10px;font-family: PingFangSC-Regular;letter-spacing: 0;">{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</p>
+            </div>
+            <div class="col col-20" >
+                <p style="text-align: right;margin-top: 20px;color: #333333;font-size: 15px;font-family: PingFangSC-Regular;letter-spacing: 0;margin-right: 5px;">{{item.consumeNumber}}次</p>
+            </div>
         </ion-item>
         <center ng-if="param.projectCardDetailData=='false'">
             <img style="width: 80%;margin-top:25%;"

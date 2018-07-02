@@ -40,7 +40,7 @@ public class ProductTypeController {
     @Resource
     private ShopProductInfoService shopProductInfoService;
     @Resource
-    private ShopStockService ShopStockService;
+    private ShopStockService shopStockService;
 
     @Resource
     private RedisUtils redisUtils;
@@ -173,11 +173,11 @@ public class ProductTypeController {
             //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
             logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
             HashMap<Object, ShopProductInfoDTO> twoMap = new HashMap<>(16);
-            HashMap<Object, HashMap<Object, Integer>> oneProductNumber = new HashMap<>();
+            HashMap<Object, HashMap<Object, Integer>> oneProductNumber = new HashMap<>(16);
             for (ShopProductInfoDTO dto : detailProductList) {
                twoMap.put(dto.getProductTypeTwoId(), dto);
                if(dto.getProductTypeOneId()!=null&&oneProductNumber.get(dto.getProductTypeOneId())==null){
-                   HashMap<Object, Integer> twoProductNumber = new HashMap<>();
+                   HashMap<Object, Integer> twoProductNumber = new HashMap<>(16);
                    for (ShopProductInfoDTO dto2 : detailProductList){
                        if(dto2.getProductTypeOneId()!=null&&dto2.getProductTypeOneId().equals(dto.getProductTypeOneId())){
                            if(dto2.getProductTypeTwoId()!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())!=0){
@@ -234,7 +234,7 @@ public class ProductTypeController {
             pageParamVoDTO.setPageNo(0);
             pageParamVoDTO.setRequestData(shopStockNumberDTO);
             //查询产品库存详情
-            Map<String, Object> map = ShopStockService.getStockDetailList(pageParamVoDTO, detailProductList);
+            Map<String, Object> map = shopStockService.getStockDetailList(pageParamVoDTO, detailProductList);
             responseMap.put("allUseCost", map.get("allUseCost"));
             responseMap.put("useCost", map.get("useCost"));
             responseMap.put("detailProductList", map.get("extShopProductInfoDTOs"));

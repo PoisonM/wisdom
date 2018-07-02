@@ -1,10 +1,10 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserProjectRelationDTO extends BaseEntity implements Serializable {
     //
@@ -72,6 +72,9 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     //失效日期
     private Date invalidDays;
+
+    //备注
+    private String detail;
 
     //1 赠送 0不赠送
     private String isSend;
@@ -264,6 +267,14 @@ public class ShopUserProjectRelationDTO extends BaseEntity implements Serializab
 
     public void setInvalidDays(Date invalidDays) {
         this.invalidDays = invalidDays;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getIsSend() {
