@@ -676,6 +676,8 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 						.setExpenditure(expenditureAndIncomeResponse.getExpenditure().add(dto.getExpenditure()));
 				expenditureAndIncomeResponse.setIncome(expenditureAndIncomeResponse.getIncome().add(dto.getIncome()));
 				expenditureAndIncomeResponse.setKahao(expenditureAndIncomeResponse.getKahao().add(dto.getKahao()));
+				expenditureAndIncomeResponse.setServiceNumber(expenditureAndIncomeResponse.getServiceNumber()+dto.getServiceNumber());
+				map.put(dto.getSysShopClerkId(), expenditureAndIncomeResponse);
 			} else {
 				dto.setConsumeTime(1);
 				map.put(dto.getSysShopClerkId(), dto);
