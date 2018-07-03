@@ -1,14 +1,11 @@
 package com.wisdom.common.util;
 
 import com.aliyun.oss.ClientException;
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.*;
 import com.wisdom.common.config.Global;
 import org.apache.log4j.Logger;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import redis.clients.jedis.JedisPool;
 
 import java.io.*;
 import java.net.URL;
@@ -127,7 +124,12 @@ public class OSSObjectTool {
         // 初始化OSSClient
         URL url =  OSSClientUtil.OSSClient().generatePresignedUrl(bucketName, key, expiration);
         if (url != null) {
-            return url.toString();
+            String urlStr = url.toString();
+            if(urlStr.contains("?")||urlStr.contains("?")){
+                String[] split = urlStr.split("\\?");
+                urlStr = split[0];
+            }
+            return urlStr;
         }
         return null;
     }

@@ -61,9 +61,6 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     private ShopProjectService shopProjectService;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
     private MongoUtils mongoUtils;
 
     @Override

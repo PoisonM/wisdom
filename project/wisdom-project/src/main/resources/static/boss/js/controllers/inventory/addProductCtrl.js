@@ -243,7 +243,10 @@ angular.module('controllers',[]).controller('addProductCtrl',
                     alert('信息不完全')
                     return
                 }
-
+                if($rootScope.settingAddsome.product.productCode==""){
+                    alert('信息不完全')
+                    return
+                }
                 SaveProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
