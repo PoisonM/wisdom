@@ -980,7 +980,6 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		List<String> userIdList = new ArrayList<>(userIds);
 		List<ShopUserArchivesDTO> shopUserArchivesDTOs = shopCustomerArchivesService.getArchivesList(userIdList);
 		// 遍历userInfoList
-		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		List<UserInfoDTOResponseDTO> responseDTOList = new ArrayList<>();
 		UserInfoDTOResponseDTO userInfoDTOResponseDTO = null;
 		if (CollectionUtils.isNotEmpty(shopUserArchivesDTOs)) {
