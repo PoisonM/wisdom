@@ -538,6 +538,9 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*长按新建*/
     $scope.onHold = function (index1, index2, type) {
+        if(index2 != null){
+            return;
+        }
         $scope.param.newChangeContent = "新建预约"
         $scope.param.ModifyAppointmentObject.status = "0";//预约订单状态
         $scope.param.ModifyAppointmentObject.ModifyAppointmentData = "";//预约订单时间

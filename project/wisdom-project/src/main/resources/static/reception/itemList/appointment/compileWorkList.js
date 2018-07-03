@@ -18,20 +18,16 @@ PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
                 $scope.tempWeek[i] = ($scope.tempWeek[i].split("||")[0].substr($scope.tempWeek[i].split("||")[0].length-2,2)+","+$scope.tempWeek[i].split("||")[1].replace("星期","周")).split(",")
             }
             $scope.tempUser = data.responseData.responseList
+            console.log(data)
         }
+        //调用固定表头类
+        var tiemInt = setInterval(function () {
+            if ($("#tbTest1 thead tr td").length != 0) {
+                var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                clearTimeout(tiemInt)
+            }
+        }, 100)
     })
-
-
-
-    //调用固定表头类
-    var tiemInt = setInterval(function () {
-        if($("#tbTest1 thead tr td").length != 0){
-            var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-            clearTimeout(tiemInt)
-        }
-    },100)
-
-
 
     $scope.importData = {
         shopClerkSchedule:[],
@@ -76,15 +72,9 @@ PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
             }
         })
     }
-    
-
-
-
-
-
-
-
-
+    $scope.arrangeWorkListBack = function () {
+        window.history.go(-1)
+    }
 
 })
 

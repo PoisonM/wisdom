@@ -30,6 +30,8 @@
     width: 100%;
     overflow: hidden;
     background-color: #ffffff;
+    height: 640px;
+    overflow-y: scroll;
 }
 .consumptionRecord .consumptionRecord_content ul li{
     width: 100%;
