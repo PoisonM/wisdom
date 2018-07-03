@@ -15,6 +15,7 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
 import com.wisdom.timer.client.BusinessServiceClient;
 import com.wisdom.timer.client.UserServiceClient;
+import com.wisdom.timer.mqsender.TimerMessageQueueSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -45,6 +47,9 @@ public class BusinessRunTimeService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private TimerMessageQueueSender timerMessageQueueSender;
 
     @Transactional(rollbackFor = Exception.class)
     public void autoConfirmReceiveProduct() {
@@ -67,44 +72,7 @@ public class BusinessRunTimeService {
         //遍历所有用户的订单支付时间，todo 考虑加一个锁，避免用户凌晨3点下单的时候，造成business_order表死锁
         for(BusinessOrderDTO businessOrder:businessOrderDTOList)
         {
-            Date dt1 = businessOrder.getUpdateDate();
-            //获取15天前的日期
-            Date dt2 = new Date((new Date()).getTime() - (long) ConfigConstant.AUTO_CONFIRM_RECEIVE_PRODUCT_DAY * 24 * 60 * 60 * 1000);
-
-            //用户在15天前已经支付
-            if (dt2.getTime() > dt1.getTime())
-            {
-                RedisLock redisLock = new RedisLock("businessOrder"+businessOrder.getBusinessOrderId());
-                try{
-                    redisLock.lock();
-                    logger.info("用户15天后，自动收货订单={}" ,businessOrder.getBusinessOrderId());
-
-                    String sendProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
-                    businessOrder.setStatus("2");
-                    businessOrder.setUpdateDate(new Date());
-                    businessServiceClient.updateBusinessOrder(businessOrder);
-                    String autoReceiveProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
-
-                    String token = WeixinUtil.getUserToken();
-                    String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
-
-                    UserInfoDTO userInfoDTO = new UserInfoDTO();
-                    userInfoDTO.setId(businessOrder.getSysUserId());
-                    List<UserInfoDTO> userInfoDTOList =  userServiceClient.getUserInfo(userInfoDTO);
-                    if(userInfoDTOList.size()>0)
-                    {
-                        WeixinTemplateMessageUtil.sendOrderConfirmReceiveTemplateWXMessage(businessOrder.getBusinessOrderId(), businessOrder.getBusinessProductName(),
-                                sendProductDate,autoReceiveProductDate,token,url,userInfoDTOList.get(0).getUserOpenid());
-                        logger.info("用户15天后，自动收货发送消息,用户openid={}" ,userInfoDTOList.get(0).getUserOpenid());
-                    }
-                }
-                catch (Exception e) {
-                    logger.info("用户15天后，自动转为收到货物异常,异常信息为{}" +e.getMessage(),e);
-                    throw e;
-                } finally {
-                    redisLock.unlock();
-                }
-            }
+            timerMessageQueueSender.sendConfirmReceiveProduct(businessOrder);
         }
         logger.info("用户15天后，自动转为收到货物,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
@@ -117,52 +85,13 @@ public class BusinessRunTimeService {
         IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
         incomeRecordDTO.setStatus("0");
         List<IncomeRecordDTO> incomeRecordDTOList = businessServiceClient.getUserIncomeRecordInfo(incomeRecordDTO);
-        List<String> transactionIds = new ArrayList<>();
 
         //用户返现解冻
-        this.deFrozenUserReturnMoney(incomeRecordDTOList,transactionIds);
+        this.deFrozenUserReturnMoney(incomeRecordDTOList);
 
         //同级推荐提升逻辑
         this.promoteUserBusinessTypeForRecommend();
         logger.info("用户即时返现解冻和用户等级提升的批量处理,耗时{}毫秒", (System.currentTimeMillis() - startTime));
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void autoMonthlyIncomeCalc() throws UnsupportedEncodingException {
-        long startTime = System.currentTimeMillis();
-        logger.info("月度提成计算==={}开始" , startTime);
-        //加入开关量，证明本月已经完成过月度提成了，不用再次计算
-        Query query = new Query(Criteria.where("year").is(DateUtils.getYear())).addCriteria(Criteria.where("month").is(DateUtils.getMonth()));
-        MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query,MonthlyIncomeSignalDTO.class,"monthlyIncomeSignal");
-        if(monthlyIncomeSignalDTO==null)
-        {
-            monthlyIncomeSignalDTO = new MonthlyIncomeSignalDTO();
-            monthlyIncomeSignalDTO.setYear(DateUtils.getYear());
-            monthlyIncomeSignalDTO.setMonth(DateUtils.getMonth());
-            monthlyIncomeSignalDTO.setOnTimeFinish("false");
-            mongoTemplate.insert(monthlyIncomeSignalDTO,"monthlyIncomeSignal");
-
-            this.monthlyIncomeCalc(ConfigConstant.businessA1);
-
-            this.monthlyIncomeCalc(ConfigConstant.businessB1);
-
-            //操作完毕后，关闭信号量
-            Update update = new Update();
-            update.set("onTimeFinish","true");
-            mongoTemplate.updateFirst(query,update,"monthlyIncomeSignal");
-        }
-        else if(monthlyIncomeSignalDTO.getOnTimeFinish().equals("false"))
-        {
-            this.monthlyIncomeCalc(ConfigConstant.businessA1);
-
-            this.monthlyIncomeCalc(ConfigConstant.businessB1);
-
-            //操作完毕后，关闭信号量
-            Update update = new Update();
-            update.set("onTimeFinish","true");
-            mongoTemplate.updateFirst(query,update,"monthlyIncomeSignal");
-        }
-        logger.info("月度提成计算,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -240,139 +169,9 @@ public class BusinessRunTimeService {
         List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
         for(UserInfoDTO userInfo : userInfoDTOList)
         {
-            UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-            userBusinessTypeDTO.setSysUserId(userInfo.getId());
-            userBusinessTypeDTO.setStatus("1");
-            List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-
-            if(userBusinessTypeDTOS.size()==0)
-            {
-                //为用户创建一个记录
-                userBusinessTypeDTO = new UserBusinessTypeDTO();
-                userBusinessTypeDTO.setId(UUID.randomUUID().toString());
-                userBusinessTypeDTO.setSysUserId(userInfo.getId());
-                userBusinessTypeDTO.setStatus("1");
-                userBusinessTypeDTO.setParentUserId(userInfo.getParentUserId());
-                userBusinessTypeDTO.setUserType(userInfo.getUserType());
-                userBusinessTypeDTO.setCreateDate(new Date());
-                businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
-            }
-            else
-            {
-                userBusinessTypeDTO = userBusinessTypeDTOS.get(0);
-            }
-
-            Date dt1 = userBusinessTypeDTO.getCreateDate();
-            Date dt2 = new Date((new Date()).getTime() - (long) userBusinessTypeDTO.getLivingPeriod() * 24 * 60 * 60 * 1000);
-            Date dt3 = new Date((new Date()).getTime() - (long) (userBusinessTypeDTO.getLivingPeriod()-3) * 24 * 60 * 60 * 1000);
-
-            //用户在365天前已经是目前的等级了
-            if (dt2.getTime() > dt1.getTime())
-            {
-                logger.info("用户在365天前已经是目前的等级了,冻结此账户==={}开始",userBusinessTypeDTO.getSysUserId());
-                userBusinessTypeDTO.setStatus("2");//2表示为冻结状态
-                businessServiceClient.updateUserBusinessType(userBusinessTypeDTO);
-            }
-
-            if(dt3.getTime()> dt1.getTime())
-            {
-                String name = URLDecoder.decode(userInfo.getNickname(),"utf-8");
-                String expDate = DateUtils.DateToStr(dt2);
-                String token = WeixinUtil.getUserToken();
-                String openid = userInfo.getUserOpenid();
-                String url = ConfigConstant.USER_WEB_URL + "myselfCenter";
-                WeixinTemplateMessageUtil.sendBusinessMemberDeadlineTemplateWXMessage(name,expDate,token,url,openid);
-                logger.info("发送用户会员快到期提醒模板");
-            }
+            timerMessageQueueSender.sendFrozenUserType(userInfo);
         }
         logger.info("完成用户的状态冻结的自动化操作,耗时{}毫秒", (System.currentTimeMillis() - startTime));
-    }
-
-    public void monthlyIncomeCalc(String businessType) throws UnsupportedEncodingException {
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setUserType(businessType);
-        userInfoDTO.setDelFlag("0");
-        List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-        String token = WeixinUtil.getUserToken();
-        for(UserInfoDTO userInfo:userInfoDTOList)
-        {
-            float returnMonthlyMoney = 0;
-            float returnMonthlyMoney_A = 0;
-            float returnMonthlyMoney_B = 0;
-
-//            String startDate = "";
-//            String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
-//            if(DateUtils.getMonth().equals("01"))
-//            {
-//                int month = 11;
-//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-//                startDate = year + "-" + month + "-15";
-//            }
-//            else if(DateUtils.getMonth().equals("02"))
-//            {
-//                int month = 12;
-//                int year = Integer.parseInt(DateUtils.getYear()) - 1;
-//                startDate = year + "-" + month + "-15";
-//            }
-//            else{
-//                int month = Integer.parseInt(DateUtils.getMonth()) - 1;
-//                startDate = DateUtils.getYear() + "-" + month + "-15";
-//            }
-
-            String startDate ="2018-05-15 00:00:00";
-            String endDate ="2018-06-09 23:59:59";
-
-            List<MonthTransactionRecordDTO> monthTransactionRecordDTOList =  businessServiceClient.getMonthTransactionRecordByUserId(userInfo.getId(),startDate,endDate);
-
-            for(MonthTransactionRecordDTO monthTransactionRecordDTO:monthTransactionRecordDTOList)
-            {
-                if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessA1))
-                {
-                    returnMonthlyMoney_A = returnMonthlyMoney_A + monthTransactionRecordDTO.getAmount();
-                }
-                else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
-                {
-                    returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
-                }
-            }
-
-            //计算当前用户本月的消费金额
-            if(returnMonthlyMoney_A>0||returnMonthlyMoney_B>0)
-            {
-                returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-
-                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(userInfo.getId());
-                float balance = accountDTO.getBalance() + returnMonthlyMoney;
-                float balanceDeny = accountDTO.getBalanceDeny() + returnMonthlyMoney;
-                accountDTO.setBalance(balance);
-                accountDTO.setBalanceDeny(balanceDeny);
-                accountDTO.setUpdateDate(new Date());
-                businessServiceClient.updateUserAccountInfo(accountDTO);
-
-                IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                incomeRecordDTO.setId(UUID.randomUUID().toString());
-                incomeRecordDTO.setSysUserId(userInfo.getId());
-                incomeRecordDTO.setUserType(userInfo.getUserType());
-                incomeRecordDTO.setNextUserId("");
-                incomeRecordDTO.setNextUserType("");
-                incomeRecordDTO.setAmount(returnMonthlyMoney);
-                incomeRecordDTO.setTransactionAmount(0);
-                incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                incomeRecordDTO.setUpdateDate(new Date());
-                incomeRecordDTO.setCreateDate(new Date());
-                incomeRecordDTO.setStatus("0");
-                incomeRecordDTO.setIdentifyNumber(userInfo.getIdentifyNumber());
-                incomeRecordDTO.setNextUserIdentifyNumber("");
-                incomeRecordDTO.setNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                incomeRecordDTO.setNextUserNickName("");
-                incomeRecordDTO.setIncomeType("month");
-                incomeRecordDTO.setMobile(userInfo.getMobile());
-                incomeRecordDTO.setNextUserMobile("");
-                incomeRecordDTO.setParentRelation("");
-                businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-                //WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(userInfo.getId(),returnMonthlyMoney+"",DateUtils.DateToStr(new Date()),token,"",userInfo.getUserOpenid());
-            }
-        }
     }
 
     public void promoteUserBusinessTypeForRecommend() throws UnsupportedEncodingException {
@@ -383,144 +182,21 @@ public class BusinessRunTimeService {
         userInfoDTO.setDelFlag("0");
         userInfoDTO.setUserType(ConfigConstant.businessB1);
         List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-        String token = WeixinUtil.getUserToken();
         for(UserInfoDTO userInfo : userInfoDTOS)
         {
-            //查询所有下一级的情况
-            UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
-            nextUserInfoDTO.setParentUserId(userInfo.getId());
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
-
-            int recommendBNum = 0;
-            int recommendANum = 0;
-            boolean promoteAFlag = false;
-            for(UserInfoDTO user:userInfoDTOList)
-            {
-                //先确保下线用户的状态没有被冻结，2的话被冻结了
-                UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-                userBusinessTypeDTO.setStatus("1");
-                userBusinessTypeDTO.setSysUserId(user.getId());
-                List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-
-                if(userBusinessTypeDTOS.size()>0)
-                {
-                    if(user.getUserType().equals(ConfigConstant.businessA1))
-                    {
-                        recommendANum = recommendANum + 1;
-                    }
-                    else if(user.getUserType().equals(ConfigConstant.businessB1))
-                    {
-                        recommendBNum = recommendBNum + 1;
-                    }
-                }
-            }
-            logger.info("推荐下级个数==={}" , recommendBNum);
-
-            if((recommendBNum+recommendANum)>=ConfigConstant.RECOMMEND_USER_NUM_REWARD)
-            {
-                promoteAFlag = true;
-            }
-
-            if(promoteAFlag)
-            {
-                logger.info("把老级别变为失效==={}" , userInfo.getId());
-
-                //更新user_business_type表的数据
-                //1、把老级别变为失效
-                UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-                userBusinessTypeDTO.setSysUserId(userInfo.getId());
-                userBusinessTypeDTO.setStatus("1");
-                List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-                if(userBusinessTypeDTOS.size()==0)
-                {
-                    return;
-                }
-                userBusinessTypeDTO = userBusinessTypeDTOS.get(0);
-                userBusinessTypeDTO.setStatus("0");
-                businessServiceClient.updateUserBusinessType(userBusinessTypeDTO);
-
-                //2、级别更新创建新的记录
-                userBusinessTypeDTO = new UserBusinessTypeDTO();
-                userBusinessTypeDTO.setId(UUID.randomUUID().toString());
-                userBusinessTypeDTO.setParentUserId(userInfo.getParentUserId());
-                userBusinessTypeDTO.setSysUserId(userInfo.getId());
-                userBusinessTypeDTO.setUserType(ConfigConstant.businessA1);
-                userBusinessTypeDTO.setStatus("1");
-                userBusinessTypeDTO.setLivingPeriod(ConfigConstant.livingPeriodYear);
-                userBusinessTypeDTO.setCreateDate(new Date());
-                logger.info("级别更新创建新的记录SysUserId={}UserType={}LivingPeriod={}" , userInfo.getId(),ConfigConstant.businessA1,ConfigConstant.livingPeriodYear);
-                businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
-
-                //sys_user表也需要更新
-                logger.info("sys_user表也需要更新==={}" , userInfo.getId());
-                userInfo.setUserType(ConfigConstant.businessA1);
-                userInfo.setNickname(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                userServiceClient.updateUserInfo(userInfo);
-
-                //给B的上一級用户495的即时奖励
-                if(StringUtils.isNotNull(userInfo.getParentUserId()))
-                {
-                    logger.info("给B的上一級用户={}495的即时奖励" ,userInfo.getParentUserId());
-                    UserInfoDTO parentUserInfoDTO = new UserInfoDTO();
-                    parentUserInfoDTO.setId(userInfo.getParentUserId());
-                    List<UserInfoDTO> parentUserInfoList = userServiceClient.getUserInfo(parentUserInfoDTO);
-
-                    if(parentUserInfoList.size()>0)
-                    {
-                        parentUserInfoDTO = parentUserInfoList.get(0);
-
-                        if(ConfigConstant.businessA1.equals(parentUserInfoDTO.getUserType()))
-                        {
-                            AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(parentUserInfoDTO.getId());
-                            float balance  = accountDTO.getBalance() + RECOMMEND_PROMOTE_A1_REWARD;
-                            float balanceDeny  = accountDTO.getBalanceDeny() + RECOMMEND_PROMOTE_A1_REWARD;
-                            accountDTO.setBalance(balance);
-                            accountDTO.setBalanceDeny(balanceDeny);
-                            businessServiceClient.updateUserAccountInfo(accountDTO);
-
-                            IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
-                            incomeRecordDTO.setId(UUID.randomUUID().toString());
-                            incomeRecordDTO.setSysUserId(parentUserInfoDTO.getId());
-                            incomeRecordDTO.setUserType(parentUserInfoDTO.getUserType());
-                            incomeRecordDTO.setNextUserId(userInfo.getId());
-                            incomeRecordDTO.setNextUserType(userInfo.getUserType());
-                            incomeRecordDTO.setAmount(RECOMMEND_PROMOTE_A1_REWARD);
-                            incomeRecordDTO.setTransactionAmount(0);
-                            incomeRecordDTO.setTransactionId(CodeGenUtil.getTransactionCodeNumber());
-                            incomeRecordDTO.setUpdateDate(new Date());
-                            incomeRecordDTO.setCreateDate(new Date());
-                            incomeRecordDTO.setStatus("0");
-                            incomeRecordDTO.setIdentifyNumber(parentUserInfoDTO.getIdentifyNumber());
-                            incomeRecordDTO.setNextUserIdentifyNumber(userInfo.getIdentifyNumber());
-                            incomeRecordDTO.setNickName(URLEncoder.encode(parentUserInfoDTO.getNickname(), "utf-8"));
-                            incomeRecordDTO.setNextUserNickName(URLEncoder.encode(userInfo.getNickname(), "utf-8"));
-                            incomeRecordDTO.setIncomeType("recommend");
-                            incomeRecordDTO.setMobile(parentUserInfoDTO.getMobile());
-                            incomeRecordDTO.setNextUserMobile(userInfo.getMobile());
-                            incomeRecordDTO.setParentRelation(ConfigConstant.businessA1);
-                            businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
-                        }
-                    }
-                }
-                Calendar calendar = Calendar.getInstance();
-                Date date = new Date();
-                calendar.setTime(date);
-                calendar.add(Calendar.YEAR, 1);
-                date = calendar.getTime();
-                WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
-            }
+            timerMessageQueueSender.sendPromoteUserBusinessTypeForRecommend(userInfo);
         }
         logger.info("同级推荐提升逻辑,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
-    public void deFrozenUserReturnMoney(List<IncomeRecordDTO> incomeRecordDTOList, List<String> transactionIds) {
+    public void deFrozenUserReturnMoney(List<IncomeRecordDTO> incomeRecordDTOList) {
         long startTime = System.currentTimeMillis();
         logger.info("用户即时返现解冻==={}开始" , startTime);
         for(IncomeRecordDTO incomeRecord : incomeRecordDTOList)
         {
             try
             {
-                deFrozenIncomeRecord(incomeRecord,transactionIds);
+                timerMessageQueueSender.sendDeFrozenUserReturnMoney(incomeRecord);
             }
             catch (Exception e)
             {
@@ -530,101 +206,6 @@ public class BusinessRunTimeService {
         logger.info("用户即时返现解冻,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
-    @Transactional(readOnly = false)
-    public void deFrozenIncomeRecord(IncomeRecordDTO incomeRecord,List<String> transactionIds){
-        if(!transactionIds.contains(incomeRecord.getTransactionId()))
-        {
-            transactionIds.add(incomeRecord.getTransactionId());
-        }
-
-        boolean operationFlag = true;
-
-        //判断incomeRecord记录中的这个用户的门店是不是处于冻结状态
-        UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
-        userBusinessTypeDTO.setSysUserId(incomeRecord.getSysUserId());
-        userBusinessTypeDTO.setStatus("2");
-        List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-        if(userBusinessTypeDTOS.size()>0)
-        {
-            logger.info("incomeRecord记录中的这个用户={}的门店处于冻结状态" ,incomeRecord.getSysUserId());
-        }
-        else
-        {
-            //判断此记录，是否财务和运营人员，都已经审核通过
-            IncomeRecordManagementDTO incomeRecordManagementDTO = new IncomeRecordManagementDTO();
-            incomeRecordManagementDTO.setIncomeRecordId(incomeRecord.getId());
-            List<IncomeRecordManagementDTO> incomeRecordManagementDTOList = businessServiceClient.getIncomeRecordManagement(incomeRecordManagementDTO);
-            if(incomeRecordManagementDTOList.size()!=2)
-            {
-                logger.info("此记录={}，财务和运营人员，未审核通过" , incomeRecord.getId());
-                operationFlag = false;
-            }
-            else
-            {
-
-                int incomeRecordManagementNum = 0;
-                for(IncomeRecordManagementDTO incomeRecordManagement:incomeRecordManagementDTOList)
-                {
-                    if(incomeRecordManagement.getUserType().equals(ConfigConstant.financeMember))
-                    {
-                        incomeRecordManagementNum++;
-                    }
-                    if(incomeRecordManagement.getUserType().equals(ConfigConstant.operationMember))
-                    {
-                        incomeRecordManagementNum++;
-                    }
-                }
-                if(incomeRecordManagementNum!=2)
-                {
-                    logger.info("此记录={}，财务和运营人员，未审核通过" , incomeRecord.getId());
-                    operationFlag = false;
-                }
-            }
-
-            if(operationFlag)
-            {
-                //用户资金解冻和级别提升返现，和推荐奖励，以及月度返利的所有操作，加一把锁
-                RedisLock redisLock = new RedisLock("userReturnMoneyDeLock"+incomeRecord.getSysUserId());
-                try
-                {
-                    redisLock.lock();
-
-                    //解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻
-                    float balanceDeny = incomeRecord.getAmount();
-                    logger.info("balanceDeny={}" , balanceDeny);
-                    AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(incomeRecord.getSysUserId());
-                    balanceDeny = accountDTO.getBalanceDeny() - balanceDeny;
-                    logger.info("balanceDeny={}" , balanceDeny);
-                    if(balanceDeny==0)
-                    {
-                        balanceDeny = balanceDeny + (float)0.0001;
-                    }
-                    if(balanceDeny<0)
-                    {
-                        AccountDTO exceptionDTO = null;
-                        exceptionDTO.getId();
-                    }
-                    logger.info("balanceDeny={}" , balanceDeny);
-                    accountDTO.setBalanceDeny(balanceDeny);
-                    accountDTO.setUpdateDate(new Date());
-                    businessServiceClient.updateUserAccountInfo(accountDTO);
-
-                    incomeRecord.setStatus("1");
-                    incomeRecord.setUpdateDate(new Date());
-                    businessServiceClient.updateIncomeInfo(incomeRecord);
-                }catch (Exception e){
-                    logger.info("解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻异常,异常信息为={}" +e.getMessage(),e);
-                    e.printStackTrace();
-                    throw e;
-                }
-                finally {
-                    redisLock.unlock();
-                }
-            }
-        }
-    }
-
-
     /**
      *手动跑月度
      *
@@ -632,23 +213,22 @@ public class BusinessRunTimeService {
      *
      * */
     public void monthlyIncomeCalcM(String businessType,Date startDateM ,Date endDateM,Date startRangeM ,Date endRangeM)throws Exception{
-
-            UserInfoDTO userInfoDTO = new UserInfoDTO();
-            userInfoDTO.setUserType(businessType);
-            userInfoDTO.setDelFlag("0");
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
-            for(UserInfoDTO userInfo:userInfoDTOList) {
-                float returnMoney = this.getOneDayMonthMoney(userInfo,startDateM,endDateM);
-                if(returnMoney>0){
-                    try{
-                        this.insertIncome(returnMoney,userInfo,startRangeM,endRangeM);
-                    }catch (Exception e){
-                        logger.info("用户"+userInfo.getMobile()+"startDateM"+"-"+"endDateM"+"插入月度返利表出问题");
-                        System.out.println(e.getMessage());
-                        this.insertMonthlyIncomeError(startDateM,userInfo,businessType,e.getMessage());
-                    }
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setUserType(businessType);
+        userInfoDTO.setDelFlag("0");
+        List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+        for(UserInfoDTO userInfo:userInfoDTOList) {
+            float returnMoney = this.getOneDayMonthMoney(userInfo,startDateM,endDateM);
+            if(returnMoney>0){
+                try{
+                    this.insertIncome(returnMoney,userInfo,startRangeM,endRangeM);
+                }catch (Exception e){
+                    logger.info("用户"+userInfo.getMobile()+"startDateM"+"-"+"endDateM"+"插入月度返利表出问题");
+                    System.out.println(e.getMessage());
+                    this.insertMonthlyIncomeError(startDateM,userInfo,businessType,e.getMessage());
                 }
             }
+        }
     }
 
     /**
@@ -657,7 +237,6 @@ public class BusinessRunTimeService {
      *
      * */
     public void MTMonthlyIncomeCalc(String businessType,Date startDateM ,Date endDateM,String isPullMessage,String key) throws Exception{
-
 
         logger.info("准备处理"+startDateM+"到"+endDateM+"时间段"+businessType+"的月度");
 
@@ -1105,8 +684,6 @@ public class BusinessRunTimeService {
      * */
     public void sendWeixinMessage(String businessType,Date startRangeM ,Date endRangeM,String isPullMessage){
 
-        String token = WeixinUtil.getUserToken();
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         StringBuilder sb = new StringBuilder();
         sb.append(sdf.format(startRangeM)).append("-").append(sdf.format(endRangeM));
@@ -1138,10 +715,75 @@ public class BusinessRunTimeService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void autoMonthlyIncomeCalc() throws Exception {
 
+        //加入开关量，证明本月已经完成过月度提成了，不用再次计算
+        Query query = new Query(Criteria.where("year").is(DateUtils.getYear())).addCriteria(Criteria.where("month").is(DateUtils.getMonth()));
+        MonthlyIncomeSignalDTO monthlyIncomeSignalDTO = mongoTemplate.findOne(query,MonthlyIncomeSignalDTO.class,"monthlyIncomeSignal");
+        if(monthlyIncomeSignalDTO==null)
+        {
+            monthlyIncomeSignalDTO = new MonthlyIncomeSignalDTO();
+            monthlyIncomeSignalDTO.setYear(DateUtils.getYear());
+            monthlyIncomeSignalDTO.setMonth(DateUtils.getMonth());
+            monthlyIncomeSignalDTO.setOnTimeFinish("false");
+            mongoTemplate.insert(monthlyIncomeSignalDTO,"monthlyIncomeSignal");
 
+            this.monthlyIncomeCalc(ConfigConstant.businessA1);
 
+            this.monthlyIncomeCalc(ConfigConstant.businessB1);
 
+            //操作完毕后，关闭信号量
+            Update update = new Update();
+            update.set("onTimeFinish","true");
+            mongoTemplate.updateFirst(query,update,"monthlyIncomeSignal");
+        }
+        else if(monthlyIncomeSignalDTO.getOnTimeFinish().equals("false"))
+        {
+            this.monthlyIncomeCalc(ConfigConstant.businessA1);
+
+            this.monthlyIncomeCalc(ConfigConstant.businessB1);
+
+            //操作完毕后，关闭信号量
+            Update update = new Update();
+            update.set("onTimeFinish","true");
+            mongoTemplate.updateFirst(query,update,"monthlyIncomeSignal");
+        }
+    }
+
+    public void monthlyIncomeCalc(String businessType) throws Exception {
+
+        String startDate = "";
+        String endDate = DateUtils.getYear()+"-" + DateUtils.getMonth()+"-"+"15";
+        if(DateUtils.getMonth().equals("01"))
+        {
+            int month = 11;
+            int year = Integer.parseInt(DateUtils.getYear()) - 1;
+            startDate = year + "-" + month + "-15";
+        }
+        else if(DateUtils.getMonth().equals("02"))
+        {
+            int month = 12;
+            int year = Integer.parseInt(DateUtils.getYear()) - 1;
+            startDate = year + "-" + month + "-15";
+        }
+        else{
+            int month = Integer.parseInt(DateUtils.getMonth()) - 1;
+            startDate = DateUtils.getYear() + "-" + month + "-15";
+        }
+
+        String key = UUID.randomUUID().toString();
+        JedisUtils.set(key,"false",48000);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date start = sdf.parse(startDate);
+            Date end = sdf.parse(endDate);
+            this.MTMonthlyIncomeCalc(businessType,start,end,"0",key);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
