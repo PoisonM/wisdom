@@ -5,7 +5,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
             $scope.selFlag =true;
             $scope.setFlag = false;
             $scope.$on('$ionicView.enter', function() {
-            })
+            });
 
 
             $rootScope.settingAddsome.product ={
@@ -171,6 +171,10 @@ angular.module('controllers',[]).controller('addProductCtrl',
             }
             /*选择系列*/
             $scope.selectionSeriesGo=function(){
+                if($rootScope.settingAddsome.product.productTypeOneId==''){
+                    alert("请先选择品牌")
+                    return
+                }
                 $state.go("selectionSeries",{url:'addProduct'})
             }
             /*选择规格*/
