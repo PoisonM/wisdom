@@ -38,7 +38,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
                     }else{
                         $scope.param.endDate = $filter('date')(val, 'yyyy-MM-dd');
-                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd')+'23:59:59'
+                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd')+' 23:59:59'
                     }
 
 

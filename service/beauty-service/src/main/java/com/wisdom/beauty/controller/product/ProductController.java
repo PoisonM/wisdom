@@ -127,10 +127,16 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct(@RequestParam(required = false) String status) {
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
         shopProductTypeDTO.setStatus(status);
-        shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        if(sysClerkDTO!=null){
+            shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        }
+        if(sysBossDTO!=null){
+            shopProductTypeDTO.setSysShopId(sysBossDTO.getCurrentShopId());
+        }
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -238,11 +244,11 @@ public class ProductController {
                                                                 @RequestParam(required = false) String productName,
                                                                 @RequestParam int pageSize, @RequestParam(required = false) String status) {
 
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String shopId = redisUtils.getShopId();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
 
-        shopProductInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        shopProductInfoDTO.setSysShopId(shopId);
         shopProductInfoDTO.setProductTypeOneId(productTypeOneId);
         shopProductInfoDTO.setProductTypeTwoId(productTypeTwoId);
         shopProductInfoDTO.setProductName(productName);
