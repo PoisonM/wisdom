@@ -12,7 +12,8 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
                 startDate : BossUtil.getNowFormatDate(),
                 date:$stateParams.date,
                 sysShopId:$stateParams.sysShopId,
-                sysClerkId:$stateParams.sysClerkId
+                sysClerkId:$stateParams.sysClerkId,
+                nameType:$stateParams.nameType
             }
             $scope.param.date=$scope.param.date.replace(/00/g,'')
             $scope.param.date=$scope.param.date.replace(/:/g,'')

@@ -174,7 +174,7 @@ define(['appBoss'], function(app){
                 /*唯美度养生会所 全部家人*/
 
                     .state('beautyAll', {
-                        url: '/beautyAll/:sysShopId/:date,:sysClerkId',
+                        url: '/beautyAll/:sysShopId/:date,:sysClerkId,:nameType',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyAllCtrl',
                         resolve: {
