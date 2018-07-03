@@ -190,4 +190,5 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
         }
 
     };
+
 });
