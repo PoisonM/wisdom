@@ -1,17 +1,14 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
-import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserProductRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -39,9 +36,6 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 
 	@Autowired
 	private ShopUserProductRelationMapper shopUserProductRelationMapper;
-
-	@Autowired
-	private UserServiceClient userServiceClient;
 
 	@Autowired
 	private ExtShopUserProductRelationMapper extShopUserProductRelationMapper;
