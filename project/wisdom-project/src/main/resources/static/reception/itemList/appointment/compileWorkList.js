@@ -21,12 +21,11 @@ PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
             console.log(data)
         }
         //调用固定表头类
-        var tiemInt = setInterval(function () {
+        setTimeout(function () {
             if ($("#tbTest1 thead tr td").length != 0) {
                 var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-                clearTimeout(tiemInt)
             }
-        }, 100)
+        },100)
     })
 
     $scope.importData = {
