@@ -185,7 +185,7 @@ public class TimerMessageQueueReceiver {
         }
     }
 
-    @RabbitListener(queues = "sendFrozenUserType")
+    @RabbitListener(queues = "frozenUserType")
     @RabbitHandler
     public void processFrozenUserType(String sendFrozenUserType) {
         UserInfoDTO userInfo = gson.fromJson(sendFrozenUserType, UserInfoDTO.class);
