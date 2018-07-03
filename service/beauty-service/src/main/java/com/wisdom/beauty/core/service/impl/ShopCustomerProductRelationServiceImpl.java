@@ -1,17 +1,14 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopProductInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationCriteria;
 import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO;
-import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ExtShopUserProductRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
 import com.wisdom.beauty.core.service.ShopCustomerProductRelationService;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
-import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -39,9 +36,6 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 
 	@Autowired
 	private ShopUserProductRelationMapper shopUserProductRelationMapper;
-
-	@Autowired
-	private UserServiceClient userServiceClient;
 
 	@Autowired
 	private ExtShopUserProductRelationMapper extShopUserProductRelationMapper;
@@ -73,7 +67,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 	@Override
 	public List<UserProductRelationResponseDTO> getShopUserProductRelations(String sysShopId, String searchFile) {
 		logger.info("getShopProductInfo方法传入的参数,searchFile={}", searchFile);
-		Map<String, String> mapFile = new HashMap();
+		Map<String, String> mapFile = new HashMap(16);
 		mapFile.put("sysShopId", sysShopId);
 		if (StringUtils.isNotBlank(searchFile)) {
 			mapFile.put("searchFile", "%" + searchFile + "%");
@@ -92,7 +86,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 	@Override
 	public Map<String, Object> getWaitReceivePeopleAndNumber(String sysShopId) {
 		logger.info("getWaitReceivePeopleAndNumber方法传入的参数,sysShopId={}", sysShopId);
-		Map<String, String> mapFile = new HashMap();
+		Map<String, String> mapFile = new HashMap(16);
 		mapFile.put("sysShopId", sysShopId);
 		mapFile.put("searchFile", null);
 		List<UserProductRelationResponseDTO> list = extShopUserProductRelationMapper.getWaitReceiveNumber(mapFile);
@@ -109,7 +103,7 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 			totalWaitReceiveNumber = totalWaitReceiveNumber + userProductRelationResponse.getWaitReceiveNumber();
 		}
 
-		Map<String, Object> mapResponse = new HashMap<>();
+		Map<String, Object> mapResponse = new HashMap<>(16);
 		mapResponse.put("totalWaitReceiveNumber", totalWaitReceiveNumber);
 		mapResponse.put("totalWaitReceivePeople", totalWaitReceivePeople);
 

@@ -2,18 +2,18 @@
     <ion-content class="partialFiles">
         <div>
             <ion-list ng-show="!param.picFlag">
-                <ion-item style="height:70px;" class="row" ng-repeat="item in recordCashier" ng-click="goDrawCardRecordsDetail(item.flowNo)">
-                    <div class="col col-90">
+                <ion-item style="height:70px;" class="" ng-repeat="item in recordCashier" ng-click="goDrawCardRecordsDetail(item.flowNo)">
+                    <div class="">
                         <p class="fs15 col666 ml10 " style="margin-top:2px;">{{item.createDate|date:'yyyy-MM-dd'}}</p>
-                        <div class="fs15 col333 ml10" style="margin-top:-8px;">
-                            <p style="display: inline-block;padding-left:0" class="col col-33">{{item.flowName}}</p>
-                            <p style="display: inline-block;width:30px;" calss="">{{item.consumeNumber}}次 </p>
-                            <p style="display: inline-block" class="col col-50"><span ng-repeat="items in item.sysClerkNameList" >{{items}}</span>（{{item.sysShopName}}）</p>
+                        <div class="fs15 col333 ml10 row" style="margin-top:-8px;margin-left:0">
+                            <p style="" class="col col-33">{{item.flowName}}</p>
+                            <p style="" class="ml10 col col-15">{{item.consumeNumber}}次 </p>
+                            <p style="" class="col col-50"><span ng-repeat="items in item.sysClerkNameList" >{{items}}</span>（{{item.sysShopName}}）</p>
                         </div>
                     </div>
-                    <p class="col col-10 fs16 col333" style="line-height: 70px">
-                        <img ng-src="item.signUrl" style="width:30px;height:30px;display: block;margin-right:10px;margin-top:10px;" ng-if="item.signUrl!=null&&ion-contentitem.signUrl!=''">
-                    </p>
+                   <!-- <p class="col col-10 fs16 col333" style="line-height: 70px">
+                        <img ng-src="item.signUrl" style="width:30px;height:30px;display: block;margin-right:10px;margin-top:10px;" ng-if="item.signUrl!=null&&item.signUrl!=''">
+                    </p>-->
                 </ion-item>
             </ion-list>
         </div>

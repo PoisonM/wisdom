@@ -60,8 +60,6 @@ public class ConsumeTest {
 
     @Autowired
     private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
-    @Autowired
-    private ExtShopUserConsumeRecordMapper extShopUserConsumeRecordMapper;
 
     @Autowired
     private ShopUerConsumeRecordService shopUerConsumeRecordService;

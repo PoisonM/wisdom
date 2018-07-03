@@ -1,16 +1,24 @@
 <div class="detailsWrap">
     <!--轮播图-->
-    <div class="swiper-container ">
+    <!--<div class="swiper-container ">
         <div class="swiper-wrapper">
-            <div ng-repeat="imgSrc in projectInformation.imageList" data-sss="{{projectInformation.imageList}}"
-                 class="swiper-slide">
+            <div ng-repeat="imgSrc in projectInformation.imageList" class="swiper-slide">
                 <img ng-src="{{imgSrc}}" alt="">
             </div>
         </div>
         <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    </div>-->
+
+    <div class="swiper-container" style=" width: 100%">
+        <div  class="swiper-wrapper">
+            <div class="swiper-slide" ng-repeat="imgSrc in projectInformation.imageList track by $index">
+                <img ng-src="{{imgSrc}}" alt="" style="display: block;width: 100%;height: 100%">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
     </div>
     <!-项目详情-描述-->
-    <div class="projectDescribe">
+    <div class="projectDescribe"style="overflow-y:scroll;height:6rem;overflow-x:hidden;padding-bottom: 44px;">
         <div class="describeTwo">
             <div class="p32">
                 <p>

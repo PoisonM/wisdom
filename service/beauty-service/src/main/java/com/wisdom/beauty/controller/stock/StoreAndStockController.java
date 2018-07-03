@@ -144,9 +144,7 @@ public class StoreAndStockController {
 		StringBuilder sbEndTime = new StringBuilder();
 		sbEndTime.append(endTime).append(" ").append("23:59:59");
 		PageParamVoDTO<ShopStockRecordDTO> pageParamVoDTO = new PageParamVoDTO<>();
-		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
-		shopStockRecordDTO.setSysBossCode(sysBossDTO.getId());
 		shopStockRecordDTO.setShopStoreId(shopStockRecordRequestDTO.getShopStoreId());
 		shopStockRecordDTO.setStockStyle(shopStockRecordRequestDTO.getStockStyle());
 

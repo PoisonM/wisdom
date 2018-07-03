@@ -32,7 +32,7 @@ angular.module('controllers',[]).controller('productDtailsCtrl',
 
             $scope.getInfos = function () {
                 var userConsumeRequestDTO = {
-                    consumeType:1,
+                    consumeType:'0',
                     flowId:$stateParams.flowId,
                     goodsType:'4'
                 };

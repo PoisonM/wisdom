@@ -85,6 +85,10 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
+		
+		if(StringUtils.isNotBlank(shopProductInfoDTO.getStatus())){
+		    criteria.andStatusEqualTo(shopProductInfoDTO.getStatus());
+		}
 
 		List<ShopProductInfoDTO> shopProductInfoDTOS = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
 		return shopProductInfoDTOS;
@@ -164,6 +168,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
 			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
 		}
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getStatus())){
+			criteria.andStatusEqualTo(shopProductTypeDTO.getStatus());
+		}
 		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
 		return list;
 	}
@@ -227,6 +234,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
+		if (StringUtils.isNotBlank(shopProductInfoDTO.getStatus())) {
+			criteria.andStatusEqualTo(shopProductInfoDTO.getStatus());
+		}
 		List<ShopProductInfoDTO> list = shopProductInfoMapper.selectByCriteria(shopProductInfoCriteria);
 
 		List<ShopProductInfoResponseDTO> respon = new ArrayList<>();
@@ -236,7 +246,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		}
 		//获取产品的库存量
 		List<ShopStockNumberDTO> shopStockNumberList= shopStockService.getStockNumberList(shopProductInfoDTO.getSysShopId(), shopProcIds);
-		Map<String,Integer> shopStockNumberMap=new HashMap<>();
+		Map<String,Integer> shopStockNumberMap=new HashMap<>(16);
 		if(CollectionUtils.isNotEmpty(shopStockNumberList)){
 			for (ShopStockNumberDTO dto:shopStockNumberList){
 				shopStockNumberMap.put(dto.getShopProcId(),dto.getStockNumber());
@@ -398,6 +408,26 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (CommonUtils.objectIsEmpty(shopProductTypeDTOS) || StringUtils.isBlank(shopProductTypeDTOS.getId())) {
 			logger.error("{}", "shopProductTypeDTOS = [" + shopProductTypeDTOS + "]");
 			return 0;
+		}
+		String status = shopProductTypeDTOS.getStatus();
+		String oneId = shopProductTypeDTOS.getId();
+		//修改二级类别和三级产品的状态
+		if(StringUtils.isBlank(shopProductTypeDTOS.getParentId()) && StringUtils.isNotBlank(status)){
+			//产品
+			ShopProductInfoDTO shopProjectInfoDTO = new ShopProductInfoDTO();
+			shopProjectInfoDTO.setStatus(status);
+
+			ShopProductInfoCriteria productInfoCriteria = new ShopProductInfoCriteria();
+			ShopProductInfoCriteria.Criteria c = productInfoCriteria.createCriteria();
+			c.andProductTypeOneIdEqualTo(oneId);
+			shopProductInfoMapper.updateByCriteriaSelective(shopProjectInfoDTO,productInfoCriteria);
+			//二级类别
+			ShopProductTypeDTO twoLevel = new ShopProductTypeDTO();
+			twoLevel.setStatus(status);
+			ShopProductTypeCriteria criteria = new ShopProductTypeCriteria();
+			ShopProductTypeCriteria.Criteria cc = criteria.createCriteria();
+			cc.andParentIdEqualTo(oneId);
+			shopProductTypeMapper.updateByCriteriaSelective(twoLevel,criteria);
 		}
 		shopProductTypeDTOS.setUpdateDate(new Date());
 		return shopProductTypeMapper.updateByPrimaryKeySelective(shopProductTypeDTOS);

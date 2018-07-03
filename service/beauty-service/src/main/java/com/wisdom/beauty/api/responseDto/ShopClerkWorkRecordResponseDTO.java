@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * Created by zhanghuan on 2018/5/31.
  * 员工工作业绩返回对象
  */
-public class ShopClerkWorkRecordResponseDTO extends ShopClerkWorkRecordDTO {
+public class ShopClerkWorkRecordResponseDTO extends ShopClerkWorkRecordDTO  implements Comparable<ShopClerkWorkRecordResponseDTO>{
     /**
      * 总金额
      */
@@ -28,5 +28,14 @@ public class ShopClerkWorkRecordResponseDTO extends ShopClerkWorkRecordDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public int compareTo(ShopClerkWorkRecordResponseDTO o) {
+        if(this.getCreateDate().getTime()-o.getCreateDate().getTime()>0){
+            return -1;
+        }else {
+            return  1;
+        }
     }
 }

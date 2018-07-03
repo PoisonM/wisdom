@@ -160,15 +160,15 @@ PADWeb.controller('makeSureOrderCtrl', function($scope,$rootScope,$stateParams, 
         //套卡价格
         $scope.orderPrice = 0;
         angular.forEach($scope.projectGroupRelRelationDTOS, function(data){
-            $scope.orderPrice = Number(data.projectInitAmount*data.projectInitTimes) + Number($scope.orderPrice)
+            $scope.orderPrice = Number(data.discountPrice*data.projectInitTimes) + Number($scope.orderPrice)
         });
         //项目价格
         angular.forEach($scope.shopUserProjectRelationDTOS, function(data,index,array){
-            $scope.orderPrice = Number(data.sysShopProjectInitAmount*data.sysShopProjectInitTimes)+ Number($scope.orderPrice)
+            $scope.orderPrice = Number(data.discountPrice*data.sysShopProjectInitTimes)+ Number($scope.orderPrice)
         });
         //产品价格
         angular.forEach($scope.shopUserProductRelationDTOS, function(data,index,array){
-            $scope.orderPrice = Number(data.initAmount*data.initTimes)+ Number($scope.orderPrice)
+            $scope.orderPrice = Number(data.discountPrice*data.initTimes)+ Number($scope.orderPrice)
         });
 
     }

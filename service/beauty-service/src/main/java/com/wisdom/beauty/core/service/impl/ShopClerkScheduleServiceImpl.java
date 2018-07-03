@@ -128,7 +128,7 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
         if (CommonUtils.objectIsEmpty(shopScheduleSettingDTOS)) {
             ShopScheduleSettingDTO settingDTO = new ShopScheduleSettingDTO();
             settingDTO.setSysShopId(UserUtils.getBossInfo().getCurrentShopId());
-            settingDTO.setCreateBy(UserUtils.getBossInfo().getId());
+            settingDTO.setCreateBy(UserUtils.getBossInfo().getName());
             settingDTO.setStatus(CommonCodeEnum.ENABLED.getCode());
             settingDTO.setCreateDate(new Date());
             settingDTO.setSysBossCode(UserUtils.getBossInfo().getId());

@@ -61,6 +61,8 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.push(data.responseData)
+                            }else{
+                                alert("请重新上传")
                             }
 
                         })
@@ -75,6 +77,14 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             };
             $scope.delPic = function(index){
                 $rootScope.settingAddsome.extShopProjectInfoDTO.imageList.splice(index,1)
+            };
+            $scope.projectTheLength = function (type) {
+                if(type==0){
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1==30)return
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1-30
+                }else{
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1+30
+                }
             }
             /*点击保存调取接口*/
 
@@ -93,6 +103,8 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                 UpdateProjectInfo.save($scope.settingAddsome.extShopProjectInfoDTO,function (data) {
                     if(data.result=="0x00001"){
                       $state.go("projectList")
+                    }else{
+                        alert("保存未成功")
                     }
                 })
             }

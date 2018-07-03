@@ -60,11 +60,11 @@ angular.module('controllers',[]).controller('treatmentCardCtrl',
                             $scope.treatmentCard.push($scope.arr[i])
                         }
                     }
-                    if($scope.treatmentCard.length<=0){
-                        $scope.param.picFlag=true;
-                    }else{
-                        $scope.param.picFlag=false;
-                    }
+                }
+                if($scope.treatmentCard.length<=0){
+                    $scope.param.picFlag=true;
+                }else{
+                    $scope.param.picFlag=false;
                 }
 
             };

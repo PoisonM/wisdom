@@ -44,8 +44,15 @@ public class OfflineProductService {
         offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
         if(productDTO!=null)
         {
+            String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
             productDTO.setProductDetail(offlineProductDTO);
+            if(offlineProductDTO!=null)
+            {
+                int sell = Integer.parseInt(sellNum) * 8;
+                offlineProductDTO.setProductSalesVolume(sell+"");
+            }
         }
+
 
         return productDTO;
     }

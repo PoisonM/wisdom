@@ -31,12 +31,16 @@ angular.module('controllers',[]).controller('projectSettingCtrl',
                     SaveShopProjectType.save({projectTypeName:$scope.param.projectTypeName,status:status},function (data) {
                         if(data.result=="0x00001"){
                             $state.go("projectBrand")
+                        }else{
+                            alert("保存未成功")
                         }
                     });
                 }else if($scope.param.editType=="edit"){
                     UpdateOneLevelProjectType.save({id:$scope.param.id,projectTypeName:$scope.param.projectTypeName,status:status},function (data) {
                         if(data.result=="0x00001"){
                             $state.go("projectBrand")
+                        }else{
+                            alert("保存未成功")
                         }
                     })
                 }

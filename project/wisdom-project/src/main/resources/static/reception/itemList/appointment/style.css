@@ -131,12 +131,36 @@ left:50%;
 top:50%;
 margin-top:px2rem(888/2);
 margin-left:px2rem(1110/2);*/ }
-.trueAppointment .LisMess ul li { display: flex; justify-content: space-between; height: 0.78125rem; line-height: 0.78125rem; background: #ffffff; border-bottom: solid 1px #e5e5e5; }
+.trueAppointment .LisMess ul li {
+    display: flex;
+    justify-content: space-between;
+    /*height: 0.78125rem;*/
+    line-height: 0.78125rem;
+    background: #ffffff;
+    border-bottom: solid 1px #e5e5e5;
+    padding-bottom: 20px;
+    position: relative;
+}
+.trueAppointment .LisMess ul li .box_detail{
+    position: absolute;
+    color: #888888;
+    bottom: -5px;
+    left: 40px;
+    width: 80%;
+    height: 45px;
+    overflow: hidden;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .trueAppointment .LisMess ul li img {
     display: inline-block;
     margin-left: 0.23438rem;
     vertical-align: middle;
     margin-bottom: 8px;
+    width: 12px;
+    height: 12px;
 }
 .trueAppointment .LisMess ul li .name {
     margin-left: 0.15625rem;

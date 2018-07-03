@@ -2,6 +2,7 @@
     width: 100%;
     height: 100%;
     overflow-y: scroll;
+    overflow-x: hidden;
     background-color: #F2F2F2;
 }
 .drawCardConsumption_box{

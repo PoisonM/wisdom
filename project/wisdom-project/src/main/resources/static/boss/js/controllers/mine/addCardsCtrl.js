@@ -125,9 +125,9 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 $scope.param.type = type
             }
             $scope.numMarkerPrice = function () {
-                $rootScope.settingAddsome.editorCard.marketPrice =0
+                $rootScope.settingAddsome.editorCard.initialPrice =0
                 for(var i=0;i<$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length;i++){
-                    $rootScope.settingAddsome.editorCard.marketPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].marketPrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
+                    $rootScope.settingAddsome.editorCard.initialPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].initialPrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
                 }
             }
             $scope.save=function(){
@@ -137,7 +137,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                     $rootScope.settingAddsome.editorCard.status ='1'
                 }
                 console.log($rootScope.settingAddsome.editorCard)
-                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.discountPrice ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS==null){
+                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.initialPrice ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''|| $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS==null){
                     alert('信息不完整');
                     return
                 }
@@ -155,6 +155,19 @@ angular.module('controllers',[]).controller('addCardsCtrl',
                 SaveProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")
+                        $rootScope.settingAddsome.editorCard = {
+                            projectGroupName:'',
+                            shopProjectInfoDTOS:null,
+                            imageList:[],
+                            marketPrice:"",
+                            discountPrice:'',
+                            expirationDate:$filter('date')(new Date(), 'yyyy-MM-dd'),
+                            detail:'',
+                            status:'',
+                            effectiveDate:$filter('date')(new Date(), 'yyyy-MM-dd')
+                        }
+                    }else{
+                        alert("保存未成功")
                     }
                 })
             }

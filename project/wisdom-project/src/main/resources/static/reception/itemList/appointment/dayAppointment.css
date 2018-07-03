@@ -129,7 +129,7 @@
     margin-right: 4px;
 }
 .dayAppointment .complex_table table thead .info_num span:nth-child(1) i{
-    border-right: 1px solid #999;
+    /*border-right: 1px solid #999;*/
     padding-right: 5px;
 }
 
@@ -262,6 +262,17 @@
     font-size: 9px;
     /*color: #666666;*/
 }
+.dayAppointment .week_right_box .infoitem_sty .hidenInfo{
+    white-space: nowrap;  /*强制span不换行*/
+    display: inline-block;  /*将span当做块级元素对待*/
+    width: 82px;  /*限制宽度*/
+    overflow: hidden;  /*超出宽度部分隐藏*/
+    text-overflow: ellipsis;  /*超出部分以点号代替*/
+    line-height: 0.9;  /*数字与之前的文字对齐*/
+    height: 11px;
+}
+
+
 .dayAppointment .week_right_box .infoitem_sty .info_sty .ovInfo{
     overflow: hidden;
 }

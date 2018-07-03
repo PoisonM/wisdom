@@ -143,9 +143,9 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 $scope.param.type = type
             }
             $scope.numMarkerPrice = function () {
-                $rootScope.settingAddsome.editorCard.marketPrice =0
+                $rootScope.settingAddsome.editorCard.initialPrice =0
                 for(var i=0;i<$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length;i++){
-                    $rootScope.settingAddsome.editorCard.marketPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].marketPrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
+                    $rootScope.settingAddsome.editorCard.initialPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].initialPrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
                 }
             }
             $scope.save = function (type) {
@@ -159,7 +159,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                          $rootScope.settingAddsome.editorCard.status ='1'
                      }
                 }
-                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.marketPrice ==null||$rootScope.settingAddsome.editorCard.marketPrice ==null){
+                if($rootScope.settingAddsome.editorCard.projectGroupName =="" || $rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length<=0|| $rootScope.settingAddsome.editorCard.initialPrice ==''|| $rootScope.settingAddsome.editorCard.marketPrice ==''|| $rootScope.settingAddsome.editorCard.effectiveDate ==''|| $rootScope.settingAddsome.editorCard.expirationDate ==''||$rootScope.settingAddsome.editorCard.initialPrice ==null||$rootScope.settingAddsome.editorCard.marketPrice ==null){
                     alert('信息不完整');
                     return
                 }
@@ -178,6 +178,8 @@ angular.module('controllers',[]).controller('editorCardCtrl',
                 UpdateProjectGroupInfo.save( $rootScope.settingAddsome.editorCard,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go('cardList')
+                    }else{
+                        alert("保存未成功")
                     }
 
                 })

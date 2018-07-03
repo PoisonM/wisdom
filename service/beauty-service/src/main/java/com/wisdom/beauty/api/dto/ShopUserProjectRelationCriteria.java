@@ -686,6 +686,66 @@ public class ShopUserProjectRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andDiscountPriceIsNull() {
+            addCriterion("discount_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIsNotNull() {
+            addCriterion("discount_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceEqualTo(BigDecimal value) {
+            addCriterion("discount_price =", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotEqualTo(BigDecimal value) {
+            addCriterion("discount_price <>", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceGreaterThan(BigDecimal value) {
+            addCriterion("discount_price >", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("discount_price >=", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceLessThan(BigDecimal value) {
+            addCriterion("discount_price <", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("discount_price <=", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIn(List<BigDecimal> values) {
+            addCriterion("discount_price in", values, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotIn(List<BigDecimal> values) {
+            addCriterion("discount_price not in", values, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("discount_price between", value1, value2, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("discount_price not between", value1, value2, "discountPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andDiscountIsNull() {
             addCriterion("discount is null");
             return (Criteria) this;
@@ -1493,6 +1553,76 @@ public class ShopUserProjectRelationCriteria {
 
         public Criteria andInvalidDaysNotBetween(Date value1, Date value2) {
             addCriterion("invalid_days not between", value1, value2, "invalidDays");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNull() {
+            addCriterion("detail is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIsNotNull() {
+            addCriterion("detail is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailEqualTo(String value) {
+            addCriterion("detail =", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotEqualTo(String value) {
+            addCriterion("detail <>", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThan(String value) {
+            addCriterion("detail >", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailGreaterThanOrEqualTo(String value) {
+            addCriterion("detail >=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThan(String value) {
+            addCriterion("detail <", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLessThanOrEqualTo(String value) {
+            addCriterion("detail <=", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailLike(String value) {
+            addCriterion("detail like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotLike(String value) {
+            addCriterion("detail not like", value, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailIn(List<String> values) {
+            addCriterion("detail in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotIn(List<String> values) {
+            addCriterion("detail not in", values, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailBetween(String value1, String value2) {
+            addCriterion("detail between", value1, value2, "detail");
+            return (Criteria) this;
+        }
+
+        public Criteria andDetailNotBetween(String value1, String value2) {
+            addCriterion("detail not between", value1, value2, "detail");
             return (Criteria) this;
         }
 

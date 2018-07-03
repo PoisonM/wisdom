@@ -134,19 +134,15 @@ public class ArchivesEarlyWarningController {
 		for (char a : PinYinSort.getSortType()) {
 			HashMap<Object, Object> hashMap = new HashMap<>(16);
 			ArrayList<Object> arrayList = new ArrayList<>();
-			for (ShopUserArchivesDTO archivesDTO : shopUserArchivesInfo) {
-				String pinyin = null;
-				String rule = "[\\u4e00-\\u9fa5]+";
-				Pattern pattern = Pattern.compile(rule);
-				Matcher m = pattern.matcher(archivesDTO.getSysUserName());
-				//&& m.group(0).equals(archivesDTO.getSysUserName())
-				if (m.find()) {
-					pinyin = PinYinSort.ToPinYinString(archivesDTO.getSysUserName());
-				} else {
-					pinyin = archivesDTO.getSysUserName();
-				}
-				if (StringUtils.isNotBlank(pinyin) && a == pinyin.charAt(0)) {
-					arrayList.add(archivesDTO);
+			for (ShopUserArchivesDTO dto : shopUserArchivesInfo) {
+				if(dto.getSysUserName().matches("\\b[A-Za-z][^ ]{0,}")){
+					if (a ==dto.getSysUserName().toLowerCase().charAt(0) ) {
+						arrayList.add(dto);
+					}
+				}else {
+					if (a == PinYinSort.ToPinYinString(dto.getSysUserName()).toLowerCase().charAt(0)) {
+						arrayList.add(dto);
+					}
 				}
 			}
 			if (arrayList.size() > 0) {

@@ -128,12 +128,16 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         projectTypeOneId:"",//一级项目id
         ProjectTypeTwoId:"",//二级项目id
         projectName:"",
-        pageSize:"10",
+        pageSize:"100",
         chooseProjectItem:""
     };
+    //查询已启用状态的项目
+    $scope.status = '0';
 
     /*一级项目列表接口*/
-    OneLevelProject.get(function (data) {
+    OneLevelProject.get(({
+        status:$scope.status
+    }),function (data) {
         $scope.selectSingleList=data.responseData;
         $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
         $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
@@ -146,7 +150,8 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             ProjectTypeTwoId:id,
             projectTypeOneId: $scope.param.projectTypeOneId,
             projectName:$scope.param.projectName,
-            pageSize:$scope.param.pageSize
+            pageSize:$scope.param.pageSize,
+            status:$scope.status
         },function (data) {
             $scope.threeList=data.responseData;
             // $scope.param.projectAppear=false;
@@ -187,17 +192,20 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.selection  = function (index,oneId) {
         TwoLevelProject.get({id:oneId},function (data) {
             $scope.project2List=data.responseData;
-            $scope.param.chooseProjectItem = $scope.project2List[0].id//默认选中第一个
+            // $scope.param.chooseProjectItem = $scope.project2List[0].id//默认选中第一个
+            $scope.param.projectAppear=false;
 
             //默认调去三级展示
             ThreeLevelProject.get({
-                ProjectTypeTwoId:data.responseData[0].id,
+                // ProjectTypeTwoId:data.responseData[0].id,
+                ProjectTypeTwoId:"",//默认查一级下面所有的三级 不需要二级id
                 projectTypeOneId:oneId,
                 projectName:$scope.param.projectName,
-                pageSize:$scope.param.pageSize
+                pageSize:$scope.param.pageSize,
+                status:$scope.status
             },function (data) {
                 $scope.threeList=data.responseData;
-                $scope.param.projectAppear=false;
+
             });
         });
         $scope.param.childrenFlag = index;

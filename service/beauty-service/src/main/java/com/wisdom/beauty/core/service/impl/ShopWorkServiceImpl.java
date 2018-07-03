@@ -70,14 +70,4 @@ public class ShopWorkServiceImpl implements ShopWorkService {
         return null;
     }
 
-    @Override
-    public List<ExpenditureAndIncomeResponseDTO> getShopExpenditureAndIncomeList(PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO) {
-       /* ShopUserRelationDTO shopUserRelationDTO =new ShopUserRelationDTO();
-        List<ShopUserRelationDTO> shopUserRelations=shopUserRelationService.getShopListByCondition(shopUserRelationDTO);
-        //PageParamVoDTO<ShopUserConsumeRecordDTO> pageParamVoDTO
-        List<ExpenditureAndIncomeResponseDTO> list=shopStatisticsAnalysisService.getPerformanceList(pageParamVoDTO);*/
-
-        return null;
-    }
-
 }

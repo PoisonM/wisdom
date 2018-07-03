@@ -11,6 +11,24 @@ public class ShopUserLoginDTO extends BaseEntity implements Serializable {
     private String sysBossCode;
     private String sysShopPhoto;
     private String phone;
+    private String bindingStatus;
+    private String bindingDesc;
+
+    public String getBindingDesc() {
+        return bindingDesc;
+    }
+
+    public void setBindingDesc(String bindingDesc) {
+        this.bindingDesc = bindingDesc;
+    }
+
+    public String getBindingStatus() {
+        return bindingStatus;
+    }
+
+    public void setBindingStatus(String bindingStatus) {
+        this.bindingStatus = bindingStatus;
+    }
 
     public String getPhone() {
         return phone;
