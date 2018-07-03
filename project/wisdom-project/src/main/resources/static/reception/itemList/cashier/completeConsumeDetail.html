@@ -76,70 +76,70 @@
                     </li>
                 </ul>
             </div>
-            <div ng-repeat="listItem in dataInfo.userConsumeRecordResponseList" class="basic">
+            <div class="basic">
                 <p>折扣</p>
                 <ul>
                     <li>
                         <label for="">单次</label>
-                        <span>{{listItem.timeDiscount=='1'?'无折扣':listItem.timeDiscount}}折</span>
+                        <span>{{item1.timeDiscount=='1'?'无折扣':item1.timeDiscount}}折</span>
                     </li>
                     <li>
                         <label for="">疗程卡</label>
-                        <span>{{listItem.periodDiscount=='1'?'无折扣':listItem.periodDiscount}}折</span>
+                        <span>{{item1.periodDiscount=='1'?'无折扣':item1.periodDiscount}}折</span>
                     </li>
                     <li>
                         <label for="">产品</label>
-                        <span>{{listItem.productDiscount=='1'?'无折扣':listItem.productDiscount}}折</span>
+                        <span>{{item1.productDiscount=='1'?'无折扣':item1.productDiscount}}折</span>
                     </li>
                 </ul>
             </div>
-            <div>
-                <div class="basic">
-                    <p></p>
-                    <ul>
-                        <li>
-                            <label for="">总金额</label>
-                            <span>{{dataInfo.sumAmount}}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="basic">
-                    <p>支付明细</p>
-                    <ul>
-                        <li ng-if="dataInfo.payMap.cashAmount!=null">
-                            <label for="">现金支付</label>
-                            <span>{{dataInfo.payMap.cashAmount}}</span>
-                        </li>
-                        <li ng-if="dataInfo.payMap.balanceAmount!=null">
-                            <label for="">余额支付</label>
-                            <span>{{dataInfo.payMap.balanceAmount}}</span>
-                        </li>
-                        <li ng-if="dataInfo.payMap.rechargeCardAmount!=null">
-                            <label for="">充值卡支付</label>
-                            <span>{{dataInfo.payMap.rechargeCardAmount}}</span>
-                        </li>
 
-                        <li ng-if="dataInfo.payMap.payType!=null">
-                            <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
-                            <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
-                            <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
-                            <span ng-if="dataInfo.payMap.payType!=''">{{dataInfo.payMap.payTypeAmount}}</span>
-                        </li>
-                    </ul>
-                </div>
-
-
+        </div>
+        <div>
+            <div class="basic">
+                <p></p>
+                <ul>
+                    <li>
+                        <label for="">总金额</label>
+                        <span>{{dataInfo.sumAmount}}</span>
+                    </li>
+                </ul>
             </div>
             <div class="basic">
-                <p>顾客签字</p>
-            </div>
-            <ul>
-                <li>
-                    <img ng-src="{{dataInfo.signUrl}}" alt="">
-                </li>
-            </ul>
-        </div>
+                <p>支付明细</p>
+                <ul>
+                    <li ng-if="dataInfo.payMap.cashAmount!=null">
+                        <label for="">现金支付</label>
+                        <span>{{dataInfo.payMap.cashAmount}}</span>
+                    </li>
+                    <li ng-if="dataInfo.payMap.balanceAmount!=null">
+                        <label for="">余额支付</label>
+                        <span>{{dataInfo.payMap.balanceAmount}}</span>
+                    </li>
+                    <li ng-if="dataInfo.payMap.rechargeCardAmount!=null">
+                        <label for="">充值卡支付</label>
+                        <span>{{dataInfo.payMap.rechargeCardAmount}}</span>
+                    </li>
 
+                    <li ng-if="dataInfo.payMap.payType!=null">
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
+                        <span ng-if="dataInfo.payMap.payType!=''">{{dataInfo.payMap.payTypeAmount}}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="basic">
+            <p>顾客签字</p>
+        </div>
+        <ul>
+            <li>
+                <img ng-src="{{dataInfo.signUrl}}" alt="">
+            </li>
+        </ul>
         <div>
             <div class="basic">
                 <p>备注</p>
