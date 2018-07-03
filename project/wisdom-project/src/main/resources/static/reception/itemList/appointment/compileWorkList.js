@@ -72,15 +72,9 @@ PADWeb.controller("compileWorkListCtrl", function($scope, $state, $stateParams
             }
         })
     }
-    
-
-
-
-
-
-
-
-
+    $scope.arrangeWorkListBack = function () {
+        window.history.go(-1)
+    }
 
 })
 
