@@ -14,20 +14,22 @@
 
     </div>
     <div class="stillOwedTitle"></div>
-    <div class="height100Num color333FS34 ">
+    <div class="height100Num_getProduct color333FS34 ">
         <ul>
-            <li ng-click="goHousekeeper()" class="space-between paddingLeft30">
-                <span>关联员工</span>
-                <span ng-repeat="useItem in staffListNames">{{useItem}}</span>
+            <li ng-click="goHousekeeper()" class="space-between paddingLeft30 rele_people">
+                关联员工
+                <span>
+                    <e ng-repeat="useItem in staffListNames">{{useItem}}</e>
+                </span>
                 <div class="go_set"></div>
             </li>
         </ul>
     </div>
 
     <div class="stillOwedTitle"></div>
-    <div class="height100Num color333FS34 ">
+    <div class="height100Num_getProduct color333FS34 ">
         <ul>
-            <li class="space-between paddingLeft30">
+            <li class="paddingLeft30">
                 <span>用户签字</span>
                 <div class="signConfirmRight">
                     <div class="signConfirmRightContent" id="signConfirmRight"></div>

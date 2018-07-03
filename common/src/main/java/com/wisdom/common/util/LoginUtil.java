@@ -5,28 +5,23 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
-import com.wisdom.common.dto.wexin.WeixinTokenDTO;
-import com.wisdom.common.entity.AccessToken;
-import com.wisdom.common.entity.Article;
-import com.wisdom.common.entity.JsApiTicket;
-import com.wisdom.common.entity.WeixinUserBean;
-import org.json.JSONObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
 
 
 public class LoginUtil {
 
     private static MongoTemplate mongoTemplate = (MongoTemplate) SpringUtil.getBean(MongoTemplate.class);
+
+    public static String processBeautyUserValidateCode(LoginDTO loginDTO)
+    {
+        return StatusConstant.SUCCESS;
+    }
 
     public static String processValidateCode(LoginDTO loginDTO)
     {
@@ -67,7 +62,7 @@ public class LoginUtil {
 
         if(userType==null||userType.equals(""))
         {
-            String token = tokenValue.get("logintoken");
+            String token = "";
             if(token==null||token.equals("")){
                 responseDto.setResult(StatusConstant.FAILURE);
                 responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);

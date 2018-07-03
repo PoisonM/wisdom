@@ -42,7 +42,10 @@ angular.module('controllers',[]).controller('setInformationCtrl',
                     sysShopId:sysShopId
                 },function (data) {
                     if(data.result==Global.SUCCESS) {
-                        $state.go("basicSetting",{sysShopName:sysShopName})
+                        $state.go("basicSetting",{sysShopName:sysShopName});
+                        $rootScope.infoShop={
+                            sysShopName:sysShopName
+                        }
                         $scope.param.flag = false;
                     }
                 })

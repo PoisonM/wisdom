@@ -10,10 +10,10 @@
                         <div class="W33 ml20">
                             <p class="mt5 fs16 fs15 col666">{{item.createDate|date:'yyyy-MM-dd'}} </p>
                         </div>
-                        <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '0'">充值</p>
-                        <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '1'">消费 </p>
+                        <p class="W33 ml20  fs15 col888 center" ng-if="item.title == '0'">充值</p>
+                        <p class="W33 ml20  fs15 col888 center" ng-if="item.title == '1'">消费 </p>
                         <!--<p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '2'">还欠款</p>-->
-                        <p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '3'">退款</p>
+                        <!--<p class="W33 ml20  fs15 col888 center" ng-if="item.consumeType == '3'">退款</p>-->
                         <div class="W33 ml20 fs15 col888">
                             <p class="floatR">
                                 <span class=" ">{{item.sumAmount}}</span>
@@ -35,13 +35,13 @@
                     <p class="fs15 col666 bgfff bbl pb5 h40"><span class="ml10 ">状态</span></p>
                     <div class="row row-wrap bgfff">
                         <p class="col col-33 " >
-                            <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('6')" ng-class="{'activeType':param.goodType=='6'}">全部</a>
+                            <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('5')" ng-class="{'activeType':param.searchState=='5'}">全部</a>
                         </p>
                         <p class="col col-33 ">
-                            <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('7')" ng-class="{'activeType':param.goodType=='7'}">正常</a>
+                            <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('0')" ng-class="{'activeType':param.searchState=='0'}">充值</a>
                         </p>
                         <p class="col col-33 ">
-                            <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('2')" ng-class="{'activeType':param.goodType=='2'}">已用完</a>
+                            <a class="commonType center " style="height:26px;width:80px;line-height: 26px;" ng-click="selType('1')" ng-class="{'activeType':param.searchState=='1'}">消费</a>
                         </p>
                     </div>
                 </div>

@@ -21,9 +21,10 @@ angular.module('controllers',[]).controller('selectionSeriesCtrl',
                 }
             })
             $scope.series = function (productTypeName,id) {
-                $state.go($stateParams.url)
                 $rootScope.settingAddsome.product.productTypeTwoName =productTypeName
                 $rootScope.settingAddsome.product.productTypeTwoId =id
+                console.log($rootScope.settingAddsome.product);
+                $state.go($stateParams.url)
 
             }
 

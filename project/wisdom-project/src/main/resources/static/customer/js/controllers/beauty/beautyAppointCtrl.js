@@ -31,13 +31,13 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     [{index:'36',value:'18:00',status:'1'},{index:'37',value:'18:30',status:'1'},{index:'38',value:'19:00',status:'1'},{index:'39',value:'19:30',status:'1'},{index:'40',value:"20:00",status:'1'},{index:'41',value:'20:30',status:'1'}],
                     [{index:'42',value:'21:00',status:'1'},{index:'43',value:'21:30',status:'1'},{index:'44',value:'22:00',status:'1'},{index:'45',value:'22:30',status:'1'},{index:'46',value:"23:00",status:'1'},{index:'47',value:'23:30',status:'1'}],
                 ]
-            }
+            };
 
             $scope.$on('$ionicView.enter', function(){
 
                 GetCurrentLoginUserInfo.get(function (data) {
                     BeautyUtil.checkResponseData(data,'beautyAppoint');
-                })
+                });
 
                 $scope.param = {
                     weekDays : [],
@@ -50,7 +50,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     beautyProjectDuration : 0,
                     appointFlag : false,
                     chooseWeekDateTime : ''
-                }
+                };
 
                 for(var i = 0; i<7; i++)
                 {
@@ -71,7 +71,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     var value = {
                         dateIndex : angular.copy(dateIndex),
                         dateValue : angular.copy(dateValue)
-                    }
+                    };
                     $scope.param.weekDays.push(angular.copy(value));
                 }
 
@@ -129,8 +129,8 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                             }
                             else
                             {
-                                $scope.param.beautyProjectName = $scope.param.beautyProjectName + value.projectName + ',';
-                                $scope.param.beautyProjectIds = $scope.param.beautyProjectIds + value.id + ',';
+                                $scope.param.beautyProjectName = $scope.param.beautyProjectName + value.projectName + ';';
+                                $scope.param.beautyProjectIds = $scope.param.beautyProjectIds + value.id + ';';
                             }
                             $scope.param.beautyProjectDuration = $scope.param.beautyProjectDuration + value.projectDuration;
                         })

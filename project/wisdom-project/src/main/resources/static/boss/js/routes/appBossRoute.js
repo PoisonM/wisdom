@@ -63,7 +63,7 @@ define(['appBoss'], function(app){
                 /*收支明细*/
                 $stateProvider
                     .state('incomeDetails', {
-                        url: '/incomeDetails,:date',
+                        url: '/incomeDetails,:date,:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'incomeDetailsCtrl',
                         resolve: {
@@ -174,7 +174,7 @@ define(['appBoss'], function(app){
                 /*唯美度养生会所 全部家人*/
 
                     .state('beautyAll', {
-                        url: '/beautyAll/:sysShopId/:date,:sysClerkId',
+                        url: '/beautyAll/:sysShopId/:date,:sysClerkId,:nameType',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyAllCtrl',
                         resolve: {
@@ -401,7 +401,7 @@ define(['appBoss'], function(app){
                 /*详情*/
 
                     .state('details', {
-                        url: '/details/:flowNo',
+                        url: '/details/:flowNo,:searchFile',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsCtrl',
                         resolve: {
