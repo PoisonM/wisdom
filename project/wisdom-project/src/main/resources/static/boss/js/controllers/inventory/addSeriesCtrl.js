@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('addSeriesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProduct','Global','UpdateTwoLevelTypeInfo','$ionicPopup','$timeout',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProduct,Global,UpdateTwoLevelTypeInfo,$ionicPopup,$timeout) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProduct','Global','UpdateTwoLevelTypeInfo','$ionicPopup','$timeout','ThreeLevelProduct',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProduct,Global,UpdateTwoLevelTypeInfo,$ionicPopup,$timeout,ThreeLevelProduct) {
             $rootScope.title = "添加系列";
             $scope.param = {
                 selTrue:[]
@@ -64,7 +64,21 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
             };
             $scope.sel = function(index){
-                $scope.requestList[index].status = '1'
+                $scope.ThreeLevelProduct = $scope.requestList[index]
+                ThreeLevelProduct.get({
+                    pageSize:'1',
+                    productTypeOneId:$scope.ThreeLevelProduct.parentId,
+                    productTypeTwoId:$scope.ThreeLevelProduct.id,
+                    status:'0'
+                },function (data) {
+                    $scope.product3List = data.responseData;
+                    if($scope.product3List && $scope.product3List[0]){
+                        alert("对不起，此系列不允许删除");
+                        return false
+                    }else{
+                        $scope.requestList[index].status = '1'
+                    }
+                })
             };
             $scope.addSeriesLis = function(){
                 var obj = {

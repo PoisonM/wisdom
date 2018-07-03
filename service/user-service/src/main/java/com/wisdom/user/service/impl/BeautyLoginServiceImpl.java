@@ -51,7 +51,7 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
         beautyLoginResultDTO.setBeautyUserLoginToken(StatusConstant.TOKEN_ERROR);
 
         //判断validateCode是否还有效
-        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        if(LoginUtil.processBeautyUserValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
         {
             beautyLoginResultDTO.setResult(StatusConstant.VALIDATECODE_ERROR);
             return beautyLoginResultDTO;

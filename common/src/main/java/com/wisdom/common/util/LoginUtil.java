@@ -4,44 +4,51 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.system.ValidateCodeDTO;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class LoginUtil {
 
     private static MongoTemplate mongoTemplate = (MongoTemplate) SpringUtil.getBean(MongoTemplate.class);
 
+    public static String processBeautyUserValidateCode(LoginDTO loginDTO)
+    {
+        return StatusConstant.SUCCESS;
+    }
+
     public static String processValidateCode(LoginDTO loginDTO)
     {
-//        //判断validateCode是否还有效
-//        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
-//        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
-//        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
-//        if(data==null)
-//        {
-//            return StatusConstant.VALIDATECODE_ERROR;
-//        }
-//        else
-//        {
-//            ValidateCodeDTO validateCodeDTO = data.get(0);
-//            Date dateStr = validateCodeDTO.getCreateDate();
-//            //判断验证码是否是最新的
-//            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
-//                return StatusConstant.VALIDATECODE_ERROR;
-//            }
-//            long period =  (new Date()).getTime() - dateStr.getTime();
-//
-//            //验证码过了5分钟了
-//            if(period>300000)
-//            {
-//                return  StatusConstant.VALIDATECODE_ERROR;
-//            }
-//        }
+        //判断validateCode是否还有效
+        Query query = new Query().addCriteria(Criteria.where("mobile").is(loginDTO.getUserPhone()));
+        query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "createDate")));
+        List<ValidateCodeDTO> data = mongoTemplate.find(query, ValidateCodeDTO.class,"validateCode");
+        if(data==null)
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+        else
+        {
+            ValidateCodeDTO validateCodeDTO = data.get(0);
+            Date dateStr = validateCodeDTO.getCreateDate();
+            //判断验证码是否是最新的
+            if(!validateCodeDTO.getCode().equals(loginDTO.getCode())){
+                return StatusConstant.VALIDATECODE_ERROR;
+            }
+            long period =  (new Date()).getTime() - dateStr.getTime();
+
+            //验证码过了5分钟了
+            if(period>300000)
+            {
+                return  StatusConstant.VALIDATECODE_ERROR;
+            }
+        }
         return StatusConstant.SUCCESS;
     }
 

@@ -262,7 +262,7 @@ public class ShopMemberAttendanceController {
 	 * @Author:zhanghuan
 	 * @Param:
 	 * @Return:
-	 * @Description: 获取boss成绩,boss端首页
+	 * @Description: 获取boss成绩,boss端首页展示业绩,耗卡,人头数,人次数,新客,服务次数
 	 * @Date:2018/4/27 18:26
 	 */
 	@RequestMapping(value = "/getBossAchievement", method = RequestMethod.GET)

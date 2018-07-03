@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('projectSeriesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType','$ionicPopup','$timeout',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType,$ionicPopup,$timeout) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType','$ionicPopup','$timeout','ThreeLevelProject',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType,$ionicPopup,$timeout,ThreeLevelProject) {
             $rootScope.title = "添加系列";
             $scope.param = {
                 selTrue:[]
@@ -66,7 +66,22 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
               };
             $scope.sel = function(index){
-                $scope.requestList[index].status = '1'
+                $scope.projectType = $scope.requestList[index];
+                ThreeLevelProject.get({
+                    ProjectTypeTwoId:$scope.projectType.id,
+                    projectTypeOneId: $scope.projectType.parentId,
+                    projectName:$scope.projectType.projectName,
+                    pageSize:'1',
+                    status:'0'
+                },function (data) {
+                    $scope.threeList=data.responseData;
+                    if($scope.threeList && $scope.threeList[0]){
+                        alert("对不起，此系列不允许删除");
+                        return false
+                    }else{
+                        $scope.requestList[index].status = '1'
+                    }
+                })
             };
             $scope.addSeriesLis = function(){
                 var obj = {
