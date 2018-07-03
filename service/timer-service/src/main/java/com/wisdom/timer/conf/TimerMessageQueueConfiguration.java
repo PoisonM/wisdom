@@ -32,4 +32,9 @@ public class TimerMessageQueueConfiguration {
 		return new Queue("promoteUserBusinessTypeForRecommend");
 	}
 
+	@Bean
+	public Queue frozenUserTypeQueue() {
+		return new Queue("frozenUserType");
+	}
+
 }

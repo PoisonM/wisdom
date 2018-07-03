@@ -38,6 +38,12 @@ public class TimerMessageQueueSender {
         this.rabbitTemplate.convertAndSend("deFrozenUserReturnMoney", incomeRecordStr);
     }
 
+    public void sendFrozenUserType(UserInfoDTO userInfoDTO) {
+        logger.info("sendFrozenUserType===" + userInfoDTO.getId());
+        String userInfoDTOStr = gson.toJson(userInfoDTO);
+        this.rabbitTemplate.convertAndSend("frozenUserType", userInfoDTOStr);
+    }
+
     public void sendPromoteUserBusinessTypeForRecommend(UserInfoDTO userInfo) {
         logger.info("sendPromoteUserBusinessTypeForRecommend==="+userInfo.getId());
         String userInfoStr = gson.toJson(userInfo);
