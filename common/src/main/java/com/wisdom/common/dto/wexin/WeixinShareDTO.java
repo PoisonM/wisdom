@@ -2,6 +2,8 @@ package com.wisdom.common.dto.wexin;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.util.Date;
+
 /**
  * Created by zbm84 on 2017/6/7.
  */
@@ -45,6 +47,18 @@ public class WeixinShareDTO {
 
     @JSONField(name = "userImage")
     private String userImage;
+
+    @JSONField(name = "creatTime",format = "yyyy-MM-dd HH:mm:ss")
+    private Date creatTime;
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
 
     public String getSysUserId() {
         return sysUserId;
