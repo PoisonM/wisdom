@@ -89,7 +89,7 @@
                 </div>
                 <span class="name">{{item3.projectGroupName}}</span>
                 <br/>
-                <span class="number">永久有效</span>
+                <span class="number">{{item3.expirationDate == '0'?'永久有效':item3.expirationDate}}</span>
                 <div class="right">
                     <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>
