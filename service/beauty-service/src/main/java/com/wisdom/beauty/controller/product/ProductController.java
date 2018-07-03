@@ -199,10 +199,16 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> updateProductInfo(@RequestBody ExtShopProductInfoDTO extShopProductInfoDTO) {
         ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
+        if(extShopProductInfoDTO.getProductCode()==null||extShopProductInfoDTO.getProductCode()==""){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("产品编码不能为空！");
+        }
 
         shopProductInfo.setProductCode(extShopProductInfoDTO.getProductCode());
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
-        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+
         logger.info("修改产品状态"+extShopProductInfoDTO.getStatus());
         if(shopProductInfos!=null&&shopProductInfos.size()>0){
             if(("1").equals(extShopProductInfoDTO.getStatus())){
@@ -216,7 +222,6 @@ public class ProductController {
                     responseDTO.setResult(StatusConstant.FAILURE);
                     responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
                 }
-
             }else{
                 responseDTO.setResult(StatusConstant.FAILURE);
                 responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
