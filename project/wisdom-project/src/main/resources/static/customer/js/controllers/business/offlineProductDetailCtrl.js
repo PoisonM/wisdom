@@ -11,6 +11,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             $scope.explain=false;// 点击24小时发货显示说明
 
             $scope.model=false;
+           /* $scope.inputModel=false;*//*点击购买数量出现的弹框*/
 
             $scope.myObj = {
                 background:"red",
@@ -200,6 +201,11 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }
             };
 
+            /*点击购买数量的输入框出现的div*/
+           /* $scope.inputBox=function () {
+              $scope.inputModel=true;
+            };*/
+
             var showToast = function (content) {
                 $ionicLoading.show({
                     template: content
@@ -264,5 +270,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     $scope.param.productUnPaidNum = data.responseData;
                 });
             })
+
         }])
 

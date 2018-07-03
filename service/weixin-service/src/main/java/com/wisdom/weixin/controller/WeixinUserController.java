@@ -233,8 +233,6 @@ public class WeixinUserController {
                 weixinShareDTO.setPeoperCount(userInfoDTOList.size());
                 weixinShareDTO.setBalance(String.valueOf(balance));
                 weixinShareDTO.setUserType(userInfoDTO.getUserType());
-//                weixinShareDTO.setQrCodeURL(saveImageToLocal(weixinShareDTO.getQrCodeURL(),weixinShareDTO.getSysUserId(),"qrCode"));
-//                weixinShareDTO.setUserImage(saveImageToLocal(weixinShareDTO.getUserImage(),weixinShareDTO.getSysUserId(),"userImage"));
                 responseDTO.setResult(StatusConstant.SUCCESS);
                 responseDTO.setResponseData(weixinShareDTO);
             }
@@ -256,62 +254,4 @@ public class WeixinUserController {
         logger.info("getSpecialShopQRCode方法,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
-
-    private static String saveImageToLocal(String urlToLocal,String userId,String type) throws FileNotFoundException {
-        long startTime = System.currentTimeMillis();
-        logger.info("将图片存入到本地==={}开始" , startTime);
-        //将图片存入到本地
-        String rootPath = getRootPath();
-        String newUrl = "static/images/sharePage/" + userId + "_" + type + ".png";
-        URL url = null;
-        String responseURL = "/weixin/images/sharePage/" + userId + "_" + type + ".png";
-        try {
-            url = new URL(urlToLocal);
-            //打开链接
-            HttpURLConnection conn = null;
-            conn = (HttpURLConnection)url.openConnection();
-            //设置请求方式为"GET"
-            conn.setRequestMethod("GET");
-            //超时响应时间为5秒
-            conn.setConnectTimeout(5 * 1000);
-            //通过输入流获取图片数据
-            InputStream inStream = conn.getInputStream();
-            //得到图片的二进制数据，以二进制封装得到数据，具有通用性
-            byte[] data = FileUtils.readInputStream(inStream);
-
-            //new一个文件对象用来保存图片，默认保存当前工程根目录
-            File imageFile = new File(rootPath + "/" + newUrl);
-            //创建输出流
-            FileOutputStream outStream = new FileOutputStream(imageFile);
-            //写入数据
-            outStream.write(data);
-            //关闭输出流
-            outStream.close();
-
-        } catch (MalformedURLException e) {
-            logger.info("将图片存入到本地异常,异常信息为={}" +e.getMessage(),e);
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            logger.info("将图片存入到本地异常,异常信息为={}" +e.getMessage(),e);
-            e.printStackTrace();
-        }
-        logger.info("将图片存入到本地,结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
-        return responseURL;
-    }
-
-    /**
-     * TODO 获取根目录
-     * @return
-     * @author <a href="mailto:pheh.lin@gmail.com">PHeH</a><br>
-     * Created On 2007-5-10 15:16:21
-     */
-    private static String getRootPath() throws FileNotFoundException {
-        logger.info("获取跟目录方法执行" );
-        //获取跟目录
-        File path = new File(ResourceUtils.getURL("classpath:").getPath());
-        if(!path.exists()) path = new File("");
-        return path.getAbsolutePath();
-    }
-
 }

@@ -59,6 +59,7 @@ public class WeixinShareDTO {
         this.creatTime = creatTime;
     }
 
+
     public String getSysUserId() {
         return sysUserId;
     }
