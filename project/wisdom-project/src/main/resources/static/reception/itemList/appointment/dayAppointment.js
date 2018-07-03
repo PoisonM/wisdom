@@ -451,16 +451,22 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 }
             }
         })
+        setTimeout(function(){$scope.tableThead()},2000);
     }
 
     //调用固定表头类
-    var tiemInt = setInterval(function () {
-        if ($("#tbTest1 thead tr td").length > 1) {
-            var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-            clearTimeout(tiemInt)
-        }
-    }, 100)
+    $scope.tableThead = function () {
+        $("#ofix1_tb_header").remove();
+        $("#ofix1_tb_left").remove();
+        $("#ofix1_div_top_left").remove();
+        var tiemInt = setInterval(function () {
+            if ($("#tbTest1 thead tr td").length > 1) {
+                var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                clearTimeout(tiemInt)
+            }
+        }, 100)
 
+    }
     /*获取周预约列表*/
     $scope.weekAll = function () {
         ShopWeekAppointmentInfoByDate.get({
@@ -486,6 +492,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                 }
             },100)
         })
+        setTimeout(function(){$scope.tableThead()},2000);
     };
 
     //切换日周预约
