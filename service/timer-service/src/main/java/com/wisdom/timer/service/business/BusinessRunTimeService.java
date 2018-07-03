@@ -1056,6 +1056,7 @@ public class BusinessRunTimeService {
             incomeRecordDTO.setNextUserMobile("");
             incomeRecordDTO.setParentRelation("");
             businessServiceClient.insertUserIncomeInfo(incomeRecordDTO);
+
             IncomeMonthDTO incomeMonth = new IncomeMonthDTO();
             incomeMonth.setIncomeId(incomeRecordDTO.getId());
             incomeMonth.setTimeRangeId(timeRangeId);

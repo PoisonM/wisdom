@@ -115,10 +115,26 @@ public class PayCoreService {
 
                 businessMessageQueueSender.sendRecordMonthTransaction(userInfoDTO,instanceReturnMoneySignalDTO,expenseMoney);
 
+                logger.info("处理用户消推荐返利的活动=="+userInfoDTO.getMobile());
+                handleShareReturnMoney(userInfoDTO,instanceReturnMoneySignalDTO);
+
             }
             catch (Exception e)
             {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     *理推荐有礼
+     *此处的逻辑处理推荐有礼的活动，此时返现的资金是冻结的，需要用户收货之后，获得返现的用户才能解冻
+     *活动规则。用户等级为A、B 推荐用户后如果满三人并均消费满498则返给推荐者498作为即时奖励。
+     * */
+    private void handleShareReturnMoney(UserInfoDTO userInfoDTO, InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO) {
+        if(!ObjectUtils.isNullOrEmpty(userInfoDTO.getParentUserId())) {
+            if(ConfigConstant.businessC1.equals(userInfoDTO.getUserType())){
+                payFunction.shareRebate(userInfoDTO.getParentUserId(),instanceReturnMoneySignalDTO);
             }
         }
     }

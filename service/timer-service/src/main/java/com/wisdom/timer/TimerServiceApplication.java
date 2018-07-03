@@ -40,6 +40,11 @@ public class TimerServiceApplication {
 
 		weixinServiceClient.updateBeautyWeixinToken();
 
+		try {
+			businessRunTimeService.autoProcessUserAccount();
+		}catch(Exception e){
+
+		}
 	/*	try{
 			businessRunTimeService.autoMonthlyIncomeCalc();
 		}catch (Exception e){

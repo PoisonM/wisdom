@@ -12,6 +12,7 @@ import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
+import com.wisdom.common.dto.activity.ShareActivityDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
@@ -20,10 +21,7 @@ import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.SMSUtil;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +69,9 @@ public class PayFunction {
 
     @Autowired
     private BusinessMessageQueueSender businessMessageQueueSender;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Transactional(rollbackFor = Exception.class)
     public void processPayStatus(List<PayRecordDTO> payRecordDTOList) throws ClientException {
@@ -705,5 +706,69 @@ public class PayFunction {
         return expenseMoney;
     }
 
+
+    /**
+     * 推荐返利
+     *
+     *
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public void shareRebate(String parentUserId,InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO){
+        String key = "shareRebate:";
+        Float returnMoney = 498f;
+
+        //推荐的好友不重复返现
+        Query query = new Query(Criteria.where("sysUserId").is(instanceReturnMoneySignalDTO.getSysUserId()));
+        ShareActivityDTO shareActivityDTO = mongoTemplate.findOne(query, ShareActivityDTO.class, "shareActivity");
+        if(null != shareActivityDTO){
+            return;
+        }
+
+        PayRecordDTO payRecordDTO = new PayRecordDTO();
+        payRecordDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
+        payRecordDTO.setOutTradeNo(instanceReturnMoneySignalDTO.getOutTradeNo());
+        payRecordDTO.setSysUserId(instanceReturnMoneySignalDTO.getSysUserId());
+        payRecordDTO.setStatus("1");
+        List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
+        //该交易流水的交易金额
+        float expenseAmount = 0;
+        for (PayRecordDTO payRecord : payRecordDTOList) {
+            expenseAmount = expenseAmount + payRecord.getAmount();
+        }
+        if(expenseAmount>=returnMoney){
+            List<String> shareList = JedisUtils.getList(key+instanceReturnMoneySignalDTO.getSysUserId());
+            if(null != shareList && shareList.size()>=3){
+                JedisUtils.del(key+instanceReturnMoneySignalDTO.getSysUserId());
+                //更新用户账户金额
+                AccountDTO accountDTO = new AccountDTO();
+                accountDTO.setSysUserId(parentUserId);
+                try{
+                    accountDTO = this.updateUserAccount(accountDTO,parentUserId, returnMoney);
+                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+                    nextUserInfoDTO.setId(parentUserId);
+                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
+                    this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"testrecommend");
+//                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+//                    nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
+//                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+//                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
+//                    String token = WeixinUtil.getUserToken();
+//                    WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTO.getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                //记录
+                JedisUtils.listAdd(key+instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getSysUserId());
+            }
+            //为用户的此次取消关注插入到mongodb记录中
+            shareActivityDTO = new ShareActivityDTO();
+            shareActivityDTO.setCreateTime(new Date());
+            shareActivityDTO.setSysUserId(instanceReturnMoneySignalDTO.getSysUserId());
+            shareActivityDTO.setParentSysUserId(parentUserId);
+            mongoTemplate.insert(shareActivityDTO, "shareActivity");
+        }
+    }
 }
 

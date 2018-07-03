@@ -233,8 +233,8 @@ public class WeixinUserController {
                 weixinShareDTO.setPeoperCount(userInfoDTOList.size());
                 weixinShareDTO.setBalance(String.valueOf(balance));
                 weixinShareDTO.setUserType(userInfoDTO.getUserType());
-                weixinShareDTO.setQrCodeURL(saveImageToLocal(weixinShareDTO.getQrCodeURL(),weixinShareDTO.getSysUserId(),"qrCode"));
-                weixinShareDTO.setUserImage(saveImageToLocal(weixinShareDTO.getUserImage(),weixinShareDTO.getSysUserId(),"userImage"));
+//                weixinShareDTO.setQrCodeURL(saveImageToLocal(weixinShareDTO.getQrCodeURL(),weixinShareDTO.getSysUserId(),"qrCode"));
+//                weixinShareDTO.setUserImage(saveImageToLocal(weixinShareDTO.getUserImage(),weixinShareDTO.getSysUserId(),"userImage"));
                 responseDTO.setResult(StatusConstant.SUCCESS);
                 responseDTO.setResponseData(weixinShareDTO);
             }
