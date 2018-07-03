@@ -1,19 +1,14 @@
 package com.wisdom.beauty.controller.clerk;
 
-import com.wisdom.beauty.api.dto.ShopClerkWorkRecordDTO;
-import com.wisdom.beauty.api.enums.ConsumeTypeEnum;
-import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+
 import com.wisdom.beauty.api.requestDto.ShopClerkWorkRecordRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopClerkWorkRecordResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRecordResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.core.service.ShopClerkWorkService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -23,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

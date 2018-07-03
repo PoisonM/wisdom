@@ -5,7 +5,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
             $scope.selFlag =true;
             $scope.setFlag = false;
             $scope.$on('$ionicView.enter', function() {
-            })
+            });
 
 
             $rootScope.settingAddsome.product ={
@@ -171,6 +171,10 @@ angular.module('controllers',[]).controller('addProductCtrl',
             }
             /*选择系列*/
             $scope.selectionSeriesGo=function(){
+                if($rootScope.settingAddsome.product.productTypeOneId==''){
+                    alert("请先选择品牌")
+                    return
+                }
                 $state.go("selectionSeries",{url:'addProduct'})
             }
             /*选择规格*/
@@ -239,7 +243,10 @@ angular.module('controllers',[]).controller('addProductCtrl',
                     alert('信息不完全')
                     return
                 }
-
+                if($rootScope.settingAddsome.product.productCode==""){
+                    alert('信息不完全')
+                    return
+                }
                 SaveProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")

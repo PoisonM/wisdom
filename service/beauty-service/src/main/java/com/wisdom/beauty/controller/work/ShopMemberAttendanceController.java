@@ -40,20 +40,7 @@ public class ShopMemberAttendanceController {
 	@Autowired
 	private ShopStatisticsAnalysisService shopStatisticsAnalysisService;
 
-	@Autowired
-	private ShopClerkWorkService shopClerkWorkService;
-
 	Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	// 获取门店某天的业绩
-	@RequestMapping(value = "shopMemberAttendanceAnalyzeByDate", method = { RequestMethod.POST, RequestMethod.GET })
-	@LoginRequired
-	public @ResponseBody ResponseDTO<List<ShopMemberAttendacneDTO>> shopMemberAttendanceAnalyzeByDate(
-			@RequestParam String shopId, @RequestParam String date) {
-		ResponseDTO<List<ShopMemberAttendacneDTO>> responseDTO = new ResponseDTO<>();
-
-		return responseDTO;
-	}
 
 	/**
 	 * @Author: zhanghuan
@@ -65,7 +52,7 @@ public class ShopMemberAttendanceController {
 	@RequestMapping(value = "/getExpenditureAndIncome", method = { RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getExpenditureAndIncome(
-			@RequestParam(required = false) String sysShopId) {
+			                                           @RequestParam(required = false) String sysShopId) {
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
 		sysShopId = redisUtils.getShopId();
@@ -92,7 +79,7 @@ public class ShopMemberAttendanceController {
 	@RequestMapping(value = "/getBossExpenditureAndIncome", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<Map<String, Object>> getBossExpenditureAndIncome(@RequestParam String startTime,
-			@RequestParam String endTime) {
+			                                                     @RequestParam String endTime) {
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		UserConsumeRequestDTO userConsumeRequest = new UserConsumeRequestDTO();
@@ -118,7 +105,8 @@ public class ShopMemberAttendanceController {
 	@RequestMapping(value = "/getShopConsumeAndRecharge", method = { RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<Map<String, String>> getShopConsumeAndRecharge(@RequestParam String shopId,
-			@RequestParam String startTime, @RequestParam String endTime) {
+			                                                   @RequestParam String startTime,
+															   @RequestParam String endTime) {
 
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setStartTime(startTime);
@@ -148,7 +136,7 @@ public class ShopMemberAttendanceController {
 	 * @Description: 获取店员成绩
 	 * @Date:2018/4/27 18:26
 	 */
-	@RequestMapping(value = "/getClerkAchievement", method = { RequestMethod.GET })
+	@RequestMapping(value = "/getClerkAchievement", method = RequestMethod.GET )
 	@ResponseBody
 	@LoginRequired
 	ResponseDTO<Map<String, String>> getClerkAchievement() {
@@ -197,7 +185,9 @@ public class ShopMemberAttendanceController {
 	@RequestMapping(value = "/getFamilyList", method = { RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<List<ExpenditureAndIncomeResponseDTO>> getFamilyList(@RequestParam String startTime,
-			@RequestParam String endTime, @RequestParam String sysShopId, @RequestParam int pageSize) {
+			                                                         @RequestParam String endTime,
+																	 @RequestParam String sysShopId,
+																	 @RequestParam int pageSize) {
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		if (sysBossDTO == null) {
@@ -236,8 +226,10 @@ public class ShopMemberAttendanceController {
 	@RequestMapping(value = "/getBossPerformanceList", method = RequestMethod.GET)
 	@ResponseBody
 	ResponseDTO<List<ShopClerkWorkRecordResponseDTO>> getBossPerformanceList(@RequestParam String startTime,
-			@RequestParam String endTime, @RequestParam String searchFile, @RequestParam String sysShopId,
-			int pageSize) {
+			                                                                 @RequestParam String endTime,
+																			 @RequestParam String searchFile,
+																			 @RequestParam String sysShopId,int pageSize) {
+
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
 
 		userConsumeRequestDTO.setSysShopId(sysShopId);

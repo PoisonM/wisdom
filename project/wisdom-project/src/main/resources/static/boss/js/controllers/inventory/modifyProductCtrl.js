@@ -234,6 +234,10 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                     alert('信息不完全')
                     return
                 }
+                if($rootScope.settingAddsome.product.productCode==""){
+                    alert('信息不完全')
+                    return
+                }
                 UpdateProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go("warehouseProducts")
