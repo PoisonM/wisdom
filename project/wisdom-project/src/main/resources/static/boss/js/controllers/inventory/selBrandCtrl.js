@@ -13,8 +13,7 @@ angular.module('controllers',[]).controller('selBrandCtrl',
                     $rootScope.settingAddsome.product.productTypeOneName=name;
                     $rootScope.settingAddsome.product.productTypeOneId=oneId
                     $rootScope.settingAddsome.product.productTypeTwoName=''
-                    $rootScope.settingAddsome.product.productTypeTwoId=''
-
+                    $rootScope.settingAddsome.product.productTypeTwoId='';
                     $state.go($stateParams.url)
             }
 
