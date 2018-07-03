@@ -15,6 +15,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             var pageTrue = true;
             $scope.auditFlag=false;
             $scope.userMoblie = "";
+            $scope.useBusinessType="";
 
 
 
@@ -143,6 +144,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     }
 
                     $scope.checkStatus = $("#checkStatus").val();
+                    $scope.useBusinessType = $("#useBusinessType").val();
 
                     $scope.pageParamVoDTO = {
                         isExportExcel:"N",
@@ -153,7 +155,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         requestData:{
                             incomeType:$scope.status,
                             mobile:$scope.MAccount,
-                            checkStatus:$scope.checkStatus
+                            checkStatus:$scope.checkStatus,
+                            useBusinessType:$scope.useBusinessType
                         }
                     }
 
@@ -291,6 +294,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         if(value == "true"){
                             $scope.key="";
                             alert("生成月度完成！");
+                            $scope.searchMonthlyBalance();
+
                         }
                    })
              }
@@ -330,6 +335,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.educeLis = function() {
 
                 $scope.checkStatus = $("#checkStatus").val();
+                $scope.useBusinessType = $("#useBusinessType").val();
                 if (confirm("确认要导出？")) {
                     $scope.pageParamVoDTO = {
                         isExportExcel:"Y",
@@ -340,7 +346,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         requestData:{
                             incomeType:$scope.status,
                             mobile:$scope.MAccount,
-                            checkStatus:$scope.checkStatus
+                            checkStatus:$scope.checkStatus,
+                            useBusinessType:$scope.useBusinessType
                         }
                     }
                     ExportExcelIncomeRecord.save($scope.pageParamVoDTO, function (data) {

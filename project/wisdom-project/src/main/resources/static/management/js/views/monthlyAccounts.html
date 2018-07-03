@@ -25,44 +25,42 @@
                             <button ng-click="bgChangeAndSearch('permanent')" ng-class="{'active':status=='permanent'}">永久性奖励</button>
                             <button ng-click="bgChangeAndSearch('month')" ng-class="{'active':status=='month'}">月度结算</button>
                         </div>
-                        <div class="product_eara"  style="display:flex;">
-                            <div class="product_eara"  style="display:flex;">
-                                <div class="product_name" style="margin-right: 30px;">
-                                    <div class="product_nameEara">
+                            <div style="float: left;width:80%;margin-top:-5px;line-height:31px;">
+                                <div class="product_eara"  style="display:flex;width:100%">
+                                    <div style="float:left;width:45%;margin-top:50px;line-height:31px;">
                                         <label class="bold">手机号:</label>
                                         <input type="text" class="product_search" ng-model="MAccount">
                                     </div>
-
-                                    <div class="product_name"  style="float:left;margin-top: 27px;margin-right: 50px;width:100%">
-                                        <div >
-                                            <label style="font-weight:600;">审核状态:</label>
-                                            <select class="checkStatus selectWidth" id="checkStatus" style="border:1px solid;height:30px;color:#7f818a;">
-                                                <option value=""> 全部状态</option>
-                                                <option value="0"> 未审核</option>
-                                                <option value="1">运营已审核</option>
-                                                <option value="2">财务已审核</option>
-                                                <option value="3">双方已审核</option>
-                                                <option value="4">审核拒绝</option>
-                                            </select>
-                                        </div>
+                                    <div style="float:left;width:35%;margin-top:50px;line-height:31px;">
+                                        <span style="font-weight:600;">用户类型:</span>
+                                        <select id ="useBusinessType" class="useBusinessType" style="border:1px solid;height:30px;colour:#7f818a;">
+                                            <option value="0">所有用户（A,B）</option>
+                                            <option value="1">所有A用户</option>
+                                            <option value="2">所有B用户</option>
+                                        </select>
                                     </div>
                                 </div>
-
-
-
-                                <div class="product_name big time_box">
-                                    <div style="margin-top: 84px;line-height: 31px;">
+                                <div class="product_eara"  style="display:flex;width:100%;">
+                                    <div  style="float:left;margin-top: 27px;margin-right: 50px;width:40%">
+                                        <label style="font-weight:600;">审核状态:</label>
+                                        <select class="checkStatus selectWidth" id="checkStatus" style="border:1px solid;height:30px;color:#7f818a;">
+                                            <option value=""> 全部状态</option>
+                                            <option value="0"> 未审核</option>
+                                            <option value="1">运营已审核</option>
+                                            <option value="2">财务已审核</option>
+                                            <option value="3">双方已审核</option>
+                                            <option value="4">审核拒绝</option>
+                                        </select>
+                                    </div>
+                                    <div style="margin-top:27px;line-height: 31px;">
                                         <span class="bold agencyTime">时间：</span>
                                         <input class="time MStart date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp;--&nbsp;<input class="time MEnd date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
                                     </div>
                                 </div>
-
                             </div>
-
-                            <div class="product_searchEara">
-                                <input type="button" value="搜索" class="search_btn" ng-click="searchMonthlyBalance()">
+                            <div  class="product_searchEara" align="right" style="float: left;width:15%;margin-top:50px;line-height:31px;">
+                                <input align="right"  type="button" value="搜索" class="search_btn" ng-click="searchMonthlyBalance()">
                             </div>
-                        </div>
 
                         <div class="statusBar" align="left" style="height:60px;" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">
                             <button class="order_lis simulateBtn" style="margin-top: 50px;" ng-click="educeLis()" ng-if="status=='instance'||status=='permanent'||status=='allState'||status=='Audited'||status=='Unaudited'">导出列表</button>
@@ -89,7 +87,7 @@
                                 <button class="order_lis simulateBtn" ng-click="monthlyIncomeSignal()">生成月度账单</button>
                             </div>
                         </div>
-                        <div class="table_lis" >
+                        <div class="table_lis" style="margin-top:120px;">
                             <table  ng-if="status=='instance'||status=='month'||status=='permanent'" class="table  text-center ">
                                 <thead>
                                 <tr id="product_lis_title IncomeListTitle" class="pos" style="">
@@ -110,7 +108,7 @@
                                 <tr class='white' ng-class="{'red':item.secondCheckStatus=='有一方拒绝','col55a4ef':agencyIndex == $index,'bge5':$index%2==0,'bgf2':$index%2==1}">
                                     <td ng-click="viod();$event.stopPropagation()">{{item.nickName}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.mobile}}</td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{item.userType}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{item.userBusinessTypeNow}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.amount }}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-click="viod();$event.stopPropagation()"ng-hide="status=='month'">{{item.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
