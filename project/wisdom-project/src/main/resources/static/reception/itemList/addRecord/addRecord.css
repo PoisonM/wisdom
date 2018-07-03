@@ -3,6 +3,7 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+    padding-bottom: 44px;
 }
 .addRecord .addRecord_header{
     margin-top: 0.546875rem;
