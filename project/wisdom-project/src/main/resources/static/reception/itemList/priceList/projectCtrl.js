@@ -126,7 +126,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
         project2List:{},//点击导航栏弹出div内的商品list
         threeList:{},//商品的list
         projectTypeOneId:"",//一级项目id
-        ProjectTypeTwoId:"",//二级项目id
+        projectTypeTwoId:"",//二级项目id
         projectName:"",
         pageSize:"100",
         chooseProjectItem:""
@@ -147,7 +147,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.refreshGoods=function (id) {
         $scope.param.chooseProjectItem = id;
         ThreeLevelProject.get({
-            ProjectTypeTwoId:id,
+            projectTypeTwoId:id,
             projectTypeOneId: $scope.param.projectTypeOneId,
             projectName:$scope.param.projectName,
             pageSize:$scope.param.pageSize,
@@ -198,7 +198,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
             //默认调去三级展示
             ThreeLevelProject.get({
                 // ProjectTypeTwoId:data.responseData[0].id,
-                ProjectTypeTwoId:"",//默认查一级下面所有的三级 不需要二级id
+                projectTypeTwoId:"",//默认查一级下面所有的三级 不需要二级id
                 projectTypeOneId:oneId,
                 projectName:$scope.param.projectName,
                 pageSize:$scope.param.pageSize,
