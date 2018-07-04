@@ -36,12 +36,12 @@ public interface ShopCustomerArchivesService {
     List<ShopUserArchivesDTO> getArchivesList(PageParamVoDTO<ShopUserArchivesDTO> shopCustomerArchivesDTO);
 
     /**
-     * 查询某个店某一时间段建档的个数
+     * 查询某个店某一时间段建档
      *
      * @param pageParamVoDTO
      * @return
      */
-    int getShopBuildArchivesNumbers(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    List<ShopUserArchivesDTO> getShopBuildArchives(PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO);
 
     /**
      * 保存用户的建档案信息

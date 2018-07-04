@@ -133,10 +133,10 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 	/**
 	 * 查询新客个数
 	 */
-	@Override
+/*	@Override
 	public int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
 		return shopCustomerArchivesService.getShopBuildArchivesNumbers(pageParamVoDTO);
-	}
+	}*/
 
 	@Override
 	public Integer getUserConsumeNumber(String sysClerkId, String startDate, String endDate) {
