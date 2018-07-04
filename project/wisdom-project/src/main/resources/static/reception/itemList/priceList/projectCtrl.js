@@ -163,7 +163,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.checkImg = function (index,status,id) {
         $scope.param.projectTypeOneId=id;
         /*二级产品列表接口*/
-        TwoLevelProject.get({id:id},function (data) {
+        TwoLevelProject.get({id:id,status:$scope.status},function (data) {
             $scope.project2List=data.responseData;
         });
         if($scope.param.childrenFlag == index){
@@ -190,7 +190,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,OneLevelP
     };
 
     $scope.selection  = function (index,oneId) {
-        TwoLevelProject.get({id:oneId},function (data) {
+        TwoLevelProject.get({id:oneId,status:$scope.status},function (data) {
             $scope.project2List=data.responseData;
             // $scope.param.chooseProjectItem = $scope.project2List[0].id//默认选中第一个
             $scope.param.projectAppear=false;

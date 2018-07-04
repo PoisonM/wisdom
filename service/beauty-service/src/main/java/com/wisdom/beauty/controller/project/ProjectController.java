@@ -404,9 +404,10 @@ public class ProjectController {
 	 */
 	@RequestMapping(value = "/twoLevelProject", method = RequestMethod.GET)
 	@ResponseBody
-	ResponseDTO<List<ShopProjectTypeDTO>> findTwoLevelProject(@RequestParam String id) {
+	ResponseDTO<List<ShopProjectTypeDTO>> findTwoLevelProject(@RequestParam String id,@RequestParam(required = false) String status) {
 		ShopProjectTypeDTO shopProjectTypeDTO = new ShopProjectTypeDTO();
 		shopProjectTypeDTO.setId(id);
+		shopProjectTypeDTO.setStatus(status);
 		// 查询数据
 		List<ShopProjectTypeDTO> list = projectService.getTwoLevelProjectList(shopProjectTypeDTO);
 
