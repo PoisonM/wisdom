@@ -23,10 +23,11 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 status:"0",/*不启动*/
                 visitDateTime:"",/*回访次数*/
                 projectName:"",/*项目名称*/
-                projectDuration:"30",/*时长*/
+                projectDuration:30,/*时长*/
                 imageList:[],/*图片*/
                 cardType:"0"/*卡的类型*/,
-                effectiveNumberMonth:12/*有效期*/
+                effectiveNumberMonth:'',/*有效期*/
+                useStyle:"0"
             }
 
 
@@ -53,12 +54,16 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                     $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = type;
                     if(type == '0'){
                         $scope.cardBox=false;
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.useStyle='0';
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth=''
                     }else{
                         $scope.cardBox=true;
                         $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = timeLength
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.useStyle='1'
                     }
                 }else{
                     $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = '4';
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = 12
                 }
 
 
@@ -111,12 +116,11 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                     }
                 }
 
-                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.marketPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.marketPrice ==""){
                    alert("填入的数据不完整")
                    return
                }
-
-                   SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
+                 SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
                        if(data.result=="0x00001"){
                            $state.go("basicSetting")
                            $rootScope.settingAddsome.extShopProjectInfoDTO={
