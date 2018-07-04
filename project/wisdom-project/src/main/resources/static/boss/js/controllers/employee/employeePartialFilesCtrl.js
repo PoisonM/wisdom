@@ -33,7 +33,7 @@ angular.module('controllers',[]).controller('employeePartialFilesCtrl',
 
             /*点击跳转到预警档案*/
             $scope.switching=function () {
-                $state.go("warningFile")
+                $state.go("employeeWarningFile")
             };
             /*点击跳转到 疗程卡 套卡页面*/
             $scope.goActives=function (id) {

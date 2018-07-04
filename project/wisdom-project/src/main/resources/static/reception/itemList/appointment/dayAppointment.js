@@ -537,9 +537,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
     /*长按新建*/
     $scope.onHold = function (index1, index2, type) {
-        if(index2 != null){
-            return;
-        }
         $scope.param.newChangeContent = "新建预约"
         $scope.param.ModifyAppointmentObject.status = "0";//预约订单状态
         $scope.param.ModifyAppointmentObject.ModifyAppointmentData = "";//预约订单时间
@@ -574,7 +571,8 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     };
 
     /*加载预约详情项目 根据预约主键查询预约项目*/
-    $scope.detailsWrap = function (indexItem,type, sysUserId, sysShopId, id) {
+    $scope.detailsWrap = function (indexItem,type, sysUserId, sysShopId, id,$event) {
+        $event.stopPropagation();//阻止事件冒泡
         $scope.appointmentId = id
         if (type == undefined || sysUserId == undefined || sysShopId == undefined || id == undefined) {
             return
