@@ -27,6 +27,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -98,15 +99,7 @@ public class TimerMessageQueueReceiver {
     public void processDeFrozenUserReturnMoney(String deFrozenUserReturnMoney){
 
         IncomeRecordDTO incomeRecord = gson.fromJson(deFrozenUserReturnMoney,IncomeRecordDTO.class);
-        List<String> transactionIds = new ArrayList<>();
-
-        if(!transactionIds.contains(incomeRecord.getTransactionId()))
-        {
-            transactionIds.add(incomeRecord.getTransactionId());
-        }
-
         boolean operationFlag = true;
-
         //判断incomeRecord记录中的这个用户的门店是不是处于冻结状态
         UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
         userBusinessTypeDTO.setSysUserId(incomeRecord.getSysUserId());
@@ -167,6 +160,11 @@ public class TimerMessageQueueReceiver {
                     {
                         balanceDeny = balanceDeny + (float)0.0001;
                     }
+                    if(balanceDeny<0)
+                    {
+                        AccountDTO exceptionDTO = null;
+                        exceptionDTO.getId();
+                    }
                     logger.info("balanceDeny={}" , balanceDeny);
                     accountDTO.setBalanceDeny(balanceDeny);
                     accountDTO.setUpdateDate(new Date());
@@ -175,9 +173,7 @@ public class TimerMessageQueueReceiver {
                     incomeRecord.setStatus("1");
                     incomeRecord.setUpdateDate(new Date());
                     businessServiceClient.updateIncomeInfo(incomeRecord);
-                }
-                catch (Exception e)
-                {
+                }catch (Exception e){
                     logger.info("解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻异常,异常信息为={}" +e.getMessage(),e);
                     e.printStackTrace();
                     throw e;
@@ -189,12 +185,68 @@ public class TimerMessageQueueReceiver {
         }
     }
 
+    @RabbitListener(queues = "frozenUserType")
+    @RabbitHandler
+    public void processFrozenUserType(String sendFrozenUserType) {
+        UserInfoDTO userInfo = gson.fromJson(sendFrozenUserType, UserInfoDTO.class);
+        UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
+        userBusinessTypeDTO.setSysUserId(userInfo.getId());
+        userBusinessTypeDTO.setStatus("1");
+        List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
+
+        if(userBusinessTypeDTOS.size()==0)
+        {
+            //为用户创建一个记录
+            userBusinessTypeDTO = new UserBusinessTypeDTO();
+            userBusinessTypeDTO.setId(UUID.randomUUID().toString());
+            userBusinessTypeDTO.setSysUserId(userInfo.getId());
+            userBusinessTypeDTO.setStatus("1");
+            userBusinessTypeDTO.setParentUserId(userInfo.getParentUserId());
+            userBusinessTypeDTO.setUserType(userInfo.getUserType());
+            userBusinessTypeDTO.setCreateDate(new Date());
+            businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
+        }
+        else
+        {
+            userBusinessTypeDTO = userBusinessTypeDTOS.get(0);
+        }
+
+        Date dt1 = userBusinessTypeDTO.getCreateDate();
+        Date dt2 = new Date((new Date()).getTime() - (long) userBusinessTypeDTO.getLivingPeriod() * 24 * 60 * 60 * 1000);
+        Date dt3 = new Date((new Date()).getTime() - (long) (userBusinessTypeDTO.getLivingPeriod()-3) * 24 * 60 * 60 * 1000);
+
+        //用户在365天前已经是目前的等级了
+        if (dt2.getTime() > dt1.getTime())
+        {
+            logger.info("用户在365天前已经是目前的等级了,冻结此账户==={}开始",userBusinessTypeDTO.getSysUserId());
+            userBusinessTypeDTO.setStatus("2");//2表示为冻结状态
+            businessServiceClient.updateUserBusinessType(userBusinessTypeDTO);
+        }
+
+        if(dt3.getTime()> dt1.getTime())
+        {
+            String name = null;
+            try {
+                name = URLDecoder.decode(userInfo.getNickname(),"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            String expDate = DateUtils.DateToStr(dt2);
+            String token = WeixinUtil.getUserToken();
+            String openid = userInfo.getUserOpenid();
+            String url = ConfigConstant.USER_WEB_URL + "myselfCenter";
+            WeixinTemplateMessageUtil.sendBusinessMemberDeadlineTemplateWXMessage(name,expDate,token,url,openid);
+            logger.info("发送用户会员快到期提醒模板");
+        }
+    }
+
     @RabbitListener(queues = "promoteUserBusinessTypeForRecommend")
     @RabbitHandler
     public void processPromoteUserBusinessTypeForRecommend(String promoteUserBusinessTypeForRecommend) throws UnsupportedEncodingException {
         UserInfoDTO userInfo = gson.fromJson(promoteUserBusinessTypeForRecommend,UserInfoDTO.class);
         String token = WeixinUtil.getUserToken();
 
+        //查询所有下一级的情况
         //查询所有下一级的情况
         UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
         nextUserInfoDTO.setParentUserId(userInfo.getId());

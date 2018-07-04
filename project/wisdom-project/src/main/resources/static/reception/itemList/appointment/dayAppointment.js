@@ -459,13 +459,12 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         $("#ofix1_tb_header").remove();
         $("#ofix1_tb_left").remove();
         $("#ofix1_div_top_left").remove();
-        var tiemInt = setInterval(function () {
+
+        setTimeout(function () {
             if ($("#tbTest1 thead tr td").length > 1) {
                 var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-                clearTimeout(tiemInt)
             }
-        }, 100)
-
+        },100)
     }
     /*获取周预约列表*/
     $scope.weekAll = function () {
@@ -1603,10 +1602,6 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.selectSex = function(sex){
         $scope.param.addCustomersObject.sex=sex
     }
-
-
-
-
 
 
     detailsReservation && detailsReservation($scope,$state, ngDialog, GetUserProjectGroupList, GetUserProductList, GetUserCourseProjectList, SearchShopProjectList, SearchShopProductList, GetShopProjectGroups, GetRechargeCardList, ThreeLevelProject, productInfoThreeLevelProject, GetUserShopProjectList, GetUserShopProjectList, ConsumeCourseCard, GetShopClerkList, FindArchives, GetShopProjectList);
