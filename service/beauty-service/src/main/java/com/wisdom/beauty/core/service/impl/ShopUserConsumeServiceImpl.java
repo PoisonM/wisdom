@@ -143,7 +143,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 throw new ServiceException("查询用户的档案信息为空");
             }
             //更新档案
-            archivesInfo.setUpdateDate(new Date());
+            archivesInfo.setLastToShopTime(new Date());
             shopCustomerArchivesService.updateByCriteriaSelective(archivesInfo);
 
             String balancePay = shopUserPayDTO.getBalancePay();
