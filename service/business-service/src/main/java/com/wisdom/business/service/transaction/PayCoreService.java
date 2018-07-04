@@ -116,7 +116,7 @@ public class PayCoreService {
                 businessMessageQueueSender.sendRecordMonthTransaction(userInfoDTO,instanceReturnMoneySignalDTO,expenseMoney);
 
                 logger.info("处理用户消推荐返利的活动=="+userInfoDTO.getMobile());
-                handleShareReturnMoney(userInfoDTO,instanceReturnMoneySignalDTO);
+//                handleShareReturnMoney(userInfoDTO,instanceReturnMoneySignalDTO);
 
             }
             catch (Exception e)
