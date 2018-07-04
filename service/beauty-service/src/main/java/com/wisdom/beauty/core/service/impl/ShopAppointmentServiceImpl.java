@@ -392,10 +392,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         logger.debug("保存用户的预约信息执行结果， {}", insert > 0 ? "成功" : "失败");
-        //更新档案信息,最后一次到店时间
-        shopUserArchivesDTO.setSysUserId(shopAppointServiceDTO.getSysUserId());
-        shopUserArchivesDTO.setUpdateDate(new Date());
-        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
 
         HashMap<Object, Object> hashMap = new HashMap<>(1);
         hashMap.put("appointmentId", shopAppointServiceDTO.getId());

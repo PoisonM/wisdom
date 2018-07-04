@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
-import com.wisdom.common.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import com.wisdom.common.entity.BaseEntity;
 
 public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
     //
@@ -71,6 +71,9 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     //
     private String createBy;
+
+    //上一次到店时间
+    private Date lastToShopTime;
 
     //
     private Date createDate;
@@ -257,6 +260,14 @@ public class ShopUserArchivesDTO extends BaseEntity implements Serializable {
 
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
+    }
+
+    public Date getLastToShopTime() {
+        return lastToShopTime;
+    }
+
+    public void setLastToShopTime(Date lastToShopTime) {
+        this.lastToShopTime = lastToShopTime;
     }
 
     public Date getCreateDate() {
