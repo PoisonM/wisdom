@@ -90,13 +90,11 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                  dataType:'json',
                  success:function(data) {
                      var configValue = data.responseData;
-                     console.log(configValue);
                      if(configValue!=null ){
                          timestamp = configValue.timestamp;//得到时间戳
                          nonceStr = configValue.nonceStr;//得到随机字符串
                          signature = configValue.signature;//得到签名
                          appid = configValue.appid;//appid
-
                          //微信配置
                          wx.config({
                              debug: false,
