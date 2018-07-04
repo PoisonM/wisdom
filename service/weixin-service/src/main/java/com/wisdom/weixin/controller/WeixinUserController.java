@@ -185,13 +185,23 @@ public class WeixinUserController {
      * 用户获取推广二维码
      */
     @RequestMapping(value = "getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<WeixinShareDTO> getUserQRCode() throws FileNotFoundException {
+    ResponseDTO<WeixinShareDTO> getUserQRCode(@RequestParam(required=false) String userPhone) throws FileNotFoundException {
         ResponseDTO<WeixinShareDTO> responseDTO = new ResponseDTO();
 
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        if(StringUtils.isNotBlank(userPhone)){
+            userInfoDTO.setMobile(userPhone);
+            List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+            if(userInfoDTOS.size()>0)
+            {
+                userInfoDTO = userInfoDTOS.get(0);
+            }
+
+        }else{
+            userInfoDTO = UserUtils.getUserInfoFromRedis();
+        }
         WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
         if(weixinShareDTO==null)
         {
