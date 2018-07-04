@@ -748,7 +748,7 @@ public class PayFunction {
                     nextUserInfoDTO.setId(parentUserId);
                     List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
                     UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-                    this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"testrecommend");
+                    this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"shareActivity");
 //                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
 //                    nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
 //                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
