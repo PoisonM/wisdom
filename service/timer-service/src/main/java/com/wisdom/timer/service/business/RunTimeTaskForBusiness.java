@@ -1,5 +1,6 @@
 package com.wisdom.timer.service.business;
 
+import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.timer.client.WeixinServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

@@ -8,7 +8,7 @@ angular.module('controllers',[]).controller('specificationsCtrl',
                 spec:""
             }
             if($rootScope.settingAddsome.product.productSpec !=''){
-                var num = $rootScope.settingAddsome.product.productSpec.replace(/[^0-9]/ig,"")/1;
+                var num = $rootScope.settingAddsome.product.productSpec.replace(/[^0-9.]/ig,"")/1;
                 var spec = $rootScope.settingAddsome.product.productSpec.replace(/[^a-z]+/ig,"");
                 $scope.param.num =num;
                 $scope.param.spec =spec;

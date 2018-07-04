@@ -1,17 +1,12 @@
 package com.wisdom.timer.mqreceiver;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.aliyuncs.exceptions.ClientException;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.IncomeRecordManagementDTO;
-import com.wisdom.common.dto.account.PayRecordDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
-import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.*;
 import com.wisdom.timer.client.BusinessServiceClient;
@@ -22,10 +17,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -122,7 +114,6 @@ public class TimerMessageQueueReceiver {
             }
             else
             {
-
                 int incomeRecordManagementNum = 0;
                 for(IncomeRecordManagementDTO incomeRecordManagement:incomeRecordManagementDTOList)
                 {
