@@ -893,7 +893,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                             }else {
                                 alert(data.errorInfo)
                             }
-
+                            $scope.dayAll()
                         })
                         console.log($scope.shopAppointServiceDTO)
                     }
