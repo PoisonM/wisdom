@@ -80,7 +80,7 @@ public class PayFunction {
             float totalMoney = 0;
             String productName = "";
             String token = WeixinUtil.getUserToken();
-            String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
+            String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/1";
             logger.info("处理支付状态token={},url={}",token,url);
             String userId = "";
             for (PayRecordDTO payRecordDTO : payRecordDTOList) {
@@ -748,7 +748,7 @@ public class PayFunction {
                     nextUserInfoDTO.setId(parentUserId);
                     List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
                     UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-                    this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"testrecommend");
+                    this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"shareActivity");
 //                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
 //                    nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
 //                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);

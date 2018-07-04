@@ -148,7 +148,7 @@ public class AppointmentController {
 
 			} else {
 				shopAppointMap.put("appointmentInfo", clerkServiceInfo);
-				shopAppointMap.put("point", shopAppointServiceDTOS.size());
+				shopAppointMap.put("point", clerkServiceInfo.size());
 			}
 			shopAppointMap.put("sysClerkDTO", sysClerkDTO);
 			responseMap.put(sysClerkDTO.getName(), shopAppointMap);

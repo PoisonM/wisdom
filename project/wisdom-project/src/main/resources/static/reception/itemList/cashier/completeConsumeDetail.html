@@ -81,15 +81,15 @@
                 <ul>
                     <li>
                         <label for="">单次</label>
-                        <span>{{item1.timeDiscount=='1'?'无折扣':item1.timeDiscount}}折</span>
+                        <span>{{item1.timeDiscount=='1'||item1.timeDiscount == null?'无折扣':item1.timeDiscount}}</span>
                     </li>
                     <li>
                         <label for="">疗程卡</label>
-                        <span>{{item1.periodDiscount=='1'?'无折扣':item1.periodDiscount}}折</span>
+                        <span>{{item1.periodDiscount=='1'||item1.timeDiscount == null?'无折扣':item1.periodDiscount}}</span>
                     </li>
                     <li>
                         <label for="">产品</label>
-                        <span>{{item1.productDiscount=='1'?'无折扣':item1.productDiscount}}折</span>
+                        <span>{{item1.productDiscount=='1'||item1.timeDiscount == null?'无折扣':item1.productDiscount}}</span>
                     </li>
                 </ul>
             </div>

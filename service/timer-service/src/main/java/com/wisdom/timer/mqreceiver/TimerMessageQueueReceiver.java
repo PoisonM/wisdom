@@ -65,7 +65,7 @@ public class TimerMessageQueueReceiver {
                 String autoReceiveProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
 
                 String token = WeixinUtil.getUserToken();
-                String url = ConfigConstant.USER_WEB_URL + "orderManagement/1";
+                String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/1";
 
                 UserInfoDTO userInfoDTO = new UserInfoDTO();
                 userInfoDTO.setId(businessOrder.getSysUserId());
@@ -225,7 +225,7 @@ public class TimerMessageQueueReceiver {
             String expDate = DateUtils.DateToStr(dt2);
             String token = WeixinUtil.getUserToken();
             String openid = userInfo.getUserOpenid();
-            String url = ConfigConstant.USER_WEB_URL + "myselfCenter";
+            String url = ConfigConstant.USER_BUSINESS_WEB_URL + "myselfCenter";
             WeixinTemplateMessageUtil.sendBusinessMemberDeadlineTemplateWXMessage(name,expDate,token,url,openid);
             logger.info("发送用户会员快到期提醒模板");
         }

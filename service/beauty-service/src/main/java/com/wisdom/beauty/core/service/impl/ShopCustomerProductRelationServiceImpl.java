@@ -143,13 +143,13 @@ public class ShopCustomerProductRelationServiceImpl implements ShopCustomerProdu
 		UserProductRelationResponseDTO userProductRelationResponseDTO = null;
 		for (ShopUserProductRelationDTO shopUserProductRelation : shopUserProductRelations) {
 			userProductRelationResponseDTO = new UserProductRelationResponseDTO();
-			ShopProductInfoResponseDTO shopProductInfo = map.get(shopUserProductRelation.getId());
+			ShopProductInfoResponseDTO shopProductInfo = shopProductInfoService.getProductDetail(shopUserProductRelation.getShopProductId());
 			if (shopProductInfo != null) {
 				userProductRelationResponseDTO.setProductName(shopProductInfo.getProductName());
 				userProductRelationResponseDTO.setProductSpec(shopProductInfo.getProductSpec());
 				userProductRelationResponseDTO.setProductTypeOneName(shopProductInfo.getProductTypeOneName());
 				userProductRelationResponseDTO.setProductTypeTwoName(shopProductInfo.getProductTypeTwoName());
-				userProductRelationResponseDTO.setWaitReceiveNumber(shopUserProductRelation.getWaitReceiveNumber());
+				userProductRelationResponseDTO.setWaitReceiveNumber(shopUserProductRelation.getSurplusTimes());
 				responseList.add(userProductRelationResponseDTO);
 			}
 		}

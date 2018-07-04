@@ -1,4 +1,4 @@
-PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,GetProductRecord,GetWaitReceivePeopleAndNumber) {
+PADWeb.controller('unclaimedAllCtrl', function($scope,$state, $stateParams, ngDialog,GetProductRecord,GetWaitReceivePeopleAndNumber) {
     /*-------------------------------------------定义头部信息----------------------------------------------*/
     $scope.$parent.$parent.param.headerCash.title="待领取汇总"
     $scope.$parent.$parent.param.headerCash.backContent = "今日收银记录"
@@ -36,5 +36,8 @@ PADWeb.controller('unclaimedAllCtrl', function($scope, $stateParams, ngDialog,Ge
     });
     $scope.cancel = function () {
         $scope.searchNameAndPhone = "";
+    }
+    $scope.goRecordDetail = function (item) {
+        $state.go("pad-web.userInfo.wait4Receive",{id:item.sysUserId,name:item.nickname})
     }
 });
