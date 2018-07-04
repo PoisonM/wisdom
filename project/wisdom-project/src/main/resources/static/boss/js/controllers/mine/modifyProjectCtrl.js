@@ -8,7 +8,6 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
             $rootScope.title = "修改项目";
             $scope.param={
                 projectId:$stateParams.projectId,/*接受项目列表穿过的id*/
-               
                 secondary:"",
                 timeLength:"",
             };

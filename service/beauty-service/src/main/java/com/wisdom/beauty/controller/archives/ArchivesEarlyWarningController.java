@@ -8,8 +8,10 @@ import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopCustomerArchivesService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.PinYinSort;
 import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
@@ -84,51 +86,29 @@ public class ArchivesEarlyWarningController {
 			shopUserArchivesDTO.setSysShopId("");
 		}
 
-		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
-				.getShopUserArchivesInfo(shopUserArchivesDTO);
-		if (CommonUtils.objectIsEmpty(shopUserArchivesInfo)) {
-			logger.info("获取当前boss下的档案列表为空");
-			return getSuccessResponseDTO(responseDTO, shopUserArchivesInfo);
-		}
-
 		// 根据queryType构造查询时间段
 		Calendar calendar = Calendar.getInstance();
-		Date currentDate = new Date();
-		calendar.setTime(currentDate);
+		Date currentDate = null;
 		if ("one".equals(queryType)) {
 			calendar.add(Calendar.MONTH, -1);
+			currentDate=calendar.getTime();
+			calendar.add(Calendar.MONTH, -1);
 		} else if ("three".equals(queryType)) {
+			calendar.add(Calendar.MONTH, -1);
+			currentDate=calendar.getTime();
 			calendar.add(Calendar.MONTH, -3);
 		} else if ("six".equals(queryType)) {
+			calendar.add(Calendar.MONTH, -1);
+			currentDate=calendar.getTime();
 			calendar.add(Calendar.MONTH, -6);
 		}
+		PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO=new PageParamVoDTO<>();
+		pageParamVoDTO.setRequestData(shopUserArchivesDTO);
+		pageParamVoDTO.setStartTime(DateUtils.DateToStr(calendar.getTime(),"datetime"));
+		pageParamVoDTO.setEndTime(DateUtils.DateToStr(currentDate,"datetime"));
 
-		// 根据查询时间段查询预约列表
-		ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-		extShopAppointServiceDTO.setSearchStartTime(calendar.getTime());
-		extShopAppointServiceDTO.setSearchEndTime(currentDate);
-		extShopAppointServiceDTO.setSysBossCode(bossCode);
-		List<ShopAppointServiceDTO> appointClerkInfoByCriteria = shopAppointmentService
-				.getShopAppointClerkInfoByCriteria(extShopAppointServiceDTO);
-		if (CommonUtils.objectIsEmpty(appointClerkInfoByCriteria)) {
-			logger.info("获取当前boss下的预约列表为空");
-			return getSuccessResponseDTO(responseDTO, shopUserArchivesInfo);
-		}
-
-		// 遍历档案列表将在预约列表的用户remove掉
-		Iterator<ShopUserArchivesDTO> iterator = shopUserArchivesInfo.iterator();
-		while (iterator.hasNext()) {
-			ShopUserArchivesDTO archivesDTO = iterator.next();
-			boolean removeFlag = false;
-			for (ShopAppointServiceDTO serviceDTO : appointClerkInfoByCriteria) {
-				if (StringUtils.isNotBlank(archivesDTO.getSysUserId())
-						&& StringUtils.isNotBlank(serviceDTO.getSysUserId())
-						&& archivesDTO.getSysUserId().equals(serviceDTO.getSysUserId()) && !removeFlag) {
-					iterator.remove();
-					removeFlag = true;
-				}
-			}
-		}
+		List<ShopUserArchivesDTO> shopUserArchivesInfo = shopCustomerArchivesService
+				.getShopBuildArchives(pageParamVoDTO);
 
 		ArrayList<Object> lastList = new ArrayList<>();
 		for (char a : PinYinSort.getSortType()) {

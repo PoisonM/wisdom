@@ -48,7 +48,7 @@ public interface ShopStatisticsAnalysisService {
     /**
      * 查询新客个数
      */
-    int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /*int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);*/
 
     /**
      * @Author:huan

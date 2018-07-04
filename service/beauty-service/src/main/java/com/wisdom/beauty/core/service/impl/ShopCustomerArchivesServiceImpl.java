@@ -154,20 +154,20 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 	}
 
 	/**
-	 * 查询某个店某一时间段建档的个数
+	 * 查询某个店某一时间段建档
 	 *
 	 * @param pageParamVoDTO
 	 * @return
 	 */
 	@Override
-	public int getShopBuildArchivesNumbers(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO) {
-		UserConsumeRequestDTO userConsumeRequestDTO = pageParamVoDTO.getRequestData();
-		if (userConsumeRequestDTO == null) {
-			logger.info("userConsumeRequestDTO为空");
-			return 0;
+	public List<ShopUserArchivesDTO> getShopBuildArchives(PageParamVoDTO<ShopUserArchivesDTO> pageParamVoDTO) {
+		ShopUserArchivesDTO shopUserArchivesDTO = pageParamVoDTO.getRequestData();
+		if (shopUserArchivesDTO == null) {
+			logger.info("shopUserArchivesDTO为空");
+			return null;
 		}
 		logger.info("getShopBuildArchivesNumbers方法入参是ShopId={},bossId={},startTime={},endTime={}",
-				userConsumeRequestDTO.getSysShopId(), userConsumeRequestDTO.getSysBossCode(),
+				shopUserArchivesDTO.getSysShopId(), shopUserArchivesDTO.getSysBossCode(),
 				pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
 		String startDate = pageParamVoDTO.getStartTime();
 		String endDate = pageParamVoDTO.getEndTime();
@@ -175,21 +175,19 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		Date end = DateUtils.StrToDate(endDate, "datetime");
 		ShopUserArchivesCriteria archivesCriteria = new ShopUserArchivesCriteria();
 		ShopUserArchivesCriteria.Criteria criteria = archivesCriteria.createCriteria();
-
-		if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())) {
-			criteria.andSysShopIdEqualTo(userConsumeRequestDTO.getSysShopId());
+		// 排序
+		archivesCriteria.setOrderByClause("sys_user_name");
+		if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(shopUserArchivesDTO.getSysShopId());
 		}
-		if (StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossCode())) {
-
-			criteria.andSysBossCodeEqualTo(userConsumeRequestDTO.getSysBossCode());
+		if (StringUtils.isNotBlank(shopUserArchivesDTO.getSysBossCode())) {
+			criteria.andSysBossCodeEqualTo(shopUserArchivesDTO.getSysBossCode());
 		}
 		if (startDate != null && endDate != null) {
-			criteria.andCreateDateBetween(start, end);
+			criteria.andLastToShopTimeBetween(start, end);
 		}
-
-		int count = shopUserArchivesMapper.countByCriteria(archivesCriteria);
-		logger.debug("查询某个店某一时间段建档的个数为， {}", count);
-		return count;
+		criteria.andLastToShopTimeIsNotNull();
+		return shopUserArchivesMapper.selectByCriteria(archivesCriteria);
 	}
 
 	/**

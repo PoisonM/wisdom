@@ -665,7 +665,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(sysUserId);
         shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
-        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopUserArchivesDTO.setLastToShopTime(new Date());
         shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
         return 1;
     }
@@ -703,7 +703,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(consumeDTO.getSysUserId());
         shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
-        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopUserArchivesDTO.setLastToShopTime(new Date());
         shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
         return  result;
     }
@@ -751,7 +751,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         ShopUserArchivesDTO shopUserArchives=new ShopUserArchivesDTO();
         shopUserArchives.setSysUserId(consumeDTO.getSysUserId());
         shopUserArchives.setSysShopId(clerkInfo.getSysShopId());
-        shopUserArchives.setUpdateDate(new Date());
+        shopUserArchives.setLastToShopTime(new Date());
         shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchives);
         //更新库存
         List<ShopStockRequestDTO> stockList = new ArrayList<>();
@@ -973,7 +973,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         //更新档案信息
         ShopUserArchivesDTO shopUserArchivesDTO = new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(orderDTO.getSysUserId());
-        shopUserArchivesDTO.setUpdateDate(new Date());
+        shopUserArchivesDTO.setLastToShopTime(new Date());
         shopUserArchivesDTO.setSysShopId(clerkInfo.getSysShopId());
         shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
         responseDTO.setResult(StatusConstant.SUCCESS);

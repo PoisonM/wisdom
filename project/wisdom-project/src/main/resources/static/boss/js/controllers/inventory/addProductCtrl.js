@@ -41,7 +41,6 @@ angular.module('controllers',[]).controller('addProductCtrl',
                  dataType:'json',
                  success:function(data) {
                      var configValue = data.responseData;
-                     console.log(configValue);
                      if(configValue!=null ){
                          timestamp = configValue.timestamp;//得到时间戳
                          nonceStr = configValue.nonceStr;//得到随机字符串
