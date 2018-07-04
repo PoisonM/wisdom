@@ -114,7 +114,7 @@
                         <!-- data-val={{value}} -->
                         <div>{{key}}</div>
                     </td>
-                    <td  ng-dblclick = "onHold($index,item.appointmentInfo)" ng-repeat="item in value" class="bor_e5">
+                    <td  ng-click = "onHold($index,item.appointmentInfo)" ng-repeat="item in value" class="bor_e5">
                         <div class="td_box" style="position: relative;width: 100%">
                             <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
                             <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}"
