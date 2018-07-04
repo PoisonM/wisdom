@@ -125,10 +125,12 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
             function fun_date(aa){
                 var date1 = new Date(), time1=date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();//time1表示当前时间
                 $scope.param.endDate = time1
+                $scope.param.endValue = time1+' 00:00:00';
                 var date2 = new Date(date1);
                 date2.setDate(date1.getDate()+aa);
                 var time2 = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
                 $scope.param.startDate =time2
+                $scope.param.startValue =time2+' 23:59:59'
             }
 
             $scope.detailsOfCashierGo=function (flowNo) {
