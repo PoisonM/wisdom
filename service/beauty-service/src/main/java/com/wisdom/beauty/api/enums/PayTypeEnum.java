@@ -6,6 +6,7 @@ public enum PayTypeEnum {
     ALI_PAY("1", "支付宝支付"),
     BANK_PAY("2", "银行卡支付"),
     CASH_PAY("3", "现金支付"),
+    RECHARGE_PAY("5", "充值卡支付"),
     ALL("4", "包括所有支付方式");
 
 
