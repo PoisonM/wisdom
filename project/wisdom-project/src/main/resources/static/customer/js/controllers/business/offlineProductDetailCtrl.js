@@ -57,6 +57,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     if($scope.param.product.productDetail.spec.length == 1){
                         $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
                     }
+                    if($scope.param.productNum=="0"){
+                        alert("请选择正确的数量");
+                        return;
+                    }
                     if($scope.param.productNum>$scope.param.product.productAmount){
                         alert("库存不足~");
                         return;
@@ -109,6 +113,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                 alert("亲！此商品为新用户专享产品");
                                 return
                             }
+                        }
+                        if($scope.param.productNum=="0"){
+                            alert("请选择正确的数量");
+                            return
                         }
                         /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
                         if($scope.param.productNum>$scope.param.product.productAmount){
