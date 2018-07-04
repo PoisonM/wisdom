@@ -200,6 +200,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if(StringUtils.isNotBlank(shopProductTypeDTO.getSysShopId())){
 			criteria.andSysShopIdEqualTo(shopProductTypeDTO.getSysShopId());
 		}
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getStatus())){
+			criteria.andStatusEqualTo(shopProductTypeDTO.getStatus());
+		}
 		List<ShopProductTypeDTO> list = shopProductTypeMapper.selectByCriteria(shopProductTypeCriteria);
 		return list;
 	}
