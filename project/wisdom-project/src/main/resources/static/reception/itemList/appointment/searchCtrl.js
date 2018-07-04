@@ -80,7 +80,7 @@ function searchConsumption($scope,SearchShopProjectList,SearchShopProductList,Ge
                 pageSize:100,
                 projectName:"",
                 projectTypeOneId:"1",
-                ProjectTypeTwoId:"4",
+                projectTypeTwoId:"4",
             },function(data){
                 $scope.param.consumptionObj.singleByshopId.detailProject =  data.responseData;
                 if($scope.param.consumptionObj.consumptionType == "selectTreatmentCard"){

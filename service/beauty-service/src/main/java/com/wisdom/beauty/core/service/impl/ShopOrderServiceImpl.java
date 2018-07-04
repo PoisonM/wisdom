@@ -116,6 +116,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
     private void updateRechargeCardInfo(ShopUserOrderDTO shopUserOrderDTO, String orderId, ShopUserOrderDTO alreadyOrderDTO) {
         //充值卡主键
         String userRechargeId="";
+        String userCardRelationId="";
         //再次查询保证取到最新的订单
         Query query = new Query(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         alreadyOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
@@ -123,10 +124,12 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //消费界面用户选择不同的充值卡，也就是用户更新充值卡操作，先获取新的充值卡信息
         if (null != shopUserOrderDTO.getShopUserRechargeCardDTO() && StringUtils.isNotBlank(shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId())) {
             userRechargeId = shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
+            userCardRelationId=shopUserOrderDTO.getShopUserRechargeCardDTO().getId();
         }
         //消费界面添加更多，比如添加了一个信息的产品，那么新的产品折扣也要逆向更新，新的充值卡信息为空，获取老的充值卡信息
         else if(null != alreadyOrderDTO.getShopUserRechargeCardDTO()){
             userRechargeId = alreadyOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
+            userCardRelationId=alreadyOrderDTO.getShopUserRechargeCardDTO().getId();
         }
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         //根据主键查询用户与充值卡关系信息
@@ -134,8 +137,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             shopUserRechargeCardDTO.setShopRechargeCardId(userRechargeId);
             shopUserRechargeCardDTO.setSysUserId(alreadyOrderDTO.getUserId());
             shopUserRechargeCardDTO.setSysShopId(alreadyOrderDTO.getShopId());
+            shopUserRechargeCardDTO.setId(userCardRelationId);
             List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
-            //用户没有选择任何的充值卡
+            //用户的充值卡不为空
             if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
                 logger.info("用户的充值卡不为空");
                 shopUserRechargeCardDTO = userRechargeCardList.get(0);

@@ -68,7 +68,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
             $scope.sel = function(index){
                 $scope.projectType = $scope.requestList[index];
                 ThreeLevelProject.get({
-                    ProjectTypeTwoId:$scope.projectType.id,
+                    projectTypeTwoId:$scope.projectType.id,
                     projectTypeOneId: $scope.projectType.parentId,
                     projectName:$scope.projectType.projectName,
                     pageSize:'1',

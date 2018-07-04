@@ -52,7 +52,7 @@ angular.module('controllers',[]).controller('pricesCtrl',
                         ThreeLevelProject.get({
                             projectTypeOneId:$scope.param.projectTypeOneId,
                             pageSize:$scope.param.pageSize,
-                            ProjectTypeTwoId:$scope.param.projectTypeTwoId
+                            projectTypeTwoId:$scope.param.projectTypeTwoId
                         },function (data) {
                             $scope.threeList=data.responseData;
                             for(var i=0;i< $scope.threeList.length;i++){
@@ -152,7 +152,7 @@ angular.module('controllers',[]).controller('pricesCtrl',
                      ThreeLevelProject.get({
                          projectTypeOneId:$scope.param.projectTypeOneId,
                          pageSize:$scope.param.pageSize,
-                         ProjectTypeTwoId:id
+                         projectTypeTwoId:id
                      },function (data) {
                          $scope.threeList=data.responseData;
                          for(var i=0;i< $scope.threeList.length;i++){
