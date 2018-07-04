@@ -28,7 +28,7 @@
                     <ion-item  class="h60 bgfff row" ng-repeat="items in val" ng-click="archivesGo(items.id)">
                         <div class="col col-20" style="line-height: 49px;">
                             <div style="height:42px;width:42px;" >
-                                <img ng-src="{{items.imageUrl}}" style="height:42px;width:42px;border-radius: 50%;" class="ml10">
+                                <img ng-src="{{items.imageUrl}}" style="height:42px;width:42px;border-radius: 50%;margin-top:-5px;" class="ml10">
 
                             </div>
                         </div>
@@ -37,9 +37,9 @@
                             <p class="fs16">{{items.sysUserName}}</p>
                             <p class="fs12 col666"> <img src="images/time.png" class="timePic mr5">上次到店时间：{{items.updateDate|date : 'yyyy-MM-dd hh:mm:ss'}}</p>
                         </div>
-                       <!-- <p class="col col-25" style="line-height: 49px;">
-                            <img src="images/associated.png" class="associated ml20 ">
-                            <span class="fs11 colff66">{{items.sysClerkName}}</span>
+                        <!--<p class="col col-25" style="line-height: 49px;">
+                         &lt;!&ndash;   <img src="images/associated.png" class="associated ml20 ">
+                            <span class="fs11 colff66">{{items.sysClerkName}}</span>&ndash;&gt;
                         </p>-->
                     </ion-item>
 
