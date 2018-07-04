@@ -333,8 +333,6 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setDetail(shopUserOrderDTO.getDetail());
                 userConsumeRecordDTO.setPayType(PayTypeEnum.judgeValue(shopUserPayDTO.getPayType()).getCode());
                 logger.info("订单号={},更新用户的充值卡信息={}", orderId, userConsumeRecordDTO);
-
-                userConsumeRecordDTO.setGoodsType(GoodsTypeEnum.COLLECTION_CARD.getCode());
                 saveCustomerConsumeRecord(userConsumeRecordDTO, shopUserOrderDTO, shopUserPayDTO, clerkInfo, transactionCodeNumber, archivesInfo);
 
                 //更新用户的账户信息
