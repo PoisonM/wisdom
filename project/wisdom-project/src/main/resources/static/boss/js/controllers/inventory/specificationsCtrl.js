@@ -18,8 +18,16 @@ angular.module('controllers',[]).controller('specificationsCtrl',
             }
 
             $scope.save=function () {
-                    $state.go($stateParams.url)
-                    $rootScope.settingAddsome.product.productSpec = $scope.param.num+$scope.param.spec
+                if($scope.param.num==''){
+                    alert("请输入规格");
+                    return
+                }
+                if($scope.param.spec==''){
+                    alert("请选择单位");
+                    return
+                }
+                $rootScope.settingAddsome.product.productSpec = $scope.param.num+$scope.param.spec
+                $state.go($stateParams.url)
 
             }
 
