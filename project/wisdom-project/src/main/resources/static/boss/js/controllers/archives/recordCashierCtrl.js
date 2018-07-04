@@ -86,6 +86,8 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                }else{
                    $scope.param.startDate = "";
                    $scope.param.endDate = "";
+                   $scope.param.startValue=''
+                   $scope.param.endValue=''
                }
                $scope.param.timeIndex = index;
 
@@ -113,14 +115,13 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                $scope.param.timeIndex = 0
                $scope.param.startDate = ''
                $scope.param.endDate = ''
-               $scope.param.searchState = '5'
+               $scope.param.searchState = '5';
+               $scope.param.startValue=''
+               $scope.param.endValue=''
            };
            $scope.disNone = function(){
                $scope.param.flag = false;
            }
-
-
-
             function fun_date(aa){
                 var date1 = new Date(), time1=date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();//time1表示当前时间
                 $scope.param.endDate = time1
