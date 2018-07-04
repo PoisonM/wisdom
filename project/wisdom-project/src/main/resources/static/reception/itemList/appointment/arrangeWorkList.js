@@ -66,7 +66,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         $("#ofix1_tb_header").remove();
         $("#ofix1_tb_left").remove();
         $("#ofix1_div_top_left").remove();
-        var tiemInt = setInterval(function () {
+        setTimeout(function () {
             if ($("#tbTest1 thead tr td").length > 1) {
                 var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
                 clearTimeout(tiemInt)
