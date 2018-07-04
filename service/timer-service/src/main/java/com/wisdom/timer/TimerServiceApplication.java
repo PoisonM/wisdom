@@ -12,6 +12,9 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableAspectJAutoProxy
@@ -21,6 +24,8 @@ public class TimerServiceApplication {
 
 	@Autowired
 	BusinessRunTimeService transactionRunTimeService;
+	@Autowired
+	BusinessRunTimeService businessRunTimeService;
 
 	public static void main(String[] args) {
 
@@ -31,9 +36,10 @@ public class TimerServiceApplication {
 		BusinessRunTimeService businessRunTimeService = SpringUtil.getBean(BusinessRunTimeService.class);
 
 		//初始化时更新token
-		//weixinServiceClient.updateUserWeixinToken();
+		weixinServiceClient.updateUserWeixinToken();
 
 		weixinServiceClient.updateBeautyWeixinToken();
+
 	}
 
 }

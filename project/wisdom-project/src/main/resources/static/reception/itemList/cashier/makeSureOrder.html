@@ -159,7 +159,7 @@
 
         <!--<div class="stillOwedTitle">备注</div>
         <textarea name="" rows="10"></textarea>-->
-        <span class="allPrice">总金额：{{orderPrice}}</span>
+        <span class="allPrice">总金额：{{orderPrice|number:2}}</span>
         <button ng-click="goOrderListm()">确认</button>
     </div>
     <div ng-if="housekeeperFlag" class="housekeeper">

@@ -6,6 +6,8 @@ import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.entity.TextMessage;
 import com.wisdom.common.util.MessageUtil;
 import com.wisdom.common.util.WeixinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -27,13 +29,14 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessBeautyClickEventService {
-
+    private  Logger logger = LoggerFactory.getLogger(ProcessBeautyClickEventService.class);
     @Autowired
     private MongoTemplate mongoTemplate;
 
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
 
     public String processEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("processEvent方法执行" );
 
         String respMessage = "";
         if("10".equals(xmlEntity.getEventKey())){

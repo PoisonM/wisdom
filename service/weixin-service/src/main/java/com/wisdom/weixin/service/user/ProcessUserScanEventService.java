@@ -8,6 +8,8 @@ import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -26,6 +28,7 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessUserScanEventService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -34,11 +37,13 @@ public class ProcessUserScanEventService {
 
     public void processUserScanEvent(ReceiveXmlEntity xmlEntity)
     {
+        logger.info("已关注公众号的情况下扫描" );
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinUserFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
 
         //开启线程，给关注的用户推送微信消息
+        logger.info("开启线程，给关注的用户token={}推送微信消息",token);
         Runnable sendSubscribeMessageThread = new SendScanMessageThread(token, xmlEntity);
         threadExecutorCached.execute(sendSubscribeMessageThread);
     }
@@ -63,6 +68,7 @@ public class ProcessUserScanEventService {
                 String specialShopId = codeArray[0];
 
                 //通过shopId查询出店铺名称
+                logger.info("通过shopId={}查询出店铺名称",specialShopId);
                 Query query = new Query(Criteria.where("shopId").is(specialShopId));
                 SpecialShopInfoDTO specialShopInfoDTO = mongoTemplate.findOne(query,SpecialShopInfoDTO.class,"specialShopInfo");
 
@@ -82,11 +88,10 @@ public class ProcessUserScanEventService {
                 //判断用户所扫描的二维码是否是A店或者B店的二维码
                 if(StringUtils.isNotNull(xmlEntity.getEventKey())&&xmlEntity.getEventKey().indexOf("mxbusinessshare_")!=-1){
                     //todo 此处要考虑，未来完善，不仅仅只有mxbusinessshare_一种类型的扩展二维码
-                    List<Article> articleList = new ArrayList<>();
-                    Article article = new Article();
-                    article.setTitle("你已经是美享的用户啦， 此次扫码不产生效果哦~~");
-                    articleList.add(article);
-                    WeixinUtil.senImgMsgToWeixin(token,xmlEntity.getFromUserName(),articleList);
+                    String content = "尊敬的用户，你好，因你已成为商城用户（店主），已无需再次扫码，" +
+                            "现在可以去做店主、拿返利、狂血拼，" +
+                            "<a href='http://mx99.kpbeauty.com.cn/weixin/customer/fieldwork/author?url=http://mx99.kpbeauty.com.cn/weixin/customer/getUserWeixinMenuId?url=shopHome'>放肆go!</a>";
+                    WeixinUtil.sendMsgToWeixin(token,xmlEntity.getFromUserName(),content);
                 }
                 else
                 {

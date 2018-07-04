@@ -84,6 +84,9 @@ public class MonthTransactionRecordDTO {
     @JSONField(name = "orderAmount")
     private String orderAmount;
 
+    @JSONField(name = "amountMoney")
+    private float amountMoney;
+
     @JSONField(name = "orderStatus")
     private String orderStatus;
 
@@ -93,6 +96,14 @@ public class MonthTransactionRecordDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public float getAmountMoney() {
+        return amountMoney;
+    }
+
+    public void setAmountMoney(float amountMoney) {
+        this.amountMoney = amountMoney;
     }
 
     public String getTransactionId() {

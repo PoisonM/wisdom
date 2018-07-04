@@ -36,7 +36,11 @@ angular.module('controllers',[]).controller('personalInformationCtrl',
                                 UserLoginOut.get(function(data){
                                     if(data.result==Global.SUCCESS)
                                     {
-                                        WeixinJSBridge.call('closeWindow');
+                                        var alertPopup = $ionicPopup.alert({
+                                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">退出登录成功</span>',
+                                            okText:'确定'
+                                        });
+                                        $state.go("myselfCenter");
                                     }else{
                                         var alertPopup = $ionicPopup.alert({
                                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">退出登录失败</span>',

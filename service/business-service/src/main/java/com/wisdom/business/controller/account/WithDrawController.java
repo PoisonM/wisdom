@@ -14,6 +14,8 @@ import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.util.*;
 import com.wisdom.common.util.excel.ExportExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +39,7 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "withdraw")
 public class WithDrawController {
-
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserServiceClient userServiceClient;
 
@@ -55,6 +57,8 @@ public class WithDrawController {
 	ResponseDTO withDrawMoneyFromAccount(@RequestBody WithDrawRecordDTO withDrawRecordDTO ,
 										 HttpServletRequest request,
 										 HttpSession session) {
+		long startTime = System.currentTimeMillis();
+		logger.info("用户进行提现操作==={}" , startTime);
 		ResponseDTO<AccountDTO> result = new ResponseDTO<>();
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
@@ -71,6 +75,7 @@ public class WithDrawController {
 			loginDTO.setCode(withDrawRecordDTO.getValidCode());
 			if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
 			{
+				logger.info("判断手机号和验证码错误");
 				result.setResult(StatusConstant.FAILURE);
 				result.setErrorInfo("手机验证码错误");
 				return result;
@@ -89,7 +94,7 @@ public class WithDrawController {
 					withDrawNum++;
 				}
 			}
-
+			logger.info("用户的提现次数==={}",withDrawNum);
 			if(withDrawNum> ConfigConstant.MAX_WITHDRAW_NUM)
 			{
 				result.setResult(StatusConstant.FAILURE);
@@ -102,25 +107,30 @@ public class WithDrawController {
 			//判断提现的身份证是否合法
 			if (RealNameResultEnum.MATCHING.getCode().equals(realNameInfoDTO.getCode()))
 			{
+				logger.info("提现的身份证合法");
 				userInfoDTO.setIdentifyNumber(withDrawRecordDTO.getIdentifyNumber());
 				userInfoDTO.setNickname(userInfoDTO.getNickname());
 				userServiceClient.updateUserInfo(userInfoDTO);
 			}
 			else
 			{
+				logger.info("身份证和姓名不匹配");
 				result.setResult(StatusConstant.FAILURE);
 				result.setErrorInfo("身份证和姓名不匹配");
 				return  result;
 			}
 
 			String openid = WeixinUtil.getUserOpenId(session,request);
+			logger.info("提现用户openID==={}",openid);
 			if(withDrawRecordDTO.getMoneyAmount()>=ConfigConstant.MAX_WITHDRAW_AMOUNT)
 			{
+				logger.info("提现金额超出最大额度");
 				result.setErrorInfo("提现金额超出最大额度");
 				result.setResult(StatusConstant.FAILURE);
 			}
 			else if(withDrawRecordDTO.getMoneyAmount()<ConfigConstant.MIN_WITHDRAW_AMOUNT)
 			{
+				logger.info("提现金额小于最低额度");
 				result.setErrorInfo("提现金额小于最低额度");
 				result.setResult(StatusConstant.FAILURE);
 			}
@@ -138,6 +148,7 @@ public class WithDrawController {
 		}
 		catch (Exception e)
 		{
+			logger.error("提现异常，异常信息为，{}"+e.getMessage(),e);
 			e.printStackTrace();
 			result.setErrorInfo("提现失败,请联系客服人员处理");
 			result.setResult(StatusConstant.FAILURE);
@@ -145,7 +156,7 @@ public class WithDrawController {
 		finally {
 			redisLock.unlock();
 		}
-
+		logger.info("用户进行提现操作{}毫秒", (System.currentTimeMillis() - startTime));
 		return result;
 	}
 
@@ -153,18 +164,21 @@ public class WithDrawController {
 	 * 查询所有提现数据
 	 * @param pageParamDTO
 	 * @return
-	 */
+	 *//*
 	@RequestMapping(value = "getAllWithdraw", method = {RequestMethod.POST, RequestMethod.GET})
 	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<WithDrawRecordDTO>>> getAllWithdraw(@RequestBody PageParamDTO<WithDrawRecordDTO> pageParamDTO) {
+		long startTime = System.currentTimeMillis();
+		logger.info("用户进行提现操作==={}" , startTime);
 		ResponseDTO<PageParamDTO<List<WithDrawRecordDTO>>> responseDTO = new ResponseDTO<>();
 		PageParamDTO<List<WithDrawRecordDTO>> page = withDrawService.queryAllWithdraw(pageParamDTO);
 		responseDTO.setResponseData(page);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("用户进行提现操作{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
-	}
+	}*/
 
 	/**
 	 * 解冻超额提现
@@ -177,6 +191,8 @@ public class WithDrawController {
 	ResponseDTO deFrozenWithDrawRecord(@RequestParam String withDrawRecordId,
 									   HttpServletRequest request)
 	{
+		long startTime = System.currentTimeMillis();
+		logger.info("解冻超额提现==={}开始" , startTime);
 		ResponseDTO responseDTO = new ResponseDTO();
 		RedisLock redisLock = new RedisLock("deFrozenWithDrawRecord"+withDrawRecordId);
 		try
@@ -184,6 +200,7 @@ public class WithDrawController {
 			redisLock.lock();
 			WithDrawRecordDTO withDrawRecordDTO = new WithDrawRecordDTO();
 			withDrawRecordDTO.setId(withDrawRecordId);
+			logger.info("提现id==={}" , withDrawRecordId);
 			List<WithDrawRecordDTO> withDrawRecordDTOList = withDrawService.getWithdrawRecordInfo(withDrawRecordDTO);
 
 			if(withDrawRecordDTOList.size()>0)
@@ -206,13 +223,14 @@ public class WithDrawController {
 		}
 		catch (Exception e)
 		{
+			logger.error("解冻超额提现异常，异常信息为，{}"+e.getMessage(),e);
 			e.printStackTrace();
 			responseDTO.setResult(StatusConstant.FAILURE);
 		}
 		finally {
 			redisLock.unlock();
 		}
-
+		logger.info("解冻超额提现{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -226,6 +244,8 @@ public class WithDrawController {
 	public
 	@ResponseBody
 	ResponseDTO updateWithdrawById(@RequestBody WithDrawRecordDTO withDrawRecordDTO,HttpServletRequest request) {
+		long startTime = System.currentTimeMillis();
+		logger.info("提现审核==={}开始" , startTime);
 		ResponseDTO responseDTO = new ResponseDTO<>();
 
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -239,18 +259,21 @@ public class WithDrawController {
 		try {
 			Map<String,String> result = withDrawService.updateWithdrawById(withDrawRecordDTO,request);
 			if(result.get("result").equals("success")){
+				logger.info("提现审核成功");
 				responseDTO.setResult(StatusConstant.SUCCESS);
 				responseDTO.setErrorInfo(result.get("message"));
 			}else{
+				logger.info("提现审核失败");
 				responseDTO.setResult(StatusConstant.FAILURE);
 				responseDTO.setErrorInfo(result.get("message"));
 			}
-
 		} catch (Exception e) {
+			logger.error("提现审核异常，异常信息为，{}"+e.getMessage(),e);
 			e.printStackTrace();
 			responseDTO.setResult(StatusConstant.FAILURE);
 			responseDTO.setErrorInfo("提现审核拒绝");
 		}
+		logger.info("提现审核,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 
@@ -263,9 +286,12 @@ public class WithDrawController {
 	public
 	@ResponseBody
 	ResponseDTO<PageParamDTO<List<WithDrawRecordDTO>>>  queryWithdrawsByParameters(@RequestBody PageParamVoDTO<ProductDTO> pageParamVoDTO) {
-
+		long startTime = System.currentTimeMillis();
+		logger.info("条件查询提现信息==={}开始" , startTime);
+		logger.info("条件查询提现信息是否导出数据==={}" , pageParamVoDTO.getIsExportExcel());
 		ResponseDTO<PageParamDTO<List<WithDrawRecordDTO>>> responseDTO = new ResponseDTO<>();
-		String startDate = "1990-01-01";//设定起始时间
+		//设定起始时间
+		String startDate = "1990-01-01";
 		if (!"0".equals(pageParamVoDTO.getTimeType())){
 			pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
 			pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
@@ -298,15 +324,18 @@ public class WithDrawController {
 				ByteArrayInputStream in = ex.getWorkbookIn("提现EXCEL文档", orderHeaders, excelList);
 				String url = CommonUtils.orderExcelToOSS(in);
 				responseDTO.setResult(url);
+				logger.info("条件查询提现信息导出Url==={}" , url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 				return responseDTO;
 			} catch (Exception e) {
+				logger.error("条件查询提现信息导出异常，异常信息为，{}"+e.getMessage(),e);
 				e.printStackTrace();
 				responseDTO.setErrorInfo(StatusConstant.FAILURE);
 			}
 		}
 		responseDTO.setResponseData(page);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("条件查询提现信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 }

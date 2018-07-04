@@ -1,16 +1,17 @@
 angular.module('controllers',[]).controller('offlineProductDetailCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetOfflineProductDetail',
         'AddProduct2BuyCart','BusinessUtil','GetProductNumFromBuyCart','$ionicPopup',
-        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout','IsLogin',
+        '$ionicSlideBoxDelegate','CreateBusinessOrder','PutNeedPayOrderListToRedis','Global','$ionicLoading',"$interval",'LoginGlobal','$timeout','IsLogin','GetUserInfoByOpenId',
         function ($scope,$rootScope,$stateParams,$state,GetOfflineProductDetail,
                   AddProduct2BuyCart,BusinessUtil,GetProductNumFromBuyCart,$ionicPopup,
-                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,IsLogin) {
+                  $ionicSlideBoxDelegate,CreateBusinessOrder,PutNeedPayOrderListToRedis,Global,$ionicLoading,$interval,LoginGlobal,$timeout,IsLogin,GetUserInfoByOpenId) {
 
             $rootScope.title = "美享99产品详情";
 
             $scope.explain=false;// 点击24小时发货显示说明
 
             $scope.model=false;
+           /* $scope.inputModel=false;*//*点击购买数量出现的弹框*/
 
             $scope.myObj = {
                 background:"red",
@@ -96,83 +97,92 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_ACJ,$stateParams.productId);
 
                 if($scope.model){
-                    if($scope.param.product.productDetail.spec.length == 1){
-                        $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
-                    }
+
                     if($scope.param.checkFlag=="")
                     {
                         $scope.model=true;
                     }
-                    /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
-                    if($scope.param.productNum>$scope.param.product.productAmount){
-                        alert("库存不足~");
-                        return;
-                    }
-                    else
-                    {
-                        showToast("加载中");
-
-                        //先将此商品生成订单
-                        CreateBusinessOrder.save({businessProductId:$scope.param.product.productId,
-                            productSpec:$scope.param.checkFlag,
-                            businessProductNum: $scope.param.productNum,
-                            type:$scope.param.product.type},function (data) {
-                            BusinessUtil.checkResponseData(data,'offlineProductDetail&'+$scope.param.product.productId);
-                            if(data.result==Global.FAILURE)
-                            {
-                                showToast("交易失败");
-                                hideToast()
+                    /*根据用户的等级的商品来判断*/
+                    GetUserInfoByOpenId.get(function (data) {
+                        if(data.responseData.userType!="business-C-1"){
+                            if($scope.param.product.productPrefecture=="1"){
+                                alert("亲！此商品为新用户专享产品");
+                                return
                             }
-                            else
-                            {
-                                //生成订单后再直接前往支付页面
-                                var needPayOrderList = [];
-                                var payOrder = {
-                                    orderId:data.responseData,
-                                    productFirstUrl:$scope.param.product.firstUrl,
-                                    productId:$scope.param.product.productId,
-                                    productName:$scope.param.product.productName,
-                                    productNum:$scope.param.productNum,
-                                    productPrice:$scope.param.product.price,
-                                    productSpec:$scope.param.productSpec
+                        }
+                        /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
+                        if($scope.param.productNum>$scope.param.product.productAmount){
+                            alert("库存不足~");
+                            return;
+                        }
+                        else
+                        {
+                            showToast("加载中");
+
+                            //先将此商品生成订单
+                            CreateBusinessOrder.save({businessProductId:$scope.param.product.productId,
+                                productSpec:$scope.param.checkFlag,
+                                businessProductNum: $scope.param.productNum,
+                                type:$scope.param.product.type},function (data) {
+                                BusinessUtil.checkResponseData(data,'offlineProductDetail&'+$scope.param.product.productId);
+                                if(data.result==Global.FAILURE)
+                                {
+                                    showToast("交易失败");
+                                    hideToast()
                                 }
-                                needPayOrderList.push(payOrder);
-                                //将needPayOrderList数据放入后台list中
-                                PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
-                                    if(data.result==Global.SUCCESS)
-                                    {
-                                        hideToast()
-                                        $scope.showFlag(false);
-                                        $scope.param.checkFlag = "";
-                                        $scope.param.productNum = 1;
-                                        if($scope.param.product.type=='offline')
+                                else
+                                {
+                                    //生成订单后再直接前往支付页面
+                                    var needPayOrderList = [];
+                                    var payOrder = {
+                                        orderId:data.responseData,
+                                        productFirstUrl:$scope.param.product.firstUrl,
+                                        productId:$scope.param.product.productId,
+                                        productName:$scope.param.product.productName,
+                                        productNum:$scope.param.productNum,
+                                        productPrice:$scope.param.product.price,
+                                        productSpec:$scope.param.checkFlag
+                                    };
+                                    needPayOrderList.push(payOrder);
+                                    //将needPayOrderList数据放入后台list中
+                                    PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+                                        if(data.result==Global.SUCCESS)
                                         {
-                                            window.location.href = "orderPay.do?productType=" + $scope.param.product.type + "&random="+Math.random();
+                                            hideToast()
+                                            $scope.showFlag(false);
+                                            $scope.param.checkFlag = "";
+                                            $scope.param.productNum = 1;
+                                            if($scope.param.product.type=='offline')
+                                            {
+                                                window.location.href = "orderPay.do?productType=" + $scope.param.product.type + "&random="+Math.random();
+                                            }
+                                            else if($scope.param.product.type=='special')
+                                            {
+                                                window.location.href = "orderPay.do?productType=" + $scope.param.product.type
+                                                    + "&specialShopId=" + $rootScope.specialShopId
+                                                    + "&random="+Math.random();
+                                            }
+                                        }else if(data.result==Global.FAILURE){
+                                            alert("购买失败");
+                                            hideToast()
+                                            $scope.showFlag(false);
                                         }
-                                        else if($scope.param.product.type=='special')
-                                        {
-                                            window.location.href = "orderPay.do?productType=" + $scope.param.product.type
-                                                + "&specialShopId=" + $rootScope.specialShopId
-                                                + "&random="+Math.random();
-                                        }
-                                    }else if(data.result==Global.FAILURE){
-                                        alert("购买失败");
-                                        hideToast()
-                                        $scope.showFlag(false);
-                                    }
 
-                                })
-                            }
-                        })
+                                    })
+                                }
+                            })
 
-                    }
+                        }
+
+                    });
+
+
                 }else{
                     $scope.model = true
                 }
             };
-
             $scope.addProductNum = function(){
-                $scope.param.productNum= $scope.param.productNum+1;
+                $scope.param.productNum=$scope.param.productNum+1;
                 if($scope.param.productNum>$scope.param.product.productAmount){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
@@ -190,6 +200,11 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     $("#goPay").css("background","red");
                 }
             };
+
+            /*点击购买数量的输入框出现的div*/
+           /* $scope.inputBox=function () {
+              $scope.inputModel=true;
+            };*/
 
             var showToast = function (content) {
                 $ionicLoading.show({
@@ -235,13 +250,14 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetOfflineProductDetail.get({productId:$stateParams.productId},function(data){
                     $ionicLoading.hide();
                     $scope.param.product = data.responseData;
+                    $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
                     /*测试*/
-                   /* $scope.param.product.status = "0";*/
+                    /* $scope.param.product.status = "0";*/
                     /* $scope.param.product.productAmount=$scope.param.product.productAmount-1;*/
-                   if($scope.param.product.status == "0"){
-                       $("#add").css("background","grey");
-                       $("#go").css("background","grey");
-                   }
+                    if($scope.param.product.status == "0"){
+                        $("#add").css("background","grey");
+                        $("#go").css("background","grey");
+                    }
                     $ionicSlideBoxDelegate.update();
                     $ionicSlideBoxDelegate.loop(true);
                     $interval(function(){
@@ -253,7 +269,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetProductNumFromBuyCart.get(function(data){
                     $scope.param.productUnPaidNum = data.responseData;
                 });
-            });
+            })
 
-}])
+        }])
 

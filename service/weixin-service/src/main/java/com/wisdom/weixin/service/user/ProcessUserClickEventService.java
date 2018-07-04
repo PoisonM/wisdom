@@ -6,6 +6,8 @@ import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.entity.TextMessage;
 import com.wisdom.common.util.MessageUtil;
 import com.wisdom.common.util.WeixinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessUserClickEventService {
+    Logger logger = LoggerFactory.getLogger(ProcessUserClickEventService.class);
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -34,13 +37,14 @@ public class ProcessUserClickEventService {
     private static ExecutorService threadExecutorSingle = Executors.newSingleThreadExecutor();
 
     public String processUserClickEvent(ReceiveXmlEntity xmlEntity, HttpServletRequest request, HttpServletResponse response) {
+        logger.info("自定义菜单点击事件,开始");
 
         String respMessage = "";
         if("10".equals(xmlEntity.getEventKey())){
             TextMessage textMessage = new TextMessage();
             textMessage.setToUserName(xmlEntity.getFromUserName());
             textMessage.setFromUserName(xmlEntity.getToUserName());
-            textMessage.setCreateTime(new Date().getTime());
+            textMessage.setCreateTime(System.currentTimeMillis());
             textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
             textMessage.setFuncFlag(0);
             String st = "亲，即将上线，尽情期待";
@@ -86,6 +90,5 @@ public class ProcessUserClickEventService {
         }
 
         return respMessage;
-
     }
 }

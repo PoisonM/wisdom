@@ -46,6 +46,9 @@ public class ProductDTO<T> {
     @JSONField(name = "description")
     private String description;
 
+    @JSONField(name = "productPrefecture")
+    private String productPrefecture;
+
     /**
      * 产品宣传图
      */
@@ -196,5 +199,13 @@ public class ProductDTO<T> {
 
     public void setProductAmount(String productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public String getProductPrefecture() {
+        return productPrefecture;
+    }
+
+    public void setProductPrefecture(String productPrefecture) {
+        this.productPrefecture = productPrefecture;
     }
 }

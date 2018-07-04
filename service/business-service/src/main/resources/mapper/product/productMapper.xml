@@ -13,6 +13,7 @@
 		<result column="price" property="price" jdbcType="REAL" />
 		<result column="status" property="status" jdbcType="VARCHAR" />
 		<result column="second_type" property="secondType" jdbcType="VARCHAR" />
+		<result column="product_prefecture" property="productPrefecture" jdbcType="VARCHAR" />
 		<result column="product_amount" property="productAmount" jdbcType="VARCHAR" />
 	</resultMap>
 
@@ -28,7 +29,7 @@
 	</resultMap>
 
 	<sql id="Base_Product_List">
-		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,p.product_amount
+		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,product_prefecture,p.product_amount
 	</sql>
 
 	<select id="getBusinessProductInfo"
@@ -187,6 +188,9 @@
 		<if test="productAmount != ''and productAmount != null">
 			,product_amount=#{productAmount}
 		</if>
+		<if test="productPrefecture != ''and productPrefecture != null">
+			,product_prefecture=#{productPrefecture}
+		</if>
 		WHERE
 		product_id = #{productId}
 	</update>
@@ -218,7 +222,9 @@
 		price,
 		status,
 		create_date,
-		second_type
+		second_type,
+		product_prefecture,
+		product_amount
 		) VALUES (
 		#{id},
 		#{productName},
@@ -230,7 +236,9 @@
 		#{price},
 		#{status},
 		#{createDate},
-		#{secondType}
+		#{secondType},
+		#{productPrefecture},
+		#{productAmount}
 		)
 	</insert>
 	

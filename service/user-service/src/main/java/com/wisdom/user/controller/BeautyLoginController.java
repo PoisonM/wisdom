@@ -32,8 +32,8 @@ public class BeautyLoginController {
     public
     @ResponseBody
     ResponseDTO<BeautyLoginResultDTO> beautyLogin(@RequestBody LoginDTO loginDTO,
-                                                      HttpServletRequest request,
-                                                      HttpSession session) throws Exception {
+                                                  HttpServletRequest request,
+                                                  HttpSession session) throws Exception {
 
         ResponseDTO<BeautyLoginResultDTO> result = new ResponseDTO<>();
 

@@ -41,12 +41,14 @@ public class UserTypeController {
 	public
 	@ResponseBody
 	ResponseDTO<List<UserInfoDTO>> getUserNextLevelStruct(HttpSession session, HttpServletRequest request) {
+		long startTime = System.currentTimeMillis();
+		logger.info("getUserNextLevelStruct==={}开始" , startTime);
 		ResponseDTO<List<UserInfoDTO>> responseDTO = new ResponseDTO<>();
 
 		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
 		List<UserInfoDTO> userInfoDTOList = new ArrayList<>();
 
-		logger.info("当前{}登录用户级别为{}",userInfoDTO.getId(),userInfoDTO.getUserType());
+		logger.info("当前用户id{}登录用户级别为{}",userInfoDTO.getId(),userInfoDTO.getUserType());
 
 		if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1))
 		{
@@ -54,16 +56,19 @@ public class UserTypeController {
 			userInfo.setParentUserId(userInfoDTO.getId());
 			userInfo.setUserType(ConfigConstant.businessB1);
 			List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfo);
-
 			userInfoDTOList.addAll(userInfoDTOS);
+			userInfo.setUserType(ConfigConstant.businessC1);
+			List<UserInfoDTO> userInfoDTOS2 = userServiceClient.getUserInfo(userInfo);
+			userInfoDTOList.addAll(userInfoDTOS2);
 
-			for(UserInfoDTO userInfoDTO1:userInfoDTOS)
-			{
-				userInfo.setParentUserId(userInfoDTO1.getId());
-				userInfo.setUserType(ConfigConstant.businessC1);
-				List<UserInfoDTO> userInfoDTOS1 = userServiceClient.getUserInfo(userInfo);
-				userInfoDTOList.addAll(userInfoDTOS1);
-			}
+
+//			for(UserInfoDTO userInfoDTO1:userInfoDTOS)
+//			{
+//				userInfo.setParentUserId(userInfoDTO1.getId());
+//				userInfo.setUserType(ConfigConstant.businessC1);
+//				List<UserInfoDTO> userInfoDTOS1 = userServiceClient.getUserInfo(userInfo);
+//				userInfoDTOList.addAll(userInfoDTOS1);
+//			}
 		}
 		else if(userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
 		{
@@ -84,6 +89,7 @@ public class UserTypeController {
 
 		responseDTO.setResponseData(userInfoDTOList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
+		logger.info("getUserNextLevelStruct,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
 

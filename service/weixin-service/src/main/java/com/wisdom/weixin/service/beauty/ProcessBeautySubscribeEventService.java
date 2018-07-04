@@ -1,15 +1,25 @@
 package com.wisdom.weixin.service.beauty;
 
 import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.account.AccountDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.dto.transaction.BonusFlagDTO;
 import com.wisdom.common.dto.wexin.WeixinAttentionDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
+import com.wisdom.common.entity.WeixinUserBean;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
+import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.weixin.client.BeautyServiceClient;
+import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -22,6 +32,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +42,7 @@ import java.util.concurrent.Executors;
 @Service
 @Transactional(readOnly = false)
 public class ProcessBeautySubscribeEventService {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserServiceClient userServiceClient;
@@ -46,6 +58,8 @@ public class ProcessBeautySubscribeEventService {
     //处理用户关注公众号事件
     public void processSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
+        long startTime = System.currentTimeMillis();
+        logger.info("处理用户关注公众号事件==={}开始" , startTime);
         Query query = new Query(Criteria.where("weixinFlag").is(ConfigConstant.weixinBossFlag));
         WeixinTokenDTO weixinTokenDTO = this.mongoTemplate.findOne(query,WeixinTokenDTO.class,"weixinParameter");
         String token = weixinTokenDTO.getToken();
@@ -55,8 +69,10 @@ public class ProcessBeautySubscribeEventService {
         threadExecutorCached.execute(processSubscribeThread);
 
         //开启线程，给关注的用户推送微信消息
+        logger.info("开启线程，给关注的用户token={}推送微信消息==={}开始" ,token);
         Runnable sendSubscribeMessageThread = new SendSubscribeMessageThread(token, xmlEntity);
         threadExecutorCached.execute(sendSubscribeMessageThread);
+        logger.info("处理用户关注公众号事件,耗时{}毫秒", (System.currentTimeMillis() - startTime));
     }
 
     private class ProcessSubscribeThread extends Thread {
@@ -109,7 +125,17 @@ public class ProcessBeautySubscribeEventService {
                 userServiceClient.updateUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
-                beautyServiceClient.getUserBindingInfo(openId,shopId,userId);
+                ResponseDTO<String> responseDTO = new ResponseDTO<String>();
+                if("N".equals(responseDTO.getResponseData()))
+                {
+                    logger.info("根据shopId和openId查询,用户绑定了此美容院,redis中设置的key为 "+shopId+"_"+userId);
+                    JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"notBind",ConfigConstant.logintokenPeriod);
+                }
+                else if("Y".equals(responseDTO.getResponseData()))
+                {
+                    logger.info("根据shopId和openId查询,用户未绑定了此美容院,redis中设置已经绑定过的的key为"+shopId+"_"+userId);
+                    JedisUtils.set(shopId+"_"+userInfoDTO.getId(),"alreadyBind",ConfigConstant.logintokenPeriod);
+                }
             }
 
             //为用户的此次关注插入到mongodb记录中
@@ -153,6 +179,7 @@ public class ProcessBeautySubscribeEventService {
     public void processUnSubscribeEvent(ReceiveXmlEntity xmlEntity)
     {
         //开启线程，处理用户的取消关注事件
+        logger.info("开启线程，处理用户的取消关注事件" );
         Runnable processUnSubscribeThread = new ProcessUnSubscribeThread(xmlEntity);
         threadExecutorCached.execute(processUnSubscribeThread);
     }
@@ -167,7 +194,7 @@ public class ProcessBeautySubscribeEventService {
 
         @Override
         public void run() {
-
+            logger.info("开启线程，处理用户的取消关注事件==={}开始,修改sys_user表中微信关注状态" );
             //修改sys_user表中微信关注状态
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setUserOpenid(xmlEntity.getFromUserName());
@@ -180,6 +207,7 @@ public class ProcessBeautySubscribeEventService {
             }
 
             //为用户的此次取消关注插入到mongodb记录中
+            logger.info("为用户的此次取消关注插入到mongodb记录中" );
             WeixinAttentionDTO weixinAttentionDTO = new WeixinAttentionDTO();
             weixinAttentionDTO.setDate(new Date());
             weixinAttentionDTO.setOpenid(xmlEntity.getFromUserName());

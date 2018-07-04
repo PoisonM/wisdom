@@ -6,6 +6,8 @@ import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +17,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = false)
 public class UserOrderAddressService {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     UserOrderAddressMapper userOrderAddressMapper;
 
@@ -32,7 +34,7 @@ public class UserOrderAddressService {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         userOrderAddressDTO.setDelFlag("0");
         userOrderAddressDTO.setSysUserId(userInfoDTO.getId());
-
+        logger.info("service == 添加用户={}收货地址",userInfoDTO.getId());
         //先找出用户所有的未删除的地址列表
         this.cancelDefaultUserAddress(userOrderAddressDTO,userInfoDTO.getId());
         userOrderAddressMapper.addUserAddress(userOrderAddressDTO);
@@ -41,6 +43,7 @@ public class UserOrderAddressService {
     @Transactional(rollbackFor = Exception.class)
     public void updateUserAddress(UserOrderAddressDTO userOrderAddressDTO) throws Exception{
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        logger.info("service == 修改用户={}的收货地址",userInfoDTO.getId());
         //先找出用户所有的未删除的地址列表
         this.cancelDefaultUserAddress(userOrderAddressDTO,userInfoDTO.getId());
         userOrderAddressMapper.updateUserAddress(userOrderAddressDTO);
@@ -65,6 +68,7 @@ public class UserOrderAddressService {
 
     private void cancelDefaultUserAddress(UserOrderAddressDTO userOrderAddressDTO,String userId)
     {
+        logger.info("Service == cancelDefaultUserAddress 方法,先找出用户={}所有的未删除的地址列表",userId);
         //先找出用户所有的未删除的地址列表
         if(userOrderAddressDTO.getStatus().equals("1"))
         {

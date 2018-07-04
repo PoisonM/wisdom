@@ -38,6 +38,7 @@ public class UserUtils {
 	private static  Logger logger = LoggerFactory.getLogger(UserUtils.class);
 
 	public static UserInfoDTO getUserInfoFromRedis(){
+		logger.info(" business-service utils == 获取用户信息从redis");
 
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		Map<String, String> tokenValue = getHeadersInfo(request);
@@ -67,6 +68,7 @@ public class UserUtils {
 
 		@Override
 		public void run() {
+			logger.info("utils == 同步userType信息到redis中");
 
 			UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
 			userBusinessTypeDTO.setStatus("1");

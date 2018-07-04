@@ -17,6 +17,8 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.excel.ExportExcel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +40,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "income")
 public class IncomeManagementController {
-
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private IncomeService incomeService;
 
@@ -59,8 +61,10 @@ public class IncomeManagementController {
 	@ResponseBody
 	ResponseDTO path() throws FileNotFoundException {
 		String i = System.getProperty("user.dir");
+		logger.info("path接口==={}",i);
 		System.out.print(i);
 		FileInputStream instream = new FileInputStream(new File(i+"\\service\\business-service\\target\\classes\\application.properties"));
+		logger.info("path接口==={}",instream);
 		return null;
 	}
 
@@ -72,8 +76,8 @@ public class IncomeManagementController {
 	public
 	@ResponseBody
 	ResponseDTO management() {
+		long startTime = System.currentTimeMillis();
 		ResponseDTO responseDTO = new ResponseDTO();
-
 		UserBusinessTypeDTO userBusinessTypeDTO = new UserBusinessTypeDTO();
 		userBusinessTypeDTO.setUserType(ConfigConstant.businessC1);
 		List<UserBusinessTypeDTO> userBusinessTypeDTOList = userTypeMapper.getUserBusinessTypeSpecial(userBusinessTypeDTO);
@@ -82,10 +86,12 @@ public class IncomeManagementController {
 		{
 			if(userBusinessTypeDTO1.getParentUserId().equals(""))
 			{
+				logger.info("根据用户id查询这个月都消费了哪些订单当前用户id==={}",userBusinessTypeDTO1.getSysUserId());
 				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(userBusinessTypeDTO1.getSysUserId());
 				if(userInfoDTO.getParentUserId()!=null)
 				{
 					userBusinessTypeDTO1.setParentUserId(userInfoDTO.getParentUserId());
+					logger.info("根据用户id查询这个月都消费了哪些订单当前用户set父级id==={}",userInfoDTO.getParentUserId());
 					userTypeMapper.updateUserBusinessType(userBusinessTypeDTO1);
 				}
 			}
@@ -100,7 +106,7 @@ public class IncomeManagementController {
 			if(incomeRecord.getUserType().equals(""))
 			{
 				String userType = getUserType(incomeRecord.getCreateDate(),incomeRecord.getSysUserId());
-
+				logger.info("即时奖励用户id==={},用户type==={}",incomeRecord.getSysUserId(),userType);
 				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecord.getSysUserId());
 
 				incomeRecord.setUserType(userType);
@@ -112,6 +118,7 @@ public class IncomeManagementController {
 				String transactionId = incomeRecord.getTransactionId();
 				PayRecordDTO payRecordDTO = new PayRecordDTO();
 				payRecordDTO.setTransactionId(transactionId);
+				logger.info("通过transactionID获取消费者的ID,transaction==={}",transactionId);
 				List<PayRecordDTO> payRecordDTOList = payRecordService.getUserPayRecordList(payRecordDTO);
 				if(payRecordDTOList.size()==0)
 				{
@@ -123,10 +130,11 @@ public class IncomeManagementController {
 					transactionAmount = transactionAmount + payRecordDTO1.getAmount();
 				}
 				incomeRecord.setTransactionAmount(transactionAmount);
+				logger.info("交易总金额transactionAmount==={}",transactionAmount);
 
 				String nextUserId = payRecordDTOList.get(0).getSysUserId();
-
 				String nextUserType = getUserType(incomeRecord.getCreateDate(),nextUserId);
+				logger.info("下级用户id=={},下级用户类型=={}",nextUserId,nextUserType);
 
 				UserInfoDTO nextUserInfoDTO = userServiceClient.getUserInfoFromUserId(nextUserId);
 				incomeRecord.setNextUserId(nextUserId);
@@ -155,7 +163,7 @@ public class IncomeManagementController {
 		for(IncomeRecordDTO incomeRecord:incomeRecordDTOList1) {
 			if (incomeRecord.getUserType().equals("")) {
 				String userType = getUserType(incomeRecord.getCreateDate(),incomeRecord.getSysUserId());
-
+				logger.info("月度奖励用户id==={},用户type==={}",incomeRecord.getSysUserId(),userType);
 				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(incomeRecord.getSysUserId());
 
 				incomeRecord.setUserType(userType);
@@ -172,7 +180,7 @@ public class IncomeManagementController {
 			if(monthTransactionRecordDTO.getUserType().equals(""))
 			{
 				String userType = getUserType(monthTransactionRecordDTO.getCreateDate(),monthTransactionRecordDTO.getUserId());
-
+				logger.info("月度详情用户id==={},用户type==={}",monthTransactionRecordDTO.getUserId(),userType);
 				UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(monthTransactionRecordDTO.getUserId());
 
 				monthTransactionRecordDTO.setNickName(userInfoDTO.getNickname());
@@ -212,6 +220,7 @@ public class IncomeManagementController {
 				incomeMapper.updateMonthTransactionRecord(monthTransactionRecordDTO);
 			}
 		}
+		logger.info("查询返利数据耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return  responseDTO;
 	}
 
@@ -256,7 +265,6 @@ public class IncomeManagementController {
 				tempType = userBusinessTypeDTOList.get(2).getUserType();
 			}
 		}
-
 		return  tempType;
 	}
 }
