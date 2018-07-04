@@ -4,7 +4,6 @@
 angular.module('controllers',[]).controller('editedRechargeCtrl',
     ['$scope','$rootScope','$stateParams','$state','RechargeCardDetail','Global','$http','GetGoodsUseScope','UpdateRechargeCardInfo','ImageBase64UploadToOSS','$ionicLoading',
         function ($scope,$rootScope,$stateParams,$state,RechargeCardDetail,Global,$http,GetGoodsUseScope,UpdateRechargeCardInfo,ImageBase64UploadToOSS,$ionicLoading) {
-
             $rootScope.title = "编辑充值卡";
             $scope.param={
                 appearArr:[false,false,false],
