@@ -6,7 +6,9 @@ public class ConfigConstant {
 
 	public static final String DOMAIN_VALUE = Global.getConfig("DOMAIN_VALUE");
 
-	public static final String USER_WEB_URL = Global.getConfig("USER_WEB_URL");
+	public static final String USER_BUSINESS_WEB_URL = Global.getConfig("USER_BUSINESS_WEB_URL");
+
+	public static final String USER_BEAUTY_WEB_URL = Global.getConfig("USER_BEAUTY_WEB_URL");
 
 	public static final String BOSS_WEB_URL = Global.getConfig("BOSS_WEB_URL");
 

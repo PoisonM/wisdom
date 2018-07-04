@@ -131,7 +131,7 @@ public class BusinessRunTimeService {
                     List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
                     if(userInfoDTOList.size()>0)
                     {
-                        String url = ConfigConstant.USER_WEB_URL + "orderManagement/0";
+                        String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/0";
                         WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
                                 businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
                         logger.info("待付款订单={}超过10分钟={}给用户={}发送提醒消息",businessOrder.getBusinessOrderId(),time,userInfoDTOList.get(0).getMobile());
