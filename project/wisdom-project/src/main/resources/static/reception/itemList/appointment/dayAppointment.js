@@ -7,6 +7,13 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     , FindArchives, GetShopProjectList, ShopWeekAppointmentInfoByDate, GetShopClerkScheduleList
     ,SaveUserAppointInfo,GetClerkScheduleInfo,UpdateUserAppointInfo,SaveArchiveInfo,GetShopUserArchivesInfoByUserId,ImageBase64UploadToOSS,GetCourseList,ProjectInfo) {
     $scope.$parent.param.top_bottomSelect = "yuyue";
+
+    $scope.$parent.mainSwitch.headerReservationAllFlag = false
+    $scope.$parent.mainSwitch.headerCashAllFlag = false
+    $scope.$parent.mainSwitch.headerPriceListAllFlag = false
+    $scope.$parent.mainSwitch.headerLoginFlag = false
+
+
     $scope.date = $filter("date")(Date.parse(new Date()), "yyyy-MM-dd");
     //切换时间更新数据
     laydate.render({
