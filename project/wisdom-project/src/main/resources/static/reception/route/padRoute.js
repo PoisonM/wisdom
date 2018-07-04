@@ -1451,7 +1451,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
 
-
+        .state('pad-web.userInfo.wait4Receive', {
+            url: '/wait4Receive/:id/:name',
+            templateUrl: root + '/userInfo/wait4Receive.html',
+            controller: 'wait4ReceiveCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取明细",
+                        files: [root + "userInfo/wait4ReceiveCtrl.js?version=" + version,
+                            root + "userInfo/wait4Receive.css?version=" + version
+                        ]
+                    })
+                }]
+            }
+        })
     ;
     $urlRouterProvider.otherwise('pad-web/userInfo/todayPerformance');
     $httpProvider.interceptors.push('httpInterceptor');

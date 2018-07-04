@@ -1,0 +1,24 @@
+<div class="unclaimedAllClient">
+    <div class="unclaimedAllClient_box">
+        <table>
+            <thead>
+                <tr>
+                    <td>名称</td>
+                    <td>品牌</td>
+                    <td>系列</td>
+                    <td>规格</td>
+                    <td class="lastCol">数量</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in dataList" ng-if="item.waitReceiveNumber > 0">
+                    <td>{{item.productName}}</td>
+                    <td>{{item.productTypeOneName}}</td>
+                    <td>{{item.productTypeTwoName}}</td>
+                    <td>{{item.productSpec}}</td>
+                    <td class="lastCol">{{item.waitReceiveNumber}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
