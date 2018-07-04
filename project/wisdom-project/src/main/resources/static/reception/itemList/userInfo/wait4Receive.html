@@ -11,7 +11,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in dataList">
+                <tr ng-repeat="item in dataList" ng-if="item.waitReceiveNumber > 0">
                     <td>{{item.productName}}</td>
                     <td>{{item.productTypeOneName}}</td>
                     <td>{{item.productTypeTwoName}}</td>
