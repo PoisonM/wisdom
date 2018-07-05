@@ -8,7 +8,8 @@ public enum AppointStatusEnum {
     OVER("3", "已完成"),
     CANCEL("4", "取消预约"),
     ONGOING("5", "进行中"),
-    ENDED("6", "已结束");
+    ENDED("6", "已结束"),
+    APPOINT("7", "预约中");
 
     AppointStatusEnum(String code, String desc) {
         this.code = code;
