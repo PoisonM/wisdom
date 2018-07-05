@@ -738,7 +738,7 @@ public class PayFunction {
         if(expenseAmount>=returnMoney){
             List<String> shareList = JedisUtils.getList(key+parentUserId);
             if(null != shareList && shareList.size()>=2){
-                JedisUtils.del(key+instanceReturnMoneySignalDTO.getSysUserId());
+                JedisUtils.del(key+parentUserId);
                 //更新用户账户金额
                 AccountDTO accountDTO = new AccountDTO();
                 accountDTO.setSysUserId(parentUserId);
