@@ -20,7 +20,12 @@ public class LoginUtil {
 
     public static String processBeautyUserValidateCode(LoginDTO loginDTO)
     {
-        return StatusConstant.SUCCESS;
+        String userPhone = loginDTO.getUserPhone();
+        //体验白名单
+        if(userPhone.equals("15801056055")|| userPhone.equals("13601025663")|| userPhone.equals("13849699991 ")){
+            return StatusConstant.SUCCESS;
+        }
+        return StatusConstant.FAILURE;
     }
 
     public static String processValidateCode(LoginDTO loginDTO)
