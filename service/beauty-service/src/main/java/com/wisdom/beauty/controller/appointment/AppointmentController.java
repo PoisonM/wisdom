@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
+import com.wisdom.beauty.api.enums.AppointStatusEnum;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -93,6 +94,7 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(DateUtils.getDateStartTime(startDate), "datetimesec"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(DateUtils.getDateEndTime(startDate), "datetimesec"));
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
+		extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
 
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
@@ -229,6 +231,7 @@ public class AppointmentController {
 			extShopAppointServiceDTO.setSearchStartTime(loopDate);
 			extShopAppointServiceDTO.setSearchEndTime(endTime);
 			extShopAppointServiceDTO.setSysClerkId(clerkDTO.getId());
+			extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			while (loopDate.getTime() < endTime.getTime()) {
@@ -486,6 +489,8 @@ public class AppointmentController {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
         shopBossRelationDTO.setSysBossCode(bossInfo.getSysBossCode());
+
+
 		List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.shopBossRelationList(shopBossRelationDTO);
 
 		if (CommonUtils.objectIsEmpty(shopBossRelationDTO)) {
@@ -503,6 +508,7 @@ public class AppointmentController {
 			extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysShopId());
 			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
 			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+			extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
 			Integer numberByCriteria = appointmentService.getShopClerkAppointNumberByCriteria(extShopAppointServiceDTO);
 			hashMap.put("bossRelationDTO", bossRelationDTO);
 			hashMap.put("appointmentNum", numberByCriteria);
