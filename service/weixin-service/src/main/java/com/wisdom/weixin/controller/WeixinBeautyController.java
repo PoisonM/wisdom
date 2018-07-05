@@ -100,10 +100,10 @@ public class WeixinBeautyController {
             url = ConfigConstant.USER_BEAUTY_WEB_URL + "beautyAppoint";
         }
         else if ("beautyBoss".equals(url)) {
-            url = ConfigConstant.BOSS_WEB_URL + "workHome";
+            url = ConfigConstant.USER_BEAUTY_WEB_URL + "workHome";
         }
         else if ("beautyClerk".equals(url)) {
-            url = ConfigConstant.BOSS_WEB_URL + "employeeIndex";
+            url = ConfigConstant.USER_BEAUTY_WEB_URL + "employeeIndex";
         }
         
         String code = request.getParameter("code");
