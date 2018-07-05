@@ -153,6 +153,13 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
                 arrayList.add(AppointStatusEnum.OVER.getCode());
                 arrayList.add(AppointStatusEnum.CANCEL.getCode());
                 criteria.andStatusIn(arrayList);
+            }else if (AppointStatusEnum.APPOINT.getCode().equals(status)) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(AppointStatusEnum.NOT_STARTED.getCode());
+                arrayList.add(AppointStatusEnum.CONFIRM.getCode());
+                arrayList.add(AppointStatusEnum.ON_SERVICE.getCode());
+                arrayList.add(AppointStatusEnum.OVER.getCode());
+                criteria.andStatusIn(arrayList);
             } else {
                 criteria.andStatusEqualTo(status);
             }
@@ -195,6 +202,17 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
             criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
         }
+
+        if (AppointStatusEnum.APPOINT.getCode().equals(extShopAppointServiceDTO.getStatus())) {
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(AppointStatusEnum.NOT_STARTED.getCode());
+            arrayList.add(AppointStatusEnum.CONFIRM.getCode());
+            arrayList.add(AppointStatusEnum.ON_SERVICE.getCode());
+            arrayList.add(AppointStatusEnum.OVER.getCode());
+            criteria.andStatusIn(arrayList);
+        }
+
+
 
         int appointServiceDTOS = shopAppointServiceMapper.countByCriteria(shopAppointServiceCriteria);
         logger.info("根据时间查询某个店下的某个美容师的预约个数={}", appointServiceDTOS);
