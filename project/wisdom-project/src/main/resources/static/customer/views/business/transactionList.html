@@ -10,6 +10,7 @@
                     <span ng-if="item.transactionType=='withdraw'">-{{item.amount}}</span>
                     <span ng-if="item.transactionType=='instance'||item.transactionType=='month'||item.transactionType=='recommend'||item.transactionType=='tripleMonth'||item.transactionType=='permanent'">+{{item.amount}}</span>
                 </p>
+                <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='shareActivity'||item.amount==0">邀请好友</h1>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='instance'||item.amount==0">即时返现</h1>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='permanent'||item.amount==0">分享奖励</h1>
                 <h1 style="font-size:0.28rem;color: #333333" ng-if="item.transactionType=='month'||item.amount==0">月度提成</h1>
