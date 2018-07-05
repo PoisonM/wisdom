@@ -6,10 +6,10 @@
                 <span style="margin-top:18px;font-size:17px;color: #999999;display: inline-block">欢迎来到唯美邦</span>
             </a>
             <label class="item item-input">
-                <input type="text" placeholder="请输入您的手机号" ng-model="param.userPhone">
+                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number"  placeholder="请输入您的手机号" ng-model="param.userPhone">
             </label>
             <label class="item item-input" style="font-size: 0.34rem;color: #cccccc">
-                <input type="text" placeholder="请输入验证码" ng-model="param.validateCode">
+                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number"  placeholder="请输入验证码" ng-model="param.validateCode" >
             </label>
             <button class="button button-small"
                     ng-if="param.validateCodeButtonStatus"

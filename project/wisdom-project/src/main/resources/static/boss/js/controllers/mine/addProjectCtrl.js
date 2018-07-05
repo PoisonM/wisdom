@@ -153,4 +153,7 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                     $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1+30
                 }
             }
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.extShopProjectInfoDTO[style]=value.replace(/[^0-9.0-9]+/,'')
+            }
         }]);

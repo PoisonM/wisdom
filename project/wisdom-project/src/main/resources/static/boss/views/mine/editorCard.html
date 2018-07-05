@@ -46,7 +46,7 @@
                 </span>
             </li>
             <li class="item"><span class="fs16">优惠价格<span class="colff66">*</span></span>
-                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="请输入优惠价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.marketPrice" ></li>
+                <input type="text"  placeholder="请输入优惠价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.marketPrice" ng-change="numLimit('marketPrice',settingAddsome.editorCard.marketPrice)"></li>
 
             <li class="item"><span class="fs16">套卡活动有效期 <span class="colff66">*</span></span>
                 <p class="fr">

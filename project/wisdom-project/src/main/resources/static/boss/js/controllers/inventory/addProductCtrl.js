@@ -226,6 +226,9 @@ angular.module('controllers',[]).controller('addProductCtrl',
             };
             $scope.delPic = function(index){
                 $rootScope.settingAddsome.product.imageList.splice(index,1)
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.product[style]=value.replace(/[^0-9.0-9]+/,'')
             }
 
 
