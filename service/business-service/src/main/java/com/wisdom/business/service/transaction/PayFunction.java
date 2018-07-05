@@ -736,8 +736,8 @@ public class PayFunction {
             expenseAmount = expenseAmount + payRecord.getAmount();
         }
         if(expenseAmount>=returnMoney){
-            List<String> shareList = JedisUtils.getList(key+instanceReturnMoneySignalDTO.getSysUserId());
-            if(null != shareList && shareList.size()>=3){
+            List<String> shareList = JedisUtils.getList(key+parentUserId);
+            if(null != shareList && shareList.size()>=2){
                 JedisUtils.del(key+instanceReturnMoneySignalDTO.getSysUserId());
                 //更新用户账户金额
                 AccountDTO accountDTO = new AccountDTO();
@@ -760,7 +760,7 @@ public class PayFunction {
                 }
             }else{
                 //记录
-                JedisUtils.listAdd(key+instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getSysUserId());
+                JedisUtils.listAdd(key+parentUserId,instanceReturnMoneySignalDTO.getSysUserId());
             }
             //为用户的此次取消关注插入到mongodb记录中
             shareActivityDTO = new ShareActivityDTO();
