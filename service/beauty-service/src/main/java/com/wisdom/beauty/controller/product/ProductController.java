@@ -152,9 +152,10 @@ public class ProductController {
      */
     @RequestMapping(value = "/twoLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductTypeDTO>> findTwoLevelProduct(@RequestParam String id) {
+    ResponseDTO<List<ShopProductTypeDTO>> findTwoLevelProduct(@RequestParam String id,@RequestParam(required = false) String status) {
         ShopProductTypeDTO shopProductTypeDTO = new ShopProductTypeDTO();
         shopProductTypeDTO.setId(id);
+        shopProductTypeDTO.setStatus(status);
         shopProductTypeDTO.setSysShopId(redisUtils.getShopId());
         //查询数据
         List<ShopProductTypeDTO> list = shopProductInfoService.getTwoLevelProductList(shopProductTypeDTO);

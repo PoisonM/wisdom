@@ -133,7 +133,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
     $scope.checkImg = function (index,status,id) {
         $scope.param.productTypeOneId=id;
         //点击一级列表图标调取二级列表接口
-        TwoLevelProduct.get({id:id},function (data) {
+        TwoLevelProduct.get({id:id,status:$scope.status},function (data) {
             $scope.product2List=data.responseData;
             console.log(data)
         });
@@ -174,7 +174,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $stateParams,OneLevelP
     };
 
     $scope.selection  = function (index,oneId) {
-        TwoLevelProduct.get({id:oneId},function (data) {
+        TwoLevelProduct.get({id:oneId,status:$scope.status},function (data) {
             $scope.product2List=data.responseData;
             // $scope.param.chooseProductItem = $scope.product2List[0].id//默认选中第一个
             $scope.param.productAppear=false;

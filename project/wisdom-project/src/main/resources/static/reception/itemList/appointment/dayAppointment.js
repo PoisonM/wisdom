@@ -913,6 +913,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                                 alert("取消成功")
                                 ngDialog.closeAll()
                             }
+                            $scope.dayAll()
                         })
                     }
                     if(status == 0){//取消
