@@ -65,6 +65,9 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             $scope.today = function (){
                 $rootScope.settingAddsome.editorCard.expirationDate =$filter('date')(new Date(), 'yyyy-MM-dd')
             }
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.editorCard[style]=value.replace(/[^0-9.0-9]+/,'')
+            }
 
             /*日期插件*/
             var date = function () {

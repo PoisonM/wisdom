@@ -760,7 +760,7 @@ public class PayFunction {
                 }
             }else{
                 //记录
-                JedisUtils.listAdd(key+instanceReturnMoneySignalDTO.getSysUserId(),instanceReturnMoneySignalDTO.getSysUserId());
+                JedisUtils.listAdd(key+parentUserId,instanceReturnMoneySignalDTO.getSysUserId());
             }
             //为用户的此次取消关注插入到mongodb记录中
             shareActivityDTO = new ShareActivityDTO();

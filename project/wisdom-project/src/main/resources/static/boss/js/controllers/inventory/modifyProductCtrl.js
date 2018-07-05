@@ -154,6 +154,9 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
 
             $scope.selProductType = function(type){
                 $rootScope.settingAddsome.product.productType = type
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.product[style]=value.replace(/[^0-9.0-9]+/,'')
             }
 
             /*选择品牌*/

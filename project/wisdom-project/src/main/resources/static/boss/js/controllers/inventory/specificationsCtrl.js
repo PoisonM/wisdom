@@ -15,6 +15,9 @@ angular.module('controllers',[]).controller('specificationsCtrl',
             }
             $scope.selSpec=function (type) {
                 $scope.param.spec = type
+            };
+            $scope.numLimit=function () {
+                $scope.param.num=$scope.param.num.replace(/[^0-9.0-9]+/,'')
             }
 
             $scope.save=function () {
