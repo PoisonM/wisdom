@@ -40,7 +40,11 @@ angular.module('controllers',[]).controller('editorCardCtrl',
 
             $scope.expirationDate = function(){
                 $rootScope.settingAddsome.editorCard.expirationDate ='0'
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.editorCard[style]=value.replace(/[^0-9.0-9]+/,'')
             }
+
 
 
             /*日期插件*/

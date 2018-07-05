@@ -65,6 +65,9 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 if($rootScope.settingAddsome.editedRecharge[style]>1||$rootScope.settingAddsome.editedRecharge[style]<0.1){
                     $rootScope.settingAddsome.editedRecharge[style] =1
                 }
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.editedRecharge[style]=value.replace(/[^0-9.0-9]+/,'')
             }
             $scope.save = function () {
                 if($scope.param.status == true){

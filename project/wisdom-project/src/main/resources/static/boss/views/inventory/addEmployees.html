@@ -22,7 +22,7 @@
                         <span class="fs15 colff66">*</span>
                     </p>
                     <p>
-                        <input type="text" placeholder="请输入手机号" class="fs14 col999 mr10" style="text-align: right" ng-model="sysClerkDTO.mobile">
+                        <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number"  placeholder="请输入手机号" class="fs14 col999 mr10" style="text-align: right" ng-model="sysClerkDTO.mobile">
                     </p>
                 </ion-item>
                 <ion-item class="h45 sb" ng-click="shop(); $event.stopPropagation()">

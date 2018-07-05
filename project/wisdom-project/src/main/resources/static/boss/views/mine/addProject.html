@@ -48,12 +48,12 @@ addProject<ion-view class="bg">
             <li class="item"><span class="fs16">时长(分钟)<span class="colff66">*</span></span>
                 <span class="fr">
                     <i class="ion-ios-minus-outline" style="font-size: 20px;" ng-click="projectTheLength(0)"></i>
-                    <input type="text" ng-model="settingAddsome.extShopProjectInfoDTO.projectDuration"  style="display: inline-block;width: 50px;border-radius: 3px;height:20px;margin-top:-6px;" class="center">
+                    <input type="text" ng-model="settingAddsome.extShopProjectInfoDTO.projectDuration"  style="display: inline-block;width: 50px;border-radius: 3px;height:20px;margin-top:-6px;" class="center" disabled="disabled">
                     <i class="ion-ios-plus-outline" style="font-size: 20px;" ng-click="projectTheLength(1)"></i>
                 </span>
             </li>
-            <li class="item"><span class="fs16">单次价格<span class="colff66">*</span></span><input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" class="fr tr" ng-model="settingAddsome.extShopProjectInfoDTO.oncePrice" ></li>
-            <li class="item"><span class="fs16">办卡价格<span class="colff66">*</span></span><input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" class="fr tr" ng-model="settingAddsome.extShopProjectInfoDTO.marketPrice"></li>
+            <li class="item"><span class="fs16">单次价格<span class="colff66">*</span></span><input type="text" class="fr tr" ng-model="settingAddsome.extShopProjectInfoDTO.oncePrice" ng-change="numLimit('oncePrice',settingAddsome.extShopProjectInfoDTO.oncePrice)" ></li>
+            <li class="item"><span class="fs16">办卡价格<span class="colff66">*</span></span><input type="text"  class="fr tr" ng-model="settingAddsome.extShopProjectInfoDTO.marketPrice" ng-change="numLimit('marketPrice',settingAddsome.extShopProjectInfoDTO.marketPrice)"></li>
             <li class="item"  ng-show="settingAddsome.extShopProjectInfoDTO.cardType!='0'"><span class="fs16">包含次数</span><span class="colff66">*</span><input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" class="fr tr" ng-model="settingAddsome.extShopProjectInfoDTO.serviceTimes"  ></li>
             <li class="item"><span class="fs16">回访天数</span><input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" class="fr tr" ng-model="settingAddsome.extShopProjectInfoDTO.visitDateTime" placeholder="请输入回访天数"></li>
             <li class="row bgfff">
