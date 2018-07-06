@@ -610,7 +610,7 @@ public class PayFunction {
         incomeRecordDTO.setParentRelation(parentRuleType);
 
         incomeService.insertUserIncomeInfo(incomeRecordDTO);
-        return incomeRecordDTO.getTransactionId();
+        return incomeRecordDTO.getId();
     }
 
 
