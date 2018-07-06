@@ -738,40 +738,6 @@ public class PayFunction {
             expenseAmount = expenseAmount + payRecord.getAmount();
         }
         if(expenseAmount>=returnMoney){
-            List<String> shareList = JedisUtils.getList(key+parentUserId);
-            if(null != shareList && shareList.size()>=2){
-
-                //更新用户账户金额
-                AccountDTO accountDTO = new AccountDTO();
-                accountDTO.setSysUserId(parentUserId);
-                try{
-                    accountDTO = this.updateUserAccount(accountDTO,parentUserId, returnMoney);
-                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
-                    nextUserInfoDTO.setId(parentUserId);
-                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
-                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-                    String transationId = this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"shareActivity");
-//                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
-//                    nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
-//                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
-//                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-//                    String token = WeixinUtil.getUserToken();
-//                    WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTO.getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
-
-                //根据transationid查询income记录,然更新mong表
-                    Query updateQuery = new Query().addCriteria(Criteria.where("sysUserId").in(shareList));
-                    Update update = new Update();
-                    update.set("transactionId", transationId);
-                    mongoTemplate.upsert(updateQuery, update, "shareActivityDTO");
-                    JedisUtils.del(key+parentUserId);
-
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else{
-                //记录
-                JedisUtils.listAdd(key+parentUserId,instanceReturnMoneySignalDTO.getSysUserId());
-            }
             //为用户的此次取消关注插入到mongodb记录中
             shareActivityDTO = new ShareActivityDTO();
             shareActivityDTO.setCreateTime(new Date());
@@ -779,6 +745,35 @@ public class PayFunction {
             shareActivityDTO.setParentSysUserId(parentUserId);
             shareActivityDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
             mongoTemplate.insert(shareActivityDTO, "shareActivity");
+
+            List<String> shareList = JedisUtils.getList(key+parentUserId);
+            if(null != shareList && shareList.size()>=2){
+
+                //更新用户账户金额
+                AccountDTO accountDTO = new AccountDTO();
+                accountDTO.setSysUserId(parentUserId);
+                try{
+                    this.updateUserAccount(accountDTO,parentUserId, returnMoney);
+                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+                    nextUserInfoDTO.setId(parentUserId);
+                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
+                    String incomeId = this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"shareActivity");
+                    //根据transationid查询income记录,然更新mong表
+                    shareList.add(instanceReturnMoneySignalDTO.getSysUserId());
+                    Query updateQuery = new Query().addCriteria(Criteria.where("sysUserId").in(shareList));
+                    Update update = new Update();
+                    update.set("incomeId", incomeId);
+                    mongoTemplate.upsert(updateQuery, update, "shareActivityDTO");
+                    JedisUtils.del(key+parentUserId);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                //记录
+                JedisUtils.listAdd(key+parentUserId,instanceReturnMoneySignalDTO.getSysUserId());
+            }
+
         }
     }
 }
