@@ -70,4 +70,20 @@ public class AttentionTeacherController {
         logger.info("查询用户的所有收货地址,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
+
+ /*   *//**
+     * 查询用户等级
+     *
+     *
+     * *//*
+    @RequestMapping(value = "getUserInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<UserInfoDTO> getUserInfo() {
+        long startTime = System.currentTimeMillis();
+        ResponseDTO<UserInfoDTO> responseDTO = new ResponseDTO();
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        responseDTO.setResponseData(userInfoDTO);
+        return responseDTO;
+    }*/
 }

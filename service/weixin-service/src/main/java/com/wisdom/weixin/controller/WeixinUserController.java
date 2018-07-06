@@ -123,7 +123,7 @@ public class WeixinUserController {
             url = ConfigConstant.USER_WEB_URL + "shareHome";
         }
         else if ("trainingHome".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "trainingHome";
+            url = ConfigConstant.USER_WEB_URL + "trainingProductList";
         }
         else if ("myselfCenter".equals(url)) {
             url = ConfigConstant.USER_WEB_URL + "myselfCenter";
