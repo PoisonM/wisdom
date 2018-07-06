@@ -110,6 +110,38 @@ public class IncomeRecordDTO {
     //查询条数
     private int count;
 
+    //用户类型
+    private String useBusinessType;
+
+    //用户类型
+    private String BusinessType;
+
+    //当前用户类型
+    private String userBusinessTypeNow;
+
+    public String getUserBusinessTypeNow() {
+        return userBusinessTypeNow;
+    }
+
+    public void setUserBusinessTypeNow(String userBusinessTypeNow) {
+        this.userBusinessTypeNow = userBusinessTypeNow;
+    }
+
+    public String getBusinessType() {
+        return BusinessType;
+    }
+
+    public void setBusinessType(String BusinessType) {
+        this.BusinessType = BusinessType;
+    }
+
+    public String getUseBusinessType() {
+        return useBusinessType;
+    }
+
+    public void setUseBusinessType(String useBusinessType) {
+        this.useBusinessType = useBusinessType;
+    }
 
     public int getCount() {
         return count;

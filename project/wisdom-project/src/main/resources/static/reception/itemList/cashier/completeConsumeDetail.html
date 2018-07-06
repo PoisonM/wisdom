@@ -1,0 +1,154 @@
+<div class="completeCardDetail">
+    <div class="completeCardDetail_box">
+        <div class="basic">
+            <p>基本信息</p>
+            <ul>
+                <li>
+                    <label for="">时间</label>
+                    <span>{{dataInfo.createDate | date: "yyyy-MM-dd HH:mm:ss"}}</span>
+                </li>
+                <li>
+                    <label for="">顾客</label>
+                    <span>{{dataInfo.sysUserName}}</span>
+                </li>
+                <li>
+                    <label for="">操作门店</label>
+                    <span>{{dataInfo.sysShopName}}</span>
+                </li>
+                <li>
+                    <label for="">关联员工</label>
+                    <span>{{dataInfo.sysClerkName}}</span>
+                </li>
+                <li>
+                    <label for="">类型</label>
+                    <span ng-if="dataInfo.type == 0">店内充值</span>
+                    <span ng-if="dataInfo.type == 1">店内消费</span>
+                    <span ng-if="dataInfo.type == 5">划卡</span>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div ng-repeat="item1 in dataInfo.userConsumeRecordResponseList">
+            <div  class="basic">
+                <p ng-if="item1.goodsType == 0">次卡</p>
+                <p ng-if="item1.goodsType == 1">疗程卡</p>
+                <p ng-if="item1.goodsType == 2">充值卡</p>
+                <p ng-if="item1.goodsType == 3">套卡</p>
+                <p ng-if="item1.goodsType == 4">产品</p>
+                <p ng-if="item1.goodsType == 5">划卡</p>
+                <p ng-if="item1.goodsType == 6">收银</p>
+                <p ng-if="item1.goodsType == 7">消费</p>
+                <ul>
+                    <li>
+                        <label for="">{{item1.flowName}}</label>
+                        <!--<span>{{dataInfo.sysClerkName}}</span>-->
+                    </li>
+                    <li ng-if="item1.goodsType != 4">
+                        <label for="">包含次数</label>
+                        <span>{{item1.includeTimes}}</span>
+                    </li>
+                    <li>
+                        <label for="">价格</label>
+                        <span>{{item1.price}}</span>
+                    </li>
+                    <!--<li>
+                        <label for="">折扣</label>
+                        <span>{{(item1.discount==null)||(item1.discount==1)?'无折':item1.discount*10+'折'}}</span>
+                    </li>-->
+                    <li>
+                        <label for="">数量</label>
+                        <span>{{item1.consumeNumber}}</span>
+                    </li>
+                    <li>
+                        <label data-aaa="{{item1}}" for="">金额</label>
+                        <span>{{item1.sumAmount}}</span>
+                    </li>
+                    <li ng-if="item1.goodsType == 3">
+                        <label for="">包含项目</label>
+                        <ul>
+                            <li ng-repeat="item2 in item1.shopProjectInfoDTOList" class="com_detail_list">
+                                <label for="">{{item2.projectName}}  * {{item2.serviceTimes}}</label>
+                                <span>{{item2.marketPrice}}</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="basic">
+                <p>折扣</p>
+                <ul>
+                    <li>
+                        <label for="">单次</label>
+                        <span>{{item1.timeDiscount=='1'?'无折扣':item1.timeDiscount}}折</span>
+                    </li>
+                    <li>
+                        <label for="">疗程卡</label>
+                        <span>{{item1.periodDiscount=='1'?'无折扣':item1.periodDiscount}}折</span>
+                    </li>
+                    <li>
+                        <label for="">产品</label>
+                        <span>{{item1.productDiscount=='1'?'无折扣':item1.productDiscount}}折</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div>
+            <div class="basic">
+                <p></p>
+                <ul>
+                    <li>
+                        <label for="">总金额</label>
+                        <span>{{dataInfo.sumAmount}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="basic">
+                <p>支付明细</p>
+                <ul>
+                    <li ng-if="dataInfo.payMap.cashAmount!=null">
+                        <label for="">现金支付</label>
+                        <span>{{dataInfo.payMap.cashAmount}}</span>
+                    </li>
+                    <li ng-if="dataInfo.payMap.balanceAmount!=null">
+                        <label for="">余额支付</label>
+                        <span>{{dataInfo.payMap.balanceAmount}}</span>
+                    </li>
+                    <li ng-if="dataInfo.payMap.rechargeCardAmount!=null">
+                        <label for="">充值卡支付</label>
+                        <span>{{dataInfo.payMap.rechargeCardAmount}}</span>
+                    </li>
+
+                    <li ng-if="dataInfo.payMap.payType!=null">
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.aliPay">支付宝支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.bankPay">银行卡支付</label>
+                        <label ng-if="dataInfo.payMap.payType == rootScopePayType.weChatPay">微信支付</label>
+                        <span ng-if="dataInfo.payMap.payType!=''">{{dataInfo.payMap.payTypeAmount}}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+        <div class="basic">
+            <p>顾客签字</p>
+        </div>
+        <ul>
+            <li>
+                <img ng-src="{{dataInfo.signUrl}}" alt="">
+            </li>
+        </ul>
+        <div>
+            <div class="basic">
+                <p>备注</p>
+                <ul>
+                    <li>
+                        <span>{{dataInfo.detail}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

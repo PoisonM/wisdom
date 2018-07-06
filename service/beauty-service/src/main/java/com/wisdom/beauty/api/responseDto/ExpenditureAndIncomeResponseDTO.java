@@ -85,15 +85,15 @@ public class ExpenditureAndIncomeResponseDTO extends BaseEntity {
 	/**
 	 * 服务次数
 	 */
-	private Integer serviceNumber;
+	private Integer serviceNumber=0;
 	/**
 	 * 人头数
 	 */
-	private  Integer consumeNumber;
+	private  Integer consumeNumber=0;
 	/**
 	 * 新客
 	 */
-	private Integer shopNewUserNumber;
+	private Integer shopNewUserNumber=0;
 	/**
 	 * 用户id
 	 */

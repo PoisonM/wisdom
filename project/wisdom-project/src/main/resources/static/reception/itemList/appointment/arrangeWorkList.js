@@ -46,6 +46,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
         $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
         $scope.compileDateFn()
+        setTimeout(function(){$scope.tableThead()},2000);
     }
     $scope.addMonth = function () {
         $scope.dataYear = parseInt($scope.param.nowdate.split("年")[0])
@@ -58,14 +59,22 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
         $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
         $scope.compileDateFn()
+        setTimeout(function(){$scope.tableThead()},2000);
     }
     //调用固定表头类
-    var tiemInt = setInterval(function () {
-        if($("#tbTest1 thead tr td").length != 0){
-            var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-            clearTimeout(tiemInt)
-        }
-    },100)
+    $scope.tableThead = function () {
+        $("#ofix1_tb_header").remove();
+        $("#ofix1_tb_left").remove();
+        $("#ofix1_div_top_left").remove();
+        var tiemInt = setInterval(function () {
+            if ($("#tbTest1 thead tr td").length > 1) {
+                var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                clearTimeout(tiemInt)
+            }
+        }, 100)
+
+    }
+    $scope.tableThead();
 
     $scope.goCompileWorkList = function () {
         $scope.tempTime = $scope.param.nowdate.replace("年","-").replace("月","-1")

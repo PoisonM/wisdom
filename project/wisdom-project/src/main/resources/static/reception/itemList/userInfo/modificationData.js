@@ -16,17 +16,16 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
     /*个人信息*/
     $scope.getUserInfo = function () {
         GetCurrentLoginUserInfo.get(function (data) {
-            if(data.result="0x00001")
-            {
-                // ClerkInfo.query({
-                //     clerkId: data.responseData.id
-                // }, function(data) {
-                    $scope.userInfoDataMod = data.responseData;
-                    $scope.param.imgSrc = data.responseData.photo;
-                //     console.log($scope.userInfoDataMod);
-                // });
+            if(data.result="0x00001"){
+                ClerkInfo.query({
+                    clerkId: data.responseData.id
+                }, function(data) {
+                    $scope.userInfoDataMod = data[0];
+                    $scope.param.imgSrc = data[0].photo;
+                })
             }
         })
+
     }
     $scope.getUserInfo()
     /*---------------------------------------------方法--------------------------------------------------*/
@@ -81,7 +80,8 @@ PADWeb.controller('modificationDataCtrl', function($scope, $stateParams,ClerkInf
         },function (data) {
             if(data.result == "0x00001"){
                 alert("保存成功")
-                $scope.getUserInfo()
+                // window.location.href = "/reception#/pad-web/userInfo/todayPerformance"
+                window.location.reload();
             }
         })
     }

@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey','GetUserInfo',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey,GetUserInfo) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -14,11 +14,22 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.mum = true;
             var pageTrue = true;
             $scope.auditFlag=false;
+            $scope.userMoblie = "";
+            $scope.useBusinessType="";
 
 
 
 
             var a = [];
+
+            /*获取用户信息*/
+            $scope.getUser = function(){
+                GetUserInfo.get({},function (data){
+                    $scope.userMoblie = data.responseData.mobile;
+                })
+            }
+
+            $scope.getUser();
             /*点击查看按钮*/
             $scope.details = function(sysUserId,createDate,incomeType,transactionId,index,id){
                 $scope.agencyIndex = index;
@@ -133,6 +144,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                     }
 
                     $scope.checkStatus = $("#checkStatus").val();
+                    $scope.useBusinessType = $("#useBusinessType").val();
 
                     $scope.pageParamVoDTO = {
                         isExportExcel:"N",
@@ -143,7 +155,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         requestData:{
                             incomeType:$scope.status,
                             mobile:$scope.MAccount,
-                            checkStatus:$scope.checkStatus
+                            checkStatus:$scope.checkStatus,
+                            useBusinessType:$scope.useBusinessType
                         }
                     }
 
@@ -233,7 +246,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 },10);
                 };
 
-/*按钮的切换*/
+            /*按钮的切换*/
             $scope.bgChangeAndSearch = function(type){
                 startTime.value ="";
                 endTime.value='';
@@ -281,6 +294,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         if(value == "true"){
                             $scope.key="";
                             alert("生成月度完成！");
+                            $scope.searchMonthlyBalance();
+
                         }
                    })
              }
@@ -320,6 +335,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.educeLis = function() {
 
                 $scope.checkStatus = $("#checkStatus").val();
+                $scope.useBusinessType = $("#useBusinessType").val();
                 if (confirm("确认要导出？")) {
                     $scope.pageParamVoDTO = {
                         isExportExcel:"Y",
@@ -330,7 +346,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                         requestData:{
                             incomeType:$scope.status,
                             mobile:$scope.MAccount,
-                            checkStatus:$scope.checkStatus
+                            checkStatus:$scope.checkStatus,
+                            useBusinessType:$scope.useBusinessType
                         }
                     }
                     ExportExcelIncomeRecord.save($scope.pageParamVoDTO, function (data) {

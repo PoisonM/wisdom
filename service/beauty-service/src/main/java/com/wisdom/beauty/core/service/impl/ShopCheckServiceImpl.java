@@ -72,7 +72,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         }
         List<ShopCheckRecordDTO> list= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
 
-        Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>(16);
         // todo 待修复
         List<ShopCheckRecordResponseDTO> shopCheckRecordResponseDTOs=new ArrayList<>();
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
@@ -121,7 +121,7 @@ public class ShopCheckServiceImpl implements ShopCheckService {
         ShopCheckRecordCriteria.Criteria c1 = shopCheckRecordCriteria.createCriteria();
         c1.andFlowNoEqualTo(flowNo);
         List<ShopCheckRecordDTO> shopCheckRecordDTOList= shopCheckRecordMapper.selectByCriteria(shopCheckRecordCriteria);
-        Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>();
+        Map<String,ShopCheckRecordResponseDTO> map=new HashMap<>(16);
         ShopCheckRecordResponseDTO shopCheckRecordResponseDTO=null;
         for(ShopCheckRecordDTO shopCheckRecord:shopCheckRecordDTOList){
             if(map.containsKey(shopCheckRecord.getProductTypeOneId())){

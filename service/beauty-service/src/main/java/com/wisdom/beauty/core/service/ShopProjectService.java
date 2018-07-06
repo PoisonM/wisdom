@@ -72,7 +72,7 @@ public interface ShopProjectService {
     *@Description: 获取一级项目列表
     *@Date:2018/4/10 15:59
     */
-    List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId);
+    List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId,String status);
     /**
     *@Author:huan
     *@Param:

@@ -220,4 +220,9 @@ define(['appManagement'], function (app) {
         .factory('UpdateHomeBanner',['$resource',function ($resource){
             return $resource(banner + 'updateHomeBanner');
         }])
+
+        //更新获取用户信息
+        .factory('GetUserInfo',['$resource',function ($resource){
+            return $resource(income + 'getUserInfo');
+        }])
 });

@@ -68,7 +68,10 @@ public class UserConsumeRequestDTO extends BaseEntity  {
     private String flowId;
     private String searchFile;
     private List<String> flowIds;
-
+    private String endTime;
+    private String startTime;
+    //boss端根据状态查询收银记录，充值=0，消费=1 全部=5
+    private String searchState;
     public String getIsCurrentDay() {
         return isCurrentDay;
     }
@@ -187,5 +190,29 @@ public class UserConsumeRequestDTO extends BaseEntity  {
 
     public void setSearchFile(String searchFile) {
         this.searchFile = searchFile;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getSearchState() {
+        return searchState;
+    }
+
+    public void setSearchState(String searchState) {
+        this.searchState = searchState;
     }
 }

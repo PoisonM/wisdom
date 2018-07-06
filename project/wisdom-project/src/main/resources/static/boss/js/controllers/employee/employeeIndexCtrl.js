@@ -23,6 +23,7 @@ angular.module('controllers',[]).controller('employeeIndexCtrl',
                     showDelay: 0
                 });
                 GetClerkWorkDetail.get({startTime:$scope.param.date+" 00:00:00",endTime:$scope.param.date+" 23:59:59"},function(data){
+                    $ionicLoading.hide();
                     BossUtil.checkResponseData(data,"employeeIndex");
                     if(data.result==Global.SUCCESS&&data.responseData!=null)
                     {

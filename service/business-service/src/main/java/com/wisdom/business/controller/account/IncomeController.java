@@ -837,4 +837,20 @@ public class IncomeController {
 		}
 	}
 
+	/**
+	 * 获取登陆人信息
+	 *
+	 *
+	 * */
+	@RequestMapping(value = "getUserInfo", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody ResponseDTO<UserInfoDTO> getUserInfo(){
+
+		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+		ResponseDTO<UserInfoDTO> result = new ResponseDTO<UserInfoDTO>();
+		result.setResult(StatusConstant.SUCCESS);
+		result.setResponseData(userInfoDTO);
+		return result;
+	}
 }

@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('projectSeriesCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType','$ionicPopup','$timeout',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType,$ionicPopup,$timeout) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','TwoLevelProject','Global','UpdateTwoLevelProjectType','$ionicPopup','$timeout','ThreeLevelProject',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,TwoLevelProject,Global,UpdateTwoLevelProjectType,$ionicPopup,$timeout,ThreeLevelProject) {
             $rootScope.title = "添加系列";
             $scope.param = {
                 selTrue:[]
@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 for(var i=0;i<$scope.requestList.length;i++){
                     if($scope.requestList[i].projectTypeName==''&&$scope.requestList[i].status=='0'){
                         alert("系列名不能为空")
+                        return
                         /*var alertPopup = $ionicPopup.alert({
                             template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.2rem">系列名不能为空</span>',
                             /!*okText:'确定'*!/
@@ -32,6 +33,8 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                             alertPopup.close()
                         },500);*/
                         $state.go("projectBrand")
+                    }else{
+                        alert("保存未成功")
                     }
                 })
 
@@ -63,7 +66,22 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
               };
             $scope.sel = function(index){
-                $scope.requestList[index].status = '1'
+                $scope.projectType = $scope.requestList[index];
+                ThreeLevelProject.get({
+                    ProjectTypeTwoId:$scope.projectType.id,
+                    projectTypeOneId: $scope.projectType.parentId,
+                    projectName:$scope.projectType.projectName,
+                    pageSize:'1',
+                    status:'0'
+                },function (data) {
+                    $scope.threeList=data.responseData;
+                    if($scope.threeList && $scope.threeList[0]){
+                        alert("对不起，此系列不允许删除");
+                        return false
+                    }else{
+                        $scope.requestList[index].status = '1'
+                    }
+                })
             };
             $scope.addSeriesLis = function(){
                 var obj = {

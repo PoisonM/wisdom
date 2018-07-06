@@ -1,37 +1,42 @@
 .cardWrap{width: 100%;}
-.swiper-container {width: 100%; height: 5rem;background: #FFFFFF}
-.swiper-slide {box-sizing: content-box!important;}
-.swiper-slide img{width:5.3rem;height:4.6rem;margin-top: 0.4rem;!important;padding-right: 0.3rem}
-.swiper-slide-next img{width: 5.6rem;height:5rem!important;margin-top: 0px;!important;}
-.swiper-slide-next {margin-right:0.3125rem;}
-.cardDescribe .describeTwo{background: #FFFFFF; margin-left: 0.28rem;width:100%;position: relative}
-.c99{color: #999999}
-.c66{color: #666666}
-.c33{color: #333333}
-.fs32{font-size: 0.25rem}
-.fs36{font-size: 0.28rem}
-.fs26{font-size: 0.203rem}
-.fs28{font-size: 0.218rem}
-.cff66{color: #FF6666}
-.fs30{font-size:0.234rem}
-.p32{padding: 0.25rem}
-.mt20{margin-top: 0.156rem}
-.mt22{margin-top: 0.17rem}
-.mt21{margin-top: 0.16rem}
-.mt34{margin-top: 0.26rem}
-.mt30{margin-top: 0.234rem}
-.cff66{color: #FF6666}
-.fs32{font-size: 0.25rem}
-.fs40{font-size: 0.3rem}
-.mt40{margin-top: 0.3125rem}
-.mt50{margin-top: 0.39rem}
-.mt80{margin-top: 0.6rem}
-.bgff6666{background: #FF6666;}
-.fs34{font-size: 0.265rem}
-.describeCard{border-radius: 0.05rem;display: inline-block;width:0.8rem;height: 0.39rem;border-radius: 0.05rem;color: #FFFFFF;margin-left: 0.09rem;text-align: center}
-.textDestrice{position: absolute;bottom: 0.3125rem;right: 0.5rem}
-.goodShow ul{display: flex;flex-wrap: wrap;}
-.goodShow ul li{margin-right: 0.2rem}
-.goodShow ul li img{width:2.17rem;height:1.78rem}
-.mb50{margin-bottom: 0.5rem}
+.cardWrap .swiper-container {background: #FFFFFF}
+/*.cardWrap .swiper-container {width: 100%; height: 5rem;background: #FFFFFF}*/
+/*.cardWrap .swiper-slide {box-sizing: content-box!important;}*/
+/*.cardWrap .swiper-slide img{width:5.3rem;height:4.6rem;margin-top: 0.4rem;!important;padding-right: 0.3rem}*/
+/*.cardWrap .swiper-slide-next img{width: 5.6rem;height:5rem!important;margin-top: 0px;!important;}*/
+/*.cardWrap .swiper-slide-next {margin-right:0.3125rem;}*/
+.cardWrap .cardDescribe .describeTwo{background: #FFFFFF; margin-left: 0.28rem;width:100%;position: relative}
+.cardWrap .c99{color: #999999}
+.cardWrap .c66{color: #666666}
+.cardWrap .c33{color: #333333}
+.cardWrap .fs32{font-size: 0.25rem}
+.cardWrap .fs36{font-size: 0.28rem}
+.cardWrap .fs26{font-size: 0.203rem}
+.cardWrap .fs28{font-size: 0.218rem}
+.cardWrap .cff66{color: #FF6666}
+.cardWrap .fs30{font-size:0.234rem}
+.cardWrap .p32{padding: 0.25rem}
+.cardWrap .mt20{margin-top: 0.156rem}
+.cardWrap .mt22{margin-top: 0.17rem}
+.cardWrap .mt21{margin-top: 0.16rem}
+.cardWrap .mt34{margin-top: 0.26rem}
+.cardWrap .mt30{margin-top: 0.234rem}
+.cardWrap .cff66{color: #FF6666}
+.cardWrap .fs32{font-size: 0.25rem}
+.cardWrap .fs40{font-size: 0.3rem}
+.cardWrap .mt40{margin-top: 0.3125rem}
+.cardWrap .mt50{margin-top: 0.39rem}
+.cardWrap .mt80{margin-top: 0.6rem}
+.cardWrap .bgff6666{background: #FF6666;}
+.cardWrap .fs34{font-size: 0.265rem}
+.cardWrap .describeCard{border-radius: 0.05rem;display: inline-block;width:0.8rem;height: 0.39rem;border-radius: 0.05rem;color: #FFFFFF;margin-left: 0.09rem;text-align: center}
+.cardWrap .textDestrice{position: absolute;bottom: 0.3125rem;right: 0.5rem}
+.cardWrap .goodShow ul{display: flex;flex-wrap: wrap;}
+.cardWrap .goodShow ul li{margin-right: 0.2rem}
+.cardWrap .goodShow ul li img{width:2.17rem;height:1.78rem}
+.cardWrap .mb50{margin-bottom: 0.5rem}
+
+
+.cardWrap .swiper-slide-next {width: 360px !important;height: 350px !important; margin-top: 0px!important;}
+.cardWrap .swiper-slide {margin-top: 30px;height: 320px;}
 

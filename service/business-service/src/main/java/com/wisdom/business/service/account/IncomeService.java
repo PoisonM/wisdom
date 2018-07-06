@@ -99,6 +99,15 @@ public class IncomeService {
         logger.info("根据条件查询用户佣金奖励");
 
 
+        if(("1").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessA1);
+
+        }else if(("2").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessB1);
+
+        }
 
         //获取审核状态条件
         String CheckStatus =pageParamVoDTO.getRequestData().getCheckStatus();
@@ -122,6 +131,13 @@ public class IncomeService {
 
         //查询该订单用户提升等级信息queryIncomeInfoByIncomeId
         for(IncomeRecordDTO income :incomeRecordDTOS){
+            if(ConfigConstant.businessA1.equals(income.getUserBusinessTypeNow())){
+                income.setUserBusinessTypeNow("A级");
+            }else if(ConfigConstant.businessB1.equals(income.getUserBusinessTypeNow())){
+                income.setUserBusinessTypeNow("B级");
+            }else if(ConfigConstant.businessC1.equals(income.getUserBusinessTypeNow())){
+                income.setUserBusinessTypeNow("C级");
+            }
            PromotionTransactionRelation promotionTransactionRelation =  promotionTransactionRelationMapper.getIsImportLevel(income.getTransactionId());
            if(promotionTransactionRelation!=null){
                if(promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_A)){
@@ -406,7 +422,19 @@ public class IncomeService {
 
     public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         logger.info("service -- 导出佣金数据 exportExcelIncomeRecord,方法执行" );
+
+        if(("1").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessA1);
+
+        }else if(("2").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessB1);
+
+        }
+
         List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
+
         for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
             //判断该交易购买者是否升级
             PromotionTransactionRelation promotionTransactionRelation = promotionTransactionRelationMapper.getIsImportLevel(exportIncomeRecordExcelDTO.getTransactionId());

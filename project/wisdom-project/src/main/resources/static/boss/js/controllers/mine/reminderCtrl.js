@@ -93,6 +93,8 @@ angular.module('controllers',[]).controller('reminderCtrl',
                 UpdateBossShopScheduleSetting.save($scope.request,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")
+                    }else{
+                        alert("保存未成功")
                     }
 
                 })

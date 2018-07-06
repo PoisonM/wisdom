@@ -230,14 +230,20 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                         $rootScope.settingAddsome.product.status = '1';
                     }
                 }
-                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.marketPrice ==""||$rootScope.settingAddsome.product.discountPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
+                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.initialPrice ==""||$rootScope.settingAddsome.product.marketPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
+                    alert('信息不完全')
+                    return
+                }
+                if($rootScope.settingAddsome.product.productCode==""){
                     alert('信息不完全')
                     return
                 }
                 UpdateProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS){
-
                         $state.go("warehouseProducts")
+                    }else{
+                        alert(data.errorInfo);
+                        return;
                     }
                 })
 

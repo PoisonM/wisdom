@@ -19,13 +19,22 @@ angular.module('controllers',[]).controller('oneTimeCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide();
                         $scope.oneTime =data.responseData
+                        if($rootScope.settingAddsome.editedRecharge.timesList.length>0){
+                            for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.timesList.length;i++){
+                                $scope.param.timesList[i]=$rootScope.settingAddsome.editedRecharge.timesList[i].shopGoodsTypeId
+                            }
+                        }else{
+                           for(var i=0;i<$scope.oneTime.detailLevel.length;i++){
+                               for(var key in $scope.oneTime.detailLevel[i].levelTwoDetail){
+                                   $scope.param.timesList.push($scope.oneTime.detailLevel[i].levelTwoDetail[key].projectTypeTwoId)
+                               }
+                           }
+                        }
                     }
                 })
             })
 
-            for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.timesList.length;i++){
-                $scope.param.timesList[i]=$rootScope.settingAddsome.editedRecharge.timesList[i].shopGoodsTypeId
-            }
+
 
 
             $scope.selOneTime = function (domIndex) {
@@ -42,9 +51,14 @@ angular.module('controllers',[]).controller('oneTimeCtrl',
                 }
             }
             $scope.save = function () {
-                for(var  i=0;i<$scope.param.timesList.length;i++){
-                    $rootScope.settingAddsome.editedRecharge.timesList[i]={shopGoodsTypeId:$scope.param.timesList[i],goodsType:"0"}
+                if($scope.param.timesList.length>0){
+                    for(var i=0;i<$scope.param.timesList.length;i++){
+                        $rootScope.settingAddsome.editedRecharge.timesList[i]={shopGoodsTypeId:$scope.param.timesList[i],goodsType:"0"}
+                    }
+                }else{
+                    $rootScope.settingAddsome.editedRecharge.timesList=$scope.param.timesList
                 }
+
                 $state.go($stateParams.url,{id:$stateParams.id})
             }
         }])

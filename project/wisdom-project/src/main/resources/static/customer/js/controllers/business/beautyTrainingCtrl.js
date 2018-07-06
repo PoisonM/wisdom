@@ -241,7 +241,8 @@ angular.module('controllers',[]).controller('beautyTrainingCtrl',
                     '15253912377',
                     '13783747208',
                     '15253912377',
-                    '13601025662'
+                    '13601025662',
+                    '15810159447'
                 ]
             };
 

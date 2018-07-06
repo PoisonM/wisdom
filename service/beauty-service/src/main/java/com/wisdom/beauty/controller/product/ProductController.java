@@ -125,11 +125,18 @@ public class ProductController {
      */
     @RequestMapping(value = "/oneLevelProduct", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct() {
+    ResponseDTO<List<ShopProductTypeDTO>> findOneLevelProduct(@RequestParam(required = false) String status) {
         SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        SysBossDTO sysBossDTO=UserUtils.getBossInfo();
         ResponseDTO<List<ShopProductTypeDTO>> responseDTO = new ResponseDTO<>();
         ShopProductTypeDTO shopProductTypeDTO=new ShopProductTypeDTO();
-        shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        shopProductTypeDTO.setStatus(status);
+        if(sysClerkDTO!=null){
+            shopProductTypeDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        }
+        if(sysBossDTO!=null){
+            shopProductTypeDTO.setSysShopId(sysBossDTO.getCurrentShopId());
+        }
         List<ShopProductTypeDTO> list = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
         responseDTO.setResponseData(list);
         responseDTO.setResult(StatusConstant.SUCCESS);
@@ -191,11 +198,40 @@ public class ProductController {
     @RequestMapping(value = "/updateProductInfo", method = RequestMethod.POST)
     @ResponseBody
     ResponseDTO<Object> updateProductInfo(@RequestBody ExtShopProductInfoDTO extShopProductInfoDTO) {
-
+        ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
 
-        responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        if(extShopProductInfoDTO.getProductCode()==null||extShopProductInfoDTO.getProductCode()==""){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("产品编码不能为空！");
+        }
+
+        shopProductInfo.setProductCode(extShopProductInfoDTO.getProductCode());
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
+
+        logger.info("修改产品状态"+extShopProductInfoDTO.getStatus());
+        if(shopProductInfos!=null&&shopProductInfos.size()>0){
+            if(("1").equals(extShopProductInfoDTO.getStatus())){
+                int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+                responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            }else if(shopProductInfos.size()==1&&("0").equals(extShopProductInfoDTO.getStatus())){
+                if(shopProductInfos.get(0).getId().equals(extShopProductInfoDTO.getId())){
+                    int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+                    responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+                }else{
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+                }
+            }else{
+                responseDTO.setResult(StatusConstant.FAILURE);
+                responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+            }
+        }else{
+
+            int info = shopProductInfoService.updateProductInfo(extShopProductInfoDTO);
+
+            responseDTO.setResult(info > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        }
         return responseDTO;
     }
 
@@ -211,16 +247,17 @@ public class ProductController {
     ResponseDTO<List<ShopProductInfoResponseDTO>> findThreeLevelProduct(@RequestParam String productTypeOneId,
                                                                 @RequestParam String productTypeTwoId,
                                                                 @RequestParam(required = false) String productName,
-                                                                @RequestParam int pageSize) {
+                                                                @RequestParam int pageSize, @RequestParam(required = false) String status) {
 
-        SysClerkDTO sysClerkDTO=UserUtils.getClerkInfo();
+        String shopId = redisUtils.getShopId();
         PageParamVoDTO<ShopProductInfoDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
 
-        shopProductInfoDTO.setSysShopId(sysClerkDTO.getSysShopId());
+        shopProductInfoDTO.setSysShopId(shopId);
         shopProductInfoDTO.setProductTypeOneId(productTypeOneId);
         shopProductInfoDTO.setProductTypeTwoId(productTypeTwoId);
         shopProductInfoDTO.setProductName(productName);
+        shopProductInfoDTO.setStatus(status);
 
         pageParamVoDTO.setRequestData(shopProductInfoDTO);
         pageParamVoDTO.setPageNo(0);
@@ -243,7 +280,7 @@ public class ProductController {
 
     public
     @ResponseBody
-    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr) {
+    ResponseDTO<HashMap<String, Object>> searchShopProductList(@RequestParam String filterStr,@RequestParam(required = false) String status) {
 
         String sysShopId = null;
         if (StringUtils.isBlank(sysShopId)) {
@@ -266,7 +303,7 @@ public class ProductController {
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
         shopProductInfoDTO.setSysShopId(sysShopId);
         shopProductInfoDTO.setProductName(filterStr);
-
+        shopProductInfoDTO.setStatus(status);
         HashMap<String, Object> returnMap = new HashMap<>(16);
         List<ShopProductInfoDTO> shopProductInfo = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
 
@@ -290,7 +327,7 @@ public class ProductController {
         //一个一级对应所有的二级
         Map<String,Map<String,ShopProductTypeDTO>> twoMap=null;
         if(CollectionUtils.isNotEmpty(twoAndThreeTypeList)){
-            twoMap=new HashMap<>();
+            twoMap=new HashMap<>(16);
             for (ShopProductTypeDTO dto:twoAndThreeTypeList){
                 if(twoMap.containsKey(dto.getParentId())){
                     Map<String,ShopProductTypeDTO> devMap=twoMap.get(dto.getParentId());
@@ -298,7 +335,7 @@ public class ProductController {
                     twoMap.put(dto.getParentId(),devMap);
                 }else {
                     if(StringUtils.isNotBlank(dto.getParentId())){
-                        Map<String,ShopProductTypeDTO> devMap=new HashMap<>();
+                        Map<String,ShopProductTypeDTO> devMap=new HashMap<>(16);
                         devMap.put(dto.getProductTypeName(),dto);
                         twoMap.put(dto.getParentId(),devMap);
                     }
@@ -359,7 +396,7 @@ public class ProductController {
         logger.info("扫码入库查询出来的数据为={}", "scanShopProductInfo = [" + scanShopProductInfo + "]");
         ExtShopScanProductInfoDTO extShopScanProductInfoDTO = scanShopProductInfo.getShowapi_res_body();
         if (null != extShopScanProductInfoDTO) {
-            if(extShopScanProductInfoDTO.getFlag().equals("true")){
+            if("true".equals(extShopScanProductInfoDTO.getFlag())){
                 //查询出来的信息转换为产品对象
                 ExtShopProductInfoDTO productInfoDTO = new ExtShopProductInfoDTO();
                 productInfoDTO.setProductName(extShopScanProductInfoDTO.getGoodsName());
@@ -405,15 +442,23 @@ public class ProductController {
     @ResponseBody
     ResponseDTO<Object> saveProductInfo(@RequestBody ExtShopProductInfoDTO shopProductInfoDTO) {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
-        int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
-        responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
-        responseDTO.setResponseData(productInfo);
+
+        ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
+        shopProductInfo.setProductCode(shopProductInfoDTO.getProductCode());
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
+        if(shopProductInfos!=null&&shopProductInfos.size()>0){
+            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setErrorInfo("该产品已存在，请勿重复添加！");
+        }else{
+            int productInfo = shopProductInfoService.saveProductInfo(shopProductInfoDTO);
+            responseDTO.setResult(productInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+            responseDTO.setResponseData(productInfo);
+        }
         return responseDTO;
     }
 
     /**
      * 获取产品详情
-     *
      * @param productCode
      *
      * @return

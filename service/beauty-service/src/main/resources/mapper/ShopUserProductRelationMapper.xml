@@ -12,6 +12,7 @@
     <result column="sys_clerk_name" property="sysClerkName" jdbcType="VARCHAR" />
     <result column="wait_receive_number" property="waitReceiveNumber" jdbcType="INTEGER" />
     <result column="sys_shop_name" property="sysShopName" jdbcType="VARCHAR" />
+    <result column="discount_price" property="discountPrice" jdbcType="DECIMAL" />
     <result column="init_times" property="initTimes" jdbcType="INTEGER" />
     <result column="surplus_times" property="surplusTimes" jdbcType="INTEGER" />
     <result column="purchase_price" property="purchasePrice" jdbcType="DECIMAL" />
@@ -84,9 +85,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, shop_product_name, shop_product_id, sys_user_id, sys_shop_id, sys_clerk_id, sys_boss_code, 
-    sys_clerk_name, wait_receive_number, sys_shop_name, init_times, surplus_times, purchase_price, 
-    init_amount, surplus_amount, discount, is_send, create_by, create_date, update_user, 
-    update_date
+    sys_clerk_name, wait_receive_number, sys_shop_name, discount_price, init_times, surplus_times, 
+    purchase_price, init_amount, surplus_amount, discount, is_send, create_by, create_date, 
+    update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopUserProductRelationCriteria" >
     select
@@ -125,19 +126,19 @@
     insert into shop_user_product_relation (id, shop_product_name, shop_product_id, 
       sys_user_id, sys_shop_id, sys_clerk_id, 
       sys_boss_code, sys_clerk_name, wait_receive_number, 
-      sys_shop_name, init_times, surplus_times, 
-      purchase_price, init_amount, surplus_amount, 
-      discount, is_send, create_by, 
-      create_date, update_user, update_date
-      )
+      sys_shop_name, discount_price, init_times, 
+      surplus_times, purchase_price, init_amount, 
+      surplus_amount, discount, is_send, 
+      create_by, create_date, update_user, 
+      update_date)
     values (#{id,jdbcType=VARCHAR}, #{shopProductName,jdbcType=VARCHAR}, #{shopProductId,jdbcType=VARCHAR}, 
       #{sysUserId,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysClerkId,jdbcType=VARCHAR}, 
       #{sysBossCode,jdbcType=VARCHAR}, #{sysClerkName,jdbcType=VARCHAR}, #{waitReceiveNumber,jdbcType=INTEGER}, 
-      #{sysShopName,jdbcType=VARCHAR}, #{initTimes,jdbcType=INTEGER}, #{surplusTimes,jdbcType=INTEGER}, 
-      #{purchasePrice,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL}, #{surplusAmount,jdbcType=DECIMAL}, 
-      #{discount,jdbcType=REAL}, #{isSend,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
-      )
+      #{sysShopName,jdbcType=VARCHAR}, #{discountPrice,jdbcType=DECIMAL}, #{initTimes,jdbcType=INTEGER}, 
+      #{surplusTimes,jdbcType=INTEGER}, #{purchasePrice,jdbcType=DECIMAL}, #{initAmount,jdbcType=DECIMAL}, 
+      #{surplusAmount,jdbcType=DECIMAL}, #{discount,jdbcType=REAL}, #{isSend,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopUserProductRelationDTO" >
     insert into shop_user_product_relation
@@ -171,6 +172,9 @@
       </if>
       <if test="sysShopName != null" >
         sys_shop_name,
+      </if>
+      <if test="discountPrice != null" >
+        discount_price,
       </if>
       <if test="initTimes != null" >
         init_times,
@@ -236,6 +240,9 @@
       </if>
       <if test="sysShopName != null" >
         #{sysShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="discountPrice != null" >
+        #{discountPrice,jdbcType=DECIMAL},
       </if>
       <if test="initTimes != null" >
         #{initTimes,jdbcType=INTEGER},
@@ -311,6 +318,9 @@
       <if test="record.sysShopName != null" >
         sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       </if>
+      <if test="record.discountPrice != null" >
+        discount_price = #{record.discountPrice,jdbcType=DECIMAL},
+      </if>
       <if test="record.initTimes != null" >
         init_times = #{record.initTimes,jdbcType=INTEGER},
       </if>
@@ -361,6 +371,7 @@
       sys_clerk_name = #{record.sysClerkName,jdbcType=VARCHAR},
       wait_receive_number = #{record.waitReceiveNumber,jdbcType=INTEGER},
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
+      discount_price = #{record.discountPrice,jdbcType=DECIMAL},
       init_times = #{record.initTimes,jdbcType=INTEGER},
       surplus_times = #{record.surplusTimes,jdbcType=INTEGER},
       purchase_price = #{record.purchasePrice,jdbcType=DECIMAL},
@@ -405,6 +416,9 @@
       </if>
       <if test="sysShopName != null" >
         sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="discountPrice != null" >
+        discount_price = #{discountPrice,jdbcType=DECIMAL},
       </if>
       <if test="initTimes != null" >
         init_times = #{initTimes,jdbcType=INTEGER},
@@ -453,6 +467,7 @@
       sys_clerk_name = #{sysClerkName,jdbcType=VARCHAR},
       wait_receive_number = #{waitReceiveNumber,jdbcType=INTEGER},
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
+      discount_price = #{discountPrice,jdbcType=DECIMAL},
       init_times = #{initTimes,jdbcType=INTEGER},
       surplus_times = #{surplusTimes,jdbcType=INTEGER},
       purchase_price = #{purchasePrice,jdbcType=DECIMAL},

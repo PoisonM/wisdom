@@ -83,6 +83,10 @@
         }
         .tab_sty ul{
             width: 165%;
+            position: absolute;
+            left:0;
+            top: 0;
+            transition: all 1s linear;
         }
         .tab_sty .tab_header{
             height: 100%;
@@ -90,6 +94,8 @@
             overflow-x: scroll;
             overflow-y: hidden;
             margin-top: 16px;
+            position: relative;
+            transition: all 2s linear;
 
         }
         .tab_sty .tab_header ul{
@@ -238,11 +244,11 @@
                     <li ng-click="checkPrice(99)" ng-class="{'checkNinety':shopHomeParam== 99,'Ninety':shopHomeParam!=99}" style="position: relative">
                         <p class="bigsize">99</p><p style="position: absolute;top: 40px">元专区</p>
                     </li>
-                    <li ng-click="checkPrice(199)" ng-class="{'checkHundredNine':shopHomeParam== 199,'hundredNine':shopHomeParam!=199}" style="position: relative" >
+                    <li ng-click="checkPrice(199)" ng-class="{'checkHundredNine':shopHomeParam== 199,'hundredNine':shopHomeParam!=199}" style="position: relative">
                         <p class="bigsize">199</p>
                         <p style="position: absolute;top: 40px">元专区</p>
                     </li>
-                    <li ng-click="checkPrice(299)" ng-class="{'checckTwoHundredNine':shopHomeParam== 299,'twoHundredNine':shopHomeParam!=299}" style="position: relative" >
+                    <li ng-click="checkPrice(299)" ng-class="{'checckTwoHundredNine':shopHomeParam== 299,'twoHundredNine':shopHomeParam!=299}" style="position: relative">
                         <p class="bigsize">299</p>
                         <p style="position: absolute;top: 40px">元专区</p>
                     </li>

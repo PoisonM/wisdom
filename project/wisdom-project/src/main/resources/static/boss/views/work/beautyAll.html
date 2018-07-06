@@ -109,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;position: relative">
+                <div class="col col-50" style="border-right: 1px solid #e5e5e5;border-bottom: 1px solid #e5e5e5;padding-top: 10px;position: relative">
                     <div class="row">
                         <p class="col col-20">
                             <img src="images/work/singleConsumption.png" alt="" style="width: 17px;height: 18px;display: inline-block;" class="mt20">
@@ -134,7 +134,7 @@
             </div>
         </div>
         <!--卡耗-->
-        <div class="list" ng-click="detailedPerformanceGo('3')">
+        <div class="list" ng-click="detailedPerformanceGo('3')" ng-if="param.nameType!='allFamily'">
             <p class="item" style="padding: 8px"><span>卡耗</span><span style="float:right;font-size: 0.3rem;color: #ff6666">{{beautyAll.kahao==undefined?0:beautyAll.kahao}}<i style="margin-left: 10px;color: #999999" class="ion ion-ios-arrow-right"></i></span></p>
             <div class="row" style="background: #ffffff;color: #333333;text-align: center;padding: 0px">
                 <div class="col col-50" style="border-right: 1px solid #e5e5e5;padding-top: 10px;border-bottom: 1px solid #e5e5e5;position: relative">

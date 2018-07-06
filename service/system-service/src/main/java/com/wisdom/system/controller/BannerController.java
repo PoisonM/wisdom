@@ -81,19 +81,8 @@ public class BannerController {
 			responseDTO.setErrorInfo("此楼层已有banner图");
 			responseDTO.setResult(StatusConstant.FAILURE);
 			return responseDTO;
-			//后面的banner全都向后排序
-			/*while (nextBanner) {
-				bannerDTODown = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
-				if(null != bannerDTODown){
-					logger.info("新增Banner,该层bannerId为={}楼层为={}需要下移到={}", bannerDTODown.getBannerId(),bannerRank,bannerRank+1);
-					bannerDTODown.setBannerRank(bannerRank+1);
-					bannerService.updateHomeBanner(bannerDTODown);
-					bannerRank++;
-				}else {
-					logger.info("新增Banner方法,各层banner已全部下移,没有下层banner了此楼层={}", bannerRank);
-					nextBanner = false;
-				}
-			}*/
+			/*后面的banner全都向后排序*/
+
 		}else {
 			//新增默认为最后一个
 			List<BannerDTO> list = bannerService.getHomeBannerList();

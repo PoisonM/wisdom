@@ -56,16 +56,19 @@ public class UserTypeController {
 			userInfo.setParentUserId(userInfoDTO.getId());
 			userInfo.setUserType(ConfigConstant.businessB1);
 			List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfo);
-
 			userInfoDTOList.addAll(userInfoDTOS);
+			userInfo.setUserType(ConfigConstant.businessC1);
+			List<UserInfoDTO> userInfoDTOS2 = userServiceClient.getUserInfo(userInfo);
+			userInfoDTOList.addAll(userInfoDTOS2);
 
-			for(UserInfoDTO userInfoDTO1:userInfoDTOS)
-			{
-				userInfo.setParentUserId(userInfoDTO1.getId());
-				userInfo.setUserType(ConfigConstant.businessC1);
-				List<UserInfoDTO> userInfoDTOS1 = userServiceClient.getUserInfo(userInfo);
-				userInfoDTOList.addAll(userInfoDTOS1);
-			}
+
+//			for(UserInfoDTO userInfoDTO1:userInfoDTOS)
+//			{
+//				userInfo.setParentUserId(userInfoDTO1.getId());
+//				userInfo.setUserType(ConfigConstant.businessC1);
+//				List<UserInfoDTO> userInfoDTOS1 = userServiceClient.getUserInfo(userInfo);
+//				userInfoDTOList.addAll(userInfoDTOS1);
+//			}
 		}
 		else if(userInfoDTO.getUserType().equals(ConfigConstant.businessB1))
 		{

@@ -10,9 +10,6 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     //
     private String id;
 
-    //消费记录id
-    private String consumeRecordId;
-
     //套卡表名称
     private String shopProjectGroupName;
 
@@ -24,6 +21,9 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     //
     private BigDecimal shopGroupPuchasePrice;
+
+    //
+    private BigDecimal discountPrice;
 
     //
     private String sysUserId;
@@ -65,6 +65,12 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
     private Float discount;
 
     //
+    private String consumeRecordId;
+
+    //备注
+    private String detail;
+
+    //
     private String createBy;
 
     //
@@ -84,14 +90,6 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getConsumeRecordId() {
-        return consumeRecordId;
-    }
-
-    public void setConsumeRecordId(String consumeRecordId) {
-        this.consumeRecordId = consumeRecordId;
     }
 
     public String getShopProjectGroupName() {
@@ -124,6 +122,14 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setShopGroupPuchasePrice(BigDecimal shopGroupPuchasePrice) {
         this.shopGroupPuchasePrice = shopGroupPuchasePrice;
+    }
+
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
     public String getSysUserId() {
@@ -228,6 +234,22 @@ public class ShopUserProjectGroupRelRelationDTO extends BaseEntity implements Se
 
     public void setDiscount(Float discount) {
         this.discount = discount;
+    }
+
+    public String getConsumeRecordId() {
+        return consumeRecordId;
+    }
+
+    public void setConsumeRecordId(String consumeRecordId) {
+        this.consumeRecordId = consumeRecordId;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getCreateBy() {
