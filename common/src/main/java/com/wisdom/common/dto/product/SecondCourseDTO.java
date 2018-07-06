@@ -16,6 +16,20 @@ public class SecondCourseDTO {
     @JSONField(name = "password")
     private String password;
 
+    @JSONField(name = "numberOfPlayback")
+    private Integer numberOfPlayback;
+
+
+    public Integer getNumberOfPlayback() {
+        return numberOfPlayback;
+    }
+
+    public void setNumberOfPlayback(Integer numberOfPlayback) {
+        this.numberOfPlayback = numberOfPlayback;
+    }
+
+
+
     public String getName() {
         return name;
     }

@@ -105,21 +105,21 @@ public class WeixinUserController {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
         if ("shopHome".equals(url)) {
-            url = ConfigConstant.USER_BUSINESS_WEB_URL + "shopHome";
+            url = ConfigConstant.USER_WEB_URL + "shopHome";
         }
         if (url.contains("specialProductList")) {
             String urls[] = url.split("88888888");
             String specialShopId = urls[1];
-            url = ConfigConstant.USER_BUSINESS_WEB_URL + "specialProductList/" + specialShopId;
+            url = ConfigConstant.USER_WEB_URL + "specialProductList/" + specialShopId;
         }
         else if ("shareHome".equals(url)) {
-            url = ConfigConstant.USER_BUSINESS_WEB_URL + "shareHome";
+            url = ConfigConstant.USER_WEB_URL + "shareHome";
         }
         else if ("trainingHome".equals(url)) {
-            url = ConfigConstant.USER_BUSINESS_WEB_URL + "trainingHome";
+            url = ConfigConstant.USER_WEB_URL + "trainingProductList";
         }
         else if ("myselfCenter".equals(url)) {
-            url = ConfigConstant.USER_BUSINESS_WEB_URL + "myselfCenter";
+            url = ConfigConstant.USER_WEB_URL + "myselfCenter";
         }
 
         String code = request.getParameter("code");
@@ -185,23 +185,13 @@ public class WeixinUserController {
      * 用户获取推广二维码
      */
     @RequestMapping(value = "getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
+    @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<WeixinShareDTO> getUserQRCode(@RequestParam(required=false) String userPhone) throws FileNotFoundException {
+    ResponseDTO<WeixinShareDTO> getUserQRCode() throws FileNotFoundException {
         ResponseDTO<WeixinShareDTO> responseDTO = new ResponseDTO();
 
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        if(StringUtils.isNotBlank(userPhone)){
-            userInfoDTO.setMobile(userPhone);
-            List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-            if(userInfoDTOS.size()>0)
-            {
-                userInfoDTO = userInfoDTOS.get(0);
-            }
-
-        }else{
-            userInfoDTO = UserUtils.getUserInfoFromRedis();
-        }
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
         if(weixinShareDTO==null)
         {

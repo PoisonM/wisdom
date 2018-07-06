@@ -25,11 +25,17 @@
                          <input type="text" id="class_minutia" class="product_search" ng-model="productDTO.productDetail.listCourse[0].list[0].name">
                      </div>
                      <div class="uploading_product_name">
-                     <label for="duration">
-                         课时:
-                     </label>
-                     <input type="text" id="duration" class="product_search" ng-model="productDTO.productDetail.listCourse[0].list[0].duration">
-                 </div>
+                         <label for="duration">
+                             课时:
+                         </label>
+                         <input type="text" id="duration" class="product_search" ng-model="productDTO.productDetail.listCourse[0].list[0].duration">
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="duration">
+                             讲师:
+                         </label>
+                         <input type="text" id="teacherName" class="product_search" ng-model="productDTO.teacherName">
+                     </div>
                      <div class="name_row blank">
                          <label >上传视频:</label>
                          <input ng-file-select="onFileSelect($files)" type="file" accept=".csv" class="product_search wav">
@@ -46,10 +52,16 @@
                          <label for="price">价格:</label>
                          <input type="number" id="price" ng-model="productDTO.price" class="product_search"/>
                      </div>
+
                      <div class="uploading_product_name">
                          <label for="secondType">类型:</label>
-                         <input type="text" id="secondType" ng-model="productDTO.secondType" class="product_search" />
+                         <select id="secondType"  ng-model="productDTO.secondType" class="product_search">
+                             <option value="0">免费课程</option>
+                             <option value="1">会员课程</option>
+                             <option value="2">收费课程</option>
+                         </select>
                      </div>
+
                      <div class="uploading_product_name">
                          <label for="status">状态:</label>
                          <select id="status" class="selectWidth">

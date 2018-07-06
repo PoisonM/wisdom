@@ -9,10 +9,11 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                  brand:"唯美度",
                  description:"",
                  firstUrl:"",
-                 price:'',
+                 price:0,
                  productName:'',
                  secondType:'系统课程',
                  type:"training",
+                 teacherName:"",
                  status: status.options[status.selectedIndex].value,
                  productDetail:{
                     detailList:[],
@@ -20,13 +21,14 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                         name:'第一课',
                         list:[{
                             name:"第一节",
-                            duration:'0分0秒',
-                            url:'123'
+                            duration:'00:00',
+                            url:'123',
+                            numberOfPlayback : 0
                         }]
                     }]}
             };
-      /*上传视频*/
 
+          /*上传视频*/
             $scope.onFileSelect = function (files) {
                 $scope.myFile = files;
             };
@@ -69,7 +71,7 @@ angular.module('controllers',[]).controller('operationUploadingCtrl',
                 })
             };
             $scope.submit = function(){
-                if($scope.productDTO.firstUrl==""||$scope.productDTO.price==""||$scope.productDTO.productName==""||$scope.productDTO.secondType==""||$scope.productDTO.productDetail.detailList.length==0||$scope.productDTO.productDetail.listCourse[0].name==""||$scope.productDTO.productDetail.listCourse[0].list[0].name==""||$scope.productDTO.productDetail.listCourse[0].list[0].duration==""||$scope.productDTO.productDetail.listCourse[0].list[0].url==""){
+                if($scope.productDTO.firstUrl==""||$scope.productDTO.productName==""||$scope.productDTO.secondType==""||$scope.productDTO.productDetail.detailList.length==0||$scope.productDTO.productDetail.listCourse[0].name==""||$scope.productDTO.productDetail.listCourse[0].list[0].name==""||$scope.productDTO.productDetail.listCourse[0].list[0].duration==""||$scope.productDTO.productDetail.listCourse[0].list[0].url==""){
                     $scope.mess = true;
                     return;
                 }
