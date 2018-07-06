@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -568,7 +569,7 @@ public class PayFunction {
      * @param instanceReturnMoneySignalDTO (即时返利表dto)
      */
 
-    public void insertIncomeServiceIm(InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO,String parentUserId,Float returnMoney,Float expenseAmount,String parentRuleType,String incomeType) throws Exception{
+    public String insertIncomeServiceIm(InstanceReturnMoneySignalDTO instanceReturnMoneySignalDTO,String parentUserId,Float returnMoney,Float expenseAmount,String parentRuleType,String incomeType) throws Exception{
         logger.info("service -- insertIncomeServiceIm,给即时返利表插入数据,参数parentUserId={},returnMoney={},expenseAmount={},parentRuleType={},incomeType={}",parentUserId,returnMoney,expenseAmount,parentRuleType,incomeType);
         IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
 
@@ -609,6 +610,7 @@ public class PayFunction {
         incomeRecordDTO.setParentRelation(parentRuleType);
 
         incomeService.insertUserIncomeInfo(incomeRecordDTO);
+        return incomeRecordDTO.getTransactionId();
     }
 
 
@@ -738,7 +740,7 @@ public class PayFunction {
         if(expenseAmount>=returnMoney){
             List<String> shareList = JedisUtils.getList(key+parentUserId);
             if(null != shareList && shareList.size()>=2){
-                JedisUtils.del(key+parentUserId);
+
                 //更新用户账户金额
                 AccountDTO accountDTO = new AccountDTO();
                 accountDTO.setSysUserId(parentUserId);
@@ -748,13 +750,21 @@ public class PayFunction {
                     nextUserInfoDTO.setId(parentUserId);
                     List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
                     UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
-                    this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"shareActivity");
+                    String transationId = this.insertIncomeServiceIm(instanceReturnMoneySignalDTO,parentUserId,returnMoney,expenseAmount,userInfoDTO.getUserType(),"shareActivity");
 //                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
 //                    nextUserInfoDTO.setId(instanceReturnMoneySignalDTO.getSysUserId());
 //                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
 //                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
 //                    String token = WeixinUtil.getUserToken();
 //                    WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(userInfoDTO.getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+
+                //根据transationid查询income记录,然更新mong表
+                    Query updateQuery = new Query().addCriteria(Criteria.where("sysUserId").in(shareList));
+                    Update update = new Update();
+                    update.set("transactionId", transationId);
+                    mongoTemplate.upsert(updateQuery, update, "shareActivityDTO");
+                    JedisUtils.del(key+parentUserId);
+
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -767,6 +777,7 @@ public class PayFunction {
             shareActivityDTO.setCreateTime(new Date());
             shareActivityDTO.setSysUserId(instanceReturnMoneySignalDTO.getSysUserId());
             shareActivityDTO.setParentSysUserId(parentUserId);
+            shareActivityDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
             mongoTemplate.insert(shareActivityDTO, "shareActivity");
         }
     }
