@@ -24,6 +24,53 @@ public class ShareActivityDTO {
     @JSONField(name = "incomeId")
     private String incomeId;
 
+
+    @JSONField(name = "amount")
+    private Float amount;
+
+
+    @JSONField(name = "parentType")
+    private String parentType;
+
+
+    @JSONField(name = "userTypeBefore")
+    private String userTypeBefore;
+
+    @JSONField(name = "userTypeAfter")
+    private String userTypeAfter;
+
+    public Float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Float amount) {
+        this.amount = amount;
+    }
+
+    public String getParentType() {
+        return parentType;
+    }
+
+    public void setParentType(String parentType) {
+        this.parentType = parentType;
+    }
+
+    public String getUserTypeBefore() {
+        return userTypeBefore;
+    }
+
+    public void setUserTypeBefore(String userTypeBefore) {
+        this.userTypeBefore = userTypeBefore;
+    }
+
+    public String getUserTypeAfter() {
+        return userTypeAfter;
+    }
+
+    public void setUserTypeAfter(String userTypeAfter) {
+        this.userTypeAfter = userTypeAfter;
+    }
+
     public String getIncomeId() {
         return incomeId;
     }
