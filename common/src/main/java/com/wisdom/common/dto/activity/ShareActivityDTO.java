@@ -21,6 +21,17 @@ public class ShareActivityDTO {
     @JSONField(name = "transactionId")
     private String transactionId;
 
+    @JSONField(name = "incomeId")
+    private String incomeId;
+
+    public String getIncomeId() {
+        return incomeId;
+    }
+
+    public void setIncomeId(String incomeId) {
+        this.incomeId = incomeId;
+    }
+
     public String getSysUserId() {
         return sysUserId;
     }
