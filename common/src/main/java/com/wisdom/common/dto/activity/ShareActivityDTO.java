@@ -18,6 +18,9 @@ public class ShareActivityDTO {
     @JSONField(name = "createTime",format="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
+    @JSONField(name = "transactionId")
+    private String transactionId;
+
     public String getSysUserId() {
         return sysUserId;
     }
@@ -40,5 +43,13 @@ public class ShareActivityDTO {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

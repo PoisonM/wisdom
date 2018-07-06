@@ -102,7 +102,8 @@
     </select>
 
     <!-- 创建用户收入记录信息 -->
-    <insert id="insertUserIncomeInfo">
+    <insert id="insertUserIncomeInfo" useGeneratedKeys="true" keyProperty="transaction_id"
+            parameterType="com.wisdom.common.dto.account.IncomeRecordDTO">
         INSERT INTO income_record(
         id,
         sys_user_id,
