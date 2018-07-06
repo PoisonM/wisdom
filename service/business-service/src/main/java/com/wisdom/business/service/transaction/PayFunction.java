@@ -764,7 +764,7 @@ public class PayFunction {
                     Query updateQuery = new Query().addCriteria(Criteria.where("sysUserId").in(shareList));
                     Update update = new Update();
                     update.set("incomeId", incomeId);
-                    mongoTemplate.upsert(updateQuery, update, "shareActivityDTO");
+                    mongoTemplate.updateMulti(updateQuery, update, "shareActivity");
                     JedisUtils.del(key+parentUserId);
                 }catch (Exception e) {
                     e.printStackTrace();
