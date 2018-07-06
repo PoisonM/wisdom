@@ -67,7 +67,7 @@ public class LoginUtil {
 
         if(userType==null||userType.equals(""))
         {
-            String token = "";
+            String token = tokenValue.get("logintoken");
             if(token==null||token.equals("")){
                 responseDto.setResult(StatusConstant.FAILURE);
                 responseDto.setErrorInfo(StatusConstant.TOKEN_ERROR);
