@@ -12,7 +12,6 @@ import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
-import com.wisdom.weixin.interceptor.LoginRequired;
 import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import com.wisdom.weixin.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +19,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.security.krb5.Config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -187,35 +182,38 @@ public class WeixinUserController {
     @RequestMapping(value = "getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<WeixinShareDTO> getCustomerQRCode(@RequestParam String userPhone) throws FileNotFoundException {
+    ResponseDTO<WeixinShareDTO> getUserQRCode(@RequestParam(required=false) String userPhone) throws FileNotFoundException {
         ResponseDTO<WeixinShareDTO> responseDTO = new ResponseDTO();
 
         UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setMobile(userPhone);
+        if(StringUtils.isNotBlank(userPhone)){
+            userInfoDTO.setMobile(userPhone);
+            List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+            if(userInfoDTOS.size()>0)
+            {
+                userInfoDTO = userInfoDTOS.get(0);
+            }
 
-        List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
-
-        if(userInfoDTOS.size()>0)
+        }else{
+            userInfoDTO = UserUtils.getUserInfoFromRedis();
+        }
+        WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
+        if(weixinShareDTO==null)
         {
-            userInfoDTO = userInfoDTOS.get(0);
-            WeixinShareDTO weixinShareDTO = weixinCustomerCoreService.getWeixinShareInfo(userInfoDTO);
-            if(weixinShareDTO==null)
-            {
-                responseDTO.setResult(StatusConstant.FAILURE);
-            }
-            else
-            {
-                AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(weixinShareDTO.getSysUserId());
-                String instanceMoney = businessServiceClient.selectIncomeInstanceByUserId(userInfoDTO.getId());
-                List<UserInfoDTO> userInfoDTOList = userServiceClient.queryNextUserByUserId(userInfoDTO.getId());
-                float balance = accountDTO.getBalance();
-                weixinShareDTO.setIstanceMoney(instanceMoney);
-                weixinShareDTO.setPeoperCount(userInfoDTOList.size());
-                weixinShareDTO.setBalance(String.valueOf(balance));
-                weixinShareDTO.setUserType(userInfoDTO.getUserType());
-                responseDTO.setResult(StatusConstant.SUCCESS);
-                responseDTO.setResponseData(weixinShareDTO);
-            }
+            responseDTO.setResult(StatusConstant.FAILURE);
+        }
+        else
+        {
+            AccountDTO accountDTO = businessServiceClient.getUserAccountInfo(weixinShareDTO.getSysUserId());
+            String instanceMoney = businessServiceClient.selectIncomeInstanceByUserId(userInfoDTO.getId());
+            List<UserInfoDTO> userInfoDTOList = userServiceClient.queryNextUserByUserId(userInfoDTO.getId());
+            float balance = accountDTO.getBalance();
+            weixinShareDTO.setIstanceMoney(instanceMoney);
+            weixinShareDTO.setPeoperCount(userInfoDTOList.size());
+            weixinShareDTO.setBalance(String.valueOf(balance));
+            weixinShareDTO.setUserType(userInfoDTO.getUserType());
+            responseDTO.setResult(StatusConstant.SUCCESS);
+            responseDTO.setResponseData(weixinShareDTO);
         }
         return responseDTO;
     }
