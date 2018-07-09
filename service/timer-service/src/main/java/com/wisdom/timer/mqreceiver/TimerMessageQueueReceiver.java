@@ -196,7 +196,7 @@ public class TimerMessageQueueReceiver {
 
         if(userBusinessTypeDTOS.size()==0)
         {
-            //为用户创建一个记录
+            /*//为用户创建一个记录
             userBusinessTypeDTO = new UserBusinessTypeDTO();
             userBusinessTypeDTO.setId(UUID.randomUUID().toString());
             userBusinessTypeDTO.setSysUserId(userInfo.getId());
@@ -204,7 +204,8 @@ public class TimerMessageQueueReceiver {
             userBusinessTypeDTO.setParentUserId(userInfo.getParentUserId());
             userBusinessTypeDTO.setUserType(userInfo.getUserType());
             userBusinessTypeDTO.setCreateDate(new Date());
-            businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);
+            businessServiceClient.insertUserBusinessType(userBusinessTypeDTO);*/
+            return;
         }
         else
         {

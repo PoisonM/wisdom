@@ -88,6 +88,23 @@ public class IncomeController {
 		return responseDTO;
 	}
 	/**
+	 *	查询分享奖励详情
+	 * @return
+	 */
+	@RequestMapping(value = "getIncomeShareActivityInfo",method = {RequestMethod.GET,RequestMethod.POST})
+	public
+	@ResponseBody ResponseDTO<List<IncomeRecordDTO>> getIncomeShareActivityInfo(@RequestParam String incomeId){
+		long startTime = System.currentTimeMillis();
+		logger.info("查询分享奖励详情,开始");
+		ResponseDTO<List<IncomeRecordDTO>> responseDTO = new ResponseDTO<>();
+//		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeShareActivityInfo(incomeId);
+
+//		logger.info("查询分享奖励详情,返回数据",incomeRecordDTOS.size());
+//		responseDTO.setResponseData(incomeRecordDTOS);
+		logger.info("查询分享奖励详情耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+	/**
 	 * 根据条件查询用户佣金奖励new
 	 *
 	 * @param pageParamVoDTO

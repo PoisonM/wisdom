@@ -179,6 +179,8 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                                         MonthlyBalanceLis[i].incomeType = "店主推荐"
                                     }  else if (MonthlyBalanceLis[i].incomeType == "permanent") {
                                         MonthlyBalanceLis[i].incomeType = "永久奖励"
+                                    }else if (MonthlyBalanceLis[i].incomeType == "shareActivity") {
+                                        MonthlyBalanceLis[i].incomeType = "分享奖励"
                                     }
                                     if (MonthlyBalanceLis[i].checkStatus == "0") {
                                         MonthlyBalanceLis[i].checkStatus = "未通过"
