@@ -750,6 +750,14 @@ public class PayFunction {
                     shareActivityDTO.setTransactionId(instanceReturnMoneySignalDTO.getTransactionId());
                     shareActivityDTO.setAmount(expenseAmount);
                     shareActivityDTO.setUserTypeBefore(userInfo.getUserType());
+
+
+                    UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
+                    nextUserInfoDTO.setId(parentUserId);
+                    List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
+                    UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
+                    shareActivityDTO.setParentType(userInfoDTO.getUserType());
+
                     String isImportLevel = ConfigConstant.LEVE_IMPORT;
                     if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount < ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
                         if (!userInfo.getUserType().equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userInfo.getUserType().equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
@@ -769,10 +777,6 @@ public class PayFunction {
                         accountDTO.setSysUserId(parentUserId);
                         try {
                             this.updateUserAccount(accountDTO, parentUserId, returnMoney);
-                            UserInfoDTO nextUserInfoDTO = new UserInfoDTO();
-                            nextUserInfoDTO.setId(parentUserId);
-                            List<UserInfoDTO> nextUserInfoDTOList = userServiceClient.getUserInfo(nextUserInfoDTO);
-                            UserInfoDTO userInfoDTO = nextUserInfoDTOList.get(0);
                             String incomeId = this.insertIncomeServiceIm(instanceReturnMoneySignalDTO, parentUserId, returnMoney, expenseAmount, userInfoDTO.getUserType(), "shareActivity");
                             //根据transationid查询income记录,然更新mong表
                             shareList.add(instanceReturnMoneySignalDTO.getSysUserId());
