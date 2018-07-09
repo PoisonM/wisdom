@@ -103,7 +103,7 @@
 }
 .compileWorkList .shadow_box{
     width: 80px;
-    height: 68px;
+    height: 72px;
     background-color: #ffffff;
     position: absolute;
     top: 44px;
@@ -345,7 +345,8 @@
 }
 .compileWorkList .table_box #ofix1_tb_left tbody td:nth-child(1) div{
     width: 80px;
-    height: 68px;
+    height: 72px;
     line-height: 25px;
-    padding-top: 10px;
+    padding-top: 25px;
 }
+

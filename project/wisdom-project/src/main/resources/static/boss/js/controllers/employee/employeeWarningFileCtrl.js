@@ -13,7 +13,7 @@ angular.module('controllers',[]).controller('employeeWarningFileCtrl',
                 $scope.queryType = type;
                 $scope.archiveCount = 0;
                 $scope.getInfo()
-            }
+            };
 
             $scope.getInfo = function(){
                 $ionicLoading.show({
@@ -29,8 +29,8 @@ angular.module('controllers',[]).controller('employeeWarningFileCtrl',
                     queryType:$scope.queryType
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $ionicLoading.hide()
-                        $scope.warningFile = data.responseData
+                        $ionicLoading.hide();
+                        $scope.warningFile = data.responseData;
                         $scope.param.picFlag=false;
                         if(data.responseData.length<=0){
                             $scope.param.picFlag=true;
@@ -45,12 +45,12 @@ angular.module('controllers',[]).controller('employeeWarningFileCtrl',
             $scope.$on('$ionicView.enter', function() {
                 $scope.param={
                     picFlag:false
-                }
+                };
                 $scope.getInfo()
-            })
+            });
 
             $scope.archivesGo = function(id){
                 $state.go("employeeArchives",{id:id})
             }
 
-        }])
+        }]);
