@@ -753,11 +753,11 @@ public class PayFunction {
                     String isImportLevel = ConfigConstant.LEVE_IMPORT;
                     if (expenseAmount >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE && expenseAmount < ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE) {
                         if (!userInfo.getUserType().equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_B) && !userInfo.getUserType().equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
-                            isImportLevel = ConfigConstant.LEVE_IMPORT_B;
+                            isImportLevel = ConfigConstant.businessB1;
                         }
                     } else if (expenseAmount >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE) {
                         if (!userInfo.getUserType().equalsIgnoreCase(ConfigConstant.LEVE_IMPORT_A)) {
-                            isImportLevel = ConfigConstant.LEVE_IMPORT_A;
+                            isImportLevel = ConfigConstant.businessA1;
                         }
                     }
                     shareActivityDTO.setUserTypeAfter(isImportLevel);
