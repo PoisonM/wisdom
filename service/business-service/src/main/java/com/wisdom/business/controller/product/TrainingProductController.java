@@ -1,5 +1,6 @@
 package com.wisdom.business.controller.product;
 
+import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.TrainingProductService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -43,6 +44,7 @@ public class TrainingProductController {
 	 *
 	 */
 	@RequestMapping(value = "getTrainingProductListNeedPay", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> getTrainingProductListNeedPay(@RequestBody PageParamDTO<ProductDTO> pageParamDTO) {
