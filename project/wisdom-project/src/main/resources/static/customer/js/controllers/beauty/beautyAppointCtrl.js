@@ -3,9 +3,9 @@
  */
 angular.module('controllers',[]).controller('beautyAppointCtrl',
     ['$scope','$rootScope','$stateParams','$state','BeautyUtil','GetClerkScheduleInfo',
-        'GetBeautyShopInfo','Global','SaveUserAppointInfo','GetCurrentLoginUserInfo',
+        'GetBeautyShopInfo','Global','SaveUserAppointInfo','GetCurrentLoginUserInfo','$filter','$ionicLoading','$timeout',
         function ($scope,$rootScope,$stateParams,$state,BeautyUtil,GetClerkScheduleInfo,
-                  GetBeautyShopInfo,Global,SaveUserAppointInfo,GetCurrentLoginUserInfo) {
+                  GetBeautyShopInfo,Global,SaveUserAppointInfo,GetCurrentLoginUserInfo,$filter,$ionicLoading,$timeout) {
             //初始化全部不可预约状态
             var initialTimeDate = function () {
                 $scope.param.timeDate = [
@@ -34,15 +34,22 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
             };
 
             $scope.$on('$ionicView.enter', function(){
-
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetCurrentLoginUserInfo.get(function (data) {
+                    $ionicLoading.hide();
                     BeautyUtil.checkResponseData(data,'beautyAppoint');
                 });
 
                 $scope.param = {
                     weekDays : [],
                     timeDate :[],
-                    chooseWeekDate : BeautyUtil.getAddDate(BeautyUtil.getNowFormatDate(),0),
+                    chooseWeekDate :BeautyUtil.getAddDate(BeautyUtil.getNowFormatDate(),0),
                     clerkInfo : {},
                     beautyShopInfo : [],
                     beautyProjectName : '',
@@ -51,7 +58,6 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     appointFlag : false,
                     chooseWeekDateTime : ''
                 };
-
                 for(var i = 0; i<7; i++)
                 {
                     var dateValue = BeautyUtil.getAddDate(BeautyUtil.getNowFormatDate(),i);
@@ -104,10 +110,14 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
 
                 if($rootScope.shopAppointInfo.shopProjectIds.length!=0)
                 {
-                    var length = $rootScope.shopAppointInfo.shopProjectIds.length
+                    var length = $rootScope.shopAppointInfo.shopProjectIds.length;
                     getBeautyShopInfo($rootScope.shopAppointInfo.shopProjectIds.length[length-1],length);
                 }
-            })
+               /*为啦解决页面初始时默认今天*/
+               /* $timeout(function () {
+                    $scope.chooseAppointDate($filter('date')(new Date(),'yyyy-MM-dd'))
+                },500);*/
+            });
 
             var getBeautyShopInfo = function (projectId,length) {
                 GetBeautyShopInfo.shopProjectInfo(projectId).then(function (data) {
@@ -136,7 +146,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         })
                     }
                 });
-            }
+            };
 
             $scope.chooseAppointDate = function(dateValue){
                 $scope.param.chooseWeekDate = dateValue;
@@ -154,15 +164,18 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                     initialTimeDate();
                     arrangeTimeDate($scope.param.timeDate,data.responseData.split(","));
                 })
-            }
+            };
+
+
+
 
             $scope.chooseProject=function () {
                 $state.go("beautyProjectList");
-            }
+            };
 
             $scope.chooseClerk=function () {
                 $state.go("beautyClerkList");
-            }
+            };
 
             $scope.appointProject = function(appointValue){
                 //缓存用户选择的时间
@@ -218,7 +231,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                         })
                     })
                 }
-            }
+            };
             
             $scope.confirmAppoint = function () {
                 if($scope.param.appointFlag)
@@ -243,7 +256,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 {
                     alert("不满足预约条件");
                 }
-            }
+            };
 
             var arrangeTimeDate = function (timeDate,schedule) {
                 angular.forEach(timeDate,function (value,index) {
@@ -258,7 +271,7 @@ angular.module('controllers',[]).controller('beautyAppointCtrl',
                 })
             }
 
-}])
+}]);
 //捎句话过滤器
 var beauty = angular.module('filter', []);
 beauty.filter('textLengthSet', function() {

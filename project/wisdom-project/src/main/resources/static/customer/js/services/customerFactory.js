@@ -175,7 +175,7 @@ define(['appCustomer'], function (app) {
 
         //获取用户的推广二维码
         .factory('GetCustomerQRCode',['$resource',function ($resource){
-            return $resource(weixin + 'getCustomerQRCode')
+            return $resource(weixin + 'getUserQRCode')
         }])
 
         //获取用户的推广二维码
