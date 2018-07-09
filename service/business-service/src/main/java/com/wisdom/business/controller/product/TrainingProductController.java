@@ -44,7 +44,7 @@ public class TrainingProductController {
 	 *
 	 */
 	@RequestMapping(value = "getTrainingProductListNeedPay", method = {RequestMethod.POST, RequestMethod.GET})
-	@LoginRequired
+/*	@LoginRequired*/
 	public
 	@ResponseBody
 	ResponseDTO<Map<String,Object>> getTrainingProductListNeedPay(@RequestBody PageParamDTO<ProductDTO> pageParamDTO) {

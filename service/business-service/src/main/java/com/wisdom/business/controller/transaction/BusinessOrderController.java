@@ -129,7 +129,7 @@ public class BusinessOrderController {
      *
      */
     @RequestMapping(value = "getTrainingBusinessOrder", method = {RequestMethod.POST, RequestMethod.GET})
-  /*  @LoginRequired*/
+    @LoginRequired
     public
     @ResponseBody
     ResponseDTO<BusinessOrderDTO> getTrainingBusinessOrder(@RequestParam String productId, HttpSession session, HttpServletRequest request) {
