@@ -7,10 +7,12 @@ import com.wisdom.business.service.account.IncomeRecordManagementService;
 import com.wisdom.business.service.account.IncomeService;
 import com.wisdom.business.service.transaction.PayCoreService;
 import com.wisdom.business.service.transaction.PayRecordService;
+import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.*;
+import com.wisdom.common.dto.activity.ShareActivityDTO;
 import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
 import com.wisdom.common.dto.system.ExportNextUserInfoExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
@@ -25,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -65,6 +68,9 @@ public class IncomeController {
 	@Autowired
 	private TimeServiceClient timeServiceClient;
 
+	@Autowired
+	private TransactionService transactionService;
+
 	/**
 	 *
 	 * @return
@@ -91,16 +97,41 @@ public class IncomeController {
 	 *	查询分享奖励详情
 	 * @return
 	 */
-	@RequestMapping(value = "getIncomeShareActivityInfo",method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "getIncomeShareActivityInfoByIncomeId",method = {RequestMethod.GET,RequestMethod.POST})
 	public
-	@ResponseBody ResponseDTO<List<IncomeRecordDTO>> getIncomeShareActivityInfo(@RequestParam String incomeId){
+	@ResponseBody ResponseDTO<List<IncomeRecordDTO>> getIncomeShareActivityInfoByIncomeId(@RequestParam String incomeId){
 		long startTime = System.currentTimeMillis();
-		logger.info("查询分享奖励详情,开始");
+		logger.info("查询分享奖励详情=={},开始",incomeId);
 		ResponseDTO<List<IncomeRecordDTO>> responseDTO = new ResponseDTO<>();
-//		List<IncomeRecordDTO> incomeRecordDTOS = incomeService.getIncomeShareActivityInfo(incomeId);
+		List<IncomeRecordDTO> list = new ArrayList<>();
 
+		//查出分享3条数据
+		List<ShareActivityDTO> shareActivityDTOS = incomeService.getIncomeShareActivityInfoByIncomeId(incomeId);
+		logger.info("查询分享奖励一拖三详情,返回数据,一般为3条",shareActivityDTOS.size());
+
+		UserInfoDTO userInfoDTO1 = new UserInfoDTO();
+
+		for(ShareActivityDTO shareActivityDTO : shareActivityDTOS){
+			userInfoDTO1.setId(shareActivityDTO.getSysUserId());
+			List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO1);
+			List<BusinessOrderDTO> businessOrderDTOS = payRecordService.queryOrderInfoByTransactionId(shareActivityDTO.getTransactionId());
+			UserInfoDTO userInfoDTO = userInfoDTOS.get(0);
+			IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
+			incomeRecordDTO.setNextUserNickName(userInfoDTO.getNickname());
+			incomeRecordDTO.setNextUserMobile(userInfoDTO.getMobile());
+			incomeRecordDTO.setNextUserTypeNow(userInfoDTO.getUserType());
+			incomeRecordDTO.setNextUserType(shareActivityDTO.getUserTypeBefore());
+			incomeRecordDTO.setUserType(shareActivityDTO.getParentType());
+			incomeRecordDTO.setPayDate(businessOrderDTOS.get(0).getPayDate());
+			incomeRecordDTO.setOrderId(businessOrderDTOS.get(0).getBusinessOrderId());
+			incomeRecordDTO.setTransactionId(shareActivityDTO.getTransactionId());
+			incomeRecordDTO.setOrderStatus(businessOrderDTOS.get(0).getStatus());
+			incomeRecordDTO.setTransactionAmount(shareActivityDTO.getAmount());
+			list.add(incomeRecordDTO);
+		}
 //		logger.info("查询分享奖励详情,返回数据",incomeRecordDTOS.size());
-//		responseDTO.setResponseData(incomeRecordDTOS);
+		responseDTO.setResponseData(list);
+
 		logger.info("查询分享奖励详情耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}

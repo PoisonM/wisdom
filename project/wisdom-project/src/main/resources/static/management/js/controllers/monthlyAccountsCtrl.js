@@ -1,6 +1,10 @@
 angular.module('controllers',[]).controller('monthlyAccountsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters','ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId','ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey','GetUserInfo',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey,GetUserInfo) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','QueryUserIncomeByParameters'
+        ,'ManagementUtil','GetIncomeRecordByPageParam',"CheckIncomeRecordManagement",'QueryIncomeInfoByIncomeId'
+        ,'ExportExcelIncomeRecord','MonthlyIncomeSignalMT','GetKey','GetUserInfo','GetIncomeShareActivityInfoByIncomeId',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,QueryUserIncomeByParameters
+                  ,ManagementUtil,GetIncomeRecordByPageParam,CheckIncomeRecordManagement,QueryIncomeInfoByIncomeId
+                  ,ExportExcelIncomeRecord,MonthlyIncomeSignalMT,GetKey,GetUserInfo,GetIncomeShareActivityInfoByIncomeId) {
             var startTime = document.querySelector(".MStart");
             var endTime = document.querySelector(".MEnd");
             var pattern = /^1[34578]\d{9}$/;
@@ -16,6 +20,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
             $scope.auditFlag=false;
             $scope.userMoblie = "";
             $scope.useBusinessType="";
+            $scope.shareActivityFlag = false
 
 
 
@@ -97,6 +102,16 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 }else if ($scope.status=="recommend"){
                      //推荐奖励页面
                      $state.go("recommend",{id:sysUserId,time:createDate,transactionId:transactionId,MAccount:$scope.MAccount,startTime:startTime.value,endTime:endTime.value,pageNo:$scope.pageNo,status:$scope.status,checkStatus:$scope.checkStatus})
+                }else if($scope.status=="shareActivity"){
+                    for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
+                        $scope.MonthlyBalanceLis[i].shareActivityFlag = false
+                    }
+                    GetIncomeShareActivityInfoByIncomeId.get({
+                        incomeId:id
+                    },function (data) {
+                        $scope.MonthlyBalanceLis[index].shareActivityFlag = true;
+                        $scope.ShareActivityList=data.responseData;
+                    })
                 }
             };
             $scope.orderIdFun = function(MonthlyBalanceLis){
@@ -370,6 +385,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                 if($scope.MonthlyBalanceLis.length>=1){
                     for(var i = 0; i < $scope.MonthlyBalanceLis.length; i++ ){
                         $scope.MonthlyBalanceLis[i].statesLook = "1";
+                        $scope.MonthlyBalanceLis[i].shareActivityFlag = false;
                     }
                 }
 

@@ -89,7 +89,7 @@
                             </div>
                         </div>
                         <div class="table_lis" style="margin-top:120px;">
-                            <table  ng-if="status=='instance'||status=='month'||status=='permanent'||status=='shareActivity'" class="table  text-center ">
+                            <table  ng-if="status=='instance'||status=='month'||status=='permanent'" class="table  text-center ">
                                 <thead>
                                 <tr id="product_lis_title IncomeListTitle" class="pos" style="">
                                     <th class="text-center" >昵称</th>
@@ -139,7 +139,6 @@
                                         <th class="text-center">关系</th>
                                     </tr>
                                     <!--点击查看出现的下级内容-->
-
                                     <tr  ng-show="item.statesLook=='2'"  ng-repeat="items in IncomeList" id="IncomeListMess">
                                         <td ng-click="viod();$event.stopPropagation()">{{user[0].nextUserNickName}}</td>
                                         <td ng-click="viod();$event.stopPropagation()">{{user[0].nextUserMobile}}</td>
@@ -203,27 +202,61 @@
                                     <th class="text-center">类型</th>
                                     <th class="text-center">状态</th>
                                     <th class="text-center">审核</th>
-                                    <th class="text-center" colspan="2" style="width:20%;">操作</th>
+                                    <th class="text-center" colspan="3" style="width:20%;">操作</th>
                                 </tr>
                                 </thead>
-                                <tbody class="tbodyCla"  >
-                                <tr ng-class="{'red':item.secondCheckStatus=='有一方拒绝'}" ng-repeat="item in MonthlyBalanceLis">
-                                    <td ng-click="void();$event.stopPropagation()">{{item.nextUserNickName}}</td>
-                                    <td ng-click="void();$event.stopPropagation()">{{item.nextUserMobile}}</td>
-                                    <td ng-click="void();$event.stopPropagation()">{{item.nextUserType}}</td>
-                                    <td ng-click="void();$event.stopPropagation()">{{item.nickName }}</td>
+                                <tbody class="tbodyCla" ng-repeat="item in MonthlyBalanceLis">
+                                <tr ng-class="{'red':item.secondCheckStatus=='有一方拒绝'}" >
+                                    <td ng-click="void();$event.stopPropagation()">{{item.nickName}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.mobile}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.userType}}</td>
-                                    <td ng-click="void();$event.stopPropagation()">{{item.amount}}</td>
+                                    <td ng-click="void();$event.stopPropagation()">{{item.amount }}</td>
+                                    <td ng-click="void();$event.stopPropagation()">{{item.createDate}}</td>
+                                    <td ng-click="void();$event.stopPropagation()">{{item.incomeType}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.status}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.secondCheckStatus}}</td>
                                     <!--  <td ng-click="viod();$event.stopPropagation()">{{item.secondCheckStatus}}<span ng-hide="item.secondCheckStatus == '未审核'">({{item.checkStatus}}</span><span ng-show="item.secondCheckStatus=='有一方拒绝'">:{{item.checkUserType}})</span></td>-->
-                                    <td ng-click="void();$event.stopPropagation()" colspan="2">
+                                    <td ng-click="void();$event.stopPropagation()" colspan="3">
                                         <a ng-click="details(item.nextUserId,item.createDate,item.incomeType,item.transactionId,$index,item.id);$event.stopPropagation()" class="orderBtn" >查看</a>
                                         &nbsp;
                                         <a ng-click="examine(item.id);$event.stopPropagation()" class="orderBtn" >审核</a>
                                     </td>
                                 </tr>
+                                <!--点击查看出现的下级内容-->
+                                <tr class="product_lis_title " ng-show="item.shareActivityFlag" ng-class="{'red':item.secondCheckStatus=='有一方拒绝','col55a4ef':agencyIndex == $index,'bge5':$index%2==0,'bgf2':$index%2==1}" id="IncomeListTitle2">
+                                    <th class="text-center" >昵称</th>
+                                    <th class="text-center" >手机号</th>
+                                    <th class="text-center" >当前等级</th>
+                                    <th class="text-center" >用户生成订单等级</th>
+                                    <th class="text-center" >上级当前等级</th>
+                                    <th class="text-center">上级订单生成等级</th>
+                                    <th class="text-center">付款时间</th>
+                                    <th class="text-center">订单编号</th>
+                                    <th class="text-center">交易流水号</th>
+                                    <th class="text-center">订单状态</th>
+                                    <th class="text-center">支付金额</th>
+                                </tr>
+                                <tr  ng-show="item.shareActivityFlag"  ng-repeat="items in ShareActivityList" id="IncomeListMess2">
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.nextUserNickName}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.nextUserMobile}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.nextUserTypeNow}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.nextUserType}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{item.userType}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.userType}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.payDate}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.orderId}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.transactionId}}</td>
+                                    <td>
+                                        <span ng-if="items.orderStatus == 0">未付款</span>
+                                        <span ng-if="items.orderStatus == 1">待发货</span>
+                                        <span ng-if="items.orderStatus == 2">已完成</span>
+                                        <span ng-if="items.orderStatus == 3">物品在购物车中</span>
+                                        <span ng-if="items.orderStatus == 4">待收货</span>
+                                        <span ng-if="items.orderStatus == 'del'">订单已删除</span>
+                                    </td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.transactionAmount}}</td>
+                                </tr>
+
                                 </tbody>
                             </table>
 
