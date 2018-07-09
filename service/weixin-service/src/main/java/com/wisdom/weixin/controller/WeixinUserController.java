@@ -185,7 +185,6 @@ public class WeixinUserController {
      * 用户获取推广二维码
      */
     @RequestMapping(value = "getUserQRCode", method = {RequestMethod.POST, RequestMethod.GET})
-    @LoginRequired
     public
     @ResponseBody
     ResponseDTO<WeixinShareDTO> getUserQRCode() throws FileNotFoundException {
