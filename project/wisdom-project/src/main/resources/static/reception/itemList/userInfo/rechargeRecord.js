@@ -11,6 +11,7 @@ PADWeb.controller('rechargeRecordCtrl', function($scope,$state,$stateParams, ngD
     Consumes.save({
         goodsType:2,
         consumeType:0,
+        isCurrentDay:0,
         pageSize:10
     },function (data) {
         $scope.dataList = data.responseData;
