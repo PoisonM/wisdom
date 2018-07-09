@@ -542,10 +542,10 @@ define(['appManagement','jquery'], function (app,$) {
                      '</li>' +*/
 
                     '<li >' +
-                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==2}"><img ng-src="{{index1==2?\'images/bt-product-pre.png\':\'images/bt-product-nor.png\'}}">产品管理</a></p>' +
+                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==2}"><img ng-src="{{index1==2?\'images/bt-product-pre.png\':\'images/bt-product-nor.png\'}}">商品管理</a></p>' +
                     '<div class="administration_content" >' +
                     '<p><a ui-sref="home" ng-class="{\'activeNavbarSide\':index2==21}">查询</a></p>' +
-                    '<p><a ui-sref="uploading" ng-class="{\'activeNavbarSide\':index2==22}">产品管理-上传</a></p>' +
+                    '<p><a ui-sref="uploading" ng-class="{\'activeNavbarSide\':index2==22}">商品管理-上传</a></p>' +
                     '<p><a ui-sref="homePageEditor" ng-class="{\'activeNavbarSide\':index2==23}">商城首页编辑</a></p>' +
                     '</div>' +
                     '</li>' +
@@ -557,10 +557,10 @@ define(['appManagement','jquery'], function (app,$) {
                     '</div>' +
                     '</li>' +
                     '<li>' +
-                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==4}"><img ng-src="{{index1==4?\'images/btOperationsPre.png\':\'images/btOperationsNor.png\'}}">运营管理</a></p>' +
+                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==4}"><img ng-src="{{index1==4?\'images/btOperationsPre.png\':\'images/btOperationsNor.png\'}}">视频管理</a></p>' +
                     '<div class="administration_content" >' +
-                    '<p><a ui-sref="operation" ng-class="{\'activeNavbarSide\':index2==41}" >运营管理-展示</a></p>' +
-                    '<p><a ui-sref="operationUploading" ng-class="{\'activeNavbarSide\':index2==42}" >运营管理-上传</a></p>' +
+                    '<p><a ui-sref="operation" ng-class="{\'activeNavbarSide\':index2==41}" >视频管理-展示</a></p>' +
+                    '<p><a ui-sref="operationUploading" ng-class="{\'activeNavbarSide\':index2==42}" >视频管理-上传</a></p>' +
                     '</div>' +
                     '</li>' +
                     '<li>' +
@@ -640,9 +640,9 @@ define(['appManagement','jquery'], function (app,$) {
                     },
                     template: '<div class="btn_lis">' +
                     '<div class="center">' +
-                    '<button ui-sref="home" ng-class="{\'active\':index==0}" >产品管理</button>' +
+                    '<button ui-sref="home" ng-class="{\'active\':index==0}" >商品管理</button>' +
                     '<button  ui-sref="order" ng-class="{\'active\':index==1}" >订单管理</button>' +
-                    '<button  ui-sref="operation" ng-class="{\'active\':index==2}" >运营管理</button>'+
+                    '<button  ui-sref="operation" ng-class="{\'active\':index==2}" >视频管理</button>'+
                     '<button  ui-sref="agency" ng-class="{\'active\':index==3}" >代理管理</button>' +
                     '<button  ui-sref="finance" ng-class="{\'active\':index==4}" >财务管理</button>' +
                    /* '<button  ui-sref="peopleAccounts" ng-class="{\'active\':index==5}">人员管理</button>' +*/
