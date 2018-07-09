@@ -105,21 +105,21 @@ public class WeixinUserController {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
         if ("shopHome".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "shopHome";
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "shopHome";
         }
         if (url.contains("specialProductList")) {
             String urls[] = url.split("88888888");
             String specialShopId = urls[1];
-            url = ConfigConstant.USER_WEB_URL + "specialProductList/" + specialShopId;
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "specialProductList/" + specialShopId;
         }
         else if ("shareHome".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "shareHome";
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "shareHome";
         }
         else if ("trainingHome".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "trainingProductList";
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "trainingProductList";
         }
         else if ("myselfCenter".equals(url)) {
-            url = ConfigConstant.USER_WEB_URL + "myselfCenter";
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "myselfCenter";
         }
 
         String code = request.getParameter("code");
