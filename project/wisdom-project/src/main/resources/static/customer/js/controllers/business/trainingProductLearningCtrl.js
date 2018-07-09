@@ -35,13 +35,14 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                         }
                         else{
                             $scope.addWeChat = true;
-                        }
+                       }
                     })
                 })
             }
 
-            $scope.playCourse = function(name,item2,item)
+            $scope.playCourse = function(name,item2,item,index)
             {
+                $scope.flag = item2;
                 BusinessUtil.twoParameters(LoginGlobal.MX_YX_YXABF,item,item2);
                 $scope.param.firstEnter = true;
 
@@ -92,8 +93,7 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
 
                     if (data.result == Global.FAILURE) {
                         //alert("直接购买失败");
-                    }
-                    else {
+                    }else {
                         //生成订单后再直接前往支付页面
                         var needPayOrderList = [];
                         var payOrder = {

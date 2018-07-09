@@ -23,6 +23,8 @@ public interface ProductMapper {
 
     List<ProductDTO> findTrainingProductList(@Param("pageNo") int pageNo,@Param("pageSize") int pageSize,@Param("price") float price);
 
+	List<ProductDTO> findTrainingProductListNew(@Param("pageNo") int pageNo,@Param("pageSize") int pageSize,@Param("secondType") String secondType);
+
 	//查询所有商品
 	Page<ProductDTO> queryAllProducts(Page<ProductDTO> page);
 
