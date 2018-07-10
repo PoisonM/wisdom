@@ -617,6 +617,19 @@ define(['appCustomer'], function(app){
                         }
                     })
 
+                    .state('beautyTrainingVideo', {
+                        url: '/beautyTrainingVideo',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyTrainingVideoCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyTrainingVideoCtrl',
+                                    ['js/controllers/beauty/beautyTrainingVideoCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyTrainingVideo.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+
                 $urlRouterProvider.otherwise('/shopHome')
             }])
 })

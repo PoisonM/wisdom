@@ -63,7 +63,7 @@ public class CommonUtils {
 	 */
 	public static List<String> imageUploadToOSS(MultipartFile[] listFile, String folder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		List<String> urlList = new ArrayList<>();
+		List<String> urlList = new ArrayList<String>();
 		String bucketName = "mximage";
 		if(listFile.length >0) {
 			for (MultipartFile file : listFile) {
