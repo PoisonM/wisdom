@@ -350,3 +350,8 @@
     padding-top: 25px;
 }
 
+.compileWorkList .table_box #ofix1_tb_header thead td:nth-child(1) div{
+    width: 0px;
+    height: 0px;
+}
+
