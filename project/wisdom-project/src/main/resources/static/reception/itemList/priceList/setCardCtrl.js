@@ -31,12 +31,15 @@ PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScop
         cardList:{}
     }
     $scope.status = '0';
+    $rootScope.loadingFlag = true;
     GetRechargeCardList.get({
         name:$scope.param.name,
         pageSize:$scope.param.pageSize,
         status:$scope.status
     },function (data) {
-        $scope.cardList=data.responseData;
-        console.log(data)
+        if(data.result == "0x00001"){
+            $rootScope.loadingFlag = true;
+            $scope.cardList=data.responseData;
+        }
     })
 })

@@ -9,11 +9,13 @@ PADWeb.controller("left_navCtrl", function($scope,$rootScope, $state,$stateParam
 
     //获取档案列表
     $scope.queryRecordList = function() {
+        $rootScope.loadingFlag = true;
         FindArchives.get({
             queryField: $scope.param.queryField,
             pageSize: "100"
         }, function(data) {
             if (data.result == "0x00001") {
+                $rootScope.loadingFlag = false;
                 $scope.dataList = [];
                 $scope.info = data.responseData.info
                 $rootScope.recordNum = data.responseData.data

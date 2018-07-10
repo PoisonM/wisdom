@@ -99,6 +99,16 @@
             </if>
             ORDER BY shop.create_date
             limit #{pageStartNo},#{pageSize}
-
     </select>
+
+    <select id="getStore" resultType="com.wisdom.beauty.api.extDto.ExtShopStoreDTO">
+        select
+            <include refid="Base_Column_List"/>
+        from
+            shop_store shop
+        where
+            shop.id = #{shopStoreId}
+    </select>
+
+
 </mapper>

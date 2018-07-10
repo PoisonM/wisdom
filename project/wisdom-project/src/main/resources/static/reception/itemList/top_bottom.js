@@ -20,7 +20,8 @@ PADWeb.controller("mallCtrl", function($scope, $rootScope,$state, $stateParams) 
             saveContent:"确认"
         }
     }
-
+    //加载中浮层
+    $rootScope.loadingFlag = false;
     //虚拟商品类型
     $rootScope.goodsType = {
         product : '4',

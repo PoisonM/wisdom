@@ -745,20 +745,24 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         relationDTO.setSurplusAmount(relationDTO.getSurplusAmount().subtract(consumeAmount));
         relationDTO.setSurplusTimes(relationDTO.getSurplusTimes() - consumeDTO.getConsumeNum());
         shopProductInfoService.updateShopUserProductRelation(relationDTO);
+
         //更新档案时间
         ShopUserArchivesDTO shopUserArchives=new ShopUserArchivesDTO();
         shopUserArchives.setSysUserId(consumeDTO.getSysUserId());
         shopUserArchives.setSysShopId(clerkInfo.getSysShopId());
         shopUserArchives.setLastToShopTime(new Date());
         shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchives);
+
         //更新库存
         List<ShopStockRequestDTO> stockList = new ArrayList<>();
         ShopStockRequestDTO shopStockRequestDTO = new ShopStockRequestDTO();
+
         //根据sysUserId查询领取人名称
         ShopUserArchivesDTO shopUserArchivesDTO=new ShopUserArchivesDTO();
         shopUserArchivesDTO.setSysUserId(consumeDTO.getSysUserId());
         List<ShopUserArchivesDTO> shopUserArchivesDTOs=shopCustomerArchivesService.getShopUserArchivesInfo(shopUserArchivesDTO);
         if(CollectionUtils.isNotEmpty(shopUserArchivesDTOs)){
+
             //领取人,前端显示档案
             shopStockRequestDTO.setReceiver(shopUserArchivesDTOs.get(0).getSysUserName());
         }
@@ -771,6 +775,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
         stockList.add(shopStockRequestDTO);
 
         JSONArray json = JSONArray.fromObject(stockList);
+
         //把json转换为String
         String toJSONString = json.toString();
         shopStockService.insertShopStockDTO(toJSONString);

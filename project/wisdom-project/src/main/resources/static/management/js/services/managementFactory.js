@@ -165,6 +165,10 @@ define(['appManagement'], function (app) {
         .factory('QueryInstanceInfoByTransactionId',['$resource',function ($resource){
             return $resource(income + 'queryInstanceInfoByTransactionId');
         }])
+        /*分享奖励查看*/
+        .factory('GetIncomeShareActivityInfoByIncomeId',['$resource',function ($resource){
+            return $resource(income + 'getIncomeShareActivityInfoByIncomeId');
+        }])
         /*审核*/
         .factory('UpdateIncomeRecordStatusById',['$resource',function ($resource){
             return $resource(income + 'updateIncomeRecordStatusById');

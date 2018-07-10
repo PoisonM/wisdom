@@ -23,17 +23,20 @@ PADWeb.controller("rechargeableCardCtrl", function($scope, $state, $stateParams,
     }
     $scope.param={
         projectGroupName:"",
-        pageSize:"15",
+        pageSize:"100",
         rechargeableCardList:{}
     }
     $scope.status = '0'
+    $rootScope.loadingFlag = true;
     GetShopProjectGroups.get({
         projectGroupName: $scope.param.projectGroupName,
         // pageSize:$scope.param.pageSize,
         pageSize:"100",
         status:$scope.status
     },function (data) {
-       $scope.rechargeableCardList=data.responseData;
-       console.log(data)
+        if(data.result == "0x00001"){
+            $rootScope.loadingFlag = false;
+            $scope.rechargeableCardList=data.responseData;
+        }
     })
 })

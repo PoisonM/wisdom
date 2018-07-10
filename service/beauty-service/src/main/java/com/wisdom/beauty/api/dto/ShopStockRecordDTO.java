@@ -56,8 +56,19 @@ public class ShopStockRecordDTO extends BaseEntity implements Serializable {
     //
     private Date updateDate;
 
+    private String operator;
+
     private static final long serialVersionUID = 1L;
 
+
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 
 
     public String getCreateDateTime() {

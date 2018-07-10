@@ -40,5 +40,8 @@
         doc.addEventListener('DOMContentLoaded', recalc, false);
     })(document, window);
     </script>
+    <div ng-if="loadingFlag" class="overlay_black">
+        <div><img src="images/loading.gif" alt=""></div>
+    </div>
 </body>
 </html>
