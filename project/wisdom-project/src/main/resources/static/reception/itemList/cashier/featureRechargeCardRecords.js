@@ -7,7 +7,7 @@ PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParam
     $scope.$parent.mainLeftSwitch.peopleListFlag = true;
     $scope.$parent.mainLeftSwitch.priceListFlag = false;
     $scope.$parent.$parent.param.headerCash.backContent = "返回";
-    $scope.$parent.$parent.param.headerCash.title = "特殊充值卡充值记录";
+    $scope.$parent.$parent.param.headerCash.title = "充值记录";
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.param.selectSty = $stateParams.userId
