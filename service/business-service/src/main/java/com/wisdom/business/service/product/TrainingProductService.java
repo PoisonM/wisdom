@@ -71,7 +71,7 @@ public class TrainingProductService {
             if (("0").equals(secondType)) {
                 productDTO.setSecondTypeName("免费视频");
             } else if (("1").equals(secondType)) {
-                productDTO.setSecondTypeName("会员视频");
+                productDTO.setSecondTypeName("店主专享");
             } else if (("2").equals(secondType)) {
                 productDTO.setSecondTypeName("收费视频");
             }

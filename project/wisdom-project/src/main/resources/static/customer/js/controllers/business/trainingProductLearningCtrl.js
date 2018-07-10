@@ -8,7 +8,7 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                   GetAttentionTeacherStatus,AttentionTeacher,LoginGlobal) {
 
             $rootScope.title = "美享商学院";
-
+            $scope.isMember = false;
             $scope.param = {
                 tabType : 'catalog',
                 playURL:'',
@@ -50,10 +50,32 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                 GetTrainingBusinessOrder.get({productId:$stateParams.productId},function(data){
                     BusinessUtil.checkResponseData(data, 'trainingProductLearning&' + $scope.param.product.productId);
                     if(data.result==Global.FAILURE){
-                        var alertPopup = $ionicPopup.alert({
-                            template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请先购买课件，在观看视频</span>',
-                            okText:'确定'
-                        });
+                        if(data.errorInfo=='member'){
+
+                            var alertPopup = $ionicPopup.alert({
+                                template: '<span style="font-size: 0.3rem;color: #333333;"> 立做美享店主，坐拥75%返利</span>',
+                                buttons: [
+                                    {
+                                        text: '不用啦'
+                                    },
+                                    {
+                                        onTap: function() {
+                                            $state.go("shopHome")
+                                        },
+                                        text: '成为店主',
+                                        type: 'button-calm'
+                                    }
+                                ]
+
+                            });
+
+                        }else{
+                           var alertPopup = $ionicPopup.alert({
+                                template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请先购买课件，在观看视频</span>',
+                                okText:'确定'
+                            });
+                        }
+
                     }
                     else if(data.result==Global.SUCCESS){
                         $("video").attr("controls","controls");
@@ -79,6 +101,10 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
             $scope.inputPassword = function(){
                 $scope.param.playPassword = angular.copy($scope.param.inputPasswordValue);
                 $scope.param.inputPasswordValue='';
+            }
+
+            $scope.goMember = function(){
+                $state.go("shopHome");
             }
 
             $scope.goPay = function()
@@ -133,6 +159,11 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                         $ionicLoading.hide();
                         if(data.result==Global.SUCCESS){
                             $scope.curriculum=false;
+                        }else{
+                            if(data.errorInfo=='member'){
+                                 $scope.curriculum=false;
+                                 $scope.isMember = true;
+                            }
                         }
                     })
                 })

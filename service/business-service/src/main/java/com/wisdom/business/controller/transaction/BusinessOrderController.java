@@ -164,22 +164,9 @@ public class BusinessOrderController {
                         logger.info("此课程为会员课程" );
                         responseDTO.setResult(StatusConstant.SUCCESS);
                     }else{
-                        businessOrderDTO.setBusinessProductId(productId);
-                        businessOrderDTO.setSysUserId(userInfoDTOS.get(0).getId());
-                        businessOrderDTO = transactionService.getTrainingBusinessOrder(businessOrderDTO);
-                        if(businessOrderDTO==null){
-                            responseDTO.setResult(StatusConstant.FAILURE);
-                        }
-                        else{
-                            if(businessOrderDTO.getStatus().equals("0"))
-                            {
-                                responseDTO.setResult(StatusConstant.FAILURE);
-                            }
-                            else if(businessOrderDTO.getStatus().equals("1"))
-                            {
-                                responseDTO.setResult(StatusConstant.SUCCESS);
-                            }
-                        }
+                        logger.info("此课程为会员课程" );
+                        responseDTO.setErrorInfo("member");
+                        responseDTO.setResult(StatusConstant.FAILURE);
                     }
                 }else{
                     responseDTO.setResult(StatusConstant.FAILURE);
