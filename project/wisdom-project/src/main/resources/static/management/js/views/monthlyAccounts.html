@@ -263,7 +263,7 @@
                                         <span ng-if="items.userType == 'business-B-1'">B级</span>
                                         <span ng-if="items.userType == 'business-C-1'">C级</span>
                                     </td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{items.payDate}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.orderId}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.transactionId}}</td>
                                     <td>
