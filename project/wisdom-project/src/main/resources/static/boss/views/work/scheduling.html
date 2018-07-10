@@ -26,7 +26,7 @@
             <tbody >
             <tr ng-repeat="item4 in tempUser" class="list ">
                 <td class="clerkName" >
-                    <div class=" center">
+                    <div class=" center" style="line-height: 60px;">
                         <p >
                             <span class='' >{{item4.clerkInfo.name.substring(0,3)}}</span>
                             <span ng-if="item4.clerkInfo.name.length>3">...</span>
@@ -34,8 +34,8 @@
                     </div>
 
                 </td>
-                <td ng-repeat="infoItem in item4.clerkSchInfo">
-                    <div style="position: relative">
+                <td ng-repeat="infoItem in item4.clerkSchInfo"style="vertical-align: middle" >
+                    <div style="position: relative;">
                         {{tempWeek[$index][0]}}
                         <br>
                         {{tempWeek[$index][1]}}

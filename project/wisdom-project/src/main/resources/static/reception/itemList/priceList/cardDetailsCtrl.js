@@ -35,10 +35,12 @@ PADWeb.controller("cardDetailsCtrl", function($scope, $state, $stateParams,$root
     $scope.param={
         cardDetail:{}
     }
-
+    $rootScope.loadingFlag = true;
     Detail.get({id:$state.params.id},function (data) {
-        $scope.param.cardDetail = data.responseData;
-        console.log($scope.param.cardDetail);
+        if(data.result == "0x00001"){
+            $rootScope.loadingFlag = false;
+            $scope.param.cardDetail = data.responseData;
+        }
     })
 
     $scope.$parent.priceListBlackFn = function () {
