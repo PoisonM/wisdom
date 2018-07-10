@@ -304,7 +304,7 @@ public class ProjectController {
 		// 套卡主键保存到helperMap中
 		if (CommonUtils.objectIsNotEmpty(userCollectionCardProjectList)) {
 			for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
-				helperMap.put(dto.getShopProjectGroupId(), dto.getShopProjectGroupId());
+				helperMap.put(dto.getConsumeRecordId(), dto.getShopProjectGroupId());
 			}
 		}
 
@@ -314,7 +314,7 @@ public class ProjectController {
 			for (Map.Entry entry : helperMap.entrySet()) {
 				// 根据主键查询套卡详细信息
 				ShopProjectGroupDTO shopProjectGroupDTO = shopProjectGroupService
-						.getShopProjectGroupDTO((String) entry.getKey());
+						.getShopProjectGroupDTO((String) entry.getValue());
 				if (CommonUtils.objectIsEmpty(shopProjectGroupDTO)) {
 					logger.error("根据主键查询套卡详细信息为空");
 					throw new RuntimeException();
@@ -333,7 +333,7 @@ public class ProjectController {
 				//是否被使用完，0已用完 1使用中
 				Integer surplusTimes=null;
 				for (ShopUserProjectGroupRelRelationDTO dto : userCollectionCardProjectList) {
-					if (entry.getKey().equals(dto.getShopProjectGroupId())) {
+					if (entry.getKey().equals(dto.getConsumeRecordId())) {
 						arrayList.add(dto);
 						if (surplusTimes==null){
 							surplusTimes=dto.getProjectSurplusTimes();

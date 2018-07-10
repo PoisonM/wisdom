@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('beautyLoginCtrl',
         function ($scope,$rootScope,$stateParams,$state, GetUserValidateCode,$interval,
                   Global,BeautyUserLogin,$ionicPopup,BeautyUtil) {
 
-            $rootScope.title = "唯美邦登录";
+            $rootScope.title = "唯美帮登录";
 
             $scope.param = {
                 userPhone:'',
