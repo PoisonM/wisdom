@@ -331,7 +331,7 @@ public class AppointmentController {
 		ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
 		shopAppointServiceDTO.setId(shopAppointServiceId);
 		shopAppointServiceDTO.setStatus(status);
-		if(AppointStatusEnum.CANCEL.getCode() == status){
+		if(AppointStatusEnum.CANCEL.getCode().equals(status)){
 			shopAppointServiceDTO.setAppointmentCancleDate(DateUtils.DateToStr(new Date(), "datetime"));
 		}
 
