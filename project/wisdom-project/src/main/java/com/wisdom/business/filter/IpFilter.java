@@ -44,8 +44,7 @@ public class IpFilter extends ZuulFilter {
         logger.info("请求IP地址为：[{}]",ipAddr);
         //配置本地IP白名单，生产环境可放入数据库或者redis中
         List<String> ips=new ArrayList<String>();
-        ips.add("61.51.47.34");
-
+        //ips.add("61.51.47.34");
 
         if(ips.contains(ipAddr)){
             logger.info("IP地址校验不通过！！！");
