@@ -331,6 +331,10 @@ public class AppointmentController {
 		ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
 		shopAppointServiceDTO.setId(shopAppointServiceId);
 		shopAppointServiceDTO.setStatus(status);
+		if(AppointStatusEnum.CANCEL.getCode() == status){
+			shopAppointServiceDTO.setAppointmentCancleDate(DateUtils.DateToStr(new Date(), "datetime"));
+		}
+
 		int info = appointmentService.updateAppointmentInfo(shopAppointServiceDTO);
 		logger.debug("根据预约主键修改此次预约信息，执行结果为{}", info);
 		//更新redis
