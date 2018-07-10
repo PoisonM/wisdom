@@ -47,7 +47,7 @@ public class IpFilter extends ZuulFilter {
         ips.add("61.51.47.34");
 
 
-        if(!ips.contains(ipAddr)){
+        if(ips.contains(ipAddr)){
             logger.info("IP地址校验不通过！！！");
             ctx.setResponseStatusCode(401);
             ctx.setSendZuulResponse(false);
