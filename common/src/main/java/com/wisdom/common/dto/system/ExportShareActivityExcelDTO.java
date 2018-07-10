@@ -124,7 +124,7 @@ public class ExportShareActivityExcelDTO {
 
     public String getIncomeType() {
         if("shareActivity".equals(this.incomeType)){
-            return "分享奖励";
+            return "推荐有礼";
         }
         return incomeType;
     }
