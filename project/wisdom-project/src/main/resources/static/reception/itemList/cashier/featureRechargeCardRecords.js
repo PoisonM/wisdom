@@ -1,4 +1,4 @@
-PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParams, $state, ngDialog,GetRechargeRecord) {
+PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParams, $state, ngDialog,GetRechargeRecord,GetUserRechargeCardList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.mainSwitch.headerCashAllFlag = true;
     $scope.$parent.$parent.mainSwitch.headerReservationAllFlag = false;
@@ -12,7 +12,8 @@ PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParam
     $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
     $scope.$parent.param.selectSty = $stateParams.userId
 
-    $scope.sunAmount = $stateParams.sunAmount
+    // $scope.sunAmount = $stateParams.sunAmount
+
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
     }
@@ -33,6 +34,16 @@ PADWeb.controller('featureRechargeCardRecordsCtrl', function($scope, $stateParam
     },function (data) {
         if(data.result == "0x00001"){
             $scope.featureData = data.responseData
+        }
+    })
+
+    GetUserRechargeCardList.get({
+        sysUserId:$stateParams.userId,
+        cardId:$stateParams.id,
+        pageSize:"100"
+    },function (data) {
+        if(data.result == "0x00001"){
+            $scope.sunAmount = data.responseData.specialBalance
         }
     })
 });

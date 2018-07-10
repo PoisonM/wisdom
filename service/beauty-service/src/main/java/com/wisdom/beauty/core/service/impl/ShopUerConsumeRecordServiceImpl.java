@@ -321,8 +321,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					ShopProjectInfoDTO shopProjectInfoDTO = new ShopProjectInfoDTO();
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
-					shopProjectInfoDTO.setMarketPrice(
-							dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
+					shopProjectInfoDTO.setMarketPrice(devDto.getPrice().divide(new BigDecimal(shopUserProjectGroupRelRelationDTOs.size()),0, ROUND_HALF_DOWN));
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);
 					map.put(dto.getShopProjectGroupId(), devDto);
@@ -341,8 +340,7 @@ public class ShopUerConsumeRecordServiceImpl implements ShopUerConsumeRecordServ
 					shopProjectInfoDTO.setProjectName(dto.getShopProjectInfoName());
 					shopProjectInfoDTO.setServiceTimes(dto.getProjectInitTimes());
 					if (dto.getProjectInitAmount() != null && dto.getProjectInitTimes() != null) {
-						shopProjectInfoDTO.setMarketPrice(
-								dto.getProjectInitAmount().divide(new BigDecimal(dto.getProjectInitTimes()),2, ROUND_HALF_DOWN));
+						shopProjectInfoDTO.setMarketPrice(devDto.getPrice().divide(new BigDecimal(shopUserProjectGroupRelRelationDTOs.size()),0, ROUND_HALF_DOWN));
 					}
 					shopProjectInfos.add(shopProjectInfoDTO);
 					devDto.setShopProjectInfoDTOList(shopProjectInfos);

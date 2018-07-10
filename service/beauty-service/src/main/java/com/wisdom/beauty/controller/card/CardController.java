@@ -83,13 +83,14 @@ public class CardController {
 	@RequestMapping(value = "/getUserRechargeCardList", method = { RequestMethod.POST, RequestMethod.GET })
 	public @ResponseBody
 	ResponseDTO<Object> getUserRechargeCardList(
-			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId) {
+			@RequestParam String sysUserId, @RequestParam(required = false) String sysShopId,@RequestParam(required = false) String cardId) {
         sysShopId = redisUtils.getShopId();
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         shopUserRechargeCardDTO.setSysUserId(sysUserId);
         shopUserRechargeCardDTO.setSysShopId(sysShopId);
+        shopUserRechargeCardDTO.setId(cardId);
         List<ShopUserRechargeCardDTO> userRechargeCardList = cardService
                 .getUserRechargeCardList(shopUserRechargeCardDTO);
         if (CommonUtils.objectIsEmpty(userRechargeCardList)) {
@@ -104,6 +105,7 @@ public class CardController {
 		//查询用户账户总余额
 		String sumAmount = cardService.getUserRechargeCardSumAmount(shopUserRechargeCardDTO).toString();
 		hashMap.put("totalBalance", sumAmount);
+		hashMap.put("specialBalance", userRechargeCardList.get(0).getSurplusAmount());
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(hashMap);
 
@@ -118,7 +120,7 @@ public class CardController {
      */
     @RequestMapping(value = "/getUserRechargeSumAmount", method = {RequestMethod.POST, RequestMethod.GET})
     public @ResponseBody
-    ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId) {
+    ResponseDTO<BigDecimal> getUserRechargeSumAmount(@RequestParam String sysUserId,@RequestParam(required = false) String cardId) {
 
         String sysShopId = redisUtils.getShopId();
         ResponseDTO<BigDecimal> responseDTO = new ResponseDTO<>();
