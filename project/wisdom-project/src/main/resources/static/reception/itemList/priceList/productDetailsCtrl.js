@@ -29,9 +29,10 @@ PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$r
             })
         }
     },100)
-
+    $rootScope.loadingFlag = true;
     ProductInfo.get({productId:$stateParams.id},function (data) {
         if(data.result == "0x00001"){
+            $rootScope.loadingFlag = false;
             $scope.productInformation = data.responseData;
             // $scope.imgList = data.responseData.imageList;
             console.log($scope.productInformation);
