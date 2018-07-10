@@ -12,7 +12,6 @@ import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
 import com.wisdom.weixin.client.BusinessServiceClient;
 import com.wisdom.weixin.client.UserServiceClient;
-import com.wisdom.weixin.interceptor.LoginRequired;
 import com.wisdom.weixin.service.user.WeixinUserCoreService;
 import com.wisdom.weixin.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +19,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.security.krb5.Config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -116,7 +111,7 @@ public class WeixinUserController {
             url = ConfigConstant.USER_BUSINESS_WEB_URL + "shareHome";
         }
         else if ("trainingHome".equals(url)) {
-            url = ConfigConstant.USER_BUSINESS_WEB_URL + "trainingHome";
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "trainingProductList";
         }
         else if ("myselfCenter".equals(url)) {
             url = ConfigConstant.USER_BUSINESS_WEB_URL + "myselfCenter";

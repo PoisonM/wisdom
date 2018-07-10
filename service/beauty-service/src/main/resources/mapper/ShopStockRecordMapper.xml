@@ -87,7 +87,8 @@
       distinct
     </if>
     <include refid="Base_Column_List" />,
-    create_date createDate
+    create_date createDate,
+    operator
     from shop_stock_record
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -121,13 +122,13 @@
       oper_date, flow_no, receiver, 
       manager_id, detail, oper_number, 
       create_by, create_date, update_user, 
-      update_date)
+      update_date,operator)
     values (#{id,jdbcType=VARCHAR}, #{shopStoreId,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{stockStyle,jdbcType=CHAR}, #{stockType,jdbcType=CHAR}, 
       #{operDate,jdbcType=TIMESTAMP}, #{flowNo,jdbcType=VARCHAR}, #{receiver,jdbcType=VARCHAR}, 
       #{managerId,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{operNumber,jdbcType=INTEGER}, 
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{updateDate,jdbcType=TIMESTAMP},#{operator,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopStockRecordDTO" >
     insert into shop_stock_record

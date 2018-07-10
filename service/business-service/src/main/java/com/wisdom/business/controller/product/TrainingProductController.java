@@ -1,5 +1,6 @@
 package com.wisdom.business.controller.product;
 
+import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.TrainingProductService;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 关于账户管理
@@ -41,15 +44,30 @@ public class TrainingProductController {
 	 *
 	 */
 	@RequestMapping(value = "getTrainingProductListNeedPay", method = {RequestMethod.POST, RequestMethod.GET})
+/*	@LoginRequired*/
 	public
 	@ResponseBody
-	ResponseDTO<List<ProductDTO>> getTrainingProductListNeedPay(@RequestBody PageParamDTO<ProductDTO> pageParamDTO) {
+	ResponseDTO<Map<String,Object>> getTrainingProductListNeedPay(@RequestBody PageParamDTO<ProductDTO> pageParamDTO) {
 		long startTime = System.currentTimeMillis();
 		logger.info("获取培训商品的详细信息==={}开始" , startTime);
-		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
-		List<ProductDTO> productDTOList = trainingProductService.getTrainingProductList(pageParamDTO,1.00f);
-		logger.info("获取培训商品的详细信息Size==={}" , productDTOList.size());
-		responseDTO.setResponseData(productDTOList);
+		ResponseDTO<Map<String,Object>> responseDTO = new ResponseDTO<>();
+
+		//获取免费产品列表
+		List<ProductDTO> freeProductDTOList = trainingProductService.findTrainingProductList(pageParamDTO,"0");
+
+		//获取会员产品列表
+		List<ProductDTO> memberProductDTOList = trainingProductService.findTrainingProductList(pageParamDTO,"1");
+
+		//获取收费产品列表
+		List<ProductDTO> chargeProductDTOList = trainingProductService.findTrainingProductList(pageParamDTO,"2");
+
+
+		Map<String,Object> productList = new HashMap<>();
+		productList.put("freeProductDTOList",freeProductDTOList);
+		productList.put("memberProductDTOList",memberProductDTOList);
+		productList.put("chargeProductDTOList",chargeProductDTOList);
+
+		responseDTO.setResponseData(productList);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("获取培训商品的详细信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
@@ -140,6 +158,9 @@ public class TrainingProductController {
 	public
 	@ResponseBody
 	ResponseDTO addTrainingProduct(@RequestBody ProductDTO<TrainingProductDTO> productDTO) {
+		if(productDTO.getPrice()==""||productDTO.getPrice()==null){
+			productDTO.setPrice("0");
+		}
 		long startTime = System.currentTimeMillis();
 		logger.info("新增视频==={}开始" , startTime);
 		ResponseDTO responseDTO = new ResponseDTO<>();
@@ -179,6 +200,7 @@ public class TrainingProductController {
 		logger.info("编辑视频==={}开始" , startTime);
 		logger.info("编辑视频==={}" , product.getProductId());
 		ResponseDTO responseDTO = new ResponseDTO<>();
+
 		try {
 			trainingProductService.updateTrainingProduct(product);
 			responseDTO.setResult(StatusConstant.SUCCESS);

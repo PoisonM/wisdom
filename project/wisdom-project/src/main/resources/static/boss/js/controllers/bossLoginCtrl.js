@@ -1,7 +1,7 @@
 angular.module('controllers',[]).controller('bossLoginCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetUserValidateCode','BossUtil','$interval','Global','BossUserLogin','$ionicPopup',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetUserValidateCode,BossUtil,$interval,Global,BossUserLogin,$ionicPopup) {
-            $rootScope.title = "登录";
+
 
             $rootScope.title = "美享登录";
 

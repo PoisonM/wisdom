@@ -2,12 +2,12 @@
  * Created by Administrator on 2017/12/15.
  */
 angular.module('controllers',[]).controller('beautyUserCenterCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetUserClientInfo','Global','GetCurrentLoginUserInfo','BeautyUtil','BeautyLoginOut',
-        function ($scope,$rootScope,$stateParams,$state,GetUserClientInfo,Global,GetCurrentLoginUserInfo,BeautyUtil,BeautyLoginOut) {
+    ['$scope','$rootScope','$stateParams','$state','GetUserClientInfo','Global','GetCurrentLoginUserInfo','BeautyUtil','BeautyLoginOut','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetUserClientInfo,Global,GetCurrentLoginUserInfo,BeautyUtil,BeautyLoginOut,$ionicLoading) {
 
             $scope.param = {
                 currentShopInfo : {}
-            }
+            };
 
     // $.ajax({
     //     url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
@@ -51,15 +51,24 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
     // });
 
             $scope.$on('$ionicView.enter', function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetUserClientInfo.get(function (data) {
                     console.log(data);
+                    $ionicLoading.hide();
                     BeautyUtil.checkResponseData(data,'beautyUserCenter');
                     if(data.result==Global.SUCCESS) {
                         $scope.param.currentShopInfo = data.responseData.currentShop;
                     }
-                })
+                });
 
                 GetCurrentLoginUserInfo.get(function (data) {
+                    $ionicLoading.hide();
                     BeautyUtil.checkResponseData(data,'beautyUserCenter');
                     if(data.result==Global.SUCCESS){
                         $rootScope.shopAppointInfo.shopUserInfo = data.responseData;
@@ -67,20 +76,20 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
                     }
                 })
 
-            })
+            });
 
             $scope.chooseProject = function() {
                 $state.go("beautyAppoint");
-            }
+            };
 
             $scope.userLoginOut = function () {
                 BeautyLoginOut.get({},function (data) {
-                    alert("退出成功")
+                    alert("退出成功");
                     window.localStorage.removeItem("beautyUserLoginToken")
                     window.localStorage.removeItem("beautyBossLoginToken")
                     window.localStorage.removeItem("beautyClerkLoginToken")
                 })
-            }
+            };
 
             $scope.bindBeautyShop = function(){
                 wx.scanQRCode({
@@ -94,4 +103,4 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
                 });
             }
 
-}])
+}]);
