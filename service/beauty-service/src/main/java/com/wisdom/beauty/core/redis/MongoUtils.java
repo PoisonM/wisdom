@@ -54,7 +54,7 @@ public class MongoUtils {
         Query query = new Query();
         query.addCriteria(Criteria.where("imageId").is(imageId));
         Update update = Update.update("url", list);
-        mongoTemplate.updateFirst(query, update, ImageUrl.class);
+        mongoTemplate.upsert(query, update, ImageUrl.class);
     }
 
 
