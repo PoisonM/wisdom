@@ -209,7 +209,11 @@
                                 <tr ng-class="{'red':item.secondCheckStatus=='有一方拒绝'}" >
                                     <td ng-click="void();$event.stopPropagation()">{{item.nickName}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.mobile}}</td>
-                                    <td ng-click="void();$event.stopPropagation()">{{item.userType}}</td>
+                                    <td ng-click="void();$event.stopPropagation()">
+                                        <span ng-if="item.userTypeNow == 'business-A-1'">A级</span>
+                                        <span ng-if="item.userTypeNow == 'business-B-1'">B级</span>
+                                        <span ng-if="item.userTypeNow == 'business-C-1'">C级</span>
+                                    </td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.amount }}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.createDate}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.incomeType}}</td>
@@ -239,10 +243,26 @@
                                 <tr  ng-show="item.shareActivityFlag"  ng-repeat="items in ShareActivityList" id="IncomeListMess2">
                                     <td ng-click="viod();$event.stopPropagation()">{{items.nextUserNickName}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.nextUserMobile}}</td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{items.nextUserTypeNow}}</td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{items.nextUserType}}</td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{item.userType}}</td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{items.userType}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">
+                                        <span ng-if="items.nextUserTypeNow == 'business-A-1'">A级</span>
+                                        <span ng-if="items.nextUserTypeNow == 'business-B-1'">B级</span>
+                                        <span ng-if="items.nextUserTypeNow == 'business-C-1'">C级</span>
+                                    </td>
+                                    <td ng-click="viod();$event.stopPropagation()">
+                                        <span ng-if="items.nextUserType == 'business-A-1'">A级</span>
+                                        <span ng-if="items.nextUserType == 'business-B-1'">B级</span>
+                                        <span ng-if="items.nextUserType == 'business-C-1'">C级</span>
+                                    </td>
+                                    <td ng-click="viod();$event.stopPropagation()">
+                                        <span ng-if="items.userTypeNow == 'business-A-1'">A级</span>
+                                        <span ng-if="items.userTypeNow == 'business-B-1'">B级</span>
+                                        <span ng-if="items.userTypeNow == 'business-C-1'">C级</span>
+                                    </td>
+                                    <td ng-click="viod();$event.stopPropagation()">
+                                        <span ng-if="items.userType == 'business-A-1'">A级</span>
+                                        <span ng-if="items.userType == 'business-B-1'">B级</span>
+                                        <span ng-if="items.userType == 'business-C-1'">C级</span>
+                                    </td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.payDate}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.orderId}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.transactionId}}</td>
