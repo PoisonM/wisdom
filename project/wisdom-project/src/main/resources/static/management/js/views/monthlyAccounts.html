@@ -23,7 +23,7 @@
                             <button ng-click="bgChangeAndSearch('instance')" ng-class="{'active':status=='instance'}">即时奖励</button>
                             <button ng-click="bgChangeAndSearch('recommend')" ng-class="{'active':status=='recommend'}">店主推荐</button>
                             <button ng-click="bgChangeAndSearch('permanent')" ng-class="{'active':status=='permanent'}">永久性奖励</button>
-                            <button ng-click="bgChangeAndSearch('shareActivity')" ng-class="{'active':status=='shareActivity'}">分享奖励</button>
+                            <button ng-click="bgChangeAndSearch('shareActivity')" ng-class="{'active':status=='shareActivity'}">推荐有礼</button>
                             <button ng-click="bgChangeAndSearch('month')" ng-class="{'active':status=='month'}">月度结算</button>
                         </div>
                             <div style="float: left;width:80%;margin-top:-5px;line-height:31px;">
@@ -254,16 +254,16 @@
                                         <span ng-if="items.nextUserType == 'business-C-1'">C级</span>
                                     </td>
                                     <td ng-click="viod();$event.stopPropagation()">
-                                        <span ng-if="items.userTypeNow == 'business-A-1'">A级</span>
-                                        <span ng-if="items.userTypeNow == 'business-B-1'">B级</span>
-                                        <span ng-if="items.userTypeNow == 'business-C-1'">C级</span>
+                                        <span ng-if="item.userTypeNow == 'business-A-1'">A级</span>
+                                        <span ng-if="item.userTypeNow == 'business-B-1'">B级</span>
+                                        <span ng-if="item.userTypeNow == 'business-C-1'">C级</span>
                                     </td>
                                     <td ng-click="viod();$event.stopPropagation()">
                                         <span ng-if="items.userType == 'business-A-1'">A级</span>
                                         <span ng-if="items.userType == 'business-B-1'">B级</span>
                                         <span ng-if="items.userType == 'business-C-1'">C级</span>
                                     </td>
-                                    <td ng-click="viod();$event.stopPropagation()">{{items.payDate}}</td>
+                                    <td ng-click="viod();$event.stopPropagation()">{{items.payDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.orderId}}</td>
                                     <td ng-click="viod();$event.stopPropagation()">{{items.transactionId}}</td>
                                     <td>
