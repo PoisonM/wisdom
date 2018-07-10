@@ -42,7 +42,7 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
 
             $scope.playCourse = function(name,item2,item,index)
             {
-                $scope.flag = item2;
+                $scope.flag = 'a'+item2.toString()+item.toString();
                 BusinessUtil.twoParameters(LoginGlobal.MX_YX_YXABF,item,item2);
                 $scope.param.firstEnter = true;
 
