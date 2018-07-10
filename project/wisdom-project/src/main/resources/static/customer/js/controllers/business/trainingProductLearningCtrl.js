@@ -51,7 +51,6 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                     BusinessUtil.checkResponseData(data, 'trainingProductLearning&' + $scope.param.product.productId);
                     if(data.result==Global.FAILURE){
                         if(data.errorInfo=='member'){
-
                             var alertPopup = $ionicPopup.alert({
                                 template: '<span style="font-size: 0.3rem;color: #333333;"> 立做美享店主，坐拥75%返利</span>',
                                 buttons: [
