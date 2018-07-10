@@ -4,11 +4,13 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.StockStyleEnum;
 import com.wisdom.beauty.api.enums.StockTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
+import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
 import com.wisdom.beauty.api.requestDto.SetStorekeeperRequestDTO;
 import com.wisdom.beauty.api.requestDto.ShopStockRequestDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopStockResponseDTO;
 import com.wisdom.beauty.core.mapper.*;
+import com.wisdom.beauty.core.mapper.stock.ExtStockServiceMapper;
 import com.wisdom.beauty.core.service.ShopProductInfoService;
 import com.wisdom.beauty.core.service.stock.ShopStockService;
 import com.wisdom.beauty.util.UserUtils;
@@ -75,6 +77,10 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 	@Autowired
 	private  UserServiceClient userServiceClient;
+
+	@Autowired
+	private ExtStockServiceMapper extStockServiceMapper;
+
 
 	/**
 	 * 查询仓库列表
@@ -203,19 +209,19 @@ public class ShopStockServiceImpl implements ShopStockService {
 		String id = shopStockRecord.getId();
 		// 根据id查询，shop_stock的入库，出库产品记录
 		ShopProductInfoResponseDTO shopProductInfoResponseDTO = null;
-		// TODO: 2018/6/30  有问题
-		List<ShopStoreDTO> storeList = this.findStoreList(shopStockRecord.getSysBossCode());
-		if(CollectionUtils.isNotEmpty(storeList)){
-			for(ShopStoreDTO store:storeList){
-				if(store.getId().equals(shopStockRecord.getShopStoreId())){
-					shopStockRecord.setName(store.getName());
-				}
-			}
-		}
+
+
+		//获取仓库名称
+		ExtShopStoreDTO store = extStockServiceMapper.getStore(shopStockRecord.getShopStoreId());
+		shopStockRecord.setName(store.getName());
+		logger.info("仓库名称："+store.getName()+";仓库Id："+shopStockRecord.getShopStoreId());
+
+
 		if (StringUtils.isBlank(id)) {
 			logger.info("库存记录为空");
 			return null;
 		}
+
 		ShopStockDTO shopStockDTO = new ShopStockDTO();
 		shopStockDTO.setShopStockRecordId(id);
 		List<ShopStockDTO> shopStockList = this.getShopStockList(shopStockDTO);
@@ -258,9 +264,9 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 			shopStockResponses.add(shopStockResponseDTO);
 		}
-		SysBossDTO sysBoss = new SysBossDTO();
+		/*SysBossDTO sysBoss = new SysBossDTO();
 		sysBoss.setId(shopStockRecord.getManagerId());
-		SysBossDTO sysBossDTO = userServiceClient.getBossInfo(sysBoss);
+		SysBossDTO sysBossDTO = userServiceClient.getBossInfo(sysBoss);*/
 		shopStockResponseDTO = new ShopStockResponseDTO();
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
@@ -268,9 +274,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockResponseDTO.setFlowNo(shopStockRecord.getFlowNo());
 		shopStockResponseDTO.setName(shopStockRecord.getName());
 		shopStockResponseDTO.setStockType(shopStockRecord.getStockType());
-		if(sysBossDTO!=null) {
-			shopStockResponseDTO.setApplayUser(sysBossDTO.getName());
-		}
+		shopStockResponseDTO.setApplayUser(shopStockRecord.getOperator());
 		shopStockResponseDTO.setDetail(shopStockRecord.getDetail());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
 		shopStockResponseDTO.setOperDate(shopStockRecord.getOperDate());
@@ -404,10 +408,12 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 			ssr.setProductDate(date);
 		}
+
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
 		ShopStockRecordDTO shopStockRecordDTO = new ShopStockRecordDTO();
 		String id = IdGen.uuid();
 		if(sysBossDTO!=null){
+			shopStockRecordDTO.setOperator(sysBossDTO.getName());
 			shopStockRecordDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 			shopStockRecordDTO.setManagerId(sysBossDTO.getSysBossCode());
 		}
@@ -416,6 +422,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockRecordDTO.setCreateDate(new Date());
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
+
 
 
 		//生成单据号
