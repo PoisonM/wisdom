@@ -215,7 +215,7 @@
                                         <span ng-if="item.userTypeNow == 'business-C-1'">C级</span>
                                     </td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.amount }}</td>
-                                    <td ng-click="void();$event.stopPropagation()">{{item.createDate}}</td>
+                                    <td ng-click="void();$event.stopPropagation()">{{item.createDate|date:'yyyy-MM-dd HH:mm:ss'}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.incomeType}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.status}}</td>
                                     <td ng-click="void();$event.stopPropagation()">{{item.secondCheckStatus}}</td>
