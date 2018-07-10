@@ -20,6 +20,4 @@ public class BeautyServiceApplication {
 		ApplicationContext app = SpringApplication.run(BeautyServiceApplication.class, args);
 		SpringUtil.setApplicationContext(app);
 	}
-
-
 }
