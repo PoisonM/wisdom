@@ -77,6 +77,13 @@ public class WeixinUtil {
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
+    public static String getUserOauth2UrlTest(String backUrl) {
+        backUrl = urlEncodeUTF8(backUrl);
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                ConfigConstant.USER_CORPID + "&redirect_uri=" +
+                backUrl + "&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect";
+    }
+
     public static String getBeautyOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
