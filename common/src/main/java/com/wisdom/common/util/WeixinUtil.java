@@ -77,6 +77,13 @@ public class WeixinUtil {
                 backUrl + "&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect";
     }
 
+    public static String getUserOauth2UrlTest(String backUrl) {
+        backUrl = urlEncodeUTF8(backUrl);
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
+                ConfigConstant.USER_CORPID + "&redirect_uri=" +
+                backUrl + "&response_type=code&scope=snsapi_userinfo&connect_redirect=1#wechat_redirect";
+    }
+
     public static String getBeautyOauth2Url(String backUrl) {
         backUrl = urlEncodeUTF8(backUrl);
         return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
@@ -103,7 +110,7 @@ public class WeixinUtil {
      * @return WeixinUserBean 微信实体
      */
     public static WeixinUserBean getWeixinUserBean(String token, String openid) {
-        String url = "https://api.weixin.qq.com/cgi-bin/user/info?" +
+        String url = "https://api.weixin.qq.com/sns/userinfo?" +
                 "access_token=" + token +
                 "&openid=" + openid + "&lang=zh_CN";
         String json = HttpRequestUtil.getConnectionResult(url, "GET", "");

@@ -38,7 +38,7 @@ PADWeb.controller("setCardCtrl", function($scope, $state, $stateParams,$rootScop
         status:$scope.status
     },function (data) {
         if(data.result == "0x00001"){
-            $rootScope.loadingFlag = true;
+            $rootScope.loadingFlag = false;
             $scope.cardList=data.responseData;
         }
     })

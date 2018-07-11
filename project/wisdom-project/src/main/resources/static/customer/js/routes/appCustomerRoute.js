@@ -629,7 +629,19 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('weixinOpenIdTest', {
+                        url: '/weixinOpenIdTest/:shopId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'weixinOpenIdTestCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.weixinOpenIdTestCtrl',
+                                    ['js/controllers/beauty/weixinOpenIdTestCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/weixinOpenIdTest.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
 
-                $urlRouterProvider.otherwise('/shopHome')
+                $urlRouterProvider.otherwise('/weixinOpenIdTest/1234')
             }])
 })
