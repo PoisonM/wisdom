@@ -641,6 +641,18 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('mxShopTest', {
+                        url: '/mxShopTest/:shopId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'mxShopTestCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.mxShopTestCtrl',
+                                    ['js/controllers/shop/mxShopTestCtrl.js?ver='+ customerVersion],
+                                    'views/shop/mxShopTest.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
 
                 $urlRouterProvider.otherwise('/weixinOpenIdTest/1234')
             }])
