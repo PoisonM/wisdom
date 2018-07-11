@@ -1,5 +1,6 @@
 package com.wisdom.weixin.controller;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.JsonObject;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.AccountDTO;
@@ -8,6 +9,7 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.wexin.WeixinConfigDTO;
 import com.wisdom.common.dto.wexin.WeixinShareDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
+import com.wisdom.common.entity.AccessToken;
 import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.*;
 import com.wisdom.weixin.client.BusinessServiceClient;
@@ -61,41 +63,41 @@ public class WeixinUserController {
     public
     @ResponseBody
     String requestFromServer(HttpServletRequest request, HttpServletResponse response) {
-          String method = request.getMethod().toUpperCase();
-          if ("GET".equals(method)) {
-              // 微信加密签名
-              String signature = request.getParameter("signature");
-              // 时间戳
-              String timestamp = request.getParameter("timestamp");
-              // 随机数
-              String nonce = request.getParameter("nonce");
-              // 随机字符串
-              String echostr = request.getParameter("echostr");
+        String method = request.getMethod().toUpperCase();
+        if ("GET".equals(method)) {
+            // 微信加密签名
+            String signature = request.getParameter("signature");
+            // 时间戳
+            String timestamp = request.getParameter("timestamp");
+            // 随机数
+            String nonce = request.getParameter("nonce");
+            // 随机字符串
+            String echostr = request.getParameter("echostr");
 
-              // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
-              if (SignUtil.checkCustomerSignature(signature, timestamp, nonce)) {
+            // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
+            if (SignUtil.checkCustomerSignature(signature, timestamp, nonce)) {
                 return echostr;
-              }
-              return "";
-          } else {
-              // 调用核心业务类接收消息、处理消息
-              String respMessage = null;
-              try {
-                  respMessage = weixinCustomerCoreService.processCustomerWeixinRequest(request,response);
-              } catch (IOException e) {
-                  e.printStackTrace();
-              }
-              return respMessage;
-          }
-      }
+            }
+            return "";
+        } else {
+            // 调用核心业务类接收消息、处理消息
+            String respMessage = null;
+            try {
+                respMessage = weixinCustomerCoreService.processCustomerWeixinRequest(request,response);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return respMessage;
+        }
+    }
 
     /**
      * 公众号菜单引导页 081dazSU0Zf1iU1fGISU0q5ASU0dazSd 0815XmM70lSlvH1UnyN70OwBM705XmM9
      */
     @RequestMapping(value = "getUserWeixinMenuId", method = {RequestMethod.POST, RequestMethod.GET})
     public String getUserWeixinMenuId(HttpServletRequest request,
-                                          HttpServletResponse response,
-                                          HttpSession session) throws Exception
+                                      HttpServletResponse response,
+                                      HttpSession session) throws Exception
     {
         String url = java.net.URLDecoder.decode(request.getParameter("url"), "utf-8");
 
@@ -242,4 +244,53 @@ public class WeixinUserController {
 
 
 
+    @RequestMapping(value = "/mxShopTest", method = RequestMethod.GET)
+    public String mxShopTest(HttpServletRequest request, HttpSession session,@RequestParam String shopId) {
+        session.setAttribute("mxShopId", shopId);
+        String url = "http://mx99test1.kpbeauty.com.cn/shopId="+shopId;
+        String redirectUrl = "http://mx99test1.kpbeauty.com.cn/weixin/customer/mxShop?shopId="+shopId;
+        String userId = (String) session.getAttribute("mxShopuserId");
+        //检测是否已经获取过当前用户的基本信息
+        if(StringUtils.isNotNull(userId)){
+            return "redirect:" + url;
+        }
+        String oauth2Url = WeixinUtil.getUserOauth2UrlTest(redirectUrl);
+        return "redirect:" + oauth2Url;
+    }
+
+
+
+    /**
+     * 重定向到用户访问的商城首页
+     */
+    @RequestMapping(value = "/mxShop", method = {RequestMethod.POST, RequestMethod.GET})
+    public String mxShop(HttpServletRequest request,
+                         HttpServletResponse response,
+                         HttpSession session) throws Exception {
+        //获取用户的基本信息 ,可以存入缓存,已被后续使用
+        String shopId = java.net.URLDecoder.decode(request.getParameter("shopId"), "utf-8");
+        String url = "http://mx99test1.kpbeauty.com.cn/shopId="+shopId;
+        String code = request.getParameter("code");
+        String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
+                "appid="+ ConfigConstant.USER_CORPID +
+                "&secret=" + ConfigConstant.USER_SECRET +
+                "&code="+ code +
+                "&grant_type=authorization_code";
+        WeixinUserBean weixinUserBean;
+        int countNum = 0;
+        do {
+            String json = HttpRequestUtil.getConnectionResult(get_access_token_url, "GET", "");
+            AccessToken accessToken = JsonUtil.getObjFromJsonStr(json, AccessToken.class);
+            weixinUserBean = WeixinUtil.getWeixinUserBean(accessToken.getaccess_token(),accessToken.getOpenid());
+            if (countNum++ > 3) {
+                break;
+            }
+        } while (weixinUserBean.getOpenid() == null);
+
+        String openId = weixinUserBean.getOpenid();
+        session.setAttribute("mxShopuserId", openId);
+        CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
+
+        return "redirect:" + url;
+    }
 }
