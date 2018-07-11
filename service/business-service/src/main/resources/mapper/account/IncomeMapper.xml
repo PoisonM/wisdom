@@ -698,7 +698,6 @@
         FROM income_record i,income_record_management m,sys_user sys
         WHERE
           i.sys_user_id = sys.id
-          and i.sys_user_id = m.sys_user_id
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
@@ -756,7 +755,6 @@
         FROM income_record i,income_record_management m ,sys_user sys
         WHERE
         i.sys_user_id = sys.id
-        and i.sys_user_id = m.sys_user_id
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
