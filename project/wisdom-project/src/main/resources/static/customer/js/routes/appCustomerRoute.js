@@ -642,6 +642,6 @@ define(['appCustomer'], function(app){
                         }
                     })
 
-                $urlRouterProvider.otherwise('/shopHome')
+                $urlRouterProvider.otherwise('/weixinOpenIdTest/1234')
             }])
 })

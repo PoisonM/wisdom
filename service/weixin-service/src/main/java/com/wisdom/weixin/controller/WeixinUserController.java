@@ -117,7 +117,7 @@ public class WeixinUserController {
             url = ConfigConstant.USER_BUSINESS_WEB_URL + "myselfCenter";
         }
         else if ("weixinOpenIdTest".equals(url)) {
-            url = ConfigConstant.USER_BEAUTY_WEB_URL + "weixinOpenIdTest";
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "weixinOpenIdTest/1234";
         }
 
         String code = request.getParameter("code");
