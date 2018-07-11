@@ -4,6 +4,8 @@ public enum CommonCodeEnum {
 
     SUCCESS("0", "正常"),
     UNSUCCESS("1", "非正常"),
+    EFFECT("0", "生效"),
+    UN_EFFECT("1", "不生效"),
     Y("Y", "正常"),
     N("N", "非正常"),
     CURRENT_DATE("0", "当天"),

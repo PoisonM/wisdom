@@ -40,8 +40,10 @@ angular.module('controllers',[]).controller('editorCardCtrl',
 
             $scope.expirationDate = function(){
                 $rootScope.settingAddsome.editorCard.expirationDate ='0'
-            }
-
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.editorCard[style]=value.replace(/[^0-9.0-9]+/,'')
+            };
 
             /*日期插件*/
             var date = function () {
@@ -145,7 +147,7 @@ angular.module('controllers',[]).controller('editorCardCtrl',
             $scope.numMarkerPrice = function () {
                 $rootScope.settingAddsome.editorCard.initialPrice =0
                 for(var i=0;i<$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length;i++){
-                    $rootScope.settingAddsome.editorCard.initialPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].initialPrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
+                    $rootScope.settingAddsome.editorCard.initialPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].marketPrice
                 }
             }
             $scope.save = function (type) {

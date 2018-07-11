@@ -3,7 +3,7 @@
         <div>
             <p class="sb h45 bgfff  ">
                 <label class="fs16 col333 ml10 mt10" style="width:70px;">输入规格</label>
-                <input type="number" min="1" inputmode="numeric" pattern="[0-9].*" title="Non-negative integral number" style="width:75%;text-align: right" class="fs14 col888 mt5 mr10" placeholder="请输入数字" ng-model="param.num" >
+                <input type="text" style="width:75%;text-align: right" class="fs14 col888 mt5 mr10" placeholder="请输入数字" ng-model="param.num" ng-change="numLimit()">
             </p>
             <div class=" mt10 bgfff row ">
                 <div class="row" style="width:98%;margin:auto;">

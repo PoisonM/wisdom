@@ -374,17 +374,20 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     $scope.allProductFlag = false
                 }else if(price == 199){
                     $scope.repeatList = $scope.twoPriductList;
-                    $scope.allProductFlag = false
+                    $scope.allProductFlag = false;
                 }else if(price == 299){
                     $scope.repeatList = $scope.threePriductList;
-                    $scope.allProductFlag = false
+                    $scope.allProductFlag = false;
                 }else if(price == 399){
                     $scope.repeatList = $scope.fourPriductList;
-                    $scope.allProductFlag = false
+                    $scope.allProductFlag = false;
+
                 }else if(price == 499){
                     $scope.repeatList = $scope.fivePriductList;
                     $scope.allProductFlag = false
                 }
-                console.log( $scope.repeatList)
-            }
+            };
+            $("li").on("click", function () {
+                $("div").scrollLeft($(this).position().left-150)
+            })
         }]);

@@ -87,7 +87,7 @@
     <select id="getWaitReceiveNumber" resultType="com.wisdom.beauty.api.responseDto.UserProductRelationResponseDTO" parameterType="map">
      SELECT SUM(s.`surplus_times`) waitReceiveNumber, s.sys_user_id sysUserId,t.sys_user_name nickname,t.phone mobile FROM
         shop_user_product_relation s LEFT JOIN shop_user_archives t ON s.sys_user_id=t.sys_user_id WHERE
-          s.sys_shop_id=#{sysShopId}
+          s.sys_shop_id=#{sysShopId} and t.phone is not null
         <if test="searchFile != null" >
             AND (t.sys_user_name LIKE #{searchFile} OR t.phone LIKE #{searchFile})
         </if>

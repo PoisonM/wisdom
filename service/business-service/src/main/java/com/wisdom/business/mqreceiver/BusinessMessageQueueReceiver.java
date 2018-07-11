@@ -212,15 +212,18 @@ public class BusinessMessageQueueReceiver {
         logger.info("获取支付交易的消费金额=="+expenseMoney);
         logger.info("进行月度流水统计");
         logger.info("用户等级："+userInfoDTO.getUserType());
-        if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1)||userInfoDTO.getUserType().equals(ConfigConstant.businessC1))
+        if(userInfoDTO.getId()!=null)
         {
-            //如果用户为c是用户c的升级单则计入
-            if(userInfoDTO.getUserType().equals(ConfigConstant.businessC1)){
-                if(expenseMoney>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE){
+            if(userInfoDTO.getUserType().equals(ConfigConstant.businessA1)||userInfoDTO.getUserType().equals(ConfigConstant.businessB1)||userInfoDTO.getUserType().equals(ConfigConstant.businessC1))
+            {
+                //如果用户为c是用户c的升级单则计入
+                if(userInfoDTO.getUserType().equals(ConfigConstant.businessC1)){
+                    if(expenseMoney>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE){
+                        payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
+                    }
+                }else{
                     payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
                 }
-            }else{
-                payFunction.recordMonthTransaction(userInfoDTO.getId(),instanceReturnMoneySignalDTO,expenseMoney,"self");
             }
         }
     }

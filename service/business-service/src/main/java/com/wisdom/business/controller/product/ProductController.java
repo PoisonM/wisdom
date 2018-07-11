@@ -120,7 +120,11 @@ public class ProductController {
 					exportProductExcelDTO.setPrice(productDTO.getPrice());
 					exportProductExcelDTO.setProductId(productDTO.getProductId());
 					exportProductExcelDTO.setProductName(productDTO.getProductName());
-					exportProductExcelDTO.setSecondType(productDTO.getSecondType());
+					if(("training").equals(productDTO.getType())){
+						exportProductExcelDTO.setSecondType(productDTO.getSecondTypeName());
+					}else{
+						exportProductExcelDTO.setSecondType(productDTO.getSecondType());
+					}
 					exportProductExcelDTO.setStatus(productDTO.getStatus());
 					exportProductExcelDTO.setSellNum(productDTO.getSellNum());
 					excelList.add(exportProductExcelDTO);

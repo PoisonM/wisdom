@@ -40,6 +40,13 @@ public class ProductDTO<T> {
     @JSONField(name = "secondType")
     private String secondType;
 
+
+    /**
+     * 产品的详细分类名称
+     */
+    @JSONField(name = "secondTypeName")
+    private String secondTypeName;
+
     /**
      * 产品详情
      */
@@ -83,10 +90,33 @@ public class ProductDTO<T> {
     private String productAmount;
 
     /**
-     * 产品销量
+     * 产品销量teacherName
      */
     @JSONField(name = "sellNum")
     private String sellNum;
+
+    /**
+     * 讲师姓名
+     */
+    @JSONField(name = "teacherName")
+    private String teacherName;
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+
+    public String getSecondTypeName() {
+        return secondTypeName;
+    }
+
+    public void setSecondTypeName(String secondTypeName) {
+        this.secondTypeName = secondTypeName;
+    }
 
     public String getCreateDate() {
         return createDate;

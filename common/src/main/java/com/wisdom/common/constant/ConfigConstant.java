@@ -135,5 +135,10 @@ public class ConfigConstant {
 
 	public static final String INCOME_AUDIT_REJECTION = Global.getConfig("INCOME_AUDIT_REJECTION");
 
+	public static final String FREE_COURSE = Global.getConfig("FREE_COURSE");
+
+	public static final String MEMBER_SHIP_COURSE = Global.getConfig("MEMBER_SHIP_COURSE");
+
+	public static final String CHARGE_COURSE = Global.getConfig("CHARGE_COURSE");
 
 }

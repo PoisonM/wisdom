@@ -2,14 +2,13 @@
  * Created by Administrator on 2017/12/15.
  */
 angular.module('controllers',[]).controller('beautyUserAppointCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetMyAppointInfoList',
-        function ($scope,$rootScope,$stateParams,$state,GetMyAppointInfoList) {
-
+    ['$scope','$rootScope','$stateParams','$state','GetMyAppointInfoList','$ionicLoading',
+        function ($scope,$rootScope,$stateParams,$state,GetMyAppointInfoList,$ionicLoading) {
         $scope.param = {
             type:'onGoing',
             appointProjectList : []
-        }
-
+        };
+        
         $scope.selectAppointProject = function(type) {
             $scope.param.type = type;
             if(type=='onGoing')
@@ -24,7 +23,7 @@ angular.module('controllers',[]).controller('beautyUserAppointCtrl',
                     $scope.param.appointProjectList = angular.copy(data.responseData);
                 })
             }
-        }
+        };
 
         $scope.selectAppointProject($scope.param.type);
 
@@ -33,4 +32,4 @@ angular.module('controllers',[]).controller('beautyUserAppointCtrl',
         }
 
 
-}])
+}]);

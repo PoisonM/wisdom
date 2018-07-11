@@ -39,9 +39,9 @@
 
             </li>
             <li class="item"><span class="fs16">市场价格 <span class="colff66">*</span></span>
-                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="请输入市场价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.initialPrice" ></li>
+                <input type="text" placeholder="请输入市场价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.initialPrice" ng-change="numLimit('initialPrice',settingAddsome.editorCard.initialPrice)" ></li>
             <li class="item"><span class="fs16">优惠价格<span class="colff66">*</span></span>
-                <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number" placeholder="请输入优惠价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.marketPrice" ></li>
+                <input type="text" placeholder="请输入优惠价格"  class="fr col66 tr" ng-model="settingAddsome.editorCard.marketPrice" ng-change="numLimit('marketPrice',settingAddsome.editorCard.marketPrice)"></li>
             <li class="item"><span class="fs16">套卡活动有效期<span class="colff66">*</span></span>
                 <p class="fr">
                     <i class="icon ion-android-radio-button-off" style="color:#FF6666;font-size:20px;" ng-if="settingAddsome.editorCard.expirationDate!='0'" ng-click="expirationDate()"></i>
@@ -81,7 +81,9 @@ border-radius: 4px;" ng-model="settingAddsome.editorCard.detail"></textarea>
                     </div>
                 </label>
             </li>
-            <li class="item fs11 col33" style="margin-bottom: 50px">说明：目前版本中的美容师好卡按照总金额/总次数=单次耗卡金额</li>
+            <li class="item fs11 col33" style="margin-bottom: 50px">
+                    说明：目前版本中的美容师耗卡按照总金额/总次数=单次耗卡金额
+               </li>
         </div>
     </ion-content>
     <div class="tabs" style="padding-top: 0px;background: #ff6666;color: #ffffff;" ng-click="save()">

@@ -135,10 +135,11 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                                status:"0",/*不启动*/
                                visitDateTime:"",/*回访次数*/
                                projectName:"",/*项目名称*/
-                               projectDuration:"30",/*时长*/
+                               projectDuration:30,/*时长*/
                                imageList:[],/*图片*/
                                cardType:"0"/*卡的类型*/,
-                               effectiveNumberMonth:12/*有效期*/
+                               effectiveNumberMonth:'',/*有效期*/
+                               useStyle:"0"
                            }
                        }else{
                            alert("保存未成功")
@@ -152,5 +153,8 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 }else{
                     $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1+30
                 }
+            }
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.extShopProjectInfoDTO[style]=value.replace(/[^0-9.0-9]+/,'')
             }
         }]);

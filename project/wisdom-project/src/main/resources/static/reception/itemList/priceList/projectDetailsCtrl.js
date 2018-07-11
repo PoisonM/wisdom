@@ -1,4 +1,4 @@
-PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,ProjectInfo) {
+PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,$rootScope,ProjectInfo) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "jiamubiao";
     $scope.$parent.param.headerPrice.title = "项目详情";
@@ -26,8 +26,10 @@ PADWeb.controller("projectDetailsCtrl", function($scope, $state, $stateParams,Pr
             })
         }
     },100)
+    $rootScope.loadingFlag = true;
     ProjectInfo.get({id:$stateParams.id},function (data) {
         if(data.result == '0x00001'){
+            $rootScope.loadingFlag = false;
             $scope.projectInformation = data.responseData;
             console.log($scope.projectInformation);
         }

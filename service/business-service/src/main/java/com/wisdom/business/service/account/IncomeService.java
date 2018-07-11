@@ -8,8 +8,10 @@ import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.*;
+import com.wisdom.common.dto.activity.ShareActivityDTO;
 import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.dto.system.UserBankCardInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
@@ -22,6 +24,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +49,9 @@ public class IncomeService {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private PayRecordService payRecordService;
@@ -615,5 +623,12 @@ public class IncomeService {
 
     public List<IncomeRecordDTO> getIncomeRanking(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         return incomeMapper.getIncomeRanking(pageParamVoDTO);
+    }
+
+    //根据incomeId查询分享奖励3条数据详情
+    public List<ShareActivityDTO> getIncomeShareActivityInfoByIncomeId(String incomeId) {
+        Query query = new Query(Criteria.where("incomeId").is(incomeId));
+        List<ShareActivityDTO> shareActivityDTOS = mongoTemplate.find(query,ShareActivityDTO.class,"shareActivity");
+        return shareActivityDTOS;
     }
 }

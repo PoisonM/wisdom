@@ -44,12 +44,15 @@ PADWeb.controller("rechargeableDetailsCtrl", function($scope, $state, $statePara
     $scope.param={
         rechargeDetail:{},
         urlArray:{}
-    }
+    };
+    $rootScope.loadingFlag = true;
     GetCardInfo.get({
         id:$stateParams.shopRechargeCardId
     },function (data) {
-        $scope.param.rechargeDetail = data.responseData;
-        console.log($scope.param.rechargeDetail);
+        if(data.result == "0x00001"){
+            $scope.param.rechargeDetail = data.responseData;
+            $rootScope.loadingFlag = false;
+        }
     })
 
 

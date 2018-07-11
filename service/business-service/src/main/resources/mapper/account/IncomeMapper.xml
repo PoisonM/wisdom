@@ -102,7 +102,8 @@
     </select>
 
     <!-- 创建用户收入记录信息 -->
-    <insert id="insertUserIncomeInfo">
+    <insert id="insertUserIncomeInfo" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.wisdom.common.dto.account.IncomeRecordDTO">
         INSERT INTO income_record(
         id,
         sys_user_id,
@@ -697,7 +698,6 @@
         FROM income_record i,income_record_management m,sys_user sys
         WHERE
           i.sys_user_id = sys.id
-          and i.sys_user_id = m.sys_user_id
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
@@ -754,8 +754,7 @@
             count(1)
         FROM income_record i,income_record_management m ,sys_user sys
         WHERE
-        i.sys_user_id = sys.id,
-        and i.sys_user_id = m.sys_user_id
+        i.sys_user_id = sys.id
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
