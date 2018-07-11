@@ -83,9 +83,13 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                         angular.forEach($scope.param.product.productDetail.listCourse,function(data,index,array){
                             var firstName = data.name;
                             angular.forEach(data.list,function(data2,index2,array2){
+                            console.log(firstName+'&'+data2.name)
                                 if(name==(firstName+'&'+data2.name))
                                 {
                                     $scope.currentId = name;
+
+                                    console.log($scope.currentId)
+
                                     $scope.param.playURL = angular.copy($sce.trustAsResourceUrl(data2.url));
                                     $scope.param.statisticPlayUrl = angular.copy(data2.url);
                                 }
