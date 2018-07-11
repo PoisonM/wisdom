@@ -42,6 +42,7 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
 
             $scope.playCourse = function(name,item2,item,index)
             {
+                alert(name);
                 $scope.flag = 'a'+item2.toString()+item.toString();
                 BusinessUtil.twoParameters(LoginGlobal.MX_YX_YXABF,item,item2);
                 $scope.param.firstEnter = true;
@@ -51,21 +52,22 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                     BusinessUtil.checkResponseData(data, 'trainingProductLearning&' + $scope.param.product.productId);
                     if(data.result==Global.FAILURE){
                         if(data.errorInfo=='member'){
-                            var alertPopup = $ionicPopup.alert({
-                                template: '<span style="font-size: 0.3rem;color: #333333;"> 立做美享店主，坐拥75%返利</span>',
-                                buttons: [
-                                    {
-                                        text: '不用啦'
-                                    },
-                                    {
-                                        onTap: function() {
-                                            $state.go("shopHome")
-                                        },
-                                        text: '成为店主',
-                                        type: 'button-calm'
-                                    }
-                                ]
 
+                            var alertPopup = $ionicPopup.alert({
+                                template: '<span style="font-size: 0.3rem;color: #333333;margin-left: 0.5rem">请先成为店主，在观看视频</span>',
+
+                                buttons: [
+                                        {
+                                            text: '不用啦'
+                                        },
+                                        {
+                                            onTap: function() {
+                                                $state.go("shopHome")
+                                            },
+                                            text: '成为店主',
+                                            type: 'button-calm'
+                                        }
+                                    ]
                             });
 
                         }else{
@@ -82,8 +84,10 @@ angular.module('controllers',[]).controller('trainingProductLearningCtrl',
                         angular.forEach($scope.param.product.productDetail.listCourse,function(data,index,array){
                             var firstName = data.name;
                             angular.forEach(data.list,function(data2,index2,array2){
+                                alert(firstName+'&'+data2.name);
                                 if(name==(firstName+'&'+data2.name))
                                 {
+
                                     $scope.currentId = name;
                                     $scope.param.playURL = angular.copy($sce.trustAsResourceUrl(data2.url));
                                     $scope.param.statisticPlayUrl = angular.copy(data2.url);
