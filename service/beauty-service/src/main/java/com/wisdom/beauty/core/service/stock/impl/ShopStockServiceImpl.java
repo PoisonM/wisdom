@@ -441,7 +441,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			//入库多个产品时拼备注
 			StringBuilder detail = new StringBuilder();
 			for(ShopStockRequestDTO shopStock :shopStockRequestDTO){
-				if(shopStock.getDetail()!=null&&shopStock.getDetail()!=""){
+				if(shopStock.getDetail()!=null&&(!("").equals(shopStock.getDetail()))){
 					detail.append(shopStock.getProductName()).append("产品:").append(shopStock.getDetail()).append(";");
 				}
 			}

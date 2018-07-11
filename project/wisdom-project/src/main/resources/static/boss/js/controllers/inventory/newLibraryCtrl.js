@@ -28,6 +28,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                                 shopProcId:val.id,/*产品id*/
                                 shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
                                 stockNumber: "",
+                                productCode: $stateParams.productCode,
                                 productUrl : val.productUrl,
                                 productName: val.productName,
                                 productUnit: val.productUnit,
@@ -41,7 +42,6 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                 })
             }else{
                 angular.forEach($rootScope.shopInfo.entryShopProductList,function (val,index) {
-
                     var value = {
                         detail:"",
                         productDate:val.effectDate,
@@ -49,6 +49,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                         shopProcId:val.id,/*产品id*/
                         shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
                         stockNumber: "",
+                        productCode: val.productCode,
                         productUrl : val.productUrl,
                         productName: val.productName,
                         productUnit: val.productUnit,
@@ -76,8 +77,10 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             $scope.selDate = function(productDate,shopProcId){
                 dateShopProductId = shopProcId;
                 var shopStock = [];
+
                 angular.forEach($scope.param.shopStock,function (val,index) {
                     if(val.shopProcId == shopProcId){
+
                         val.productDateString = productDate;
                         shopStock.push(val);
                     }else{
@@ -97,6 +100,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                         if(val1.shopProcId == dateShopProductId)
                         {
                             val1.productDate =  angular.copy($filter('date')(val, 'yyyy-MM-dd'));
+                            val1.productDateString = angular.copy($filter('date')(val, 'yyyy-MM-dd'));
                         }
                     });
                     console.log($scope.param.shopStock);
@@ -154,6 +158,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                                 return
                             }
                         }
+                        $scope.param.shopStock.productDateString = $scope.param.shopStock.productDate;
                         AddStock.save($scope.param.shopStock,function(data){
                             if(data.result==Global.SUCCESS){
                                 $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
