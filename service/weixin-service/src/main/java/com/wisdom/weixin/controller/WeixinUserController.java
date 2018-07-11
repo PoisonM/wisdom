@@ -297,6 +297,6 @@ public class WeixinUserController {
         session.setAttribute("mxShopuserId", openId);
         CookieUtils.setCookie(response, ConfigConstant.USER_OPEN_ID, openId==null?"":openId,60*60*24*30,ConfigConstant.DOMAIN_VALUE);
 
-        return url;
+        return "redirect:" + url;
     }
 }
