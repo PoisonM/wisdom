@@ -76,8 +76,6 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
                     }
                 })
 
-            });
-
             $scope.chooseProject = function() {
                 $state.go("beautyAppoint");
             };
@@ -85,12 +83,13 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
             $scope.userLoginOut = function () {
                 BeautyLoginOut.get({},function (data) {
                     alert("退出成功");
-                    window.localStorage.removeItem("beautyUserLoginToken")
-                    window.localStorage.removeItem("beautyBossLoginToken")
-                    window.localStorage.removeItem("beautyClerkLoginToken")
+                    window.localStorage.removeItem("beautyUserLoginToken");
+                    window.localStorage.removeItem("beautyBossLoginToken");
+                    window.localStorage.removeItem("beautyClerkLoginToken");
+                    $state.go("beautyAppoint")
                 })
             };
-
+            });
             $scope.bindBeautyShop = function(){
                 wx.scanQRCode({
                     needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
