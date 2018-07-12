@@ -110,9 +110,10 @@ public class WeixinUtil {
      * @return WeixinUserBean 微信实体
      */
     public static WeixinUserBean getWeixinUserBean(String token, String openid) {
-        String url = "https://api.weixin.qq.com/sns/userinfo?" +
-                "access_token=" + token +
-                "&openid=" + openid + "&lang=zh_CN";
+//        String url = "https://api.weixin.qq.com/sns/userinfo?" +
+//                "access_token=" + token +
+//                "&openid=" + openid + "&lang=zh_CN";
+        String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+token+"&openid="+openid;
         String json = HttpRequestUtil.getConnectionResult(url, "GET", "");
         return JsonUtil.getObjFromJsonStr(json, WeixinUserBean.class);
     }

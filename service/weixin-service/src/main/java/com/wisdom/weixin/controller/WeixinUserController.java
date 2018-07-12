@@ -253,7 +253,6 @@ public class WeixinUserController {
         ResponseDTO<String> responseDTO = new ResponseDTO();
         response.setHeader("Access-Control-Allow-Origin", "*");
         session.setAttribute("mxShopId", shopId);
-        String url = "http://mx99test1.kpbeauty.com.cn/shopId="+shopId;
         String redirectUrl = "http://mx99test1.kpbeauty.com.cn/weixin/customer/mxShop?shopId="+shopId;
         String userId = (String) session.getAttribute("mxShopuserId");
         //检测是否已经获取过当前用户的基本信息
