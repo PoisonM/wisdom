@@ -25,6 +25,19 @@ define(['angular'], function (angular) {
                         if(window.localStorage.getItem("logintoken")!=undefined){
                             config.headers.logintoken = window.localStorage.getItem("logintoken");
                         }
+                        else{
+                            if(sessionStorage.getItem("logintoken")!=undefined)
+                            {
+                                config.headers.logintoken = sessionStorage.getItem("logintoken");
+                            }
+                            else {
+                                var name = "logintoken";
+                                var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+                                if(arr=document.cookie.match(reg)){
+                                    config.headers.logintoken = unescape(arr[2]);
+                                }
+                            }
+                        }
 
                         if(window.localStorage.getItem("beautyUserLoginToken")!=undefined
                             &&window.localStorage.getItem("beautyUserLoginToken")!=null){
