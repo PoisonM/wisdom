@@ -102,7 +102,8 @@
     </select>
 
     <!-- 创建用户收入记录信息 -->
-    <insert id="insertUserIncomeInfo">
+    <insert id="insertUserIncomeInfo" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.wisdom.common.dto.account.IncomeRecordDTO">
         INSERT INTO income_record(
         id,
         sys_user_id,
@@ -352,9 +353,11 @@
                       resultMap="UserIncomeInfoResultMap">
     SELECT
     count(1) count,
-    i.*
-    FROM income_record i
-    WHERE 1=1
+    i.*,
+    sys.user_type userBusinessTypeNow
+    FROM income_record i ,sys_user sys
+    WHERE
+        i.sys_user_id = sys.id
     <if test="requestData.id != null and requestData.id != ''">
         AND i.id = #{requestData.id}
     </if>
@@ -370,6 +373,10 @@
     <if test="requestData.status != null and requestData.status != ''">
         AND i.status = #{requestData.status}
     </if>
+
+    <if test="requestData.BusinessType != null and requestData.BusinessType != ''">
+        AND sys.user_type = #{requestData.BusinessType}
+    </if>
     GROUP BY i.id
     ORDER BY i.create_date DESC
     <if test='isExportExcel != "Y"'>
@@ -380,8 +387,9 @@
     <select id="getIncomeRecordCountByPageParam" resultType="java.lang.Integer">
         SELECT
         COUNT(1)
-        FROM income_record i
-        WHERE 1=1
+        FROM income_record i ,sys_user sys
+        WHERE
+        i.sys_user_id = sys.id
         <if test="startTime != ''and startTime != null  ">
             AND i.create_date BETWEEN #{startTime} AND #{endTime}
         </if>
@@ -393,6 +401,9 @@
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
+        </if>
+        <if test="requestData.BusinessType != null and requestData.BusinessType != ''">
+            AND sys.user_type = #{requestData.BusinessType}
         </if>
     </select>
 
@@ -630,7 +641,8 @@
 	    LEFT JOIN pay_record p ON i.transaction_id = p.transaction_id
 	    LEFT JOIN business_order o ON p.order_id = o.order_id
         LEFT JOIN income_record_management m ON i.id = m.income_record_id
-	    WHERE 1=1
+	    WHERE
+          1=1
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
@@ -642,6 +654,9 @@
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
             AND i.user_mobile = #{requestData.mobile}
+        </if>
+        <if test="requestData.BusinessType != null and requestData.BusinessType != ''">
+            AND u2.user_type = #{requestData.BusinessType}
         </if>
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
@@ -678,9 +693,11 @@
     <select id="findIncomeForUnaudited" resultMap="UserIncomeInfoResultMap">
         SELECT
             count(1) count,
-            i.*
-        FROM income_record i,income_record_management m
-        WHERE 1=1
+            i.*,
+            sys.user_type userBusinessTypeNow
+        FROM income_record i,income_record_management m,sys_user sys
+        WHERE
+          i.sys_user_id = sys.id
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
@@ -696,9 +713,13 @@
         <if test="requestData.status != null and requestData.status != ''">
             AND i.status = #{requestData.status}
         </if>
+        <if test="requestData.BusinessType != null and requestData.BusinessType != ''">
+            AND sys.user_type = #{requestData.BusinessType}
+        </if>
         <if test='requestData.checkStatus == "0"'>
             AND i.id not in(select irm.income_record_id from income_record_management irm)
         </if>
+
         <if test='requestData.checkStatus == "1"||requestData.checkStatus == "2"||requestData.checkStatus == "3"'>
             AND m.income_record_id = i.id
             and m.status='1'
@@ -731,8 +752,9 @@
     <select id="getIncomeForUnauditedCount" resultType="java.lang.Integer">
         SELECT
             count(1)
-        FROM income_record i,income_record_management m
-        WHERE 1=1
+        FROM income_record i,income_record_management m ,sys_user sys
+        WHERE
+        i.sys_user_id = sys.id
         <if test="requestData.id != null and requestData.id != ''">
             AND i.id = #{requestData.id}
         </if>
@@ -741,6 +763,9 @@
         </if>
         <if test="requestData.incomeType != ''and requestData.incomeType != null  ">
             AND i.income_type = #{requestData.incomeType}
+        </if>
+        <if test="requestData.BusinessType != null and requestData.BusinessType != ''">
+            AND sys.user_type = #{requestData.BusinessType}
         </if>
         <if test="requestData.mobile != null and requestData.mobile != ''">
             AND i.user_mobile like concat(concat('%',#{requestData.mobile}),'%')

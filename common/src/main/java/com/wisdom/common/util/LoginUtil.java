@@ -5,28 +5,28 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.LoginDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.ValidateCodeDTO;
-import com.wisdom.common.dto.wexin.WeixinTokenDTO;
-import com.wisdom.common.entity.AccessToken;
-import com.wisdom.common.entity.Article;
-import com.wisdom.common.entity.JsApiTicket;
-import com.wisdom.common.entity.WeixinUserBean;
-import org.json.JSONObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
 
 
 public class LoginUtil {
 
     private static MongoTemplate mongoTemplate = (MongoTemplate) SpringUtil.getBean(MongoTemplate.class);
+
+    public static String processBeautyUserValidateCode(LoginDTO loginDTO)
+    {
+        String userPhone = loginDTO.getUserPhone();
+        //体验白名单
+        if(userPhone.equals("15801056055")|| userPhone.equals("13601025663")|| userPhone.equals("13849699991 ")){
+            return StatusConstant.SUCCESS;
+        }
+        return StatusConstant.FAILURE;
+    }
 
     public static String processValidateCode(LoginDTO loginDTO)
     {

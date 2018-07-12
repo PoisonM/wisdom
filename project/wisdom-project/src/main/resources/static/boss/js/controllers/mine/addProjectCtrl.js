@@ -10,23 +10,25 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 selFlag:true
             }
             $scope.cardBox=false;/*点击次卡 点击时效卡显示的卡项*/
+
             $rootScope.settingAddsome.extShopProjectInfoDTO={
-                    functionIntr:"",/*功能介绍*/
-                    oncePrice:"",/*单次价格*/
-                    discountPrice:"",/*办卡价格*/
-                    projectTypeOneId:'',/*类型id*/
-                    projectTypeOneName:"",/*类型名称*/
-                    projectTypeTwoId:"",/*系列id*/
-                    projectTypeTwoName:"",/*系列名称*/
-                    serviceTimes:"",/*包含次数*/
-                    status:"0",/*不启动*/
-                    visitDateTime:"",/*回访次数*/
-                    projectName:"",/*项目名称*/
-                    projectDuration:"",/*时长*/
-                    imageList:[],/*图片*/
-                    cardType:"0"/*卡的类型*/,
-                    effectiveNumberMonth:12/*有效期*/
-                }
+                functionIntr:"",/*功能介绍*/
+                oncePrice:"",/*单次价格*/
+                discountPrice:"",/*办卡价格*/
+                projectTypeOneId:'',/*类型id*/
+                projectTypeOneName:"",/*类型名称*/
+                projectTypeTwoId:"",/*系列id*/
+                projectTypeTwoName:"",/*系列名称*/
+                serviceTimes:"",/*包含次数*/
+                status:"0",/*不启动*/
+                visitDateTime:"",/*回访次数*/
+                projectName:"",/*项目名称*/
+                projectDuration:30,/*时长*/
+                imageList:[],/*图片*/
+                cardType:"0"/*卡的类型*/,
+                effectiveNumberMonth:'',/*有效期*/
+                useStyle:"0"
+            }
 
 
             if($rootScope.settingAddsome.extShopProjectInfoDTO.status =='0'){
@@ -52,12 +54,16 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                     $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = type;
                     if(type == '0'){
                         $scope.cardBox=false;
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.useStyle='0';
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth=''
                     }else{
                         $scope.cardBox=true;
                         $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = timeLength
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.useStyle='1'
                     }
                 }else{
                     $rootScope.settingAddsome.extShopProjectInfoDTO.cardType = '4';
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = 12
                 }
 
 
@@ -103,14 +109,52 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                 }
                 if($rootScope.settingAddsome.extShopProjectInfoDTO.cardType=='0'){
                     $rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ='1'
+                }else{
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""){
+                         alert("请输入包含次数")
+                        return
+                    }
                 }
-               if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''){
-                   alert("填入的数据不完整")
-               }
 
-                   SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
-                       $state.go("basicSetting")
+                if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==""||$rootScope.settingAddsome.extShopProjectInfoDTO.marketPrice ==""){
+                   alert("填入的数据不完整")
+                   return
+               }
+                 SaveProjectInfo.save($rootScope.settingAddsome.extShopProjectInfoDTO,function (data) {
+                       if(data.result=="0x00001"){
+                           $state.go("basicSetting")
+                           $rootScope.settingAddsome.extShopProjectInfoDTO={
+                               functionIntr:"",/*功能介绍*/
+                               oncePrice:"",/*单次价格*/
+                               discountPrice:"",/*办卡价格*/
+                               projectTypeOneId:'',/*类型id*/
+                               projectTypeOneName:"",/*类型名称*/
+                               projectTypeTwoId:"",/*系列id*/
+                               projectTypeTwoName:"",/*系列名称*/
+                               serviceTimes:"",/*包含次数*/
+                               status:"0",/*不启动*/
+                               visitDateTime:"",/*回访次数*/
+                               projectName:"",/*项目名称*/
+                               projectDuration:30,/*时长*/
+                               imageList:[],/*图片*/
+                               cardType:"0"/*卡的类型*/,
+                               effectiveNumberMonth:'',/*有效期*/
+                               useStyle:"0"
+                           }
+                       }else{
+                           alert("保存未成功")
+                       }
                    })
-               
+            }
+            $scope.projectTheLength = function (type) {
+                if(type==0){
+                    if($rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1==30)return
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1-30
+                }else{
+                    $rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration=$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration/1+30
+                }
+            }
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.extShopProjectInfoDTO[style]=value.replace(/[^0-9.0-9]+/,'')
             }
         }]);

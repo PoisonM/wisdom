@@ -44,7 +44,7 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
 
 
             $scope.expenditureDetailsGo = function(flowNo){
-                $state.go("details",{flowNo:flowNo})
+                $state.go("details",{flowNo:flowNo,searchFile:$stateParams.searchFile})
             };
             $scope.sel = function(){
                 $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
@@ -75,6 +75,5 @@ angular.module('controllers',[]).controller('employeeDetailedPerformanceCtrl',
                 $scope.flag = false
 
             };
-
 
         }]);

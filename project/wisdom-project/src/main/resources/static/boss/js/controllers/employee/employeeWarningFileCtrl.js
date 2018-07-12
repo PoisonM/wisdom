@@ -13,30 +13,44 @@ angular.module('controllers',[]).controller('employeeWarningFileCtrl',
                 $scope.queryType = type;
                 $scope.archiveCount = 0;
                 $scope.getInfo()
-            }
+            };
 
             $scope.getInfo = function(){
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetEarlyWarningList.get({
                     pageNo:1,
                     pageSize:100,
                     queryType:$scope.queryType
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.warningFile = data.responseData.info;
-                        angular.forEach($scope.warningFile,function (val,index) {
-                            angular.forEach(val,function (val1,index) {
-                                $scope.archiveCount++;
-                            })
-                        })
-                        console.log($scope.warningFile);
+                        $ionicLoading.hide();
+                        $scope.warningFile = data.responseData;
+                        $scope.param.picFlag=false;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else if(data.result==Global.SUCCESS&&data.responseData==null){
+                        $ionicLoading.hide();
+                        $scope.param.picFlag=true;
                     }
                 })
             };
 
-            $scope.getInfo()
+            $scope.$on('$ionicView.enter', function() {
+                $scope.param={
+                    picFlag:false
+                };
+                $scope.getInfo()
+            });
 
             $scope.archivesGo = function(id){
-                $state.go("archives",{id:id})
+                $state.go("employeeArchives",{id:id})
             }
 
-        }])
+        }]);

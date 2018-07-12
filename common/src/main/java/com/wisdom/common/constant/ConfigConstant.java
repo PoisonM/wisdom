@@ -6,9 +6,9 @@ public class ConfigConstant {
 
 	public static final String DOMAIN_VALUE = Global.getConfig("DOMAIN_VALUE");
 
-	public static final String USER_WEB_URL = Global.getConfig("USER_WEB_URL");
+	public static final String USER_BUSINESS_WEB_URL = Global.getConfig("USER_BUSINESS_WEB_URL");
 
-	public static final String BOSS_WEB_URL = Global.getConfig("BOSS_WEB_URL");
+	public static final String USER_BEAUTY_WEB_URL = Global.getConfig("USER_BEAUTY_WEB_URL");
 
 	public static final String OFFLINE_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("OFFLINE_PRODUCT_BUY_NOTIFY_URL");
 
@@ -135,5 +135,10 @@ public class ConfigConstant {
 
 	public static final String INCOME_AUDIT_REJECTION = Global.getConfig("INCOME_AUDIT_REJECTION");
 
+	public static final String FREE_COURSE = Global.getConfig("FREE_COURSE");
+
+	public static final String MEMBER_SHIP_COURSE = Global.getConfig("MEMBER_SHIP_COURSE");
+
+	public static final String CHARGE_COURSE = Global.getConfig("CHARGE_COURSE");
 
 }

@@ -7,14 +7,14 @@
             <!--<PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %M() @%L - %msg%n"/>-->
             <PatternLayout pattern="[%T] [%t] [%d{yyyy-MM-dd HH:mm:ss,SSS}] %c %L \: %m%n"/>
         </Console>
-        <File name="ERROR" fileName="/project/logs/user/error.log" append="false">
+        <File name="ERROR" fileName="C:\\logs\\user\\error.log" append="false">
             <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
             <!--<PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %M() @%L - %msg%n"/>-->
             <PatternLayout pattern="[%T] [%t] [%d{yyyy-MM-dd HH:mm:ss,SSS}] %c %L \: %m%n"/>
         </File>
         <!--这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
-        <RollingFile name="RollingFile" fileName="/project/logs/user/user.log"
-                     filePattern="log/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+        <RollingFile name="RollingFile" fileName="C:\\logs\\user\\user.log"
+                     filePattern="C:\\logs\\user\\$${date:yyyy-MM}\\app-%d{MM-dd-yyyy}-%i.log.gz">
             <!--<PatternLayout pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %M() @%L - %msg%n"/>-->
             <PatternLayout pattern="[%T] [%t] [%d{yyyy-MM-dd HH:mm:ss,SSS}] %c %L \: %m%n"/>
             <TimeBasedTriggeringPolicy modulate="true" interval="1" />

@@ -4,6 +4,7 @@ import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopBossRelationDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
+import com.wisdom.beauty.api.enums.AppointStatusEnum;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.extDto.ExtShopAppointServiceDTO;
@@ -93,6 +94,7 @@ public class AppointmentController {
 		extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(DateUtils.getDateStartTime(startDate), "datetimesec"));
 		extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(DateUtils.getDateEndTime(startDate), "datetimesec"));
 		extShopAppointServiceDTO.setSysShopId(sysShopId);
+		extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
 
 		//根据时间查询当前店下所有美容师
 		List<SysClerkDTO> clerkInfo = userServiceClient.getClerkInfo(sysShopId);
@@ -102,7 +104,8 @@ public class AppointmentController {
 		}
 		logger.info(preLog + "根据时间查询当前店下所有美容师个数={}", clerkInfo.size());
 
-		HashMap<String, Object> responseMap = new HashMap<>(32);
+		LinkedHashMap <String, Object> responseMap = new LinkedHashMap(32);
+		LinkedHashMap <String, Object> responseMapDev = new LinkedHashMap(32);
 
 		//查询某个店的排班信息
 		ShopScheduleSettingDTO shopScheduleSettingDTO = new ShopScheduleSettingDTO();
@@ -124,43 +127,68 @@ public class AppointmentController {
 				}
 			}
 		}
-
+		//优化，查询某个店某段时间的预约列表
+		List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
+		Map<String, List<Object>> clerkMap = getClerkAppointListMap(shopAppointServiceDTOS);
 		//遍历美容师获取预约详情
-		for (SysClerkDTO SysClerkDTO : clerkInfo) {
+		for (SysClerkDTO sysClerkDTO : clerkInfo) {
 
 			HashMap<String, Object> shopAppointMap = new HashMap<>(16);
 
-			//查询某个美容师的预约列表
-			extShopAppointServiceDTO.setSysClerkId(SysClerkDTO.getId());
-			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
-			extShopAppointServiceDTO.setSysShopId(sysShopId);
-			ArrayList<Object> appointInfoList = new ArrayList<>();
-			if (CommonUtils.objectIsEmpty(shopAppointServiceDTOS)) {
-				logger.info(preLog + "美容师预约列表为空");
-				shopAppointMap.put("appointmentInfo",appointInfoList);
-				shopAppointMap.put("point", 0);
-			} else {
-				for (ShopAppointServiceDTO serviceDTO : shopAppointServiceDTOS) {
-					try {
-						HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
-						String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(), "time"),
-								DateUtils.DateToStr(serviceDTO.getAppointEndTime(), "time"));
-						hashMap.put("scheduling", str);
-						appointInfoList.add(hashMap);
-					} catch (Exception e) {
-						logger.error(preLog + "异常，异常信息为{}" + e.getMessage(), e);
-					}
-				}
-				shopAppointMap.put("appointmentInfo", appointInfoList);
-				shopAppointMap.put("point", shopAppointServiceDTOS.size());
-			}
-			shopAppointMap.put("sysClerkDTO", SysClerkDTO);
-			responseMap.put(SysClerkDTO.getName(), shopAppointMap);
-		}
+			//某个美容师的预约列表
+			extShopAppointServiceDTO.setSysClerkId(sysClerkDTO.getId());
+			List<Object> clerkServiceInfo = clerkMap.get(sysClerkDTO.getId());
 
+			extShopAppointServiceDTO.setSysShopId(sysShopId);
+			if (CommonUtils.objectIsEmpty(clerkServiceInfo)) {
+				logger.info(preLog + "美容师预约列表为空");
+				shopAppointMap.put("appointmentInfo",clerkServiceInfo);
+				shopAppointMap.put("point", 0);
+				shopAppointMap.put("sysClerkDTO", sysClerkDTO);
+				responseMapDev.put(sysClerkDTO.getName(), shopAppointMap);
+				continue;
+
+			} else {
+				shopAppointMap.put("appointmentInfo", clerkServiceInfo);
+				shopAppointMap.put("point", clerkServiceInfo.size());
+			}
+			shopAppointMap.put("sysClerkDTO", sysClerkDTO);
+			responseMap.put(sysClerkDTO.getName(), shopAppointMap);
+		}
+		if(responseMapDev!=null){
+			responseMap.putAll(responseMapDev);
+		}
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(responseMap);
 		return responseDTO;
+	}
+
+	private Map<String, List<Object>> getClerkAppointListMap(List<ShopAppointServiceDTO> shopAppointServiceDTOS) {
+		Map<String, List<Object>> clerkMap = new HashMap<>(16);
+		if(CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)){
+			for(ShopAppointServiceDTO serviceDTO:shopAppointServiceDTOS){
+				try {
+					HashMap<String, Object> hashMap = CommonUtils.beanToMap(serviceDTO);
+					String str = CommonUtils.getArrayNo(DateUtils.DateToStr(serviceDTO.getAppointStartTime(), "time"),
+							DateUtils.DateToStr(serviceDTO.getAppointEndTime(), "time"));
+					hashMap.put("scheduling", str);
+					List<Object> clerkServiceList = clerkMap.get(serviceDTO.getSysClerkId());
+					if(null == clerkServiceList){
+						List<Object> clerkService = new ArrayList<>();
+						clerkService.add(hashMap);
+						clerkMap.put(serviceDTO.getSysClerkId(),clerkService);
+					}else{
+						clerkMap.get(serviceDTO.getSysClerkId()).add(hashMap);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+
+			}
+		}
+		return clerkMap;
 	}
 
 	/**
@@ -203,6 +231,7 @@ public class AppointmentController {
 			extShopAppointServiceDTO.setSearchStartTime(loopDate);
 			extShopAppointServiceDTO.setSearchEndTime(endTime);
 			extShopAppointServiceDTO.setSysClerkId(clerkDTO.getId());
+			extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
 			List<ShopAppointServiceDTO> shopAppointServiceDTOS = appointmentService.getShopClerkAppointListByCriteria(extShopAppointServiceDTO);
 
 			while (loopDate.getTime() < endTime.getTime()) {
@@ -302,6 +331,10 @@ public class AppointmentController {
 		ShopAppointServiceDTO shopAppointServiceDTO = new ShopAppointServiceDTO();
 		shopAppointServiceDTO.setId(shopAppointServiceId);
 		shopAppointServiceDTO.setStatus(status);
+		if(AppointStatusEnum.CANCEL.getCode().equals(status)){
+			shopAppointServiceDTO.setAppointmentCancleDate(DateUtils.DateToStr(new Date(), "datetime"));
+		}
+
 		int info = appointmentService.updateAppointmentInfo(shopAppointServiceDTO);
 		logger.debug("根据预约主键修改此次预约信息，执行结果为{}", info);
 		//更新redis
@@ -460,6 +493,8 @@ public class AppointmentController {
 		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		ShopBossRelationDTO shopBossRelationDTO = new ShopBossRelationDTO();
         shopBossRelationDTO.setSysBossCode(bossInfo.getSysBossCode());
+
+
 		List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.shopBossRelationList(shopBossRelationDTO);
 
 		if (CommonUtils.objectIsEmpty(shopBossRelationDTO)) {
@@ -477,6 +512,7 @@ public class AppointmentController {
 			extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysShopId());
 			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
 			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+			extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
 			Integer numberByCriteria = appointmentService.getShopClerkAppointNumberByCriteria(extShopAppointServiceDTO);
 			hashMap.put("bossRelationDTO", bossRelationDTO);
 			hashMap.put("appointmentNum", numberByCriteria);

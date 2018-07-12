@@ -153,13 +153,17 @@
     width: 100%;
     padding-left: 400px;
     background: #fff;
+    height: 100%;
 }
 
 .consumptionListBox .isThird {
     padding-left: 100px;
 }
 
-.consumptionListBox .consumptionListContent ul {}
+.consumptionListBox .consumptionListContent ul {
+    overflow-y: scroll;
+    height: 100%;
+}
 
 .consumptionListBox .consumptionListContent ul li {
     height: 68px;

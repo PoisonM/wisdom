@@ -10,20 +10,31 @@ import com.wisdom.beauty.api.extDto.ExtShopStoreDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.entity.BaseDao;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @MyBatisDao
 @Repository
 public interface ExtStockServiceMapper extends BaseDao<ShopStoreDTO, ShopStoreCriteria, String> {
 
 
-
     /**
-     *  查询仓库列表
-     *  @param  pageParamDTO  仓库的dto分页对象
-     *  @return 仓库列表
-     *  @autur  zhangchao
-     * */
+     * 查询仓库列表
+     *
+     * @param pageParamDTO 仓库的dto分页对象
+     * @return 仓库列表
+     * @autur zhangchao
+     */
     List<ExtShopStoreDTO> findStoreList(PageParamDTO<ExtShopStoreDTO> pageParamDTO);
 
+
+
+    /**
+     * 根据仓库id查询仓库信息
+     *
+     * @param shopStoreId
+     *
+     * @return
+     * */
+    ExtShopStoreDTO getStore(@RequestParam String shopStoreId);
 
 }

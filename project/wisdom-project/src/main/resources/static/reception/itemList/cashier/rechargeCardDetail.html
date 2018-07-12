@@ -72,11 +72,11 @@
         <div class="basic">
             <p>支付明细</p>
             <ul>
-                <li ng-if="dataInfo.payMap.cashAmount!=''">
+                <li ng-if="dataInfo.payMap.cashAmount!='' && dataInfo.payMap.cashAmount!=null">
                     <label for="">现金支付</label>
                     <span>{{dataInfo.payMap.cashAmount}}</span>
                 </li>
-                <li ng-if="dataInfo.payMap.balanceAmount!='' ">
+                <li ng-if="dataInfo.payMap.balanceAmount!='' && dataInfo.payMap.balanceAmount!=null">
                     <label for="">余额支付</label>
                     <span>{{dataInfo.payMap.balanceAmount}}</span>
                 </li>

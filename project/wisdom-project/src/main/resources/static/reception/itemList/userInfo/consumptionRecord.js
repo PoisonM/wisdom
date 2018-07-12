@@ -10,14 +10,14 @@ PADWeb.controller('consumptionRecordCtrl', function($scope, $state,$stateParams,
     console.log("消费记录");
     //consumeType 0：充值 1：消费 2、还欠款 3、退款
     Consumes.save({
-        consumeType:"0", sysUserId:$stateParams.userId, pageSize:"100", goodsType:"7", isCurrentDay:"1"
+        consumeType:"0", sysUserId:$stateParams.userId, pageSize:"100", goodsType:"7", isCurrentDay:"0"
     },function (data) {
         $scope.dataList = data.responseData
         console.log( data.responseData)
     })
     $scope.goRecordDetail = function (item) {
         // $state.go('pad-web.left_nav.completeCardDetail',{id:item.flowId,userId:})
-        $state.go("pad-web.left_nav.completeCardDetail",{
+        $state.go("pad-web.left_nav.completeConsumeDetail",{
             userId:item.sysUserId,
             flowNo:item.flowNo
         })

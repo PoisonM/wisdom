@@ -18,9 +18,23 @@ PADWeb.controller("productDetailsCtrl", function($scope, $state, $stateParams,$r
     /*开关设置如果没有侧边栏*/
     $scope.$parent.mainSwitch.footerBoxFlag=false;
 
+    /*轮播图*/
+    $scope.timeer = setInterval(function () {
+        if($(".swiper-slide").length!=0){
+            clearInterval($scope.timeer)
+            var mySwiper = new Swiper('.swiper-container',{
+                slidesPerView : 3,
+                slidesPerGroup : 1,
+                spaceBetween : 20,
+            })
+        }
+    },100)
+    $rootScope.loadingFlag = true;
     ProductInfo.get({productId:$stateParams.id},function (data) {
         if(data.result == "0x00001"){
+            $rootScope.loadingFlag = false;
             $scope.productInformation = data.responseData;
+            // $scope.imgList = data.responseData.imageList;
             console.log($scope.productInformation);
         }
     })

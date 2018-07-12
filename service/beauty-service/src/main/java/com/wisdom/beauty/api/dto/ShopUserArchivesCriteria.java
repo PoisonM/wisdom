@@ -1635,6 +1635,66 @@ public class ShopUserArchivesCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andLastToShopTimeIsNull() {
+            addCriterion("last_to_shop_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeIsNotNull() {
+            addCriterion("last_to_shop_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeEqualTo(Date value) {
+            addCriterion("last_to_shop_time =", value, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeNotEqualTo(Date value) {
+            addCriterion("last_to_shop_time <>", value, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeGreaterThan(Date value) {
+            addCriterion("last_to_shop_time >", value, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("last_to_shop_time >=", value, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeLessThan(Date value) {
+            addCriterion("last_to_shop_time <", value, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeLessThanOrEqualTo(Date value) {
+            addCriterion("last_to_shop_time <=", value, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeIn(List<Date> values) {
+            addCriterion("last_to_shop_time in", values, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeNotIn(List<Date> values) {
+            addCriterion("last_to_shop_time not in", values, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeBetween(Date value1, Date value2) {
+            addCriterion("last_to_shop_time between", value1, value2, "lastToShopTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andLastToShopTimeNotBetween(Date value1, Date value2) {
+            addCriterion("last_to_shop_time not between", value1, value2, "lastToShopTime");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateDateIsNull() {
             addCriterion("create_date is null");
             return (Criteria) this;

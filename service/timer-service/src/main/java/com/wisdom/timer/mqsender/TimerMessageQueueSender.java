@@ -5,6 +5,7 @@ import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.WeixinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -36,6 +37,13 @@ public class TimerMessageQueueSender {
         logger.info("sendDeFrozenUserReturnMoney==="+incomeRecord.getId());
         String incomeRecordStr = gson.toJson(incomeRecord);
         this.rabbitTemplate.convertAndSend("deFrozenUserReturnMoney", incomeRecordStr);
+    }
+
+    public void sendFrozenUserType(UserInfoDTO userInfoDTO) {
+        logger.info("sendFrozenUserType===" + userInfoDTO.getId());
+        WeixinUtil.getUserToken();
+        String userInfoDTOStr = gson.toJson(userInfoDTO);
+        this.rabbitTemplate.convertAndSend("frozenUserType", userInfoDTOStr);
     }
 
     public void sendPromoteUserBusinessTypeForRecommend(UserInfoDTO userInfo) {

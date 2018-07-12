@@ -1,6 +1,6 @@
 var PADWeb = angular.module('app', ['angularFileUpload', 'ui.router', 'ngDialog', 'oc.lazyLoad', 'ngResource', 'ngSanitize', "ngTouch"]);
-// var version = "1.0."+Math.random()+""
-var version = "1.0"
+var version = "1.0."+Math.random()+""
+// var version = "1.0"
 PADWeb.config(["$provide", "$compileProvider", "$controllerProvider", "$filterProvider",
     function($provide, $compileProvider, $controllerProvider, $filterProvider) {
         PADWeb.controller = $controllerProvider.register;
@@ -1282,9 +1282,43 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
 
-        //套卡划卡详情
+        //划卡消费详情
         .state('pad-web.left_nav.completeCardDetail', {
             url: '/completeCardDetail/:userId/:flowNo',
+            templateUrl: root + '/cashier/completeCardDetail.html',
+            controller: 'completeCardDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡划卡详情",
+                        files: [root + "cashier/completeCardDetail.js?version=" + version,
+                            root + "cashier/completeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //消费详情
+        .state('pad-web.left_nav.completeConsumeDetail', {
+            url: '/completeConsumeDetail/:userId/:flowNo',
+            templateUrl: root + '/cashier/completeConsumeDetail.html',
+            controller: 'completeConsumeDetailCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "套卡划卡详情",
+                        files: [root + "cashier/completeConsumeDetail.js?version=" + version,
+                            root + "cashier/completeCardDetail.css?version=" + version,
+                        ]
+                    })
+                }]
+            }
+        })
+
+        //套卡划卡详情
+        .state('pad-web.left_nav.consumeGroupCardDetail', {
+            url: '/consumeGroupCardDetail/:userId/:flowNo',
             templateUrl: root + '/cashier/consumeGroupCardDetail.html',
             controller: 'consumeGroupCardDetail',
             resolve: {
@@ -1417,7 +1451,21 @@ PADWeb.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
             }
         })
 
-
+        .state('pad-web.userInfo.wait4Receive', {
+            url: '/wait4Receive/:id/:name',
+            templateUrl: root + '/userInfo/wait4Receive.html',
+            controller: 'wait4ReceiveCtrl',
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: "待领取明细",
+                        files: [root + "userInfo/wait4ReceiveCtrl.js?version=" + version,
+                            root + "userInfo/wait4Receive.css?version=" + version
+                        ]
+                    })
+                }]
+            }
+        })
     ;
     $urlRouterProvider.otherwise('pad-web/userInfo/todayPerformance');
     $httpProvider.interceptors.push('httpInterceptor');

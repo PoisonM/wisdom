@@ -83,6 +83,25 @@
 		limit #{pageNo},#{pageSize}
 	</select>
 
+	<!--获取视频产品列表-->
+	<select id="findTrainingProductListNew" resultMap="ProductResultMap" parameterType="com.wisdom.common.dto.system.PageParamDTO">
+		select
+			*
+		from
+			business_product
+		where
+			type='training'
+			AND  status = '1'
+
+			<if test="secondType != null and secondType != ''">
+				AND second_type = #{secondType}
+			</if>
+
+			ORDER BY
+			create_date DESC
+			limit #{pageNo},#{pageSize}
+	</select>
+
 	<!--查询所有商品-->
 	<select id="queryAllProducts" resultMap="ProductResultMap"
 			resultType="com.wisdom.common.persistence.Page">
@@ -224,7 +243,8 @@
 		create_date,
 		second_type,
 		product_prefecture,
-		product_amount
+		product_amount,
+		teacher_name
 		) VALUES (
 		#{id},
 		#{productName},
@@ -238,7 +258,8 @@
 		#{createDate},
 		#{secondType},
 		#{productPrefecture},
-		#{productAmount}
+		#{productAmount},
+		#{teacherName}
 		)
 	</insert>
 	

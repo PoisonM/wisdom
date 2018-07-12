@@ -816,6 +816,66 @@ public class ShopUserProductRelationCriteria {
             return (Criteria) this;
         }
 
+        public Criteria andDiscountPriceIsNull() {
+            addCriterion("discount_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIsNotNull() {
+            addCriterion("discount_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceEqualTo(BigDecimal value) {
+            addCriterion("discount_price =", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotEqualTo(BigDecimal value) {
+            addCriterion("discount_price <>", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceGreaterThan(BigDecimal value) {
+            addCriterion("discount_price >", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("discount_price >=", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceLessThan(BigDecimal value) {
+            addCriterion("discount_price <", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("discount_price <=", value, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceIn(List<BigDecimal> values) {
+            addCriterion("discount_price in", values, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotIn(List<BigDecimal> values) {
+            addCriterion("discount_price not in", values, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("discount_price between", value1, value2, "discountPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andDiscountPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("discount_price not between", value1, value2, "discountPrice");
+            return (Criteria) this;
+        }
+
         public Criteria andInitTimesIsNull() {
             addCriterion("init_times is null");
             return (Criteria) this;

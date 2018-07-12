@@ -19,7 +19,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     $scope.searchInfo = {
         info :''
     };
-
+    $scope.status = '0'
     //获取订单ID
     SaveShopUserOrderInfo.save({
         userId: $stateParams.userId
@@ -71,6 +71,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             SearchShopProjectList.get({
                 filterStr: $scope.searchInfo.info,
                 useStyle: e,
+                status:$scope.status
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 //默认展示第一个
@@ -91,6 +92,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             SearchShopProductList.get({
                 pageSize: "100",
                 filterStr: $scope.searchInfo.info,
+                status :$scope.status
             }, function(data) {
                 $scope.secondCategory = data.responseData.detailLevel;
                 var first = data.responseData.detailLevel[0];
@@ -112,9 +114,16 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
         } else if (e == 3) {
             GetShopProjectGroups.get({
                 projectGroupName: '',
-                pageSize: 100
+                pageSize: 100,
+                status:$scope.status
             }, function(data) {
-                $scope.threeCategories = data.responseData;
+                $scope.threeCategories = [];
+                for (var i = 0; i < data.responseData.length; i++) {
+                    var item = data.responseData[i]
+                    if(item.expirationDate >= new Date().Format("yyyy-MM-dd") || item.expirationDate == "0"){
+                        $scope.threeCategories.push(item);
+                    }
+                }
             })
         }
     }
@@ -126,8 +135,9 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             pageSize: 100,
             projectName: "",
             projectTypeOneId: one,
-            ProjectTypeTwoId: two,
+            projectTypeTwoId: two,
             useStyle: $scope.select,
+            status:$scope.status
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });
@@ -143,6 +153,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
             productName: "",
             productTypeOneId: one,
             productTypeTwoId: two,
+            status:$scope.status
         }, function(data) {
             $scope.threeCategories = data.responseData;
         });
@@ -188,6 +199,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 sysShopProjectName: res.projectName,
                 sysUserId: $stateParams.userId,
                 useStyle: res.useStyle,
+                projectTypeTwoId:res.projectTypeTwoId
             }],
             shopUserProductRelationDTOS: [{
                 purchasePrice: res.marketPrice,
@@ -195,6 +207,7 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 shopProductId: res.id,
                 shopProductName: res.productName,
                 sysUserId: $stateParams.userId,
+                productTypeTwoId:res.productTypeTwoId
             }],
             projectGroupRelRelationDTOS: [{
                 shopGroupPuchasePrice: res.marketPrice,
@@ -276,6 +289,22 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
     $scope.$parent.priceListSaveFn = function () {
         $state.go('pad-web.left_nav.makeSureOrder',{"userId":$stateParams.userId})
     }
-    
+
+
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
 
 });

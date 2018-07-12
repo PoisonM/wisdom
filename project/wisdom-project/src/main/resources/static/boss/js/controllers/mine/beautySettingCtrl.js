@@ -41,6 +41,8 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
                         ImageBase64UploadToOSS.save($scope.thumb,function (data) {
                             if(data.result==Global.SUCCESS&&data.responseData!=null){
                                 $scope.beautySetting[style]=data.responseData
+                            }else{
+                                alert('上传未成功')
                             }
 
                         })
@@ -64,6 +66,8 @@ angular.module('controllers',[]).controller('beautySettingCtrl',
                 UpdateShopInfo.save($scope.beautySetting,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
+                    }else{
+                        alert("保存未成功")
                     }
                 })
             }

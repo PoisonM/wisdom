@@ -153,6 +153,13 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
                 arrayList.add(AppointStatusEnum.OVER.getCode());
                 arrayList.add(AppointStatusEnum.CANCEL.getCode());
                 criteria.andStatusIn(arrayList);
+            }else if (AppointStatusEnum.APPOINT.getCode().equals(status)) {
+                ArrayList<String> arrayList = new ArrayList<>();
+                arrayList.add(AppointStatusEnum.NOT_STARTED.getCode());
+                arrayList.add(AppointStatusEnum.CONFIRM.getCode());
+                arrayList.add(AppointStatusEnum.ON_SERVICE.getCode());
+                arrayList.add(AppointStatusEnum.OVER.getCode());
+                criteria.andStatusIn(arrayList);
             } else {
                 criteria.andStatusEqualTo(status);
             }
@@ -195,6 +202,17 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         if (StringUtils.isNotBlank(extShopAppointServiceDTO.getSysBossCode())) {
             criteria.andSysBossCodeEqualTo(extShopAppointServiceDTO.getSysBossCode());
         }
+
+        if (AppointStatusEnum.APPOINT.getCode().equals(extShopAppointServiceDTO.getStatus())) {
+            ArrayList<String> arrayList = new ArrayList<>();
+            arrayList.add(AppointStatusEnum.NOT_STARTED.getCode());
+            arrayList.add(AppointStatusEnum.CONFIRM.getCode());
+            arrayList.add(AppointStatusEnum.ON_SERVICE.getCode());
+            arrayList.add(AppointStatusEnum.OVER.getCode());
+            criteria.andStatusIn(arrayList);
+        }
+
+
 
         int appointServiceDTOS = shopAppointServiceMapper.countByCriteria(shopAppointServiceCriteria);
         logger.info("根据时间查询某个店下的某个美容师的预约个数={}", appointServiceDTOS);
@@ -261,17 +279,30 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
             Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000L);
             shopAppointServiceDTO.setAppointEndTime(afterDate);
         }
-        //根据预约时间查询当前美容师有没有被占用
-        shopAppointServiceDTO.setSearchStartTime(shopAppointServiceDTO.getAppointStartTime());
-        shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
-        String status = shopAppointServiceDTO.getStatus();
-        shopAppointServiceDTO.setStatus("");
-        List<ShopAppointServiceDTO> appointListByCriteria = getShopClerkAppointListByCriteria(shopAppointServiceDTO);
-        shopAppointServiceDTO.setStatus(status);
-        if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
-            responseDTO.setResult(StatusConstant.FAILURE);
-            responseDTO.setErrorInfo("当前时间段已被预约，请您重新选择(-_-)");
-            return responseDTO;
+        //根据预约时间查询当前美容师有没有被占用(前端控制是否占用)
+//        shopAppointServiceDTO.setSearchStartTime(shopAppointServiceDTO.getAppointStartTime());
+//        shopAppointServiceDTO.setSearchEndTime(shopAppointServiceDTO.getAppointEndTime());
+//        String status = shopAppointServiceDTO.getStatus();
+//        shopAppointServiceDTO.setStatus("");
+//        List<ShopAppointServiceDTO> appointListByCriteria = getShopClerkAppointListByCriteria(shopAppointServiceDTO);
+//        shopAppointServiceDTO.setStatus(status);
+//        if (CommonUtils.objectIsNotEmpty(appointListByCriteria)) {
+//            responseDTO.setResult(StatusConstant.FAILURE);
+//            responseDTO.setErrorInfo("当前时间段已被预约，请您重新选择(-_-)");
+//            return responseDTO;
+//        }
+
+        //如果最后一位存在;则过滤掉
+        String shopProjectId = shopAppointServiceDTO.getShopProjectId();
+        String shopProjectName = shopAppointServiceDTO.getShopProjectName();
+
+        if((";").equals(shopProjectId.substring(shopProjectId.length()-1,shopProjectId.length()))){
+            shopProjectId = shopProjectId.substring(0,shopProjectId.length()-1);
+            shopAppointServiceDTO.setShopProjectId(shopProjectId);
+        }
+        if((";").equals(shopProjectName.substring(shopProjectName.length()-1,shopProjectName.length()))){
+            shopProjectName = shopProjectName.substring(0,shopProjectName.length()-1);
+            shopAppointServiceDTO.setShopProjectName(shopProjectName);
         }
 
         logger.info("修改用户的预约信息={}", "shopAppointServiceDTO = [" + shopAppointServiceDTO + "]");
@@ -307,7 +338,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
         //如果userInfo为空，说明是pad端用户
         if (null != clerkInfo) {
-            shopAppointServiceDTO.setCreateBy(clerkInfo.getSysUserId());
+            shopAppointServiceDTO.setCreateBy(clerkInfo.getName());
             shopAppointServiceDTO.setSysBossCode(clerkInfo.getSysBossCode());
             if (org.apache.commons.lang3.StringUtils.isBlank(shopAppointServiceDTO.getSysClerkId())) {
                 shopAppointServiceDTO.setSysClerkId(clerkInfo.getId());
@@ -320,7 +351,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         else if (null != userInfo) {
             shopAppointServiceDTO.setSysUserId(userInfo.getId());
             shopAppointServiceDTO.setSysUserName(userInfo.getNickname());
-            shopAppointServiceDTO.setCreateBy(userInfo.getId());
+            shopAppointServiceDTO.setCreateBy(userInfo.getNickname());
             shopAppointServiceDTO.setSysUserPhone(userInfo.getMobile());
             ShopUserLoginDTO userLoginShop = redisUtils.getUserLoginShop(UserUtils.getUserInfo().getId());
             shopAppointServiceDTO.setSysShopId(userLoginShop.getSysShopId());
@@ -331,7 +362,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         }
         if (org.apache.commons.lang3.StringUtils.isNotBlank(shopAppointServiceDTO.getAppointStartTimeS())) {
             shopAppointServiceDTO.setAppointStartTime(DateUtils.StrToDate(shopAppointServiceDTO.getAppointStartTimeS(), "hour"));
-            Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000l);
+            Date afterDate = new Date(shopAppointServiceDTO.getAppointStartTime().getTime() + shopAppointServiceDTO.getAppointPeriod() * 60 * 1000L);
             shopAppointServiceDTO.setAppointEndTime(afterDate);
         }
         //根据预约时间查询当前美容师有没有被占用
@@ -379,11 +410,6 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
         int insert = shopAppointServiceMapper.insertSelective(shopAppointServiceDTO);
         redisUtils.saveShopAppointInfoToRedis(shopAppointServiceDTO);
         logger.debug("保存用户的预约信息执行结果， {}", insert > 0 ? "成功" : "失败");
-        //更新档案信息,最后一次到店时间
-        shopUserArchivesDTO.setSysClerkId(shopAppointServiceDTO.getSysClerkId());
-        shopUserArchivesDTO.setSysClerkName(shopAppointServiceDTO.getSysClerkName());
-        shopUserArchivesDTO.setUpdateDate(new Date());
-        shopCustomerArchivesService.updateByCriteriaSelective(shopUserArchivesDTO);
 
         HashMap<Object, Object> hashMap = new HashMap<>(1);
         hashMap.put("appointmentId", shopAppointServiceDTO.getId());
@@ -452,14 +478,14 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     @Override
     public HashMap<String,String> findNumForShopByTimeService(String sysShopId, String sysClerkId,String appointStartTimeS, String appointStartTimeE){
 
-        HashMap<String,String> shopAppointMap = new HashMap<>();
+        HashMap<String,String> shopAppointMap = new HashMap<>(16);
         shopAppointMap.put("sysShopId",sysShopId);
         shopAppointMap.put("appointStartTimeS",appointStartTimeS);
         shopAppointMap.put("appointStartTimeE",appointStartTimeE);
         shopAppointMap.put("sysClerkId",sysClerkId);
 
         //返回结果map
-        HashMap<String,String> resultMap = new HashMap<>();
+        HashMap<String,String> resultMap = new HashMap<>(16);
         //预约总数
         Integer shopAppointNum;
 
@@ -489,7 +515,7 @@ public class ShopAppointmentServiceImpl implements ShopAppointmentService {
     public PageParamDTO<List<ExtShopAppointServiceDTO>> findUserInfoForShopByTimeService(PageParamDTO<ExtShopAppointServiceDTO> pageParamDTO) {
 
 
-        HashMap<String,String> shopAppointMap = new HashMap<>();
+        HashMap<String,String> shopAppointMap = new HashMap<>(16);
         shopAppointMap.put("sysShopId",pageParamDTO.getRequestData().getSysShopId());
         shopAppointMap.put("appointStartTimeS",pageParamDTO.getRequestData().getAppointStartTimeS());
         shopAppointMap.put("appointStartTimeE", pageParamDTO.getRequestData().getAppointEndTimeE());

@@ -5,12 +5,15 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
              $scope.param={
                flag:false,
-               goodType:'6',
+               goodsType:'6',
                timeIndex:0,
                startDate:"",
                endDate: "",
                startEndIndex:'',
-               picFlag:false
+               picFlag:false,
+                 startValue:"",
+                 endValue:"",
+                 searchState:'5'
            };
             /*日期插件*/
             var disabledDates = [
@@ -30,13 +33,14 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                 if (typeof (val) === 'undefined') {
                 } else {
                     if($scope.param.startEndIndex==0){
-                        $scope.param.startDate = $filter('date')(val, 'yyyy-MM-dd')
+                        $scope.param.startDate = $filter('date')(val, 'yyyy-MM-dd');
+                        $scope.param.startValue = $filter('date')(val, 'yyyy-MM-dd')+' 00:00:00'
+
                     }else{
-                        $scope.param.endDate = $filter('date')(val, 'yyyy-MM-dd')
+                        $scope.param.endDate = $filter('date')(val, 'yyyy-MM-dd');
+                        $scope.param.endValue = $filter('date')(val, 'yyyy-MM-dd')+' 23:59:59'
                     }
-                   if( $scope.param.startDate!==""&&$scope.param.endDate!=''){
-                      /* $scope.getInfo(); */
-                   }
+
 
                 }
             };
@@ -74,7 +78,7 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
 
            };
            $scope.selType = function(type){
-               $scope.param.goodType = type
+               $scope.param.searchState = type
            }
            $scope.selTime = function(index){
                if(index!=0){
@@ -82,6 +86,8 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                }else{
                    $scope.param.startDate = "";
                    $scope.param.endDate = "";
+                   $scope.param.startValue=''
+                   $scope.param.endValue=''
                }
                $scope.param.timeIndex = index;
 
@@ -105,37 +111,47 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                $scope.param.flag = false;
            };
            $scope.reset = function() {
-               $scope.param.goodType = '6'
+               $scope.param.goodsType = '6'
                $scope.param.timeIndex = 0
                $scope.param.startDate = ''
                $scope.param.endDate = ''
+               $scope.param.searchState = '5';
+               $scope.param.startValue=''
+               $scope.param.endValue=''
            };
            $scope.disNone = function(){
                $scope.param.flag = false;
            }
-
-
-
             function fun_date(aa){
                 var date1 = new Date(), time1=date1.getFullYear()+"-"+(date1.getMonth()+1)+"-"+date1.getDate();//time1表示当前时间
                 $scope.param.endDate = time1
+                $scope.param.endValue = time1+' 23:59:59';
                 var date2 = new Date(date1);
                 date2.setDate(date1.getDate()+aa);
                 var time2 = date2.getFullYear()+"-"+(date2.getMonth()+1)+"-"+date2.getDate();
                 $scope.param.startDate =time2
+                $scope.param.startValue =time2+' 00:00:00'
             }
 
             $scope.detailsOfCashierGo=function (flowNo) {
                 $state.go("detailsOfCashier",{flowNo:flowNo})
             }
             $scope.getInfo = function(){
+                if($scope.param.startDate!=''){
+                    $scope.param.startDate=$scope.param.startDate
+                }
+                if($scope.param.endDate!=''){
+                    $scope.param.endDate=$scope.param.endDate
+                }
                 $scope.userConsumeRequest = {
                     consumeType:'0',
-                    goodType:$scope.param.goodType,
+                    goodsType:$scope.param.goodsType,
                     pageSize:1000,
                     sysUserId:$stateParams.sysUserId,
-                    startTime:$scope.param.startDate,
-                    endTime:$scope.param.endDate
+                    startTime:$scope.param.startValue,
+                    endTime:$scope.param.endValue,
+                    searchState:$scope.param.searchState
+
                 }
                 $ionicLoading.show({
                     content: 'Loading',
@@ -149,10 +165,10 @@ angular.module('controllers',[]).controller('recordCashierCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.recordCashier =data.responseData
                         $scope.param.picFlag=false;
-                        if(data.responseData.length<=0){
-                            $scope.param.picFlag=true;
-                        }
                     }else{
+                        $scope.param.picFlag=true;
+                    }
+                    if(data.responseData.length<=0){
                         $scope.param.picFlag=true;
                     }
                 })

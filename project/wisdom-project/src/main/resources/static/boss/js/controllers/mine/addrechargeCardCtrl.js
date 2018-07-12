@@ -22,8 +22,6 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 timeDiscount:'',/*单次折扣*/
                 periodDiscount:'',/*疗程卡折扣*/
                 productDiscount:''/*产品折扣*/
-
-
             }
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
@@ -60,13 +58,16 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                $scope.param.appearArr[index ] =!$scope.param.appearArr[index ]
             }
             $scope.discount = function(style){
-                $rootScope.settingAddsome.editedRecharge[style] = $rootScope.settingAddsome.editedRecharge[style].replace(/[^\d]/g,'')
+                $rootScope.settingAddsome.editedRecharge[style] = $rootScope.settingAddsome.editedRecharge[style].replace(/[^\d.]/g,'')
 
             }
             $scope.discounts = function (style) {
-                if($rootScope.settingAddsome.editedRecharge[style]>10||$rootScope.settingAddsome.editedRecharge[style]<0.1){
-                    $rootScope.settingAddsome.editedRecharge[style] =0.1
+                if($rootScope.settingAddsome.editedRecharge[style]>1||$rootScope.settingAddsome.editedRecharge[style]<0.1){
+                    $rootScope.settingAddsome.editedRecharge[style] =1
                 }
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.editedRecharge[style]=value.replace(/[^0-9.0-9]+/,'')
             }
             $scope.save = function () {
                 if($scope.param.status == true){
@@ -74,13 +75,35 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                 }else{
                     $rootScope.settingAddsome.editedRecharge.status = '1'
                 }
-                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||( $rootScope.settingAddsome.editedRecharge.periodList>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!='')||($rootScope.settingAddsome.editedRecharge.periodList.length<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!='')||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timesList!='')||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
-                    alert("信息不完全")
+                if($rootScope.settingAddsome.editedRecharge.name==""||
+                    $rootScope.settingAddsome.editedRecharge.amount==""||
+                    ($rootScope.settingAddsome.editedRecharge.timesList.length<=0)||
+                    ( $rootScope.settingAddsome.editedRecharge.periodList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.productList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.productDiscount=='')||
+                    ($rootScope.settingAddsome.editedRecharge.periodDiscount=='')||
+                    ($rootScope.settingAddsome.editedRecharge.timesList=='')){
+                    alert("信息不完全");
                     return
                 }
                 SaveRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge, function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")
+                        $rootScope.settingAddsome.editedRecharge={
+                            name:'',
+                            amount:"",
+                            imageList:[],
+                            introduce:'',
+                            status:'0',
+                            timesList:[],/*次卡数组id*/
+                            periodList:[],/*疗程卡数组id*/
+                            productList:[]/*产品数组id*/,
+                            timeDiscount:'',/*单次折扣*/
+                            periodDiscount:'',/*疗程卡折扣*/
+                            productDiscount:''/*产品折扣*/
+                        }
+                    }else{
+                        alert("保存未成功")
                     }
 
                 })

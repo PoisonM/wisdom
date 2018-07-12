@@ -16,7 +16,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     phone:"",
                     sysShopId:"",
                     sysShopName:"",
-                    imageUrl:'images/headPhone.png'
+                    imageUrl:'https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png'
             };
 
             /*点击女*/

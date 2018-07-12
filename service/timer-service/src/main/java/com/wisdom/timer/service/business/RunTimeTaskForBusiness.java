@@ -1,5 +1,6 @@
 package com.wisdom.timer.service.business;
 
+import com.wisdom.common.util.WeixinUtil;
 import com.wisdom.timer.client.WeixinServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,12 @@ public class RunTimeTaskForBusiness {
         weixinServiceClient.updateUserWeixinToken();
     }
 
-    //每隔1分钟，将payRecord表中，状态为0的订单，进行状态调整处理
+    @Scheduled(cron="0 */60 * * * ?")
+    public void updateBeautyWeixinToken(){
+        weixinServiceClient.updateBeautyWeixinToken();
+    }
+
+    //每隔10分钟，将payRecord表中，状态为0的订单，进行状态调整处理
     @Scheduled(cron="0 */1 * * * ?")
     public void processNoPayRecordData(){
         transactionRunTimeService.autoProcessNoPayRecordData();
@@ -48,12 +54,11 @@ public class RunTimeTaskForBusiness {
         transactionRunTimeService.autoProcessUserAccount();
 
         //判断是不是本月的25号，若是25号，则进行月度提成计算
-//        Calendar now = Calendar.getInstance();
-//        String day = now.get(Calendar.DAY_OF_MONTH) + "";
-//        if(day.equals("15"))
-//        {
-//            transactionRunTimeService.autoMonthlyIncomeCalc();
-//        }
+        Calendar now = Calendar.getInstance();
+        String day = now.get(Calendar.DAY_OF_MONTH) + "";
+        if(day.equals("26")){
+            transactionRunTimeService.autoMonthlyIncomeCalc();
+        }
     }
 
 }

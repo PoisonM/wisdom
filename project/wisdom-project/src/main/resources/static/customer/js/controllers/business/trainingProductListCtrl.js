@@ -7,8 +7,12 @@ angular.module('controllers',[]).controller('trainingProductListCtrl',
             $rootScope.title = "美享99产品详情";
 
             $scope.param = {
+
                 trainingProductListNeedPay:[],
-                trainingProduct2NeedPayList:[]
+                trainingProduct2NeedPayList:[],
+                freeProductDTOList:[],
+                memberProductDTOList:[],
+                chargeProductDTOList:[]
             };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -27,9 +31,11 @@ angular.module('controllers',[]).controller('trainingProductListCtrl',
                     $ionicLoading.hide();
                     if(data.result==Global.SUCCESS)
                     {
-                        $scope.param.trainingProductListNeedPay = data.responseData;
+                        $scope.param.freeProductDTOList = data.responseData.freeProductDTOList;
+                        $scope.param.memberProductDTOList = data.responseData.memberProductDTOList;
+                        $scope.param.chargeProductDTOList = data.responseData.chargeProductDTOList;
 
-                        var partNames = [];
+                      /*  var partNames = [];
                         angular.forEach($scope.param.trainingProductListNeedPay,function(value1,index1){
                             var same = false;
                             angular.forEach(partNames,function(value2,index){
@@ -40,10 +46,10 @@ angular.module('controllers',[]).controller('trainingProductListCtrl',
                             if(!same) {
                                 partNames.push(parseInt(value1.price))
                             }
-                        })
-                        partNames.sort(function(a,b){return b-a});
-
-                        var index=0;
+                        })*/
+                       /* partNames.sort(function(a,b){return b-a});
+*/
+                       /* var index=0;
                         angular.forEach(partNames,function (value1,index1) {
                             angular.forEach($scope.param.trainingProductListNeedPay,function(value2,index2){
                                 GetTrainingProductPlayNum.get({productId:value2.productId},function (data) {
@@ -54,7 +60,7 @@ angular.module('controllers',[]).controller('trainingProductListCtrl',
                                 }
                             })
                             index++;
-                        })
+                        })*/
                     }
 
                 })

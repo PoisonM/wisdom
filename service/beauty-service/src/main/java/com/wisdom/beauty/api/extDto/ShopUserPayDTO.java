@@ -36,6 +36,17 @@ public class ShopUserPayDTO {
     //
     private String oweAmount;
 
+    //充值卡抵扣金额
+    private String rechargeCardPay;
+
+    public String getRechargeCardPay() {
+        return rechargeCardPay;
+    }
+
+    public void setRechargeCardPay(String rechargeCardPay) {
+        this.rechargeCardPay = rechargeCardPay;
+    }
+
     public String getOweAmount() {
         return oweAmount;
     }

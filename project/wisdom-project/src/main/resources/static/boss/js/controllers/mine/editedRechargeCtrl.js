@@ -4,14 +4,12 @@
 angular.module('controllers',[]).controller('editedRechargeCtrl',
     ['$scope','$rootScope','$stateParams','$state','RechargeCardDetail','Global','$http','GetGoodsUseScope','UpdateRechargeCardInfo','ImageBase64UploadToOSS','$ionicLoading',
         function ($scope,$rootScope,$stateParams,$state,RechargeCardDetail,Global,$http,GetGoodsUseScope,UpdateRechargeCardInfo,ImageBase64UploadToOSS,$ionicLoading) {
-
             $rootScope.title = "编辑充值卡";
             $scope.param={
                 appearArr:[false,false,false],
                 status:true,
                 id:$stateParams.id
             };
-            $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -41,7 +39,10 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                                 $rootScope.settingAddsome.editedRecharge.periodList = new Array;
                                 $rootScope.settingAddsome.editedRecharge.productList = new Array;
                             }
-                            if ($rootScope.settingAddsome.editedRecharge.productList.length > 0 || ($rootScope.settingAddsome.editedRecharge.productList != '' && $rootScope.settingAddsome.editedRecharge.productList != null)) {
+                            for(var i=0;i<$scope.param.appearArr.length;i++){
+                                $scope.param.appearArr[i]=true
+                            }
+                           /* if ($rootScope.settingAddsome.editedRecharge.productList.length > 0 || ($rootScope.settingAddsome.editedRecharge.productList != '' && $rootScope.settingAddsome.editedRecharge.productList != null)) {
                                 $scope.param.appearArr[2] = true
                             }
                             if ($rootScope.settingAddsome.editedRecharge.periodList.length > 0 || ($rootScope.settingAddsome.editedRecharge.periodDiscount != '' && $rootScope.settingAddsome.editedRecharge.periodDiscount != null)) {
@@ -49,7 +50,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                             }
                             if ($rootScope.settingAddsome.editedRecharge.timesList.length > 0 || ($rootScope.settingAddsome.editedRecharge.timeDiscount != "" && $rootScope.settingAddsome.editedRecharge.timeDiscount != null)) {
                                 $scope.param.appearArr[0] = true
-                            }
+                            }*/
 
                             $ionicLoading.hide()
 
@@ -58,7 +59,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
 
                     }
                 });
-            })
+
 
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
@@ -92,25 +93,40 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
             }
 
             $scope.discount = function(style){
-                $rootScope.settingAddsome.editedRecharge[style] = $rootScope.settingAddsome.editedRecharge[style].replace(/[^\d]/g,'')
+                $rootScope.settingAddsome.editedRecharge[style] = $rootScope.settingAddsome.editedRecharge[style].replace(/[^\d.]/g,'')
 
             }
             $scope.discounts = function (style) {
-                if($rootScope.settingAddsome.editedRecharge[style]>10||$rootScope.settingAddsome.editedRecharge[style]<0.1){
-                    $rootScope.settingAddsome.editedRecharge[style] =0.1
+                if($rootScope.settingAddsome.editedRecharge[style]>1||$rootScope.settingAddsome.editedRecharge[style]<0.1){
+                    $rootScope.settingAddsome.editedRecharge[style] =1
                 }
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.editedRecharge[style]=value.replace(/[^0-9.0-9]+/,'')
             }
             $scope.save = function () {
-               /*
-                if($rootScope.settingAddsome.editedRecharge.name==""||$rootScope.settingAddsome.editedRecharge.amount==""||($rootScope.settingAddsome.editedRecharge.timesList.length>0&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')||($rootScope.settingAddsome.editedRecharge.periodList.length>0&&$rootScope.settingAddsome.editedRecharge.periodDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length>0&&$rootScope.settingAddsome.editedRecharge.productDiscount=='')||($rootScope.settingAddsome.editedRecharge.productList.length<=0&&$rootScope.settingAddsome.editedRecharge.productDiscount!=''&&$rootScope.settingAddsome.editedRecharge.productDiscount!=null)||($rootScope.settingAddsome.editedRecharge.periodList.length<=0&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodDiscount!=null)||($rootScope.settingAddsome.editedRecharge.timesList.length<=0&&$rootScope.settingAddsome.editedRecharge.timesList!=''&&$rootScope.settingAddsome.editedRecharge.timesList!=null)||($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.timeDiscount=='')){
-                    alert("请检查信息");
+                if($rootScope.settingAddsome.editedRecharge.name==""||
+                    $rootScope.settingAddsome.editedRecharge.amount==""||
+                    ($rootScope.settingAddsome.editedRecharge.timesList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.periodList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.productList.length<=0)||
+                    ($rootScope.settingAddsome.editedRecharge.productDiscount=='')||
+                    ($rootScope.settingAddsome.editedRecharge.periodDiscount=='')||
+                    ($rootScope.settingAddsome.editedRecharge.timesList=='')){
+                    alert("信息不完全");
                     return
                 }
-*/
+             if ($scope.param.status == true) {
+                    $rootScope.settingAddsome.editedRecharge.status = '0'
+                } else {
+                    $rootScope.settingAddsome.editedRecharge.status = '1'
+                }
 
                 UpdateRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge,function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")
+                    }else{
+                        alert("保存未成功")
                     }
                     
                 })

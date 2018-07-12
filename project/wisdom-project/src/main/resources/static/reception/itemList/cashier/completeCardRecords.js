@@ -28,7 +28,7 @@ PADWeb.controller('completeCardRecordsCtrl', function($scope, $stateParams, $sta
     }
     //
     $scope.goCompleteCardDetail = function (flowNo) {
-        $state.go("pad-web.left_nav.completeCardDetail",{
+        $state.go("pad-web.left_nav.consumeGroupCardDetail",{
             userId:$stateParams.userId,
             flowNo:flowNo
         })

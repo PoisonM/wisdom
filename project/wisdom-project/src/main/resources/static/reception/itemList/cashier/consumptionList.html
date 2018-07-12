@@ -36,10 +36,10 @@
             <input placeholder="请输入名称" ng-change="fastSearch()" value="searchInfo" ng-model="searchInfo.info" type="text">
             <span ng-click="fastSearch()">搜索</span>
         </div>
-        <div style="overflow: scroll;height: 100%;">
+        <div style="overflow-x: hidden;overflow-y: scroll; height: 100%;width:100%;padding-bottom: 60px;">
             <ul>
                 <!--status0启用 1禁用-->
-                <div ng-if="item1.levelOneDetail.status != 1" ng-repeat="(key1,item1) in secondCategory">
+                <div ng-repeat="(key1,item1) in secondCategory">
                     <div ng-if="select!=2"  class="consumptionListUlTitle">{{item1.levelOneDetail.projectTypeName}}</div>
                     <div ng-if="select==2"  class="consumptionListUlTitle">{{item1.levelOneDetail.productTypeName}}</div>
                     <li class="two_project_cla" data-ddd="{{item2}}"ng-click="getThreeCategories(item2.projectTypeOneId,item2.projectTypeTwoId,item2.id)" ng-class="{'redFont':redFontFlag == item2.id}" ng-repeat="(key2,item2) in item1.levelTwoDetail" ng-if="select!=2"  >{{key2}}</li>
@@ -65,9 +65,9 @@
                 <div class="checkBox" ng-class="{bgF6:(theSelected.timeCard.timeCardIds.indexOf(item3.id)!='-1')}">
                     <img src="images/checkImg.png" alt="">
                 </div>
-                <span class="name">{{item3.projectName}}</span>
+                <span class="name" style="margin-top: 21px;">{{item3.projectName}}</span>
                 <br/>
-                <span class="number">{{item3.serviceTimes}}次</span>
+                <!--<span class="number">{{item3.serviceTimes}}次</span>-->
                 <div class="right">
                     <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>
@@ -89,7 +89,7 @@
                 </div>
                 <span class="name">{{item3.projectGroupName}}</span>
                 <br/>
-                <span class="number">永久有效</span>
+                <span class="number">{{item3.expirationDate == '0'?'永久有效':item3.expirationDate}}</span>
                 <div class="right">
                     <span><b>¥ </b>{{item3.marketPrice}}<b>.00</b></span>
                 </div>

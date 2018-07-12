@@ -48,7 +48,7 @@ public interface ShopStatisticsAnalysisService {
     /**
      * 查询新客个数
      */
-    int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /*int getShopNewUserNumber(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);*/
 
     /**
      * @Author:huan
@@ -91,7 +91,7 @@ public interface ShopStatisticsAnalysisService {
      * @Description: 查看某个美容店的充值和消费金额(业绩)
      * @Date:2018/4/25 14:54
      */
-    BigDecimal getShopConsumeAndRecharge(String shopId, String goodType, String consumeType, Boolean isCardConsume, Date startDate, Date endDate);
+    BigDecimal getShopConsumeAndRecharge(String shopId, String goodsType, String consumeType, Boolean isCardConsume, Date startDate, Date endDate);
     /**
     *@Author:zhanghuan
     *@Param:
@@ -148,4 +148,13 @@ public interface ShopStatisticsAnalysisService {
     *@Date:2018/6/24 14:35
     */
     List<ShopClerkWorkRecordResponseDTO> getShopMoneyConsumeDetail(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+    /**
+    *@Author:zhanghuan
+    *@Param:
+    *@Return:
+    *@Description:  获取boss的人头数,人次数,新客
+    *@Date:2018/6/30 14:26
+    */
+    Map<String,Object> getBossAchievement(PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO);
+
 }

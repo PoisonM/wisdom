@@ -79,7 +79,11 @@
     color: #f66667;
 }
 .unclaimedAll .unclaimedAll_content .user_form{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 430px;
     width: 100%;
+    padding-bottom: 64px;
 }
 .unclaimedAll .unclaimedAll_content .user_form table{
     text-align: left;

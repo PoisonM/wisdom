@@ -63,7 +63,7 @@ public class CommonUtils {
 	 */
 	public static List<String> imageUploadToOSS(MultipartFile[] listFile, String folder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		List<String> urlList = new ArrayList<>();
+		List<String> urlList = new ArrayList<String>();
 		String bucketName = "mximage";
 		if(listFile.length >0) {
 			for (MultipartFile file : listFile) {
@@ -220,9 +220,11 @@ public class CommonUtils {
 
 		//根据开始时间编号计算结束时间编号
 		StringBuffer responseStr = new StringBuffer();
-		for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo); i++) {
-			responseStr.append(i);
-			responseStr.append(",");
+		if(StringUtils.isNotBlank(startNo)){
+			for (int i = Integer.parseInt(startNo); i < Integer.parseInt(endNo); i++) {
+				responseStr.append(i);
+				responseStr.append(",");
+			}
 		}
 
 		if(responseStr.length() > 0){

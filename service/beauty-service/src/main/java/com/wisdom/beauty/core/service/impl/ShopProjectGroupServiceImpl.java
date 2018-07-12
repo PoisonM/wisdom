@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectGroupDTO;
 import com.wisdom.beauty.api.responseDto.ProjectInfoGroupResponseDTO;
+import com.wisdom.beauty.api.responseDto.ShopProjectInfoResponseDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectGroupMapper;
 import com.wisdom.beauty.core.mapper.ShopProjectInfoGroupRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProjectGroupRelRelationMapper;
@@ -60,9 +61,6 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     private ShopProjectService shopProjectService;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
     private MongoUtils mongoUtils;
 
     @Override
@@ -88,6 +86,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         c.andSysShopIdEqualTo(shopProjectGroupDTO.getSysShopId());
         if (StringUtils.isNotBlank(shopProjectGroupDTO.getProjectGroupName())) {
             c.andProjectGroupNameLike("%" + shopProjectGroupDTO.getProjectGroupName() + "%");
+        }
+
+        if (StringUtils.isNotBlank(shopProjectGroupDTO.getStatus())) {
+            c.andStatusEqualTo(shopProjectGroupDTO.getStatus());
         }
 
         List<ShopProjectGroupDTO> groupDTOS = shopProjectGroupMapper.selectByCriteria(criteria);
@@ -157,10 +159,9 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     @Override
     public int updateShopUserProjectGroupRelRelation(
             ShopUserProjectGroupRelRelationDTO shopUserProjectGroupRelRelation) {
-
+        logger.info("根据条件查询用户与套卡与项目关系的关系表传入参数={}",
+                "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
         if (null == shopUserProjectGroupRelRelation) {
-            logger.error("根据条件查询用户与套卡与项目关系的关系表传入参数为空，{}",
-                    "shopUserProjectGroupRelRelation = [" + shopUserProjectGroupRelRelation + "]");
             return 0;
         }
 
@@ -190,10 +191,10 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         for (ShopProjectInfoGroupRelationDTO shopProjectInfoGroupRelationDTO : shopProjectInfoGroupRelations) {
             shopProjectInfoDTO=new ShopProjectInfoDTO();
             shopProjectInfoDTO.setProjectName(shopProjectInfoGroupRelationDTO.getShopProjectInfoName());
-            shopProjectInfoDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
-            shopProjectInfoDTO.setMarketPrice(shopProjectInfoGroupRelationDTO.getShopProjectPrice());
+            ShopProjectInfoResponseDTO shopProjectInfoResponseDTO = shopProjectService.getProjectDetail(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
             shopProjectInfoDTO.setId(shopProjectInfoGroupRelationDTO.getShopProjectInfoId());
-            shopProjectInfos.add(shopProjectInfoDTO);
+            shopProjectInfoResponseDTO.setServiceTimes(shopProjectInfoGroupRelationDTO.getShopProjectServiceTimes());
+            shopProjectInfos.add(shopProjectInfoResponseDTO);
         }
         // 获取套卡信息
         ShopProjectGroupDTO shopProjectGroupDTO = this.getShopProjectGroupDTO(id);
@@ -252,14 +253,14 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
     }
 
     @Override
-    public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> flowIds) {
-        logger.info("getShopUserProjectGroupRelRelation方法出入的参数flowIds={}",flowIds );
-        if(CollectionUtils.isEmpty(flowIds)){
+    public List<ShopUserProjectGroupRelRelationDTO> getShopUserProjectGroupRelRelation(List<String> consumeRecordIds) {
+        logger.info("getShopUserProjectGroupRelRelation方法出入的参数consumeRecordId={}",consumeRecordIds );
+        if(CollectionUtils.isEmpty(consumeRecordIds)){
             return  null;
         }
         ShopUserProjectGroupRelRelationCriteria relationCriteria = new ShopUserProjectGroupRelRelationCriteria();
         ShopUserProjectGroupRelRelationCriteria.Criteria criteria = relationCriteria.createCriteria();
-        criteria.andShopProjectGroupIdIn(flowIds);
+        criteria.andConsumeRecordIdIn(consumeRecordIds);
 
         return shopUserProjectGroupRelRelationMapper.selectByCriteria(relationCriteria);
 
@@ -321,7 +322,7 @@ public class ShopProjectGroupServiceImpl implements ShopProjectGroupService {
         }
         mongoUtils.saveImageUrl(extShopProjectGroupDTO.getImageList(), groupId);
 
-        extShopProjectGroupDTO.setCreateBy(UserUtils.getBossInfo().getId());
+        extShopProjectGroupDTO.setCreateBy(UserUtils.getBossInfo().getName());
         int insertSelective = shopProjectGroupMapper.insertSelective(extShopProjectGroupDTO);
         logger.error("添加套卡执行结果，{}", "insertSelective = [" + (insertSelective > 0 ? "成功" : "失败") + "]");
 

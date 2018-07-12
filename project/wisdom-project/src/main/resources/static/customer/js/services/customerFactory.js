@@ -13,6 +13,7 @@ var projectInfo = '/beauty/projectInfo/';
 var appointInfo = '/beauty/appointmentInfo/';
 var clerkSchedule = '/beauty/clerkSchedule/';
 var mine = '/beauty/mine/';
+var userIP = '/user/';
 var cardInfo = '/beauty/cardInfo/'
 
 define(['appCustomer'], function (app) {
@@ -174,7 +175,7 @@ define(['appCustomer'], function (app) {
 
         //获取用户的推广二维码
         .factory('GetCustomerQRCode',['$resource',function ($resource){
-            return $resource(weixin + 'getCustomerQRCode')
+            return $resource(weixin + 'getUserQRCode')
         }])
 
         //获取用户的推广二维码
@@ -271,6 +272,12 @@ define(['appCustomer'], function (app) {
         }])
         .factory('GetCurrentLoginUserInfo',['$resource',function ($resource){
             return $resource(mine + 'getCurrentLoginUserInfo')
+        }])
+        .factory('BeautyLoginOut',['$resource',function ($resource){
+            return $resource(userIP + 'beautyLoginOut')
+        }])
+        .factory('GetProjectCardConsumeByFlowId',['$resource',function ($resource){
+            return $resource('/beauty/consume/getUserConsumeByFlowId')
         }])
         .factory('GetProjectCardConsume',['$resource',function ($resource){
             return $resource('/beauty/consume/consumeFlowNo')

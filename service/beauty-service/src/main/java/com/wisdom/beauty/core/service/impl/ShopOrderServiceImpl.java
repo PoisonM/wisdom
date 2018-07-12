@@ -1,16 +1,17 @@
 package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
-import com.wisdom.beauty.api.dto.ShopUserProductRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectGroupRelRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserProjectRelationDTO;
-import com.wisdom.beauty.api.dto.ShopUserRechargeCardDTO;
-import com.wisdom.common.constant.CommonCodeEnum;
+import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
+import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopUserProductRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtShopUserProjectGroupRelRelationDTO;
+import com.wisdom.beauty.api.extDto.ExtShopUserProjectRelationDTO;
 import com.wisdom.beauty.api.extDto.ShopUserOrderDTO;
 import com.wisdom.beauty.core.service.DiscountService;
 import com.wisdom.beauty.core.service.ShopCardService;
 import com.wisdom.beauty.core.service.ShopOrderService;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -115,6 +116,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
     private void updateRechargeCardInfo(ShopUserOrderDTO shopUserOrderDTO, String orderId, ShopUserOrderDTO alreadyOrderDTO) {
         //充值卡主键
         String userRechargeId="";
+        String userCardRelationId="";
         //再次查询保证取到最新的订单
         Query query = new Query(Criteria.where("orderId").is(shopUserOrderDTO.getOrderId()));
         alreadyOrderDTO = mongoTemplate.findOne(query, ShopUserOrderDTO.class, "shopUserOrderDTO");
@@ -122,10 +124,12 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         //消费界面用户选择不同的充值卡，也就是用户更新充值卡操作，先获取新的充值卡信息
         if (null != shopUserOrderDTO.getShopUserRechargeCardDTO() && StringUtils.isNotBlank(shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId())) {
             userRechargeId = shopUserOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
+            userCardRelationId=shopUserOrderDTO.getShopUserRechargeCardDTO().getId();
         }
         //消费界面添加更多，比如添加了一个信息的产品，那么新的产品折扣也要逆向更新，新的充值卡信息为空，获取老的充值卡信息
         else if(null != alreadyOrderDTO.getShopUserRechargeCardDTO()){
             userRechargeId = alreadyOrderDTO.getShopUserRechargeCardDTO().getShopRechargeCardId();
+            userCardRelationId=alreadyOrderDTO.getShopUserRechargeCardDTO().getId();
         }
         ShopUserRechargeCardDTO shopUserRechargeCardDTO = new ShopUserRechargeCardDTO();
         //根据主键查询用户与充值卡关系信息
@@ -133,12 +137,13 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             shopUserRechargeCardDTO.setShopRechargeCardId(userRechargeId);
             shopUserRechargeCardDTO.setSysUserId(alreadyOrderDTO.getUserId());
             shopUserRechargeCardDTO.setSysShopId(alreadyOrderDTO.getShopId());
+            shopUserRechargeCardDTO.setId(userCardRelationId);
             List<ShopUserRechargeCardDTO> userRechargeCardList = cardService.getUserRechargeCardList(shopUserRechargeCardDTO);
-            //用户没有选择任何的充值卡
+            //用户的充值卡不为空
             if (CommonUtils.objectIsNotEmpty(userRechargeCardList)) {
                 logger.info("用户的充值卡不为空");
                 shopUserRechargeCardDTO = userRechargeCardList.get(0);
-                userRechargeId = shopUserRechargeCardDTO.getId();
+                userRechargeId = shopUserRechargeCardDTO.getShopRechargeCardId();
             }
         }
         //断定用户没有选择任何的充值卡
@@ -148,45 +153,101 @@ public class ShopOrderServiceImpl implements ShopOrderService {
             shopUserRechargeCardDTO.setProductDiscount(1f);
             shopUserRechargeCardDTO.setTimeDiscount(1f);
             shopUserRechargeCardDTO.setPeriodDiscount(1f);
+            shopUserRechargeCardDTO.setRechargeCardType("1");
+        }
+        //查询充值卡的适用范围
+        StringBuffer scopeStr = new StringBuffer("begin:");
+        if(StringUtils.isNotBlank(shopUserRechargeCardDTO.getId())){
+            ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
+            relationDTO.setShopRechargeCardId(userRechargeId);
+            List<ShopProjectProductCardRelationDTO> scopeList = discountService.getShopUserProductRelationInfoList(relationDTO);
+            if(CommonUtils.objectIsNotEmpty(scopeList)){
+                logger.info("查询到充值卡的适用范围大小为={}",scopeList.size());
+                for(ShopProjectProductCardRelationDTO dto:scopeList){
+                    scopeStr.append(dto.getShopGoodsTypeId()).append(":").append(dto.getGoodsType()).append(";");
+                }
+            }
         }
 
         logger.info("订单号={}，充值卡主键为，{}", orderId, userRechargeId);
         boolean updateFlag = false;
         //遍历用户的产品，更新产品的初始金额
-        List<ShopUserProductRelationDTO> shopUserProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
+        List<ExtShopUserProductRelationDTO> shopUserProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProductRelationDTOS)) {
             logger.info("订单号={}，更新用户产品信息", orderId);
-            for (ShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
+            for (ExtShopUserProductRelationDTO userProductRelationDTO : shopUserProductRelationDTOS) {
                 if (null != userProductRelationDTO && null != userProductRelationDTO.getPurchasePrice() && null != userProductRelationDTO.getInitTimes()) {
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
-                    BigDecimal multiplyAmount = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount())).multiply(new BigDecimal(userProductRelationDTO.getInitTimes()));
-                    userProductRelationDTO.setInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
-                    userProductRelationDTO.setDiscount(shopUserRechargeCardDTO.getProductDiscount());
+                    //折扣价格，也就是单个产品的价格
+                    //如果是特殊充值卡或包含在充值卡折扣范围内的产品
+                    if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())
+                            ||scopeStr.toString().contains(new StringBuffer(userProductRelationDTO.getProductTypeTwoId()).append(":").append(GoodsTypeEnum.PRODUCT.getCode()))
+                            ){
+                        BigDecimal discountPrice = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
+                        BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProductRelationDTO.getInitTimes()));
+                        userProductRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        userProductRelationDTO.setInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        userProductRelationDTO.setDiscount(shopUserRechargeCardDTO.getProductDiscount());
+                        logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，产品用户id={}",userProductRelationDTO.getDiscount(),userRechargeId,userProductRelationDTO.getId());
+                    } else{
+                        userProductRelationDTO.setDiscountPrice(userProductRelationDTO.getPurchasePrice());
+                        userProductRelationDTO.setInitAmount(userProductRelationDTO.getPurchasePrice());
+                        userProductRelationDTO.setDiscount(1f);
+                        logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，产品用户id={}",userProductRelationDTO.getDiscount(),userRechargeId,userProductRelationDTO.getId());
+                    }
                     updateFlag = true;
                 }
             }
         }
 
         //遍历用户的次卡和疗程卡，更新次卡的初始金额
-        List<ShopUserProjectRelationDTO> shopUserProjectRelationDTOS = alreadyOrderDTO.getShopUserProjectRelationDTOS();
+        List<ExtShopUserProjectRelationDTO> shopUserProjectRelationDTOS = alreadyOrderDTO.getShopUserProjectRelationDTOS();
         if (CommonUtils.objectIsNotEmpty(shopUserProjectRelationDTOS)) {
             logger.info("订单号={}，更新用户单次或疗程卡信息", orderId);
-            for (ShopUserProjectRelationDTO userProjectRelationDTO : shopUserProjectRelationDTOS) {
+            for (ExtShopUserProjectRelationDTO userProjectRelationDTO : shopUserProjectRelationDTOS) {
                 logger.info("订单号={}，对应单次或疗程卡折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
                 if (null != userProjectRelationDTO && null != userProjectRelationDTO.getSysShopProjectPurchasePrice() && null != userProjectRelationDTO.getSysShopProjectInitTimes()) {
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
-                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()).multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes())));
-                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getTimeDiscount());
+                        //折扣价格，也是单个价格
+                        if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())||scopeStr.toString().contains(new StringBuffer(userProjectRelationDTO.getProjectTypeTwoId()).append(":").append(GoodsTypeEnum.TIME_CARD.getCode()))) {
+                            BigDecimal discountPrice = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
+                            BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes()));
+                            userProjectRelationDTO.setSysShopProjectInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
+                            userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getTimeDiscount());
+                            userProjectRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
+                            logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，用户次卡id={}",userProjectRelationDTO.getDiscount(),userRechargeId,userProjectRelationDTO.getId());
+                        }else{
+                            userProjectRelationDTO.setDiscountPrice(userProjectRelationDTO.getSysShopProjectPurchasePrice());
+                            userProjectRelationDTO.setSysShopProjectInitAmount(userProjectRelationDTO.getSysShopProjectPurchasePrice());
+                            userProjectRelationDTO.setDiscount(1f);
+                            logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，用户次卡id={}",userProjectRelationDTO.getDiscount(),userRechargeId,userProjectRelationDTO.getId());
+                        }
                         updateFlag = true;
                     } else {
-                        BigDecimal multiplyAmount = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()).multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes())));
-                        userProjectRelationDTO.setSysShopProjectInitAmount(multiplyAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
-                        userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getPeriodDiscount());
+                        if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())||scopeStr.toString().contains(new StringBuffer(userProjectRelationDTO.getProjectTypeTwoId()).append(":").append(GoodsTypeEnum.TREATMENT_CARD.getCode()))) {
+                            BigDecimal discountPrice = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
+                            BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes()));
+                            userProjectRelationDTO.setSysShopProjectInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
+                            userProjectRelationDTO.setDiscount(shopUserRechargeCardDTO.getPeriodDiscount());
+                            userProjectRelationDTO.setDiscountPrice(discountPrice.setScale(2, BigDecimal.ROUND_HALF_UP));
+                            logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，用户疗程卡id={}",userProjectRelationDTO.getDiscount(),userRechargeId,userProjectRelationDTO.getId());
+                        }else{
+                            userProjectRelationDTO.setDiscountPrice(userProjectRelationDTO.getSysShopProjectPurchasePrice());
+                            userProjectRelationDTO.setSysShopProjectInitAmount(userProjectRelationDTO.getSysShopProjectPurchasePrice());
+                            userProjectRelationDTO.setDiscount(1f);
+                            logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，用户疗程卡id={}",userProjectRelationDTO.getDiscount(),userRechargeId,userProjectRelationDTO.getId());
+                        }
+
                         updateFlag = true;
                     }
                 }
+            }
+        }
+        List<ExtShopUserProjectGroupRelRelationDTO> projectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
+        if(CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)){
+            for(ShopUserProjectGroupRelRelationDTO dto:projectGroupRelRelationDTOS){
+                dto.setDiscountPrice(dto.getShopGroupPuchasePrice());
             }
         }
 
@@ -198,6 +259,9 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         if (updateFlag) {
             update.set("shopUserProjectRelationDTOS", alreadyOrderDTO.getShopUserProjectRelationDTOS());
             update.set("shopUserProductRelationDTOS", alreadyOrderDTO.getShopUserProductRelationDTOS());
+        }
+        if(CommonUtils.objectIsNotEmpty(projectGroupRelRelationDTOS)){
+            update.set("projectGroupRelRelationDTOS", projectGroupRelRelationDTOS);
         }
         update.set("updateDate",new Date());
         mongoTemplate.upsert(updateQuery, update, "shopUserOrderDTO");
@@ -213,19 +277,19 @@ public class ShopOrderServiceImpl implements ShopOrderService {
      */
     private ResponseDTO updateProjectGroupInfo(ShopUserOrderDTO shopUserOrderDTO, ResponseDTO responseDTO, String operation, ShopUserOrderDTO alreadyOrderDTO) {
         logger.info("获取已存在的套卡信息");
-        List<ShopUserProjectGroupRelRelationDTO> alreadyProjectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
+        List<ExtShopUserProjectGroupRelRelationDTO> alreadyProjectGroupRelRelationDTOS = alreadyOrderDTO.getProjectGroupRelRelationDTOS();
         if (CommonUtils.objectIsEmpty(alreadyProjectGroupRelRelationDTOS)) {
             alreadyProjectGroupRelRelationDTOS = new ArrayList<>();
         }
         int updateFlag = alreadyProjectGroupRelRelationDTOS.size();
-        ShopUserProjectGroupRelRelationDTO newProjectGroupRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS().get(0);
+        ExtShopUserProjectGroupRelRelationDTO newProjectGroupRelationDTOS = shopUserOrderDTO.getProjectGroupRelRelationDTOS().get(0);
         if (CommonUtils.objectIsEmpty(newProjectGroupRelationDTOS)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setResponseData("传入的产品信息为空");
             return responseDTO;
         }
         List<ShopUserProjectGroupRelRelationDTO> helperList = new ArrayList<>();
-        Iterator<ShopUserProjectGroupRelRelationDTO> alreadyIterator = alreadyProjectGroupRelRelationDTOS.iterator();
+        Iterator<ExtShopUserProjectGroupRelRelationDTO> alreadyIterator = alreadyProjectGroupRelRelationDTOS.iterator();
         if (!alreadyIterator.hasNext()) {
             alreadyProjectGroupRelRelationDTOS.add(newProjectGroupRelationDTOS);
         } else {
@@ -268,19 +332,19 @@ public class ShopOrderServiceImpl implements ShopOrderService {
      */
     private ResponseDTO updateProductInfo(ShopUserOrderDTO shopUserOrderDTO, ResponseDTO responseDTO, String operation, ShopUserOrderDTO alreadyOrderDTO) {
         logger.info("获取已存在的产品信息");
-        List<ShopUserProductRelationDTO> alreadyProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
+        List<ExtShopUserProductRelationDTO> alreadyProductRelationDTOS = alreadyOrderDTO.getShopUserProductRelationDTOS();
         if (CommonUtils.objectIsEmpty(alreadyProductRelationDTOS)) {
             alreadyProductRelationDTOS = new ArrayList<>();
         }
         int updateFlag = alreadyProductRelationDTOS.size();
-        ShopUserProductRelationDTO newUserProductRelationDTO = shopUserOrderDTO.getShopUserProductRelationDTOS().get(0);
+        ExtShopUserProductRelationDTO newUserProductRelationDTO = shopUserOrderDTO.getShopUserProductRelationDTOS().get(0);
         if (CommonUtils.objectIsEmpty(newUserProductRelationDTO)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setResponseData("传入的产品信息为空");
             return responseDTO;
         }
         List<ShopUserProductRelationDTO> helperList = new ArrayList<>();
-        Iterator<ShopUserProductRelationDTO> alreadyIterator = alreadyProductRelationDTOS.iterator();
+        Iterator<ExtShopUserProductRelationDTO> alreadyIterator = alreadyProductRelationDTOS.iterator();
         if (!alreadyIterator.hasNext()) {
             alreadyProductRelationDTOS.add(newUserProductRelationDTO);
         } else {
@@ -322,14 +386,14 @@ public class ShopOrderServiceImpl implements ShopOrderService {
      */
     private ResponseDTO updateProjectInfo(ShopUserOrderDTO shopUserOrderDTO, ResponseDTO responseDTO, String operation, ShopUserOrderDTO alreadyOrderDTO) {
         //获取已经保存的项目信息
-        List<ShopUserProjectRelationDTO> alreadyExistProjectRelationDTOS = alreadyOrderDTO.getShopUserProjectRelationDTOS();
+        List<ExtShopUserProjectRelationDTO> alreadyExistProjectRelationDTOS = alreadyOrderDTO.getShopUserProjectRelationDTOS();
         logger.info("查询项目信息为，{}", "shopUserProjectRelationDTOS = [" + alreadyExistProjectRelationDTOS + "]");
         if (null == alreadyExistProjectRelationDTOS) {
             alreadyExistProjectRelationDTOS = new ArrayList<>();
         }
         int updateFlag = alreadyExistProjectRelationDTOS.size();
         //获取需要添加的项目信息
-        ShopUserProjectRelationDTO newUserProjectRelationDTO = shopUserOrderDTO.getShopUserProjectRelationDTOS().get(0);
+        ExtShopUserProjectRelationDTO newUserProjectRelationDTO = shopUserOrderDTO.getShopUserProjectRelationDTOS().get(0);
         if (CommonUtils.objectIsEmpty(newUserProjectRelationDTO)) {
             responseDTO.setResult(StatusConstant.FAILURE);
             responseDTO.setResponseData("传入的项目信息为空");
@@ -337,7 +401,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
         }
 
         List<ShopUserProjectRelationDTO> helperList = new ArrayList<>();
-        Iterator<ShopUserProjectRelationDTO> alreadyIterator = alreadyExistProjectRelationDTOS.iterator();
+        Iterator<ExtShopUserProjectRelationDTO> alreadyIterator = alreadyExistProjectRelationDTOS.iterator();
         //如果原订单中为空，直接添加
         if (!alreadyIterator.hasNext()) {
             alreadyExistProjectRelationDTOS.add(newUserProjectRelationDTO);

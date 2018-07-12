@@ -50,6 +50,7 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 				shopCashFlowDTO.getSysBossCode(), pageParamVoDTO.getStartTime(), pageParamVoDTO.getEndTime());
 		List<ShopCashFlowDTO> shopCashFlowDTOs = cashService.getShopCashFlowList(pageParamVoDTO);
 		if (CollectionUtils.isEmpty(shopCashFlowDTOs)) {
+			logger.info("getShopCashFlowList查询结果shopCashFlowDTOs为空");
 			return null;
 		}
 		// 遍历shopCashFlowDTOs, 以payType为维度分组，然后计算各个组的金额值,并且将值放入map中,计算支付方式是银行卡，支付宝，微信
@@ -151,9 +152,9 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationDTOList) {
 			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
-			if(cashAmountMap!=null && cashAmountMap.get(shopBossRelation.getSysShopId()) != null){
-					expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
-					expenditureAndIncomeResponseDTO.setAllEarnings(payTypeAmountMap.get(shopBossRelation.getSysShopId()));
+			if (cashAmountMap != null && cashAmountMap.get(shopBossRelation.getSysShopId()) != null) {
+				expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
+				expenditureAndIncomeResponseDTO.setAllEarnings(payTypeAmountMap.get(shopBossRelation.getSysShopId()));
 			}
 			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());
 			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
@@ -176,8 +177,10 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		for (int i = 0; i < 7; i++) {
 			Calendar calendar = new GregorianCalendar();
 			calendar.setTime(new Date());
-			calendar.add(calendar.DATE, i - 7);// 把日期往后增加一天.整数往后推,负数往前移动
-			String putDate = sdf.format(calendar.getTime()); // 增加一天后的日期
+			// 把日期往后增加一天.整数往后推,负数往前移动
+			calendar.add(GregorianCalendar.DATE, i - 7);
+			// 增加一天后的日期
+			String putDate = sdf.format(calendar.getTime());
 			sevenDayList.add(putDate);
 		}
 		// 查询七日数据
@@ -220,32 +223,41 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 	public List<ExpenditureAndIncomeResponseDTO> getIncomeExpenditureAnalysisDetail(
 			PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO) {
 		List<ShopCashFlowDTO> shopCashFlowDTOs = cashService.getShopCashFlowList(pageParamVoDTO);
-		Map<String, ExpenditureAndIncomeResponseDTO> map=null;
-		if(CollectionUtils.isNotEmpty(shopCashFlowDTOs)) {
-			//过滤出现金，银行卡，微信，支付宝支付的数据，即现金支付=0 支付方式为空
-			 map = new HashMap<>();
+		Map<String, ExpenditureAndIncomeResponseDTO> map = null;
+		if (CollectionUtils.isNotEmpty(shopCashFlowDTOs)) {
+			// 过滤出现金，银行卡，微信，支付宝支付的数据，即现金支付=0 支付方式为空
+			map = new HashMap<>(16);
 			for (ShopCashFlowDTO shopCashFlowDTO : shopCashFlowDTOs) {
-				if (StringUtils.isBlank(shopCashFlowDTO.getPayType()) && shopCashFlowDTO.getCashAmount().compareTo(new BigDecimal("0")) == 0) {
+				if (StringUtils.isBlank(shopCashFlowDTO.getPayType())
+						&& shopCashFlowDTO.getCashAmount().compareTo(new BigDecimal("0")) == 0) {
 					continue;
 				}
 				if (map.containsKey(shopCashFlowDTO.getFlowNo())) {
 					ExpenditureAndIncomeResponseDTO expenditureAndIncome = map.get(shopCashFlowDTO.getFlowNo());
-					expenditureAndIncome.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
+					expenditureAndIncome
+							.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
 					map.put(shopCashFlowDTO.getFlowNo(), expenditureAndIncome);
 				} else {
 					ExpenditureAndIncomeResponseDTO expenditureAndIncome = new ExpenditureAndIncomeResponseDTO();
-					expenditureAndIncome.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
+					if (shopCashFlowDTO.getPayTypeAmount() == null) {
+						shopCashFlowDTO.setPayTypeAmount(new BigDecimal(0));
+					}
+					if (shopCashFlowDTO.getCashAmount() == null) {
+						shopCashFlowDTO.setCashAmount(new BigDecimal(0));
+					}
+					expenditureAndIncome
+							.setTotalPrice(shopCashFlowDTO.getPayTypeAmount().add(shopCashFlowDTO.getCashAmount()));
 					expenditureAndIncome.setCreateDate(shopCashFlowDTO.getCreateDate());
 					expenditureAndIncome.setFlowNo(shopCashFlowDTO.getFlowNo());
 					map.put(shopCashFlowDTO.getFlowNo(), expenditureAndIncome);
 				}
 			}
 		}
-		if(map==null){
+		if (map == null) {
 			return null;
-		}else {
+		} else {
 			List<ExpenditureAndIncomeResponseDTO> list = new ArrayList<>();
-			for (Map.Entry<String, ExpenditureAndIncomeResponseDTO> entry:map.entrySet()){
+			for (Map.Entry<String, ExpenditureAndIncomeResponseDTO> entry : map.entrySet()) {
 				list.add(entry.getValue());
 			}
 			return list;

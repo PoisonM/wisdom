@@ -4,6 +4,7 @@ import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
+import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.client.UserServiceClient;
@@ -166,6 +167,13 @@ public class RedisUtils {
                 UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(sysUserId);
                 loginDTO.setPhone(userInfoDTO.getMobile());
                 JedisUtils.setObject("shop_" + sysUserId, loginDTO, appointCacheSeconds);
+                return loginDTO;
+            }else{
+                ShopUserLoginDTO loginDTO = new ShopUserLoginDTO();
+                UserInfoDTO userInfo = UserUtils.getUserInfo();
+                loginDTO.setSysUserId(sysUserId);
+                loginDTO.setSysShopPhoto(userInfo.getPhoto()==null? ImageEnum.USER_HEAD.getDesc():userInfo.getPhoto());
+                loginDTO.setBindingDesc("请扫描店铺二维码进行绑定");
                 return loginDTO;
             }
         }

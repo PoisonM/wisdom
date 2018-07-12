@@ -79,7 +79,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
 						&& GoodsTypeEnum.RECHARGE_CARD.getCode()
 								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-					// shopClerkWorkRecordResponseDTO.setType("业绩充值");
+					// 业绩充值
 					shopClerkWorkRecordResponseDTO.setType("0");
 					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
 				}
@@ -87,7 +87,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
 						&& !GoodsTypeEnum.RECHARGE_CARD.getCode()
 								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-					// shopClerkWorkRecordResponseDTO.setType("业绩消费金额");
+					//业绩消费金额
 					shopClerkWorkRecordResponseDTO.setType("1");
 					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
 				}
@@ -98,7 +98,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 					if (GoodsTypeEnum.TREATMENT_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())
 							|| GoodsTypeEnum.COLLECTION_CARD.getCode()
 									.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-						// shopClerkWorkRecordResponseDTO.setType("耗卡划卡金额");
+						//耗卡划卡金额
 						shopClerkWorkRecordResponseDTO.setType("2");
 						recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
 					}
@@ -106,7 +106,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 				// 耗卡 --- 单次消费
 				if (ConsumeTypeEnum.RECHARGE.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
 						&& GoodsTypeEnum.TIME_CARD.getCode().equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-					// shopClerkWorkRecordResponseDTO.setType("耗卡单次消费");
+					//耗卡单次消费
 					shopClerkWorkRecordResponseDTO.setType("3");
 					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
 				}
@@ -116,7 +116,7 @@ public class ShopClerkWorkServiceImpl implements ShopClerkWorkService {
 				if (ConsumeTypeEnum.CONSUME.getCode().equals(shopClerkWorkRecordResponseDTO.getConsumeType())
 						&& GoodsTypeEnum.RECHARGE_CARD.getCode()
 								.equals(shopClerkWorkRecordResponseDTO.getGoodsType())) {
-					// shopClerkWorkRecordResponseDTO.setType("卡耗单次消费");
+					// 卡耗单次消费
 					shopClerkWorkRecordResponseDTO.setType("4");
 					recordResponseDTOList.add(shopClerkWorkRecordResponseDTO);
 				}

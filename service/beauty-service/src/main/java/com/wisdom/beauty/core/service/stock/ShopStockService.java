@@ -167,7 +167,7 @@ public interface ShopStockService {
 	 * @Date:2018/5/18 15:28
 	 */
 	Map<String, Object> getStockDetailList(PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO,
-			List<ShopProductInfoDTO> ShopProductInfoDTOs);
+			List<ShopProductInfoDTO> shopProductInfoDTOs);
 
 	/**
 	 * @Author:zhanghuan

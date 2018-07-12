@@ -9,6 +9,7 @@ import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.business.service.transaction.UserOrderAddressService;
 import com.wisdom.business.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
@@ -139,12 +140,39 @@ public class BusinessOrderController {
 
         //判断此课程是否是免费课程
         ProductDTO productDTO = productService.getBusinessProductInfo(productId);
-        if(Float.parseFloat(productDTO.getPrice())==0.00)
+        logger.info("课程类型："+productDTO.getSecondType());
+
+        if(("0").equals(productDTO.getSecondType()))
         {
             logger.info("此课程为免费课程" );
             responseDTO.setResult(StatusConstant.SUCCESS);
-        }
-        else
+        }else if(("1").equals(productDTO.getSecondType())){
+            String openId = WeixinUtil.getUserOpenId(session,request);
+            logger.info("先获取用户的openid" , openId);
+            BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
+            if(openId==null)
+            {
+                responseDTO.setResult(StatusConstant.FAILURE);
+            }else{
+                UserInfoDTO userInfoDTO = new UserInfoDTO();
+                userInfoDTO.setUserOpenid(openId);
+                List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
+                if(userInfoDTOS!=null&&userInfoDTOS.size()>0){
+
+                    logger.info("用户类型为："+userInfoDTOS.get(0).getUserType());
+                    if(ConfigConstant.businessA1.equals(userInfoDTOS.get(0).getUserType())||ConfigConstant.businessB1.equals(userInfoDTOS.get(0).getUserType())){
+                        logger.info("此课程为会员课程" );
+                        responseDTO.setResult(StatusConstant.SUCCESS);
+                    }else{
+                        logger.info("此课程为会员课程" );
+                        responseDTO.setErrorInfo("member");
+                        responseDTO.setResult(StatusConstant.FAILURE);
+                    }
+                }else{
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                }
+            }
+        }else
         {
             //先获取用户的openid
             String openId = WeixinUtil.getUserOpenId(session,request);

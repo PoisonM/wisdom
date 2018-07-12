@@ -194,6 +194,7 @@ b {
     -webkit-backface-visibility: hidden;
     -webkit-animation: ngdialog-fadein 0.5s;
     animation: ngdialog-fadein 0.5s;
+    z-index: 99999;
 }
 .overlay_black div{
     width: 80px;

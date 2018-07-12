@@ -190,12 +190,14 @@ public class ScheduleController {
         //排班信息为空则批量初始化
         if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
             //查询某个店的排班信息
-            shopClerkScheduleDTO.setSysClerkId("");
             clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
             //获取某个月的所有天的集合
             List<String> monthFullDay = DateUtils.getMonthFullDay(Integer.parseInt(DateUtils.getYear(searchDate)), Integer.parseInt(DateUtils.getMonth(searchDate)), 0);
             //查询店员信息
-            List<SysClerkDTO> clerkDTOS = userServiceClient.getClerkInfo(sysShopId);
+            List<SysClerkDTO> clerkDTOS = new ArrayList<>();
+            SysClerkDTO sysClerkDTO = new SysClerkDTO();
+            sysClerkDTO.setId(clerkId);
+            clerkDTOS.add(sysClerkDTO);
             //批量初始化
             getShopClerkScheduleDTOS(sysShopId, clerkScheduleList, monthFullDay, clerkDTOS);
             shopClerkScheduleDTO.setSysClerkId(clerkId);
@@ -228,8 +230,10 @@ public class ScheduleController {
 
         //构建预约过的时间
         if (CommonUtils.objectIsNotEmpty(shopAppointServiceDTOS)) {
+            filterStr.append(",");
             for (int i = 0; i < shopAppointServiceDTOS.size(); i++) {
-                filterStr.append(CommonUtils.getArrayNo(DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
+                filterStr.append(CommonUtils.getArrayNo(
+                        DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointStartTime(), "time"),
                         DateUtils.DateToStr(shopAppointServiceDTOS.get(i).getAppointEndTime(), "time")));
                 if (i != (shopAppointServiceDTOS.size() - 1)) {
                     filterStr.append(",");

@@ -1,28 +1,28 @@
 .detailsWrap{width: 100%;}
-.swiper-container {width: 100%; height: 5rem;background: #FFFFFF}
-.swiper-slide {box-sizing: content-box!important;}
-.swiper-slide img{width:5.3rem;height:4.6rem;margin-top: 0.4rem;!important;padding-right: 0.3rem}
-.swiper-slide-next img{width: 5.6rem;height:5rem!important;margin-top: 0px;!important;}
-.swiper-slide-next {margin-right:0.3125rem;}
-.describeTwo{background: #FFFFFF; margin-left: 0.28rem;width:100%;position: relative}
-.c99{color: #999999}
-.c33{color: #333333}
-.fs32{font-size: 0.25rem}
-.fs36{font-size: 0.28rem}
-.cff66{color: #FF6666}
-.fs30{font-size:0.234rem}
-.p32{padding: 0.25rem}
-.mt20{margin-top: 0.156rem}
-.mt22{margin-top: 0.17rem}
-.cff66{color: #FF6666}
-.fs32{font-size: 0.25rem}
-.fs40{font-size: 0.3rem}
-.mt40{margin-top: 0.3125rem}
-.mt50{margin-top: 0.39rem}
-.mt126{margin-top: 0.98rem}
-.bgff6666{background: #FF6666;}
-.fs34{font-size: 0.265rem}
-.describeCard{
+/*.detailsWrap .swiper-container {width: 100%; height: 5rem;background: #FFFFFF}*/
+/*.detailsWrap .swiper-slide {box-sizing: content-box!important;}*/
+/*.detailsWrap .swiper-slide img{width:5.3rem;height:4.6rem;margin-top: 0.4rem;!important;padding-right: 0.3rem}*/
+/*.detailsWrap .swiper-slide-next img{width: 5.6rem;height:5rem!important;margin-top: 0px;!important;}*/
+/*.detailsWrap .swiper-slide-next {margin-right:0.3125rem;}*/
+.detailsWrap .describeTwo{background: #FFFFFF; margin-left: 0.28rem;width:100%;position: relative}
+.detailsWrap .c99{color: #999999}
+.detailsWrap .c33{color: #333333}
+.detailsWrap .fs32{font-size: 0.25rem}
+.detailsWrap .fs36{font-size: 0.28rem}
+.detailsWrap .cff66{color: #FF6666}
+.detailsWrap .fs30{font-size:0.234rem}
+.detailsWrap .p32{padding: 0.25rem}
+.detailsWrap .mt20{margin-top: 0.156rem}
+.detailsWrap .mt22{margin-top: 0.17rem}
+.detailsWrap .cff66{color: #FF6666}
+.detailsWrap .fs32{font-size: 0.25rem}
+.detailsWrap .fs40{font-size: 0.3rem}
+.detailsWrap .mt40{margin-top: 0.3125rem}
+.detailsWrap .mt50{margin-top: 0.39rem}
+.detailsWrap .mt126{margin-top: 0.98rem}
+.detailsWrap .bgff6666{background: #FF6666;}
+.detailsWrap .fs34{font-size: 0.265rem}
+.detailsWrap .describeCard{
     display: inline-block;
     width: 45px;
     height: 25px;
@@ -32,5 +32,8 @@
     margin-left: 0.09rem;
     text-align: center;
 }
-.textDestrice{position: absolute;bottom: 0.3125rem;right: 0.5rem}
-.mb50{margin-bottom: 0.5rem}
+.detailsWrap .textDestrice{position: absolute;bottom: 0.3125rem;right: 0.5rem}
+.detailsWrap .mb50{margin-bottom: 0.5rem}
+
+.detailsWrap .swiper-slide-next {width: 360px !important;height: 350px !important; margin-top: 0px!important;}
+.detailsWrap .swiper-slide {margin-top: 30px;height: 320px;}

@@ -11,6 +11,7 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
             $scope.explain=false;// 点击24小时发货显示说明
 
             $scope.model=false;
+           /* $scope.inputModel=false;*//*点击购买数量出现的弹框*/
 
             $scope.myObj = {
                 background:"red",
@@ -55,6 +56,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     BusinessUtil.twoParameters(LoginGlobal.MX_SC_AGW,$stateParams.productId);
                     if($scope.param.product.productDetail.spec.length == 1){
                         $scope.param.checkFlag = $scope.param.product.productDetail.spec[0]
+                    }
+                    if($scope.param.productNum=="0"){
+                        alert("请选择正确的数量");
+                        return;
                     }
                     if($scope.param.productNum>$scope.param.product.productAmount){
                         alert("库存不足~");
@@ -108,6 +113,10 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                                 alert("亲！此商品为新用户专享产品");
                                 return
                             }
+                        }
+                        if($scope.param.productNum=="0"){
+                            alert("请选择正确的数量");
+                            return
                         }
                         /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
                         if($scope.param.productNum>$scope.param.product.productAmount){
@@ -200,6 +209,11 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 }
             };
 
+            /*点击购买数量的输入框出现的div*/
+           /* $scope.inputBox=function () {
+              $scope.inputModel=true;
+            };*/
+
             var showToast = function (content) {
                 $ionicLoading.show({
                     template: content
@@ -264,5 +278,6 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                     $scope.param.productUnPaidNum = data.responseData;
                 });
             })
+
         }])
 

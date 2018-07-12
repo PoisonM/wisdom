@@ -2,30 +2,35 @@ angular.module('controllers',[]).controller('addProductCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','GetProductInfoByScanCode',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
             $rootScope.title = "添加产品";
-            $scope.selFlag =true
-            $rootScope.settingAddsome.product ={
-                productType:"0",
-                productTypeOneName:"",
-                productTypeOneId:"",
-                productTypeTwoName:"",
-                productTypeTwoId:"",
-                productName:"",
-                imageList:[],
-                marketPrice:"",
-                discountPrice:"",
-                productCode:"",
-                productSpec:"",
-                productUnit:"",
-                productPosition:"",
-                productFunction:"",
-                status:'0',
-                introduce:"",
-                effectDate:'2017-04-07',
-                qualityPeriod:"",
-                productWarningDay:"",
-                productWarningNum:"",
+            $scope.selFlag =true;
+            $scope.setFlag = false;
+            $scope.$on('$ionicView.enter', function() {
+            });
 
-            }
+
+            $rootScope.settingAddsome.product ={
+            productType:"0",
+            productTypeOneName:"",
+            productTypeOneId:"",
+            productTypeTwoName:"",
+            productTypeTwoId:"",
+            productName:"",
+            imageList:[],
+            initialPrice:"",
+            marketPrice:"",
+            productCode:"",
+            productSpec:"",
+            productUnit:"",
+            productPosition:"",
+            productFunction:"",
+            status:'0',
+            introduce:"",
+            effectDate:'',
+            qualityPeriod:"",
+            productWarningDay:"",
+            productWarningNum:"",
+
+        }
 
                $.ajax({
                  url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
@@ -36,7 +41,6 @@ angular.module('controllers',[]).controller('addProductCtrl',
                  dataType:'json',
                  success:function(data) {
                      var configValue = data.responseData;
-                     console.log(configValue);
                      if(configValue!=null ){
                          timestamp = configValue.timestamp;//得到时间戳
                          nonceStr = configValue.nonceStr;//得到随机字符串
@@ -81,6 +85,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             code:result
                         },function(data){
                              if(data.result == "0x00001"){
+                                $scope.setFlag = true;
                                 $rootScope.settingAddsome.product.productName=data.responseData.productName;
                                 $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
                                 $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
@@ -165,6 +170,10 @@ angular.module('controllers',[]).controller('addProductCtrl',
             }
             /*选择系列*/
             $scope.selectionSeriesGo=function(){
+                if($rootScope.settingAddsome.product.productTypeOneId==''){
+                    alert("请先选择品牌")
+                    return
+                }
                 $state.go("selectionSeries",{url:'addProduct'})
             }
             /*选择规格*/
@@ -217,6 +226,9 @@ angular.module('controllers',[]).controller('addProductCtrl',
             };
             $scope.delPic = function(index){
                 $rootScope.settingAddsome.product.imageList.splice(index,1)
+            };
+            $scope.numLimit=function (style,value) {
+                $rootScope.settingAddsome.product[style]=value.replace(/[^0-9.0-9]+/,'')
             }
 
 
@@ -228,14 +240,44 @@ angular.module('controllers',[]).controller('addProductCtrl',
                 }else{
                     $rootScope.settingAddsome.product.status = '1';
                 }
-                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.marketPrice ==""||$rootScope.settingAddsome.product.discountPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
+                if($rootScope.settingAddsome.product.productTypeOneName == ""||$rootScope.settingAddsome.product.productTypeTwoName ==""||$rootScope.settingAddsome.product.productName ==""||$rootScope.settingAddsome.product.initialPrice ==""||$rootScope.settingAddsome.product.marketPrice ==""||$rootScope.settingAddsome.product.productSpec ==""||$rootScope.settingAddsome.product.productUnit ==""||$rootScope.settingAddsome.product.effectDate ==""||$rootScope.settingAddsome.product.qualityPeriod ==""||$rootScope.settingAddsome.product.productWarningDay ==""||$rootScope.settingAddsome.product.productWarningNum ==""){
+                    console.log($rootScope.settingAddsome.product);
                     alert('信息不完全')
                     return
                 }
-
+                if($rootScope.settingAddsome.product.productCode==""){
+                    alert('信息不完全')
+                    return
+                }
                 SaveProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $state.go("basicSetting")
+                        $rootScope.settingAddsome.product ={
+                            productType:"0",
+                            productTypeOneName:"",
+                            productTypeOneId:"",
+                            productTypeTwoName:"",
+                            productTypeTwoId:"",
+                            productName:"",
+                            imageList:[],
+                            initialPrice:"",
+                            marketPrice:"",
+                            productCode:"",
+                            productSpec:"",
+                            productUnit:"",
+                            productPosition:"",
+                            productFunction:"",
+                            status:'0',
+                            introduce:"",
+                            effectDate:'2017-04-07',
+                            qualityPeriod:"",
+                            productWarningDay:"",
+                            productWarningNum:"",
+
+                        }
+                    }else{
+                        alert(data.errorInfo);
+                        return;
                     }
                 })
             }

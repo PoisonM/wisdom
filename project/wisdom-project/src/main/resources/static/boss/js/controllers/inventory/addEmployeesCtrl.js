@@ -67,6 +67,8 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 SaveClerkInfo.save($scope.sysClerkDTO,function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("addFamily")
+                    }else {
+                        alert(data.errorInfo)
                     }
                 })
             }

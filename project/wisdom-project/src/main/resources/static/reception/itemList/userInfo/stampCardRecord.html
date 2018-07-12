@@ -12,8 +12,8 @@
             <li ng-repeat="item in dataList" ng-click="goDrawCardRecordsDetail(item.flowNo,item.sysUserId)">
                 <div class="ifo">
                     <span>{{item.createDate|date:'yyyy-MM-dd'}}</span>
-                    <span>{{item.sysUserName}}</span>
-                    <span>{{item.flowName}}</span>
+                    <span class="no">{{item.sysUserName}}</span>
+                    <span class="hidenInfo" style="width: 200px">{{item.flowName}}</span>
                 </div>
                 <div class="go_set"></div>
             </li>

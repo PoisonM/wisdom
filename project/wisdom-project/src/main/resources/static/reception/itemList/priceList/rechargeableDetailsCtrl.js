@@ -17,8 +17,19 @@ PADWeb.controller("rechargeableDetailsCtrl", function($scope, $state, $statePara
     }
     /*打开收银头部/档案头部/我的头部*/
     $scope.flagFn(true)
-    console.log("rechargeableDetailsCtrl");
     $scope.$parent.mainSwitch.footerBoxFlag=false;
+
+    $scope.timeer = setInterval(function () {
+        if($(".swiper-slide").length!=0){
+            clearInterval($scope.timeer)
+            var mySwiper = new Swiper('.swiper-container',{
+                slidesPerView : 3,
+                slidesPerGroup : 1,
+                spaceBetween : 20,
+            })
+        }
+    },100)
+
     var swiper = new Swiper('.swiper-container', {
         slidesPerView: 3,
         loop: true,
@@ -33,12 +44,15 @@ PADWeb.controller("rechargeableDetailsCtrl", function($scope, $state, $statePara
     $scope.param={
         rechargeDetail:{},
         urlArray:{}
-    }
+    };
+    $rootScope.loadingFlag = true;
     GetCardInfo.get({
         id:$stateParams.shopRechargeCardId
     },function (data) {
-        $scope.param.rechargeDetail = data.responseData;
-        console.log($scope.param.rechargeDetail);
+        if(data.result == "0x00001"){
+            $scope.param.rechargeDetail = data.responseData;
+            $rootScope.loadingFlag = false;
+        }
     })
 
 

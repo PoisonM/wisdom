@@ -1,21 +1,10 @@
 var beautyIP = '/beauty/';
 var userIP = '/user/';
 var systemService = '/system-service/';
+var weixinService = '/weixin/';
 var  mine='/beauty/mine/';
-PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
+PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
         return {
-            /*request: function(config) {
-                config.headers = config.headers || {};
-                if (localStorage.getItem("token") != undefined) {
-                    config.headers['user_login_token'] = localStorage.getItem("token");
-                }
-                return config || $q.when(config);
-            },
-            requestError: function(err) {},
-            response: function(res) {
-                return res;
-            },
-            responseError: function(err) {}*/
             request: function(config){
                 config.headers = config.headers || {};
                 if(window.location.href.indexOf("pad-web")!=-1) {
@@ -39,6 +28,21 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
 
                 return config;
             },
+            requestError: function (err) {
+                //return $q.reject(err);
+                console.log(err)
+            },
+            response: function (res) {
+                if(res.data.errorInfo=="0x00006"){
+                    alert("登录已经失效,请重新登录")
+                    window.location.href = window.location.href.split("pad-web")[0]+"pad-web/login"
+                }
+                return res;
+            },
+            responseError: function (err) {
+                // return $q.reject(err);
+                console.log(err)
+            }
 
         };
     }])
@@ -62,7 +66,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector", function($q) {
     }])
     //获取用户二维码
     .factory('getBeautyQRCode', ['$resource', function($resource) {
-        return $resource(beautyIP+'getBeautyQRCode')
+        return $resource(weixinService+'beauty/getBeautyQRCode')
     }])
     //http轮询
     .factory('getUserScanInfo', ['$resource', function($resource) {

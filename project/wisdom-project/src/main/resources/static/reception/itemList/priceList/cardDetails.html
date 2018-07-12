@@ -1,8 +1,18 @@
 <div class="cardWrap">
     <!--轮播图-->
-    <swipers data="param.cardDetail.imageList"></swipers>
+    <!--<swipers data="param.cardDetail.imageList"></swipers>-->
+
+    <div class="swiper-container" style=" width: 100%">
+        <div  class="swiper-wrapper">
+            <div class="swiper-slide" ng-repeat="imgSrc in param.cardDetail.imageList track by $index">
+                <img ng-src="{{imgSrc}}" alt="" style="display: block;width: 100%;height: 100%">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+
     <!-项目详情-描述-->
-    <div class="cardDescribe" style="overflow-y:scroll;height:6rem;overflow-x:hidden">
+    <div class="cardDescribe" style="overflow-y:scroll;height:6rem;overflow-x:hidden;padding-bottom: 44px;">
         <div class="describeTwo">
             <div class="p32">
                 <p><span class="fs36 c33 bold">{{param.cardDetail.projectGroupName}}</span></p>
@@ -14,7 +24,7 @@
                     <p class="mt50 fs32 c66"><span>包含项目</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>（{{param.cardDetail.shopProjectInfoDTOS.length}}）</span></p>
                     <ul class="mt30">
                         <li ng-repeat="item in param.cardDetail.shopProjectInfoDTOS">
-                            <img ng-src="{{item.projectUrl}}" alt="">
+                            <img src="{{item.projectUrl}}" alt="" onerror="this.src='images/moren.png'">
                             <p class="mt22 fs32 c66">{{item.projectName}}</p>
                             <p><span class="c99 fs26">价格：</span><span class="c99 fs26">￥{{item.marketPrice}}</span>
                                 &nbsp;&nbsp;<span class="fs28 cff66">{{item.serviceTimes}}次</span>
@@ -22,7 +32,7 @@
                         </li>
                     </ul>
                 </div>
-                <p class="mt30 fs32 c66 mb50">套卡说明：{{param.cardDetail.detail}}</p>
+                <p class="mt30 fs32 c66 mb50" style="height: 60px">套卡说明：{{param.cardDetail.detail}}</p>
             </div>
         </div>
     </div>

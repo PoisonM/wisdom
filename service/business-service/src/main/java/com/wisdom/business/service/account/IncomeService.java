@@ -8,8 +8,10 @@ import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.*;
+import com.wisdom.common.dto.activity.ShareActivityDTO;
 import com.wisdom.common.dto.system.ExportIncomeRecordExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.dto.system.UserBankCardInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import com.wisdom.common.dto.transaction.PromotionTransactionRelation;
@@ -22,6 +24,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +49,9 @@ public class IncomeService {
 
     @Autowired
     private UserServiceClient userServiceClient;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private PayRecordService payRecordService;
@@ -99,6 +107,15 @@ public class IncomeService {
         logger.info("根据条件查询用户佣金奖励");
 
 
+        if(("1").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessA1);
+
+        }else if(("2").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessB1);
+
+        }
 
         //获取审核状态条件
         String CheckStatus =pageParamVoDTO.getRequestData().getCheckStatus();
@@ -122,6 +139,13 @@ public class IncomeService {
 
         //查询该订单用户提升等级信息queryIncomeInfoByIncomeId
         for(IncomeRecordDTO income :incomeRecordDTOS){
+            if(ConfigConstant.businessA1.equals(income.getUserBusinessTypeNow())){
+                income.setUserBusinessTypeNow("A级");
+            }else if(ConfigConstant.businessB1.equals(income.getUserBusinessTypeNow())){
+                income.setUserBusinessTypeNow("B级");
+            }else if(ConfigConstant.businessC1.equals(income.getUserBusinessTypeNow())){
+                income.setUserBusinessTypeNow("C级");
+            }
            PromotionTransactionRelation promotionTransactionRelation =  promotionTransactionRelationMapper.getIsImportLevel(income.getTransactionId());
            if(promotionTransactionRelation!=null){
                if(promotionTransactionRelation.getPromotionLevel().equals(ConfigConstant.LEVE_IMPORT_A)){
@@ -406,7 +430,19 @@ public class IncomeService {
 
     public List<ExportIncomeRecordExcelDTO> exportExcelIncomeRecord(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         logger.info("service -- 导出佣金数据 exportExcelIncomeRecord,方法执行" );
+
+        if(("1").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessA1);
+
+        }else if(("2").equals(pageParamVoDTO.getRequestData().getUseBusinessType())){
+
+            pageParamVoDTO.getRequestData().setBusinessType(ConfigConstant.businessB1);
+
+        }
+
         List<ExportIncomeRecordExcelDTO> exportIncomeRecordExcelDTOS = incomeMapper.exportExcelIncomeRecord(pageParamVoDTO);
+
         for (ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO : exportIncomeRecordExcelDTOS){
             //判断该交易购买者是否升级
             PromotionTransactionRelation promotionTransactionRelation = promotionTransactionRelationMapper.getIsImportLevel(exportIncomeRecordExcelDTO.getTransactionId());
@@ -587,5 +623,12 @@ public class IncomeService {
 
     public List<IncomeRecordDTO> getIncomeRanking(PageParamVoDTO<IncomeRecordDTO> pageParamVoDTO) {
         return incomeMapper.getIncomeRanking(pageParamVoDTO);
+    }
+
+    //根据incomeId查询分享奖励3条数据详情
+    public List<ShareActivityDTO> getIncomeShareActivityInfoByIncomeId(String incomeId) {
+        Query query = new Query(Criteria.where("incomeId").is(incomeId));
+        List<ShareActivityDTO> shareActivityDTOS = mongoTemplate.find(query,ShareActivityDTO.class,"shareActivity");
+        return shareActivityDTOS;
     }
 }
