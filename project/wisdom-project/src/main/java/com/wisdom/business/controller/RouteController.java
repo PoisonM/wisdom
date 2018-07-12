@@ -41,10 +41,19 @@ public class RouteController {
 
 	@RequestMapping(value ="MP_verify_338eDaTfFCfMKzmb.txt",method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
-	public String value(HttpServletResponse response) {
+	public String value1(HttpServletResponse response) {
 		response.addHeader("Pragma","no-cache");
 		response.setHeader("Cache-Control","no-cache");
 		response.setHeader("Expires","0");
 		return "338eDaTfFCfMKzmb";
+	}
+
+	@RequestMapping(value ="MP_verify_BtTmwr0FuH3nfcZC.txt",method = {RequestMethod.POST, RequestMethod.GET})
+	@ResponseBody
+	public String value2(HttpServletResponse response) {
+		response.addHeader("Pragma","no-cache");
+		response.setHeader("Cache-Control","no-cache");
+		response.setHeader("Expires","0");
+		return "BtTmwr0FuH3nfcZC";
 	}
 }

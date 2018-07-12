@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class Global {
 
-	public static String[] resourcePaths = {"http://localhost:8888/conf/constant-config-dev.properties",
-			"http://localhost:8888/conf/config-ali.properties"};
-
-//	public static String[] resourcePaths = {"http://localhost:8888/conf/constant-config-pro.properties",
+//	public static String[] resourcePaths = {"http://localhost:8888/conf/constant-config-dev.properties",
 //			"http://localhost:8888/conf/config-ali.properties"};
+
+	public static String[] resourcePaths = {"http://localhost:8888/conf/constant-config-pro.properties",
+			"http://localhost:8888/conf/config-ali.properties"};
 
 //	public static String[] resourcePaths = {"http://172.19.41.70:8888/conf/constant-config-pro.properties",
 //		"http://172.19.41.70:8888/conf/config-ali.properties"};
