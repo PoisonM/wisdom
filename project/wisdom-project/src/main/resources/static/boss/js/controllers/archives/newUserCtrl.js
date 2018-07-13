@@ -6,7 +6,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
             var phoneReg=/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9]|147|177)\d{8}$/;
             $scope.param={
                 flag:false
-            }
+            };
             $scope.newUser={
                     sex:"女",
                     birthday:"",
@@ -32,7 +32,8 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     id:$stateParams.id
                 },function(data){
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $scope.newUser = data.responseData
+                        $scope.newUser = data.responseData;
+                        console.log($scope.newUser.phone)
                     }
                 });
             }
@@ -79,7 +80,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     $scope.shopUserArchivesDTO=$scope.newUser;
                     /*新建保存接口*/
                     SaveArchiveInfo.save($scope.shopUserArchivesDTO,function (data) {
-                        if(Global.SUCCESS=data.result){
+                        if(Global.SUCCESS==data.result){
                             $scope.newUser={
                                 sex:"女",
                                 birthday:"",
@@ -97,7 +98,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     $scope.userInformation=$scope.newUser;
                     /*修改档案更新保存*/
                     UpdateArchiveInfo.save($scope.userInformation,function (data) {
-                        if(Global.SUCCESS=data.result){
+                        if(Global.SUCCESS==data.result){
                             $state.go("archives",{id:$stateParams.id})
 
                         }
