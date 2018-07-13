@@ -418,7 +418,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
 		if (null != shopInfoByPrimaryKey) {
 			logger.error("查询的shopId为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
-			shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getShopId());
+			shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getId());
 		}
 		shopUserArchivesDTO.setSysBossCode(sysBossCode);
 		int info = saveShopUserArchivesInfo(shopUserArchivesDTO);

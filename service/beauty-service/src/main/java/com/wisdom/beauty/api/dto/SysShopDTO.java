@@ -54,8 +54,8 @@ public class SysShopDTO extends BaseEntity implements Serializable {
     //结束营业时间
     private String closeDoorDate;
 
-    //某个店的唯一标识
-    private String shopId;
+    //0 正常 1删除
+    private String delFlag;
 
     //
     private String qrCodeUrl;
@@ -208,12 +208,12 @@ public class SysShopDTO extends BaseEntity implements Serializable {
         this.closeDoorDate = closeDoorDate;
     }
 
-    public String getShopId() {
-        return shopId;
+    public String getDelFlag() {
+        return delFlag;
     }
 
-    public void setShopId(String shopId) {
-        this.shopId = shopId;
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
     }
 
     public String getQrCodeUrl() {
