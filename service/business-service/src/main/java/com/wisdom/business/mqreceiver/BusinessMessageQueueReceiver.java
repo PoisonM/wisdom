@@ -1,5 +1,6 @@
 package com.wisdom.business.mqreceiver;
 
+import com.aliyun.opensearch.util.URLEncoder;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.netflix.discovery.util.StringUtil;
@@ -288,7 +289,7 @@ public class BusinessMessageQueueReceiver {
             UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
             if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getExtendUserType())){
                 String token = WeixinUtil.getUserToken();
-                WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(),userInfoDTO.getNickname(),userInfoDTO.getUserType(),toLevel, DateUtils.DateToStr(new Date(),"date"));
+                WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(), URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"),userInfoDTO.getUserType(),toLevel, DateUtils.DateToStr(new Date(),"date"));
             }
         }
         logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
