@@ -1007,10 +1007,4 @@ public class WeixinTemplateMessageUtil {
 		}
 	}
 
-	public static void main(String[] args ){
-
-		String token  = "11_nIobXbk6gLjxLQFwWDvYl2Ai1XHCxlU4zNmPdvDKONnMuIATqyZKzwKVP6x2FDAV41Ua2wmLsr9LUHYO41_xYG58KFsUzKYwSu0bGBCtLqQFk8E4U2HY2CMOMInbj5hQUht1fj4-yeBHMbx-NNQiAHAYYB";
-		WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage("2018年01月05日 10:30","fda32312123456",token,"http://www.baidu.com","oP0k_0XmXxsbPMBKfIyXq9kOZZRE");
-
-	}
 }
