@@ -16,7 +16,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                /* rookieProductId:"201712101718100007",*/
                 redPackerFlagOne:false,
                 redPackerFlagTwo:false,
-                redPackerBox:false,
+                redPackerBox:true,
                 bonusValue:"",
                 timeContent:"",
                 checkType:"0"
@@ -236,7 +236,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 //判断用户是否是3月的B店店主,如果是，则弹出红包页
               /*  CheckTripleMonthBonus.get(function(data){
                     if(data.result==Global.SUCCESS)
-                    {
+                        {
                         $scope.param.redPackerFlagOne = true;
                         $scope.param.redPackerFlagTwo = false;
                         $scope.param.bonusLeftDay = data.responseData;
