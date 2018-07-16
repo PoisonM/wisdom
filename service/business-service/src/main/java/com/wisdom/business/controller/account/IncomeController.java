@@ -1014,6 +1014,7 @@ public class IncomeController {
 			exportMonthExcelDTO.setCreateDate(DateUtils.formatDate(incomeRecordDTO.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
 			exportMonthExcelDTO.setIncomeType(incomeRecordDTO.getIncomeType());
 			exportMonthExcelDTO.setIncomeStatus(incomeRecordDTO.getStatus());
+			exportMonthExcelDTO.setSecondCheckStatus(incomeRecordDTO.getSecondCheckStatus());
 			exportMonthExcelDTOS.add(exportMonthExcelDTO);
 		}
 

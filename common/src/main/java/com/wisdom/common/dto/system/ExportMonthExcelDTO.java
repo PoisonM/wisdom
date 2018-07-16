@@ -31,6 +31,9 @@ public class ExportMonthExcelDTO {
     @JSONField(name = "incomeType")
     private String incomeType;
 
+    @JSONField(name = "secondCheckStatus")
+    private String secondCheckStatus;
+
     @JSONField(name = "incomeStatus")
     private String incomeStatus;
 
@@ -78,6 +81,25 @@ public class ExportMonthExcelDTO {
         this.createDate = createDate;
     }
 
+    public String getSecondCheckStatus() {
+        if("0".equals(secondCheckStatus)){
+            return "未审核";
+        }else if("1".equals(secondCheckStatus)){
+            return "运营审核通过";
+        }else if("2".equals(secondCheckStatus)){
+            return "财务审核通过";
+        }else if("3".equals(secondCheckStatus)){
+            return "双方审核通过";
+        }else if("4".equals(secondCheckStatus)){
+            return "双方审核通过";
+        }
+        return secondCheckStatus;
+    }
+
+    public void setSecondCheckStatus(String secondCheckStatus) {
+        this.secondCheckStatus = secondCheckStatus;
+    }
+
     public String getIncomeType() {
         if("month".equals(this.incomeType)){
             return "月度奖励";
@@ -117,5 +139,6 @@ public class ExportMonthExcelDTO {
         }
         return userType;
     }
+
 
 }
