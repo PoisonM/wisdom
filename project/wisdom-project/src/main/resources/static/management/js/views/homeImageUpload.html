@@ -24,20 +24,22 @@
                     <div class="tableBox">
                         <div style="width:30%;margin-top:100px;">
                             <label class="bold">图片类型:</label>
-                            <select class="imageType selectWidth" id="imageType" style="border:1px solid;height:30px;color:#7f818a;">
+                            <select class="imageType selectWidth" ng-model="imageType" id="imageType" style="border:1px solid;height:30px;color:#7f818a;">
                                 <option value="banner">banner图</option>
                                 <option value="supernatant">浮层</option>
                             </select>
                         </div>
-                        <div ng-show="!showImage" style="width:30%;margin-top:25px;" ng-if="imageType == 'banner'">
-                            <label class="bold">选择顺序:</label>
-                            <select class="sequence selectWidth" id="sequence" style="border:1px solid;height:30px;color:#7f818a;">
-                                <option value="1">第一张</option>
-                                <option value="2">第二张</option>
-                                <option value="3">第三张</option>
-                                <option value="4">第四张</option>
-                                <option value="5">第五张</option>
-                            </select>
+                        <div ng-show="!showImage" style="width:30%;margin-top:25px;" >
+                            <div ng-if="imageType == 'banner'">
+                                <label class="bold">选择顺序:</label>
+                                <select class="sequence selectWidth" id="sequence" style="border:1px solid;height:30px;color:#7f818a;">
+                                    <option value="1">第一张</option>
+                                    <option value="2">第二张</option>
+                                    <option value="3">第三张</option>
+                                    <option value="4">第四张</option>
+                                    <option value="5">第五张</option>
+                                </select>
+                            </div>
                         </div>
                         <div style="width:30%;margin-top:25px;">
                             <label class="bold">跳转url:</label>
