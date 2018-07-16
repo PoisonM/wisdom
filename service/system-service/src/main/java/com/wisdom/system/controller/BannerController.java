@@ -75,7 +75,7 @@ public class BannerController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 			return responseDTO;
 		}
-		if("".equals(bannerDTO.getBannerType())){
+		if("supernatant".equals(bannerDTO.getBannerType())){
 			try {
 				bannerDTO.setBannerRank(0);
 				bannerDTO.setBannerId(bannerId);
