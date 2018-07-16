@@ -44,13 +44,13 @@
         }
 
         .redPacket .close1 {
-            width: 40px;
-            height: 40px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             /*background-color: #ffffff;*/
             position: absolute;
-            top: 0px;
-            right: 1px;
+            top: 4px;
+            right: 4px;
         }
 
         .open {
@@ -391,9 +391,9 @@
     <div class="redPacket_box" ng-if="param.redPackerBox">
         <div class="redPacket" ng-repeat="item in param.bannerList" ng-if="item.bannerType=='supernatant'">
             <a ng-href="{{item.forward}}">
-                <img ng-src="{{item.uri}}" alt="">
-                <span ng-click="redPackerClose()" class="close1"></span>
+                <img ng-src="{{item.uri}}" >
             </a>
+            <img src="images/close.png" ng-click="redPackerClose();event.stopPropagation()"  class="close1">
         </div>
     </div>
 </ion-view>
