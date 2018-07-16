@@ -286,7 +286,7 @@ public class BusinessMessageQueueReceiver {
 
         if(StringUtils.isNotNull(userInfoDTO.getParentUserId())){
             UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
-            if(null != grandpaUserInfoDTO && grandpaUserInfoDTO.getExtendUserType().equals(ConfigConstant.businessB1)){
+            if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getExtendUserType())){
                 String token = WeixinUtil.getUserToken();
                 WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(),userInfoDTO.getNickname(),userInfoDTO.getUserType(),toLevel, DateUtils.DateToStr(new Date(),"date"));
             }
