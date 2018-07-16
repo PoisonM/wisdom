@@ -296,7 +296,6 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 /*点击首页浮层 取消让浮层隐藏*/
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
-              $(".redPacket_box").hide()
             };
             /*$scope.redPackerOpen = function () {
                 //可以领取
