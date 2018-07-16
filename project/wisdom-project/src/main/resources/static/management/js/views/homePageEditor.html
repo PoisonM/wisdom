@@ -58,14 +58,14 @@
                              <td class="text-center">{{item.createDate}}</td>
                              <td class="text-center"><img src="{{item.uri}}" style="max-width:100%;" /></td>
                              <td class="text-center">{{item.forward}}</td>
-                             <td class="text-center" ng-click="void();$event.stopPropagation()" colspan="3">
+                             <td class="text-center" ng-click="void();$event.stopPropagation()" colspan="3" >
                                  <a ng-click="updateImageInfo(item.bannerId);$event.stopPropagation()" class="orderBtn" >编辑</a>
                                  &nbsp;
                                  <a ng-click="remove(item.bannerId);$event.stopPropagation()" class="orderBtn" >移除</a>
                                  &nbsp;
-                                 <a ng-click="upAndDownBanner(item.bannerId,'up');$event.stopPropagation()" ng-show="item.bannerRank!=1" class="orderBtn" >上移</a>
+                                 <a ng-click="upAndDownBanner(item.bannerId,'up');$event.stopPropagation()" ng-show="item.bannerRank!=1" class="orderBtn" ng-if="item.bannerType == 'banner'" >上移</a>
                                  &nbsp;
-                                 <a ng-click="upAndDownBanner(item.bannerId,'down');$event.stopPropagation()" class="orderBtn" >下移</a>
+                                 <a ng-click="upAndDownBanner(item.bannerId,'down');$event.stopPropagation()" class="orderBtn" ng-if="item.bannerType == 'banner'" >下移</a>
                              </td>
                          </tr>
                          </tbody>

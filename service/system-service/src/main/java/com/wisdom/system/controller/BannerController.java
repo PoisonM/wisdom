@@ -75,6 +75,23 @@ public class BannerController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 			return responseDTO;
 		}
+		if("".equals(bannerDTO.getBannerType())){
+			try {
+				bannerDTO.setBannerRank(0);
+				bannerDTO.setBannerId(bannerId);
+				bannerDTO.setPlace("home");
+				bannerDTO.setStatus("1");
+				bannerDTO.setCreateDate( DateUtils.getDate("yyyy-MM-dd HH:mm:ss"));
+				bannerService.addHomeBanner(bannerDTO);
+				responseDTO.setResult(StatusConstant.SUCCESS);
+			} catch (Exception e) {
+				logger.info("新增浮层异常,异常信息为={}"+e.getMessage(),e);
+				e.printStackTrace();
+				responseDTO.setResult(StatusConstant.FAILURE);
+			}
+			logger.info("新增浮层结束耗时{}毫秒", (System.currentTimeMillis() - startTime));
+			return responseDTO;
+		}
 		BannerDTO bannerDTOOld = bannerService.findHomeBannerInfoByBannerRank(bannerRank);
 		if(null != bannerDTOOld){
 			logger.info("新增banner,此banner图层={}已有banner图",bannerDTO.getBannerRank());
