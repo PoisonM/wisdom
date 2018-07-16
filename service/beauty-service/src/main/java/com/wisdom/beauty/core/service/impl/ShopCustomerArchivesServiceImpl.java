@@ -354,7 +354,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = getShopUserArchivesInfo(shopUserArchivesDTO);
 		if (CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)) {
 			responseDTO.setResponseData("用户已经存在了");
-			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.ALREADY_EXISTED);
 			return responseDTO;
 		}
 
