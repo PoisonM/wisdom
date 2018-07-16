@@ -56,7 +56,7 @@ public class ExportUserInfoExcelDTO {
     }
 
     public String getUserType() {
-        return userType;
+        return userTypeUtil(userType);
     }
 
     public void setUserType(String userType) {
@@ -85,5 +85,15 @@ public class ExportUserInfoExcelDTO {
 
     public void setLivingPeriod(String livingPeriod) {
         this.livingPeriod = livingPeriod;
+    }
+    private String userTypeUtil(String userType){
+        if("business-B-1".equals(userType)){
+            return "B";
+        }else if("business-A-1".equals(userType)){
+            return "A";
+        }else if("business-C-1".equals(userType)){
+            return "C";
+        }
+        return userType;
     }
 }
