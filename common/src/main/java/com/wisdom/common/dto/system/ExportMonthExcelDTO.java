@@ -80,7 +80,7 @@ public class ExportMonthExcelDTO {
 
     public String getIncomeType() {
         if("month".equals(this.incomeType)){
-            return "推荐有礼";
+            return "月度奖励";
         }
         return incomeType;
     }
