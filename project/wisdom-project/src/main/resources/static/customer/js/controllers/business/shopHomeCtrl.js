@@ -297,7 +297,6 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
             };
-
             /*$scope.redPackerOpen = function () {
                 //可以领取
                 if($scope.param.redPackerFlagOne)

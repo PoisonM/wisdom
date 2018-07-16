@@ -75,7 +75,14 @@ public class BannerController {
 			responseDTO.setResult(StatusConstant.FAILURE);
 			return responseDTO;
 		}
-		if("".equals(bannerDTO.getBannerType())){
+		if("supernatant".equals(bannerDTO.getBannerType())){
+			BannerDTO supernatant =   bannerService.findHomeBannerInfoByBannerType("supernatant");
+			if(null != supernatant){
+				logger.info("新增浮层,此浮层图层={}已有浮层图",bannerDTO.getBannerRank());
+				responseDTO.setErrorInfo("此楼层已有浮层图");
+				responseDTO.setResult(StatusConstant.FAILURE);
+				return responseDTO;
+			}
 			try {
 				bannerDTO.setBannerRank(0);
 				bannerDTO.setBannerId(bannerId);
@@ -286,6 +293,12 @@ public class BannerController {
 		boolean nextBanner = true;
 		try {
 			BannerDTO bannerDTO = bannerService.findHomeBannerInfoById(bannerId);
+			if("supernatant".equals(bannerDTO.getBannerType())){
+				bannerService.delHomeBannerById(bannerId);
+				responseDTO.setResult(StatusConstant.SUCCESS);
+				logger.info("删除浮层{}毫秒", (System.currentTimeMillis() - startTime));
+				return responseDTO;
+			}
 			int bannerRank = bannerDTO.getBannerRank()+1;
 			logger.info("删除Banner,删除的banner楼层为={}", bannerRank-1);
 			bannerService.delHomeBannerById(bannerId);

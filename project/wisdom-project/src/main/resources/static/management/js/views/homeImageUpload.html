@@ -29,7 +29,7 @@
                                 <option value="supernatant">浮层</option>
                             </select>
                         </div>
-                        <div ng-show="!showImage" style="width:30%;margin-top:25px;">
+                        <div ng-show="!showImage" style="width:30%;margin-top:25px;" ng-if="imageType == 'banner'">
                             <label class="bold">选择顺序:</label>
                             <select class="sequence selectWidth" id="sequence" style="border:1px solid;height:30px;color:#7f818a;">
                                 <option value="1">第一张</option>
