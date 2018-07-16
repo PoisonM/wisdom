@@ -62,4 +62,10 @@ public class BannerService {
         update.set("status","0");
         mongoTemplate.updateFirst(query,update,"bannerList");
     }
+
+    public BannerDTO findHomeBannerInfoByBannerType(String bannerType) {
+        Query query = new Query().addCriteria(Criteria.where("bannerType").is(bannerType)).addCriteria(Criteria.where("status").is("1"));
+        BannerDTO bannerDTO = mongoTemplate.findOne(query, BannerDTO.class,"bannerList");
+        return bannerDTO;
+    }
 }
