@@ -381,7 +381,7 @@ public class IncomeController {
 		//判断是否是一拖三
 		if("shareActivity".equals(pageParamVoDTO.getRequestData().getIncomeType())){
 			String url = this.exportExcelShareActivity(pageParamVoDTO);
-			if("".equals(url) && null != url){
+			if(!"".equals(url) && null != url){
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			}else {
@@ -394,7 +394,7 @@ public class IncomeController {
 		//判断是否是月度
 		if("month".equals(pageParamVoDTO.getRequestData().getIncomeType())){
 			String url = this.exportExcelMonth(pageParamVoDTO);
-			if("".equals(url) && null != url){
+			if(!"".equals(url) && null != url){
 				responseDTO.setResult(url);
 				responseDTO.setErrorInfo(StatusConstant.SUCCESS);
 			}else {
