@@ -6,6 +6,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,$http,ExportNextUserInfoControl,UpdateIncomeRecordStatusById,$filter,ManagementUtil,FindHomeBannerInfoById,UpdateHomeBanner,AddHomeBanner) {
 
             $scope.showImage = true;
+            $scope.imageType = "banner";
 
             $scope.back = function(){
                 $state.go("homePageEditor");
