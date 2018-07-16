@@ -388,12 +388,14 @@
         </ul>
     </div>
     <!--进首页弹出页面-->
-    <div class="redPacket_box" ng-if="param.redPackerBox">
-        <div class="redPacket" ng-repeat="item in param.bannerList" ng-if="item.bannerType=='supernatant'">
-            <a ng-href="{{item.forward}}">
-                <img ng-src="{{item.uri}}" >
-            </a>
-            <img src="images/close.png" ng-click="redPackerClose();event.stopPropagation()"  class="close1">
+    <div  ng-if="param.redPackerBox">
+        <div class="redPacket_box">
+            <div class="redPacket" ng-repeat="item in param.bannerList" ng-if="item.bannerType=='supernatant'">
+                <a ng-href="{{item.forward}}">
+                    <img ng-src="{{item.uri}}" >
+                </a>
+                <img src="images/close.png" ng-click="redPackerClose();event.stopPropagation()"  class="close1">
+            </div>
         </div>
     </div>
 </ion-view>
