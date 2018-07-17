@@ -28,6 +28,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -281,17 +282,19 @@ public class BusinessMessageQueueReceiver {
         if(StringUtils.isNotNull(toLevel)){
             String leveName = toLevel.equals(ConfigConstant.businessA1)?"大当家":"9小主";
             String token = WeixinUtil.getUserToken();
-            WeixinTemplateMessageUtil.sendBusinessPromoteForOneSelfTemplateWXMessage(userInfoDTO.getNickname(),leveName
+            WeixinTemplateMessageUtil.sendBusinessPromoteForOneSelfTemplateWXMessage(URLDecoder.decode(userInfoDTO.getNickname(),"utf-8"),leveName
             ,DateUtils.DateToStr(new Date(),"datetime"),token,"",userInfoDTO.getUserOpenid());
+
+            if(StringUtils.isNotNull(userInfoDTO.getParentUserId())){
+                UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
+                if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
+                    WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(), URLDecoder.decode(userInfoDTO.getNickname(),"utf-8"),userInfoDTO.getUserType(),toLevel, DateUtils.DateToStr(new Date(),"date"));
+                }
+            }
+
         }
 
-        if(StringUtils.isNotNull(userInfoDTO.getParentUserId())){
-            UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
-            if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getExtendUserType())){
-                String token = WeixinUtil.getUserToken();
-                WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(), URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"),userInfoDTO.getUserType(),toLevel, DateUtils.DateToStr(new Date(),"date"));
-            }
-        }
+
         logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
     }
 }
