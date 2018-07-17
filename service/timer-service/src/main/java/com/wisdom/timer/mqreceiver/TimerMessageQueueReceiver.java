@@ -72,7 +72,8 @@ public class TimerMessageQueueReceiver {
                 List<UserInfoDTO> userInfoDTOList =  userServiceClient.getUserInfo(userInfoDTO);
                 if(userInfoDTOList.size()>0)
                 {
-                    WeixinTemplateMessageUtil.sendOrderConfirmReceiveTemplateWXMessage(businessOrder.getBusinessOrderId(), businessOrder.getBusinessProductName(),
+                    BusinessOrderDTO businessOrderDTO = businessServiceClient.getProductInfoByOrderId(businessOrder.getOrderId());
+                    WeixinTemplateMessageUtil.sendOrderConfirmReceiveTemplateWXMessage(businessOrder.getBusinessOrderId(), businessOrderDTO.getBusinessProductName(),
                             sendProductDate,autoReceiveProductDate,token,url,userInfoDTOList.get(0).getUserOpenid());
                     logger.info("用户15天后，自动收货发送消息,用户openid={}" ,userInfoDTOList.get(0).getUserOpenid());
                 }
