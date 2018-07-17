@@ -459,7 +459,7 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword2);
-		m.put("remark", templateData);
+		m.put("keyword1", templateData);
 
 		t.setData(m);
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
