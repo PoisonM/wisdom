@@ -79,7 +79,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     $scope.shopUserArchivesDTO=$scope.newUser;
                     /*新建保存接口*/
                     SaveArchiveInfo.save($scope.shopUserArchivesDTO,function (data) {
-                        if(Global.SUCCESS=data.result){
+                        if(data.result==Global.SUCCESS){
                             $scope.newUser={
                                 sex:"女",
                                 birthday:"",
@@ -90,6 +90,10 @@ angular.module('controllers',[]).controller('newUserCtrl',
 
                             };
                             $state.go("partialFiles");
+                        }else if(data.result == '0x00013'){
+                            alert("用户已存在")
+                        }else{
+                            alert("用户保存失败")
                         }
 
                     })
