@@ -287,7 +287,14 @@ public class BusinessMessageQueueReceiver {
             if(StringUtils.isNotNull(userInfoDTO.getParentUserId())){
                 UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
                 if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
-                    String fromLeveName = userInfoDTO.getUserType().equals(ConfigConstant.businessA1)?"大当家":"9小主";
+                    String fromLeveName = "";
+                    if(userInfoDTO.getUserType().equals(ConfigConstant.businessC1)){
+                        fromLeveName = "普通用户";
+                    }else if(userInfoDTO.getUserType().equals(ConfigConstant.businessB1)){
+                        fromLeveName = "9小主";
+                    }else {
+                        fromLeveName = "大当家";
+                    }
                     WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(), URLDecoder.decode(userInfoDTO.getNickname(),"utf-8"),fromLeveName,leveName, DateUtils.DateToStr(new Date(),"date"));
                 }
             }
