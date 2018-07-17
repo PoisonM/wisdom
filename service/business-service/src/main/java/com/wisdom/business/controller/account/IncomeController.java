@@ -493,7 +493,24 @@ public class IncomeController {
 				List<ExportIncomeRecordExcelDTO> excelList = new ArrayList<>();
 				for (MonthTransactionRecordDTO monthTransactionRecordDTO : selfList1) {
 					ExportIncomeRecordExcelDTO exportIncomeRecordExcelDTO = new ExportIncomeRecordExcelDTO();
-					exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
+					if(("self").equals(monthTransactionRecordDTO.getParentRelation())){
+						if(ConfigConstant.businessC1.equals(monthTransactionRecordDTO.getUserType())){
+							if(monthTransactionRecordDTO.getAmount() >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&monthTransactionRecordDTO.getAmount()<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+								exportIncomeRecordExcelDTO.setUserType(ConfigConstant.businessB1);
+							}
+
+						}else if(ConfigConstant.businessB1.equals(monthTransactionRecordDTO.getUserType())){
+							if(monthTransactionRecordDTO.getAmount()>= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+								exportIncomeRecordExcelDTO.setUserType(ConfigConstant.businessA1);
+							}else{
+								exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
+							}
+						}else {
+							exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
+						}
+					}else{
+						exportIncomeRecordExcelDTO.setUserType(monthTransactionRecordDTO.getUserType());
+					}
 					exportIncomeRecordExcelDTO.setUserTypeNow(monthTransactionRecordDTO.getUserTypeNow());
 					exportIncomeRecordExcelDTO.setSysUserId(monthTransactionRecordDTO.getUserId());
 					exportIncomeRecordExcelDTO.setNickName(monthTransactionRecordDTO.getNickName());
