@@ -104,7 +104,7 @@ public class ArchivesController {
         if (CommonUtils.objectIsEmpty(shopUserArchivesDTOS)) {
             logger.debug("获取档案列表或某个店的用户列表查询结果为空");
             responseDTO.setErrorInfo("获取档案列表或某个店的用户列表查询结果为空");
-            responseDTO.setResult(StatusConstant.FAILURE);
+            responseDTO.setResult(StatusConstant.SUCCESS);
             return responseDTO;
         }
         logger.info("查询用户的档案信息个数为={}",shopUserArchivesDTOS.size());
