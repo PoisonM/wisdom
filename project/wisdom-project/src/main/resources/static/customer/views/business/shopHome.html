@@ -190,8 +190,8 @@
         <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
             <ion-slide ng-repeat="item in param.bannerList" ng-if="item.bannerType=='banner'">
                 <div class="box" style="height:3.98rem;width: 7.50rem">
-                    <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}"
-                                                                                          style="height:3.98rem;width:7.50rem"/></a>
+                    <div  ng-click="goActivity(item.forward)"> <img ng-src="{{item.uri}}"
+                                                                                          style="height:3.98rem;width:7.50rem"/></div>
                 </div>
             </ion-slide>
         </ion-slide-box>
@@ -389,9 +389,9 @@
     <div  ng-if="param.redPackerBox"  ng-repeat="item in param.floating">
         <div class="redPacket_box">
             <div class="redPacket">
-                <a ng-href="{{item.forward}}">
+                <div ng-click="goActivity(item.forward)">
                     <img ng-src="{{item.uri}}" >
-                </a>
+                </div>
                 <img src="images/close.png" ng-click="redPackerClose();event.stopPropagation()"  class="close1">
             </div>
         </div>

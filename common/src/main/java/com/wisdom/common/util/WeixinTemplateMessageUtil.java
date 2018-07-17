@@ -349,7 +349,7 @@ public class WeixinTemplateMessageUtil {
 	 * @Param url 跳转的URL
 	 * @Param 用户的微信ID
 	 **/
-	public static void sendInstanceIncomeTemplateWXMessage(String order,String money,String token,String url, String openid){
+	public static void sendInstanceIncomeTemplateWXMessage(String money,String num,String date,String token,String url, String openid){
 		WxTemplate t = new WxTemplate();
 		t.setUrl(url);
 		t.setTouser(openid);
@@ -359,23 +359,23 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-			templateData.setValue("小主，小美已将消费返利转入您的个人账户，请在今日收益中查看~~\n");
+		templateData.setValue("小主，小美已将消费返利转入您的个人账户，请在今日收益中查看~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(order);
-		m.put("order", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
 		templateData.setValue(money);
-		m.put("money", templateData);
+		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("");
-		m.put("remark", templateData);
+		templateData.setValue(num);
+		m.put("keyword2", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(date);
+		m.put("keyword3", templateData);
 
 		t.setData(m);
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
@@ -459,7 +459,7 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword2);
-		m.put("remark", templateData);
+		m.put("keyword1", templateData);
 
 		t.setData(m);
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+

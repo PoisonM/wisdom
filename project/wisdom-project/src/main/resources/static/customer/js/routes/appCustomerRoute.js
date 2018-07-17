@@ -387,7 +387,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('shopActivity', {
-                        url: '/shopActivity',
+                        url: '/shopActivity/:forward',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'shopActivityCtrl',
                         resolve: {

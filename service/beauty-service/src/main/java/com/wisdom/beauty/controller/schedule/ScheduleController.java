@@ -184,7 +184,7 @@ public class ScheduleController {
         String sysShopId = redisUtils.getShopId();
         shopClerkScheduleDTO.setSysShopId(sysShopId);
         shopClerkScheduleDTO.setSysClerkId(clerkId);
-        shopClerkScheduleDTO.setScheduleDate(searchDate);
+        shopClerkScheduleDTO.setSearchStartDate(searchDate);
         //查询美容师的排班信息
         List<ShopClerkScheduleDTO> clerkScheduleList = shopClerkScheduleService.getShopClerkScheduleList(shopClerkScheduleDTO);
         //排班信息为空则批量初始化

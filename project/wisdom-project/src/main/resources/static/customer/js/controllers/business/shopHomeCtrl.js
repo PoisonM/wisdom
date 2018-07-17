@@ -251,6 +251,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             });
 
             $scope.clickCarousel=function(item){
+
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_BADJ,item);
             };
             $scope.enterDetails=function(item){
@@ -393,5 +394,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             };
             $("li").on("click", function () {
                 $("div").scrollLeft($(this).position().left-150)
-            })
+            });
+            /*点击浮层跳转到相应页面 且传值*/
+            $scope.goActivity=function (forward) {
+                $state.go("shopActivity",{forward:forward})
+            }
         }]);

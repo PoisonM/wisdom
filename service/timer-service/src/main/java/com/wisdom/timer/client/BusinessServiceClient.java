@@ -8,10 +8,7 @@ import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.MonthTransactionRecordDTO;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -72,4 +69,7 @@ public interface BusinessServiceClient {
 
     @RequestMapping(value = "/getIncomeRecordManagement",method=RequestMethod.POST)
     List<IncomeRecordManagementDTO> getIncomeRecordManagement(@RequestBody IncomeRecordManagementDTO incomeRecordManagementDTO);
+
+    @RequestMapping(value = "/getProductInfoByOrderId",method=RequestMethod.POST)
+    BusinessOrderDTO getProductInfoByOrderId(@RequestBody String orderId);
 }

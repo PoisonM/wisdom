@@ -4,7 +4,6 @@ import com.wisdom.beauty.api.dto.ShopClerkScheduleCriteria;
 import com.wisdom.beauty.api.dto.ShopClerkScheduleDTO;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingCriteria;
 import com.wisdom.beauty.api.dto.ShopScheduleSettingDTO;
-import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.beauty.api.enums.ScheduleTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopClerkScheduleDTO;
 import com.wisdom.beauty.core.mapper.ExtShopClerkScheduleMapper;
@@ -12,6 +11,7 @@ import com.wisdom.beauty.core.mapper.ShopClerkScheduleMapper;
 import com.wisdom.beauty.core.mapper.ShopScheduleSettingMapper;
 import com.wisdom.beauty.core.service.ShopClerkScheduleService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.IdGen;
@@ -80,7 +80,9 @@ public class ShopClerkScheduleServiceImpl implements ShopClerkScheduleService {
 
         //根据查询日期查询
         if (null != extShopClerkScheduleDTO.getSearchStartDate()) {
-            criteria.andScheduleDateEqualTo(extShopClerkScheduleDTO.getSearchStartDate());
+            Date startDate = DateUtils.getStartTime(extShopClerkScheduleDTO.getSearchStartDate());
+            Date endDate = DateUtils.getEndTime(extShopClerkScheduleDTO.getSearchStartDate());
+            criteria.andScheduleDateBetween(startDate, endDate);
         }
 
         List<ShopClerkScheduleDTO> shopClerkScheduleDTOS = shopClerkScheduleMapper.selectByCriteria(scheduleCriteria);
