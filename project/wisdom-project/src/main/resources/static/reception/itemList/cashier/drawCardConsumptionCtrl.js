@@ -1,6 +1,6 @@
 PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateParams, $state
     , ngDialog, Archives,GetUserCourseProjectList,GetShopUserProjectGroupRelRelationInfo
-    ,ConsumeCourseCard, ConsumesDaughterCard,ImageBase64UploadToOSS) {
+    ,ConsumeCourseCard, ConsumesDaughterCard,ImageBase64UploadToOSS,GetShopClerkList) {
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.$parent.param.headerCash.leftAddContent = "添加档案";
@@ -27,13 +27,19 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
     $scope.flagFn(true)
     $scope.staffListNames = $rootScope.staffListNames//关联员工
     $scope.staffListIds = $rootScope.staffListIds
+    $scope.housekeeperFlag = false;
+
+
 
 
     $scope.$parent.$parent.backHeaderCashFn = function () {
         window.history.go(-1)
     }
     $scope.goHousekeeper = function() {
-        $state.go('pad-web.left_nav.housekeeper')
+        // $state.go('pad-web.left_nav.housekeeper')
+        $scope.housekeeperFlag = true;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = false;
     }
     $scope.goSignConfirm = function() {
         $state.go('pad-web.signConfirm')
@@ -46,6 +52,44 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
         type:$state.params.type,
         id : $state.params.id
     }
+
+    //获取员工列表
+    GetShopClerkList.get({
+        pageNo: "1",
+        pageSize: "100"
+    }, function(data) {
+        if (data.result == "0x00001") {
+            $scope.UserList = data.responseData
+        }
+    })
+
+    $scope.userIdList = []
+    $scope.userNameList = []
+    $scope.housekeeperCheck = function (index,userId,name) {
+        if($scope.userIdList.indexOf(userId) != -1){
+            $scope.userIdList.remove(userId)
+            $scope.userNameList.remove(name)
+        }else {
+            $scope.userIdList.push(userId)
+            $scope.userNameList.push(name)
+        }
+    }
+
+
+    //保存关联员工
+    $scope.$parent.$parent.leftTipFn = function() {
+        $scope.housekeeperFlag = false
+        if($scope.userIdList == undefined){
+            $scope.shopUserConsumeDTO[0].sysClerkId = "";
+            $scope.shopUserConsumeDTO[0].sysClerkName = ""
+        }else {
+            $scope.shopUserConsumeDTO[0].sysClerkId = $scope.userIdList.join(";");
+            $scope.shopUserConsumeDTO[0].sysClerkName = $scope.userNameList.join(";");
+        }
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+        $scope.$parent.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftFlag = true;
+    }
+
     //初始划卡参数
     $scope.shopUserConsumeDTO = []
     $scope.shopUserConsumeDTO.push({
@@ -117,13 +161,13 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
             imageStr: $("#signConfirmRight").jSignature("getData"),
         }, function(data) {
             $scope.shopUserConsumeDTO[0].imageUrl = data.responseData
-            if($scope.staffListIds == undefined){
+            /*if($scope.staffListIds == undefined){
                 $scope.shopUserConsumeDTO[0].sysClerkId = "";
                 $scope.shopUserConsumeDTO[0].sysClerkName = ""
             }else {
                 $scope.shopUserConsumeDTO[0].sysClerkId = $scope.staffListIds.join(";");
                 $scope.shopUserConsumeDTO[0].sysClerkName = $scope.staffListNames.join(";");
-            }
+            }*/
             $scope.shopUserConsumeDTO.imageUrl = $("#signConfirmRight").jSignature("getData")
 
             //疗程卡划卡
@@ -161,20 +205,39 @@ PADWeb.controller('drawCardConsumptionCtrl', function($scope,$rootScope, $stateP
 
 
     }
+    setTimeout(function () {
+        var $signature = $("#signConfirmRight").jSignature({
+            'height': 300,
+        });
+        $signature.jSignature('reset')
 
-    var $signature = $("#signConfirmRight").jSignature({
-        'height': 300,
-    });
-    $signature.jSignature('reset')
+        //获取数据
+        var data = $signature.jSignature('getData', 'default')
+        //图片展示
+        var img = new Image()
+        img.src = data
+        $(img).appendTo($('#signimg'))
+        //将数据显示在文本框
+        $('#text').val(data)
+    },1000)
 
-    //获取数据
-    var data = $signature.jSignature('getData', 'default')
-    //图片展示
-    var img = new Image()
-    img.src = data
-    $(img).appendTo($('#signimg'))
-    //将数据显示在文本框
-    $('#text').val(data)
+
 
     // $("#signConfirmRight").jSignature("getData")//传给后台的值
+
+
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+    Array.prototype.delete = function(val) {
+        for (var i = 0; i < this.length; i++) {
+            if (this[i].id == val) {
+                this.splice(i, 1);
+                return
+            }
+        }
+    };
 });
