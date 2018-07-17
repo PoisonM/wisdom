@@ -61,7 +61,7 @@
                 </div>
                 <div style="z-index: 3001;position: absolute;width:100%;top:0 ;background: #ffffff;color: #333333;font-size: 8px" ng-show="param.fileBOx">
                     <ion-list>
-                        <ion-item  class="  h50 bgfff center"  ng-click="checkFileBox(item.id);$event.stopPropagation()" ng-repeat="item in switchingList">
+                        <ion-item  class="h50 bgfff center"  ng-click="checkFileBox(item.sysShopId);$event.stopPropagation()" ng-repeat="item in switchingList">
                            {{item.sysShopName}}
                         </ion-item>
                     </ion-list>

@@ -7,7 +7,6 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 flag:false,
                 sysShopId:'',
                 searchFile:''
-
             };
             $scope.$on('$ionicView.enter', function() {
                 $ionicLoading.show({
@@ -19,7 +18,7 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 });
                 $scope.param.flag=false
                 $scope.getInfo()
-                $scope.search()
+
             })
             $scope.getInfo=function(){
                 GetClerkInfoList.get({
