@@ -91,7 +91,7 @@ public class ShopController {
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
-        extSysShopDTO.setSysBossCode(bossInfo.getId());
+        extSysShopDTO.setSysBossCode(bossInfo.getSysBossCode());
         extSysShopDTO.setType(CommonCodeEnum.SUCCESS.getCode());
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
         responseDTO.setResponseData(CommonUtils.objectIsEmpty(bossShopInfo) ? new ExtSysShopDTO() : bossShopInfo.get(0));
