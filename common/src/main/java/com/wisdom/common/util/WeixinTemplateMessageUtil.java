@@ -17,49 +17,49 @@ public class WeixinTemplateMessageUtil {
 
 	public static final String businessA1 = Global.getConfig("businessA1");
 
-	//订单未支付通知模板ID
-	public static final String ORDER_NOT_PAY = Global.getConfig("ORDER_NOT_PAY");
+    //订单未支付通知模板ID
+    public static final String ORDER_NOT_PAY = Global.getConfig("ORDER_NOT_PAY");
 
-	//订单支付成功模板ID
-	protected static final String ORDER_PAY_SUCCESS = Global.getConfig("ORDER_PAY_SUCCESS");
+    //订单支付成功模板ID
+    protected static final String ORDER_PAY_SUCCESS = Global.getConfig("ORDER_PAY_SUCCESS");
 
-	//商品已发出通知模板ID
-	protected static final String PRODUCT_ALREADY_SEND = Global.getConfig("PRODUCT_ALREADY_SEND");
+    //商品已发出通知模板ID
+    protected static final String PRODUCT_ALREADY_SEND = Global.getConfig("PRODUCT_ALREADY_SEND");
 
-	//订单自动确认收货通知模板ID
-	protected static final String ORDER_CONFIRM_RECEIVE = Global.getConfig("ORDER_CONFIRM_RECEIVE");
+    //订单自动确认收货通知模板ID
+    protected static final String ORDER_CONFIRM_RECEIVE = Global.getConfig("ORDER_CONFIRM_RECEIVE");
 
-	//到账通知--月度返现模板
-	protected static final String MONTH_INCOME = Global.getConfig("MONTH_INCOME");
+    //到账通知--月度返现模板
+    protected static final String MONTH_INCOME = Global.getConfig("MONTH_INCOME");
 
-	//返现到账通知--即时返现模板ID
-	protected static final String INSTANCE_INCOME = Global.getConfig("INSTANCE_INCOME");
+    //返现到账通知--即时返现模板ID
+    protected static final String INSTANCE_INCOME = Global.getConfig("INSTANCE_INCOME");
 
-	//会员到期模板ID
-	protected static final String BUSINESS_MEMBER_DEADLINE = Global.getConfig("BUSINESS_MEMBER_DEADLINE");
+    //会员到期模板ID
+    protected static final String BUSINESS_MEMBER_DEADLINE = Global.getConfig("BUSINESS_MEMBER_DEADLINE");
 
-	//下级代理商加入提醒模板ID
-	protected static final String LOW_LEVEL_BUSINESS_JOIN = Global.getConfig("LOW_LEVEL_BUSINESS_JOIN");
+    //下级代理商加入提醒模板ID
+    protected static final String LOW_LEVEL_BUSINESS_JOIN = Global.getConfig("LOW_LEVEL_BUSINESS_JOIN");
 
-	//会员消费通知模板ID
-	protected static final String LOW_LEVEL_BUSINESS_EXPENSE = Global.getConfig("LOW_LEVEL_BUSINESS_EXPENSE");
+    //会员消费通知模板ID
+    protected static final String LOW_LEVEL_BUSINESS_EXPENSE = Global.getConfig("LOW_LEVEL_BUSINESS_EXPENSE");
 
-	//退款申请模板ID
-	protected static final String REFUND_APPLY = Global.getConfig("REFUND_APPLY");
+    //退款申请模板ID
+    protected static final String REFUND_APPLY = Global.getConfig("REFUND_APPLY");
 
-	//退款成功模板ID
-	protected static final String REFUND_SUCCESS = Global.getConfig("REFUND_SUCCESS");
+    //退款成功模板ID
+    protected static final String REFUND_SUCCESS = Global.getConfig("REFUND_SUCCESS");
 
 	//退款失败模板ID
 	protected static final String REFUND_FAILURE = Global.getConfig("REFUND_FAILURE");
 
-	//会员升级通知--同级推荐20个模板ID
-	protected static final String BUSINESS_PROMOTE_FOR_RECOMMEND = Global.getConfig("BUSINESS_PROMOTE_FOR_RECOMMEND");
+    //会员升级通知--同级推荐20个模板ID
+    protected static final String BUSINESS_PROMOTE_FOR_RECOMMEND = Global.getConfig("BUSINESS_PROMOTE_FOR_RECOMMEND");
 
-	//提现失败通知
-	protected static final String WITHDRAW_FAILURE_NOTIFY = Global.getConfig("WITHDRAW_FAILURE_NOTIFY");
+    //提现失败通知
+    protected static final String WITHDRAW_FAILURE_NOTIFY = Global.getConfig("WITHDRAW_FAILURE_NOTIFY");
 
-	//会员升级-本人升级提醒
+    //会员升级-本人升级提醒
 	protected static final String BUSINESS_PROMOTE_FOR_ONESELF = Global.getConfig("BUSINESS_PROMOTE_FOR_ONESELF");
 
 	protected static final String WITHDRAW_SUCCESS_NOTIFY = Global.getConfig("WITHDRAW_SUCCESS_NOTIFY");
@@ -72,14 +72,14 @@ public class WeixinTemplateMessageUtil {
 
 
 
-	/**
+    /**
 	 * 订单未支付通知模板 ORDER_NOT_PAY
 	 * @Param ordertape 下单时间
 	 * @Param ordeId 订单号
 	 * @Param 微信消息发送所需的token
 	 * @Param url 跳转的URL
 	 * @Param 用户的微信ID
-	 **/
+	**/
 	public static void sendOrderNotPayTemplateWXMessage(String ordertape, String ordeID, String token, String url, String openid){
 		WxTemplate t = new WxTemplate();
 		t.setUrl(url);
@@ -181,7 +181,7 @@ public class WeixinTemplateMessageUtil {
 	 * @Param 用户的微信ID
 	 * todo 此模板接口还有参数不齐全，待下阶段完善
 	 **/
-	public static void sendProductAlreadySendTemplateWXMessage(String delivername,String ordername,String token,String url, String openid){
+	public static void sendProductAlreadySendTemplateWXMessage(String delivername,String ordeDate,String token,String url, String openid){
 		WxTemplate t = new WxTemplate();
 		t.setUrl(url);
 		t.setTouser(openid);
@@ -197,12 +197,12 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(delivername);
-		m.put("delivername", templateData);
+		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(ordername);
-		m.put("ordername", templateData);
+		templateData.setValue(ordeDate);
+		m.put("keyword2", templateData);
 
 
 		templateData = new TemplateData();
@@ -359,7 +359,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("小主，小美已将消费返利转入您的个人账户，请在今日收益中查看~~\n");
+			templateData.setValue("小主，小美已将消费返利转入您的个人账户，请在今日收益中查看~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -865,7 +865,7 @@ public class WeixinTemplateMessageUtil {
 		}
 	}
 
-	public static void withdrawalsSuccess2Weixin(String openid, String token, String s, String returnMoney, String date) {
+    public static void withdrawalsSuccess2Weixin(String openid, String token, String s, String returnMoney, String date) {
 
 		WxTemplate t = new WxTemplate();
 		t.setTouser(openid);
@@ -899,7 +899,7 @@ public class WeixinTemplateMessageUtil {
 				System.out.println(jsonObject.getString("errcode"));
 			}
 		}
-	}
+    }
 
 	/**
 	 *代理升级通过通知----下级升级，通知上级
@@ -1007,10 +1007,4 @@ public class WeixinTemplateMessageUtil {
 		}
 	}
 
-	public static void main(String[] args ){
-
-		String token  = "11_nIobXbk6gLjxLQFwWDvYl2Ai1XHCxlU4zNmPdvDKONnMuIATqyZKzwKVP6x2FDAV41Ua2wmLsr9LUHYO41_xYG58KFsUzKYwSu0bGBCtLqQFk8E4U2HY2CMOMInbj5hQUht1fj4-yeBHMbx-NNQiAHAYYB";
-		WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage("2018年01月05日 10:30","fda32312123456",token,"http://www.baidu.com","oP0k_0XmXxsbPMBKfIyXq9kOZZRE");
-
-	}
 }

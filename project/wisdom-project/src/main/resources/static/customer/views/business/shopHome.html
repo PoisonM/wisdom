@@ -13,10 +13,8 @@
         .redPacket {
             position: relative;
             width: 65%;
-        <!-- height: 12 %;
-        --> overflow: hidden;
             margin: auto;
-            margin-top: 40%
+            margin-top: 40%;
         }
 
         .redPacket img {
@@ -44,13 +42,13 @@
         }
 
         .redPacket .close1 {
-            width: 40px;
-            height: 40px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             /*background-color: #ffffff;*/
             position: absolute;
-            top: 0px;
-            right: 1px;
+            top: 4px;
+            right: 4px;
         }
 
         .open {
@@ -190,7 +188,7 @@
         <a style="background: #FC4B4B;height: 36px;line-height: 36px;font-size: 16px;font-family: PingFangSC-Regular;text-align: center"
            href="https://mp.weixin.qq.com/s/B8f8hmCWz3T2xUwpRvz-iQ">一个分享赚钱的韩品直购美妆商城</a>
         <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
-            <ion-slide ng-repeat="item in param.bannerList">
+            <ion-slide ng-repeat="item in param.bannerList" ng-if="item.bannerType=='banner'">
                 <div class="box" style="height:3.98rem;width: 7.50rem">
                     <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}"
                                                                                           style="height:3.98rem;width:7.50rem"/></a>
@@ -200,7 +198,7 @@
       <!--返利排行榜-->
         <div class="wrap">
             <div>
-                <div style="position: absolute;left: 0px;top: 220px;background-color: #EAE6E6;width: 100%;height:32px" >
+                <div style="position: absolute;background-color: #EAE6E6;width: 100%;height:32px;margin-top: 16px" >
                     <img src="images/laba.jpg" alt=""style="width: 18px;height: 17px;margin-left: 10px;margin-top: 7px">
                     <div id="wraps">
                         <ul id="list">
@@ -214,7 +212,7 @@
             </div>
         </div>
         <!--新人专享-->
-        <div style="width: 100%;height: 68px;position:relative;margin-top: 29px">
+        <div style="width: 100%;height: 68px;position:relative;margin-top: 45px">
             <img src="images/newPeople.png" style="width: 123px;height:32px;position:absolute;top:50%;left:50%;margin-top: -12px;
     margin-left: -61.5px;">
         </div>
@@ -388,10 +386,14 @@
         </ul>
     </div>
     <!--进首页弹出页面-->
-    <div class="redPacket_box" ng-if="param.redPackerBox">
-        <div class="redPacket">
-            <img src="images/huo.jpg" alt="">
-            <span ng-click="redPackerClose()" class="close1"></span>
+    <div  ng-if="param.redPackerBox"  ng-repeat="item in param.floating">
+        <div class="redPacket_box">
+            <div class="redPacket">
+                <a ng-href="{{item.forward}}">
+                    <img ng-src="{{item.uri}}" >
+                </a>
+                <img src="images/close.png" ng-click="redPackerClose();event.stopPropagation()"  class="close1">
+            </div>
         </div>
     </div>
 </ion-view>
