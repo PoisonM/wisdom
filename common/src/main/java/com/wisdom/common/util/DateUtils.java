@@ -506,7 +506,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	}
 
 	/**
-	 * 获取某一天开始时间
+	 * 获取某一天结束时间
 	 */
 	public static Date getEndTime(Date date) {
 		Calendar calendar = new GregorianCalendar();
