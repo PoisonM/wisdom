@@ -399,14 +399,17 @@ public class ShopStockServiceImpl implements ShopStockService {
 		//开始执行入库/出库
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
 		for(ShopStockRequestDTO ssr :shopStockRequestDTO){
-			Date date = null;
-			try {
-				date = sdfp.parse(ssr.getProductDateString());
-			} catch (ParseException e) {
-				logger.error(e.getMessage(),e);
+			if(ssr.getProductDateString()!=null&&ssr.getProductDateString()!=""){
+				Date date = null;
+				try {
+					date = sdfp.parse(ssr.getProductDateString());
+				} catch (ParseException e) {
+					logger.error(e.getMessage(),e);
+				}
+
+				ssr.setProductDate(date);
 			}
 
-			ssr.setProductDate(date);
 		}
 
 		ShopStockRequestDTO shopStockDto = shopStockRequestDTO.get(0);
@@ -441,7 +444,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			//入库多个产品时拼备注
 			StringBuilder detail = new StringBuilder();
 			for(ShopStockRequestDTO shopStock :shopStockRequestDTO){
-				if(shopStock.getDetail()!=null&&shopStock.getDetail()!=""){
+				if(shopStock.getDetail()!=null&&(!("").equals(shopStock.getDetail()))){
 					detail.append(shopStock.getProductName()).append("产品:").append(shopStock.getDetail()).append(";");
 				}
 			}

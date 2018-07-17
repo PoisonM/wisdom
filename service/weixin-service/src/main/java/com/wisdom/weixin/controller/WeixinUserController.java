@@ -121,6 +121,9 @@ public class WeixinUserController {
         else if ("weixinOpenIdTest".equals(url)) {
             url = ConfigConstant.USER_BUSINESS_WEB_URL + "weixinOpenIdTest/1234";
         }
+        else if ("beautyTraining".equals(url)) {
+            url = ConfigConstant.USER_BUSINESS_WEB_URL + "beautyTraining";
+        }
 
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
@@ -245,17 +248,22 @@ public class WeixinUserController {
 
 
     @RequestMapping(value = "/mxShopTest", method = RequestMethod.GET)
-    public String mxShopTest(HttpServletRequest request, HttpSession session,@RequestParam String shopId) {
+    @ResponseBody
+    public ResponseDTO<String> mxShopTest(HttpServletRequest request,HttpServletResponse response,HttpSession session,@RequestParam String shopId) {
+        ResponseDTO<String> responseDTO = new ResponseDTO();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         session.setAttribute("mxShopId", shopId);
-        String url = "http://mx99test1.kpbeauty.com.cn/shopId="+shopId;
         String redirectUrl = "http://mx99test1.kpbeauty.com.cn/weixin/customer/mxShop?shopId="+shopId;
         String userId = (String) session.getAttribute("mxShopuserId");
         //检测是否已经获取过当前用户的基本信息
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setResponseData("");
         if(StringUtils.isNotNull(userId)){
-            return "redirect:" + url;
+            return responseDTO;
         }
         String oauth2Url = WeixinUtil.getUserOauth2UrlTest(redirectUrl);
-        return "redirect:" + oauth2Url;
+        responseDTO.setResponseData(oauth2Url);
+        return responseDTO;
     }
 
 
@@ -269,7 +277,7 @@ public class WeixinUserController {
                          HttpSession session) throws Exception {
         //获取用户的基本信息 ,可以存入缓存,已被后续使用
         String shopId = java.net.URLDecoder.decode(request.getParameter("shopId"), "utf-8");
-        String url = "http://mx99test1.kpbeauty.com.cn/shopId="+shopId;
+        String url = "http://mx99test1.kpbeauty.com.cn/customer/#/mxShopTest/"+shopId;
         String code = request.getParameter("code");
         String get_access_token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?" +
                 "appid="+ ConfigConstant.USER_CORPID +

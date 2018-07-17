@@ -38,7 +38,7 @@ angular.module('controllers',[]).controller('agencyCtrl',
                     };
                     QueryUserInfoDTOByParameters.save($scope.pageParamVoDTO,function(data){
                         ManagementUtil.checkResponseData(data,"");
-                        if(data.result == Global.SUCCESS){
+                        if(data.errorInfo == Global.SUCCESS){
                             if( data.responseData.totalCount ==0){
                                 alert("未查出相应结果");
                             }
@@ -82,7 +82,7 @@ angular.module('controllers',[]).controller('agencyCtrl',
             };
 //导表
 
-          /*   $scope.educeLis = function(){
+             $scope.educeLis = function(){
                     if (confirm("确认要导出？")) {
                         var pageParamVoDTO= {
                             pageNo:$scope.pageNo,
@@ -106,7 +106,7 @@ angular.module('controllers',[]).controller('agencyCtrl',
                             }
                         })
                     }
-                }*/
+                }
 
 
 }]).filter('timeDistance',function(){

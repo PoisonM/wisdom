@@ -1235,73 +1235,73 @@ public class SysShopCriteria {
             return (Criteria) this;
         }
 
-        public Criteria andShopIdIsNull() {
-            addCriterion("shop_id is null");
+        public Criteria andDelFlagIsNull() {
+            addCriterion("del_flag is null");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdIsNotNull() {
-            addCriterion("shop_id is not null");
+        public Criteria andDelFlagIsNotNull() {
+            addCriterion("del_flag is not null");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdEqualTo(String value) {
-            addCriterion("shop_id =", value, "shopId");
+        public Criteria andDelFlagEqualTo(String value) {
+            addCriterion("del_flag =", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdNotEqualTo(String value) {
-            addCriterion("shop_id <>", value, "shopId");
+        public Criteria andDelFlagNotEqualTo(String value) {
+            addCriterion("del_flag <>", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdGreaterThan(String value) {
-            addCriterion("shop_id >", value, "shopId");
+        public Criteria andDelFlagGreaterThan(String value) {
+            addCriterion("del_flag >", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdGreaterThanOrEqualTo(String value) {
-            addCriterion("shop_id >=", value, "shopId");
+        public Criteria andDelFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("del_flag >=", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdLessThan(String value) {
-            addCriterion("shop_id <", value, "shopId");
+        public Criteria andDelFlagLessThan(String value) {
+            addCriterion("del_flag <", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdLessThanOrEqualTo(String value) {
-            addCriterion("shop_id <=", value, "shopId");
+        public Criteria andDelFlagLessThanOrEqualTo(String value) {
+            addCriterion("del_flag <=", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdLike(String value) {
-            addCriterion("shop_id like", value, "shopId");
+        public Criteria andDelFlagLike(String value) {
+            addCriterion("del_flag like", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdNotLike(String value) {
-            addCriterion("shop_id not like", value, "shopId");
+        public Criteria andDelFlagNotLike(String value) {
+            addCriterion("del_flag not like", value, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdIn(List<String> values) {
-            addCriterion("shop_id in", values, "shopId");
+        public Criteria andDelFlagIn(List<String> values) {
+            addCriterion("del_flag in", values, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdNotIn(List<String> values) {
-            addCriterion("shop_id not in", values, "shopId");
+        public Criteria andDelFlagNotIn(List<String> values) {
+            addCriterion("del_flag not in", values, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdBetween(String value1, String value2) {
-            addCriterion("shop_id between", value1, value2, "shopId");
+        public Criteria andDelFlagBetween(String value1, String value2) {
+            addCriterion("del_flag between", value1, value2, "delFlag");
             return (Criteria) this;
         }
 
-        public Criteria andShopIdNotBetween(String value1, String value2) {
-            addCriterion("shop_id not between", value1, value2, "shopId");
+        public Criteria andDelFlagNotBetween(String value1, String value2) {
+            addCriterion("del_flag not between", value1, value2, "delFlag");
             return (Criteria) this;
         }
 

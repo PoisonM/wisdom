@@ -8,14 +8,17 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
+import com.wisdom.common.dto.system.ExportUserInfoExcelDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.RealNameInfoDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.excel.ExportExcel;
 import com.wisdom.user.client.BusinessServiceClient;
 import com.wisdom.user.interceptor.LoginRequired;
 import com.wisdom.user.service.RealNameAuthService;
@@ -32,6 +35,7 @@ import tk.mybatis.mapper.util.StringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -223,8 +227,37 @@ public class UserInfoController {
         pageParamVoDTO.setStartTime("".equals(pageParamVoDTO.getStartTime()) ? startDate : pageParamVoDTO.getStartTime());
         pageParamVoDTO.setEndTime(CommonUtils.getEndDate(pageParamVoDTO.getEndTime()));
         PageParamDTO<List<UserInfoDTO>> page = userInfoService.queryUserInfoDTOByParameters(pageParamVoDTO);
+
+        if ("Y".equals(pageParamVoDTO.getIsExportExcel())) {
+            List<ExportUserInfoExcelDTO> exportUserInfoExcelDTOS = new ArrayList<>();
+            for (UserInfoDTO userInfoDTO : page.getResponseData()) {
+                ExportUserInfoExcelDTO exportUserInfoExcelDTO = new ExportUserInfoExcelDTO();
+                exportUserInfoExcelDTO.setNickName(userInfoDTO.getNickname());
+                exportUserInfoExcelDTO.setMobile(userInfoDTO.getMobile());
+                exportUserInfoExcelDTO.setUserType(userInfoDTO.getUserType());
+                exportUserInfoExcelDTO.setCreateDate(DateUtils.formatDate(userInfoDTO.getCreateDate(), "yyyy-MM-dd HH:mm:ss"));
+                exportUserInfoExcelDTO.setLivingPeriod(userInfoDTO.getLivingPeriod()+"");
+                exportUserInfoExcelDTOS.add(exportUserInfoExcelDTO);
+            }
+            try {
+                String[] orderHeaders = {"用户昵称","用户账号", "等级","时间", "时效"};
+                ExportExcel<ExportUserInfoExcelDTO> ex = new ExportExcel<>();
+                ByteArrayInputStream in = ex.getWorkbookIn("佣金奖励EXCEL文档", orderHeaders, exportUserInfoExcelDTOS);
+                String url = CommonUtils.orderExcelToOSS(in);
+                if ("".equals(url) && url == null) {
+                    logger.info("佣金奖励Excel 获取OSSUrl为空");
+                }
+                logger.info("佣金奖励导出Url=={}", url);
+                responseDTO.setResult(url);
+                responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+            } catch (Exception e) {
+                logger.error("佣金即时导表New异常，异常信息为，{}" + e.getMessage(), e);
+                e.printStackTrace();
+                responseDTO.setErrorInfo(StatusConstant.FAILURE);
+            }
+        }
         responseDTO.setResponseData(page);
-        responseDTO.setResult(StatusConstant.SUCCESS);
+        responseDTO.setErrorInfo(StatusConstant.SUCCESS);
         return responseDTO;
     }
 

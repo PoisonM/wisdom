@@ -73,14 +73,14 @@
 		<outputDirectory>${project.basedir}/target/classes/</outputDirectory>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
-					<showWarnings>true</showWarnings>
-				</configuration>
+				    <groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+					  <source>${jdk.version}</source>
+					  <target>${jdk.version}</target>
+					  <showWarnings>true</showWarnings>
+				    </configuration>
 			</plugin>
 
 			<plugin>

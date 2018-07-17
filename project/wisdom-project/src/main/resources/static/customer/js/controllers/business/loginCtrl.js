@@ -66,6 +66,12 @@ angular.module('controllers',[]).controller('loginCtrl',
                                 window.localStorage.removeItem("logintoken");
                                 window.localStorage.setItem("logintoken",data.responseData);
 
+                                sessionStorage.removeItem("logintoken");
+                                sessionStorage.setItem("logintoken", data.responseData);
+
+                                BusinessUtil.delCookie("logintoken");
+                                BusinessUtil.setCookie("logintoken", data.responseData);
+
                                 if($stateParams.redirectUrl=='')
                                 {
                                     window.location.href = "";

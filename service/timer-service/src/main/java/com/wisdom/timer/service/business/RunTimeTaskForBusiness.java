@@ -30,6 +30,11 @@ public class RunTimeTaskForBusiness {
         weixinServiceClient.updateUserWeixinToken();
     }
 
+    @Scheduled(cron="0 */60 * * * ?")
+    public void updateBeautyWeixinToken(){
+        weixinServiceClient.updateBeautyWeixinToken();
+    }
+
     //每隔10分钟，将payRecord表中，状态为0的订单，进行状态调整处理
     @Scheduled(cron="0 */1 * * * ?")
     public void processNoPayRecordData(){

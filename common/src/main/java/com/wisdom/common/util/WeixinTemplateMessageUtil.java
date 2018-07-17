@@ -66,6 +66,11 @@ public class WeixinTemplateMessageUtil {
 
 	protected static final String SPECIAL_PRODUCT_BUY_NOTIFY = Global.getConfig("SPECIAL_PRODUCT_BUY_NOTIFY");
 
+	//代理升级通过通知----下级升级，通知上级
+	protected static final String AGENT_UPGRADE_NOTIFY = Global.getConfig("AGENT_UPGRADE_NOTIFY");
+
+
+
 
     /**
 	 * 订单未支付通知模板 ORDER_NOT_PAY
@@ -85,8 +90,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-						"您的订单还未完成支付，请您在10分钟之内完成支付，避免订单丢失！！");
+		templateData.setValue("小主，您的订单暂时还未支付哟。记得支付后，拿返利哟~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -96,7 +100,7 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("["+ordeID+"]");
+		templateData.setValue("【"+ordeID+"】");
 		m.put("ordeID", templateData);
 
 
@@ -136,8 +140,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"我们已经收到您的货款，正在为您全力打包，请耐心等待！！");
+		templateData.setValue("小主，您已购买成功，小美正在火速打包发货中~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -178,7 +181,7 @@ public class WeixinTemplateMessageUtil {
 	 * @Param 用户的微信ID
 	 * todo 此模板接口还有参数不齐全，待下阶段完善
 	 **/
-	public static void sendProductAlreadySendTemplateWXMessage(String delivername,String ordername,String token,String url, String openid){
+	public static void sendProductAlreadySendTemplateWXMessage(String delivername,String ordeDate,String token,String url, String openid){
 		WxTemplate t = new WxTemplate();
 		t.setUrl(url);
 		t.setTouser(openid);
@@ -188,24 +191,23 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("亲，宝贝已经启程了，好想快点来到你的身边");
+		templateData.setValue("小主，宝贝已经启程了，好想快点来到你身边~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(delivername);
-		m.put("delivername", templateData);
+		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(ordername);
-		m.put("ordername", templateData);
+		templateData.setValue(ordeDate);
+		m.put("keyword2", templateData);
 
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("备注：如有疑问，请致电400-000-0000，小美将在第一时间为您服务！");
-		templateData.setValue("");
+		templateData.setValue("有任何问题请及时联系人工客服~~");
 		m.put("remark", templateData);
 
 		t.setData(m);
@@ -242,8 +244,7 @@ public class WeixinTemplateMessageUtil {
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
 		//templateData.setValue("尊敬的客户，您的订单将在1小时后自动签收！");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的订单未完成签收，系统将在1小时后自动完成签收！");
+		templateData.setValue("小主，您还有订单未签收，小美将在1小时后自动完成签收~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -269,7 +270,6 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("如无异议，请等待系统自动确认收货，或您主动确认收货，谢谢！");
 		templateData.setValue("如无异议，请等待系统自动确认收货，或您主动确认收货。");
 		m.put("remark", templateData);
 
@@ -305,13 +305,11 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("您好，您的月度结算佣金已到账，请注意查收！");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的月度返利已发送到您的个人中心账户！！请注意查收！");
+		templateData.setValue("小美已将您的月度返利转入您的个人账户，请注意查收~~");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
-		templateData.setColor("#FF0000");
+		templateData.setColor("#000000");
 		templateData.setValue(keyword1);
 		m.put("ordertape", templateData);
 
@@ -327,9 +325,7 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		//templateData.setValue("再接再厉，继续努力");
 		templateData.setValue("");
-//		templateData.setValue("点击，查看详情。");
 		m.put("remark", templateData);
 
 		t.setData(m);
@@ -345,59 +341,54 @@ public class WeixinTemplateMessageUtil {
 		}
 	}
 
-//	/**
-//	 * 返现到账通知--即时返现模板 INSTANCE_INCOME
-//	 * @Param order 订单号
-//	 * @Param money 数量金额
-//	 * @Param 微信消息发送所需的token
-//	 * @Param url 跳转的URL
-//	 * @Param 用户的微信ID
-//	 **/
-//	public static void sendInstanceIncomeTemplateWXMessage(String order,String money,String token,String url, String openid){
-//		WxTemplate t = new WxTemplate();
-//		t.setUrl(url);
-//		t.setTouser(openid);
-//		t.setTopcolor("#000000");
-//		t.setTemplate_id(INSTANCE_INCOME);
-//		Map<String,TemplateData> m = new HashMap<>();
-//
-//		TemplateData templateData = new TemplateData();
-//		templateData.setColor("#000000");
-//		UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-//		try {
-//			templateData.setValue("尊敬的"+ URLDecoder.decode(userInfoDTO.getNickname(),"utf-8")+"您好，佣金返现已充入您的现金账户！");
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-//		m.put("first", templateData);
-//
-//		templateData = new TemplateData();
-//		templateData.setColor("#000000");
-//		templateData.setValue(order);
-//		m.put("order", templateData);
-//
-//		templateData = new TemplateData();
-//		templateData.setColor("#000000");
-//		templateData.setValue(money);
-//		m.put("money", templateData);
-//
-//		templateData = new TemplateData();
-//		templateData.setColor("#000000");
-//		templateData.setValue("点击详情查看现金账户明细。");
-//		m.put("remark", templateData);
-//
-//		t.setData(m);
-//		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
-//				token+"","POST", JSONObject.fromObject(t).toString());
-//		JSONObject jsonObject = JSONObject.fromObject(jsonobj.replaceAll("200>>>>",""));
-//		if(jsonobj!=null){
-//			if("0".equals(jsonObject.getString("errcode"))){
-//				System.out.println("发送模板消息成功！");
-//			}else{
-//				System.out.println(jsonObject.getString("errcode"));
-//			}
-//		}
-//	}
+	/**
+	 * 返现到账通知--即时返现模板 INSTANCE_INCOME
+	 * @Param order 订单号
+	 * @Param money 数量金额
+	 * @Param 微信消息发送所需的token
+	 * @Param url 跳转的URL
+	 * @Param 用户的微信ID
+	 **/
+	public static void sendInstanceIncomeTemplateWXMessage(String order,String money,String token,String url, String openid){
+		WxTemplate t = new WxTemplate();
+		t.setUrl(url);
+		t.setTouser(openid);
+		t.setTopcolor("#000000");
+		t.setTemplate_id(INSTANCE_INCOME);
+		Map<String,TemplateData> m = new HashMap<>();
+
+		TemplateData templateData = new TemplateData();
+		templateData.setColor("#000000");
+			templateData.setValue("小主，小美已将消费返利转入您的个人账户，请在今日收益中查看~~\n");
+		m.put("first", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(order);
+		m.put("order", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(money);
+		m.put("money", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue("");
+		m.put("remark", templateData);
+
+		t.setData(m);
+		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
+				token+"","POST", JSONObject.fromObject(t).toString());
+		JSONObject jsonObject = JSONObject.fromObject(jsonobj.replaceAll("200>>>>",""));
+		if(jsonobj!=null){
+			if("0".equals(jsonObject.getString("errcode"))){
+				System.out.println("发送模板消息成功！");
+			}else{
+				System.out.println(jsonObject.getString("errcode"));
+			}
+		}
+	}
 
 	/**
 	 * 会员到期模板 BUSINESS_MEMBER_DEADLINE
@@ -417,26 +408,12 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("您好，您的会员即将到期，请您注意。");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的店主权益即将到期，请及时续费，避免造成您的财务损失。");
+		templateData.setValue("小主，您权益即将到期~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(name);
-		m.put("name", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
-		templateData.setValue(expDate);
-		m.put("expDate", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
-		//templateData.setValue("请您注意时间，防止过期失效。");
-		templateData.setValue("");
-//		templateData.setValue("点击，查看详情。");
+		templateData.setValue("您的店主权益有效期至"+expDate);
 		m.put("remark", templateData);
 
 		t.setData(m);
@@ -471,9 +448,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("恭喜您，有下级代理商加入");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"恭喜您有一位好友成功扫描您的二维码！！");
+		templateData.setValue("恭喜小主，您有一位好友成为您的会员~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -484,17 +459,6 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword2);
-		m.put("keyword2", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
-		templateData.setValue(keyword3);
-		m.put("keyword3", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
-//		templateData.setValue("若有疑问，请致电400-000-0000，小美将在第一时间为您解决。");
-		templateData.setValue("");
 		m.put("remark", templateData);
 
 		t.setData(m);
@@ -529,8 +493,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"恭喜您的下级店主新增一笔消费！正在为您结算返利佣金，请您耐心等待！！");
+		templateData.setValue("您的小伙伴产生新增消费~~小美正在努力为您结算返利佣金~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -547,12 +510,6 @@ public class WeixinTemplateMessageUtil {
 		templateData.setColor("#000000");
 		templateData.setValue(keyword3);
 		m.put("keyword3", templateData);
-
-		templateData = new TemplateData();
-		templateData.setColor("#000000");
-//		templateData.setValue("下级确认收货后，为您结算佣金。");
-		templateData.setValue("");
-		m.put("remark", templateData);
 
 		t.setData(m);
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
@@ -706,8 +663,7 @@ public class WeixinTemplateMessageUtil {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}*/
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您已成功邀请了20个好友成为店主，系统已将您自动升级为大当家。");
+		templateData.setValue("您已成功邀请20位店主，您已自动升级为大当家~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -822,8 +778,7 @@ public class WeixinTemplateMessageUtil {
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
 //		templateData.setValue("小美提示您，您的提现申请被拒绝，已将资金退回至“美享99”余额中，请核对您的个人信息，再次提现，给您带来的不便，敬请谅解。");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的提现申请未通过平台审核，已将资金退回至您的个人中心账户，请您注意查收！！");
+		templateData.setValue("抱歉小主，您的提现申请未通过平台审核，有任何问题请及时联系人工客服~~");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -873,9 +828,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-//		templateData.setValue("小美提示您，您的提现申请被拒绝，已将资金退回至“美享99”余额中，请核对您的个人信息，再次提现，给您带来的不便，敬请谅解。");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的消费金额已满足美享商城店主要求，系统将您自动升级为大当家");
+		templateData.setValue("恭喜小主，您满足美享店主门槛，您已成为美享店主~~\n");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -896,7 +849,7 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 //		templateData.setValue("如有疑问请联系客服18611010799。");
-		templateData.setValue("感谢您支持。");
+		templateData.setValue("");
 		m.put("remark", templateData);
 
 		t.setData(m);
@@ -922,8 +875,7 @@ public class WeixinTemplateMessageUtil {
 
 		TemplateData templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue("尊敬的用户，您好！！\n"+
-				"您的提现资金已打入您的零钱账户，请您注意查收！！");
+		templateData.setValue("小主、您的提现申请已完成，请去微信零钱查看~~");
 		m.put("first", templateData);
 
 		templateData = new TemplateData();
@@ -948,6 +900,59 @@ public class WeixinTemplateMessageUtil {
 			}
 		}
     }
+
+	/**
+	 *代理升级通过通知----下级升级，通知上级
+	 *
+	 *
+	 */
+
+	public static void agentUpgradeTemplateWXMessage(String token,String userOpenid,String wechatName, String fromLevel, String toLevel, String date) {
+
+		Map<String,TemplateData> m = new HashMap<>();
+
+		WxTemplate t = new WxTemplate();
+		t.setTouser(userOpenid);
+		t.setTopcolor("#000000");
+		t.setTemplate_id(AGENT_UPGRADE_NOTIFY);
+
+		TemplateData templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue("小主，您的下级已升级，请您及时升级，以保障您的永久性推荐奖励收益~~");
+		m.put("first", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(wechatName);
+		m.put("keyword1", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(fromLevel);
+		m.put("keyword2", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(toLevel);
+		m.put("keyword3", templateData);
+
+		templateData = new TemplateData();
+		templateData.setColor("#000000");
+		templateData.setValue(date);
+		m.put("keyword4", templateData);
+
+		t.setData(m);
+		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+
+				token+"","POST", JSONObject.fromObject(t).toString());
+		JSONObject jsonObject = JSONObject.fromObject(jsonobj.replaceAll("200>>>>",""));
+		if(jsonobj!=null){
+			if("0".equals(jsonObject.getString("errcode"))){
+				System.out.println("发送模板消息成功！");
+			}else{
+				System.out.println(jsonObject.getString("errcode"));
+			}
+		}
+	}
 
 	public static void sendSpecialShopBossUserBuyTemplateWXMessage(String token,String amount, BusinessOrderDTO businessOrderDTO, String userOpenid, SpecialShopInfoDTO specialShopInfoDTO) {
 
@@ -1001,4 +1006,5 @@ public class WeixinTemplateMessageUtil {
 			}
 		}
 	}
+
 }

@@ -6,6 +6,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,$http,ExportNextUserInfoControl,UpdateIncomeRecordStatusById,$filter,ManagementUtil,FindHomeBannerInfoById,UpdateHomeBanner,AddHomeBanner) {
 
             $scope.showImage = true;
+            $scope.imageType = "banner";
 
             $scope.back = function(){
                 $state.go("homePageEditor");
@@ -61,7 +62,7 @@ angular.module('controllers',[]).controller('homeImageUploadCtrl',
                                 }
                             })
                         }else{
-                            alert("图片为空或图片正在上传请等待.....")
+                            alert("图片正在处理中请稍后...")
                             return;
                         }
                     }else{
