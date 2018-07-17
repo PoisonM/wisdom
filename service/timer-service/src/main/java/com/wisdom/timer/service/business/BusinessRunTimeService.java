@@ -552,7 +552,9 @@ public class BusinessRunTimeService {
         float returnMonthlyMoney_A = 0;
         float returnMonthlyMoney_B = 0;
         float returnMonthlyMoney_C = 0;
+        //c升级时候的返利
         float importLevelMoneyC = 0;
+        //B升级时候的返利
         float importLevelMoneyB = 0;
 
         String startDate =  DateUtils.formatDate(startDateM,"yyyy-MM-dd HH-mm-ss");
@@ -573,7 +575,6 @@ public class BusinessRunTimeService {
                 }else{
                     returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
                 }
-
             }else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessC1)){
                 returnMonthlyMoney_C = returnMonthlyMoney_C + monthTransactionRecordDTO.getAmount();
                 importLevelMoneyC = returnMonthlyMoney_C;
@@ -588,7 +589,7 @@ public class BusinessRunTimeService {
                         returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + importLevelMoneyC*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
                     }
                 }else if(importLevelMoneyC >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
-                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + returnMonthlyMoney_C*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + importLevelMoneyC*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
                 }
             }else{
                 if(importLevelMoneyB>0){
@@ -596,7 +597,6 @@ public class BusinessRunTimeService {
                 }else{
                     returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
                 }
-
             }
         }
 
