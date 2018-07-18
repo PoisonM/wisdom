@@ -7,7 +7,7 @@
             <span class="ml10 mr10">{{param.nowdate}}</span>
             <img  src="images/work/rightSlip.png" style="width: 14px;height: 14px;display: inline-block"  ng-click="addMonth()"></div>
     </div>
-    <span style="position: absolute;right: 20px;top: 10px;color: #ffffff" ng-click="tabShop()">切换店铺</span>
+   <!-- <span style="position: absolute;right: 20px;top: 10px;color: #ffffff" ng-click="tabShop()">切换店铺</span>-->
     <!--排班的具体内容-->
     <div class="bgfff" style=" overflow: auto;height: 100%;width: 100%;float: left;">
         <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
@@ -51,15 +51,21 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <div style="height:55px;"></div>
+                </td>
+            </tr>
             </tbody>
         </table>
         <!--<div class="shadow_box"></div>-->
         <!--点击切换店铺显示的店铺列表-->
-        <div class="displayShopBox"   ng-if="param.displayShopBox" ng-click="closeBox()">
+        <!-- <div class="displayShopBox"   ng-if="param.displayShopBox" ng-click="closeBox()">
             <div class="displayShop" ng-if="param.displayShop">
                 <p style="height: 60px;text-align: center;line-height: 60px" ng-click="choseShop
 (item.id)"ng-repeat="item in shopList">{{item.sysShopName}}</p>
             </div>
-        </div>
+        </div>-->
+
     </div>
 </ion-view>

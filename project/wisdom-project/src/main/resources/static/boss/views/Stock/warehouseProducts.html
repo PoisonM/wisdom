@@ -39,7 +39,7 @@
                 </div>
             </ion-item>
             <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100"  ng-show="param.flag"></div>
-            <div style="position: absolute;top:0;width:100%;z-index: 1000;padding:0;height:50%"  class="row bgf6" ng-show="param.flag">
+            <div style="position: absolute;top:0;width:100%;z-index: 1000;padding:0;height:50%"  class="row bgf6" ng-show="param.flag&&warehouseProducts.oneLevelList.length>0">
                 <ul class="col col-33 col333  fs14 bgfff" style="padding-right:0;height: 100%;overflow-y: scroll">
                     <li class="  col333 center bbl " ng-repeat="item in warehouseProducts.oneLevelList" ng-click="selTwo(item.productTypeOneId,item.productTypeOneName);$event.stopPropagation()" style="min-height: 40px;padding: 5px 0" ng-class="{'bge6':param.levelOneId == item.productTypeOneId}">
                         <div class="ml10 mr10">{{item.productTypeOneName}}</div>

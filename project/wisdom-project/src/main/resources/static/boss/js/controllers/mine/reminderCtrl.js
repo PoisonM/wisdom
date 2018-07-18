@@ -71,18 +71,18 @@ angular.module('controllers',[]).controller('reminderCtrl',
                 }
                 $scope.status()
 
-            }
-            $scope.tabShop=function () {
+            };
+           /* $scope.tabShop=function () {
                 $scope.param.displayShopBox=!$scope.param.displayShopBox;
                 GetBossShopList.get(function (data) {
                     $scope.shopList=data.responseData;
                 });
-            };
-            $scope.choseShop = function(id){
+            };*/
+           /* $scope.choseShop = function(id){
                 $scope.param.sysShopId = id;
                 $scope.getInfo()
                 $scope.param.displayShopBox = false;
-            }
+            }*/
             $scope.dis = function () {
                 $scope.param.displayShopBox = false;
             }

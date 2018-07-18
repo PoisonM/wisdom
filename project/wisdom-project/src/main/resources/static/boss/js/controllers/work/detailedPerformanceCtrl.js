@@ -23,8 +23,8 @@ angular.module('controllers',[]).controller('detailedPerformanceCtrl',
                  $scope.userConsumeRequest = {
                      pageSize:1000,
                      searchFile:$stateParams.searchFile,
-                     startTime:$stateParams.date+' 00:00:00',
-                     endTime:$stateParams.date+' 23:59:59'
+                     startTime:$stateParams.startDate+' 00:00:00',
+                     endTime:$stateParams.endDate+' 23:59:59'
 
                  };
                 if ($stateParams.sysClerkId != "") {

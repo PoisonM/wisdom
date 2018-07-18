@@ -16,10 +16,9 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                $scope.param.flag=false
-                $scope.getInfo()
+                $scope.search()
+            });
 
-            })
             $scope.getInfo=function(){
                 GetClerkInfoList.get({
                     sysBossId:"",
@@ -29,10 +28,10 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide();
                         $scope.addFamily = data.responseData
-
                     }
                 })
-            }
+            };
+            $scope.getInfo()
 
 
 
@@ -60,10 +59,20 @@ angular.module('controllers',[]).controller('addFamilyCtrl',
                 $scope.search()
             }
             $scope.search = function () {
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                });
                 GetClerkBySearchFile.get({
                     searchFile:$scope.param.searchFile
                 },function(data){
-                    $scope.addFamily = data.responseData
+                    if(data.result==Global.SUCCESS&&data.responseData!=null) {
+                        $ionicLoading.hide()
+                        $scope.addFamily = data.responseData
+                    }
                 })
             }
 

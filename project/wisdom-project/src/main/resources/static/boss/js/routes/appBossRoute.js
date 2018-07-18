@@ -77,7 +77,7 @@ define(['appBoss'], function(app){
                 /*业绩明细*/
 
                     .state('detailedPerformance', {
-                        url: '/detailedPerformance/:sysShopId,:searchFile,:sysClerkId,:date',
+                        url: '/detailedPerformance/:sysShopId,:searchFile,:sysClerkId,:startDate,:endDate',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailedPerformanceCtrl',
                         resolve: {
@@ -104,7 +104,7 @@ define(['appBoss'], function(app){
                 /*全部家人*/
 
                     .state('allFamily', {
-                        url: '/allFamily/:date,:sysShopId',
+                        url: '/allFamily/:startDate,:endDate,:sysShopId',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'allFamilyCtrl',
                         resolve: {
@@ -174,7 +174,7 @@ define(['appBoss'], function(app){
                 /*唯美度养生会所 全部家人*/
 
                     .state('beautyAll', {
-                        url: '/beautyAll/:sysShopId/:date,:sysClerkId,:nameType',
+                        url: '/beautyAll/:sysShopId/:startDate,:endDate,:sysClerkId,:nameType',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'beautyAllCtrl',
                         resolve: {
