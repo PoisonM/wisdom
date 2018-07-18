@@ -65,7 +65,7 @@ public class TimerMessageQueueReceiver {
                 String autoReceiveProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
 
                 String token = WeixinUtil.getUserToken();
-                String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/all";
+                String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/2";
 
                 UserInfoDTO userInfoDTO = new UserInfoDTO();
                 userInfoDTO.setId(businessOrder.getSysUserId());
