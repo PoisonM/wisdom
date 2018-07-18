@@ -1,16 +1,23 @@
 <ion-view class="bg">
-    <ion-content>
+    <ion-content class="mb45">
         <!--日期部分-->
-        <div class="bgRgb">
-            <ionic-datepicker input-obj="datepickerObjectEnd">
-                <img src="images/work/date.png" class="dateImg" >
-                <span class="date">{{param.date}}</span>
-                <img src="images/work/drop-down.png" class="dropImg">
-            </ionic-datepicker>
-
-            <span class="fs15 fr pr10 colfff" ng-click="allFamilyGo()" ng-if="param.sysShopId!=''">全部家人</span>
-
+        <div class="bgRgb sb">
+            <div class="sb">
+                <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selDate('startDate')">
+                    <img src="images/work/date.png" class="dateImg" >
+                    <span class="date">{{param.startDate}}</span>
+                </ionic-datepicker>
+                <span class="colfff center"  style="width:50px;display: inline-block">至</span>
+                <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selDate('endDate')">
+                   <!-- <img src="images/work/date.png" class="dateImg" >-->
+                    <span class="date">{{param.endDate}}</span>
+                </ionic-datepicker>
+            </div>
+            <div class="mr10 colfff" >
+                <span ng-click="getInfo()" class="fs14">筛选</span>
+            </div>
         </div>
+
         <!--业绩耗卡-->
         <div class="list">
             <div class="item">
@@ -162,4 +169,7 @@
             </div>
         </div>
     </ion-content>
+    <div class="h50  bgff66" style="position: absolute;bottom: 0;width:100%;"  ng-if="param.sysShopId!=''">
+        <p class="fs16 colfff ml10 center" ng-click="allFamilyGo()" >全部家人</p>
+    </div>
 </ion-view>

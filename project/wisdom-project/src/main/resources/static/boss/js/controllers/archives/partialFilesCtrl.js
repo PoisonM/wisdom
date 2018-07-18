@@ -38,7 +38,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                $state.go("archives",{id:id})
            };
            /*点击切换档案*/
-           $scope.tabSwitching=function () {
+          /* $scope.tabSwitching=function () {
                $scope.param.blackBox=true;
                $scope.param.fileBOx=true;
                GetBossShopList.get(function (data) {
@@ -48,7 +48,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                        $scope.switchingList = data.responseData;
                    }
                })
-           };
+           };*/
           $scope.checkBgBox=function () {
               $scope.param.blackBox=false;
               $scope.param.fileBOx=false;

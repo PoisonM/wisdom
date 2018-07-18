@@ -108,20 +108,20 @@ angular.module('controllers',[]).controller('employeeAnalysisCtrl',
             $scope.$on('$ionicView.enter', function() {
                 $scope.getInfo();
             })
-            $scope.tabShop=function () {
+           /* $scope.tabShop=function () {
                 $scope.param.displayShopBox=true;
                 $scope.param.displayShop=true;
                 GetBossShopList.get(function (data) {
                     $scope.shopList=data.responseData;
                 });
-            };
-            $scope.choseShop = function(id){
+            };*/
+           /* $scope.choseShop = function(id){
                 $scope.param.sysShopId = id;
                 $scope.param.sortBy = "";
                 $scope.param.sortRule = '';
                 $scope.getInfo();
                 $scope.param.displayShopBox = false;
-            };
+            };*/
             $scope.sorting =function(sortBy,sortRule){
                 $scope.param.sortBy=sortBy;
                 $scope.param.sortRule=sortRule;

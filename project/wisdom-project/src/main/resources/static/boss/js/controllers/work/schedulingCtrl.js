@@ -76,26 +76,26 @@ angular.module('controllers',[]).controller('schedulingCtrl',
             };
 
             /*切换店铺*/
-            $scope.tabShop=function () {
+            /*$scope.tabShop=function () {
                 $scope.param.displayShopBox=true;
                 $scope.param.displayShop=true;
                 GetBossShopList.get(function (data) {
                     console.log(data);
                     $scope.shopList=data.responseData;
                 });
-            };
+            };*/
             $scope.closeBox=function () {
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
             };
 
             /*点击店铺名字切换店铺*/
-            $scope.choseShop=function (id) {
+           /* $scope.choseShop=function (id) {
                 $scope.param.shopId =id
                 $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"));
                 $scope.param.displayShopBox=false;
                 $scope.param.displayShop=false;
-            };
+            };*/
 
             var tiemInt = setInterval(function () {
                 if($("#tbTest1 thead tr td").length != 0){

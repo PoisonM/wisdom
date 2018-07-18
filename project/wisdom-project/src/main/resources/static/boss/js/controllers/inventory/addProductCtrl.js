@@ -1,13 +1,9 @@
 angular.module('controllers',[]).controller('addProductCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','GetProductInfoByScanCode',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','BossUtil','$filter','SaveProductInfo','Global','ImageBase64UploadToOSS','GetProductInfoByScanCode','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,BossUtil,$filter,SaveProductInfo,Global,ImageBase64UploadToOSS,GetProductInfoByScanCode,$timeout) {
             $rootScope.title = "添加产品";
             $scope.selFlag =true;
             $scope.setFlag = false;
-            $scope.$on('$ionicView.enter', function() {
-            });
-
-
             $rootScope.settingAddsome.product ={
             productType:"0",
             productTypeOneName:"",
@@ -31,6 +27,9 @@ angular.module('controllers',[]).controller('addProductCtrl',
             productWarningNum:"",
 
         }
+            $scope.$on('$ionicView.enter', function() {
+
+            });
 
                $.ajax({
                  url:"/weixin/beauty/getBeautyConfig",// 跳转到 action

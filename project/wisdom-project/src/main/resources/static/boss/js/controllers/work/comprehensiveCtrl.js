@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl',
-    ['$scope','$rootScope','$stateParams','$state','BossUtil','Global','$filter','GetBossExpenditureAndIncome','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetBossExpenditureAndIncome,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','BossUtil','Global','$filter','GetBossExpenditureAndIncome','$ionicLoading','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,BossUtil,Global,$filter,GetBossExpenditureAndIncome,$ionicLoading,$timeout) {
 
             $rootScope.title = "综合分析";
 
@@ -11,11 +11,16 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 income : 0,
                 expenditure:0,
                 startDate : BossUtil.getNowFormatDate(),
-                date:BossUtil.getNowFormatDate()
+                endDate:BossUtil.getNowFormatDate(),
+                style:''
             }
-            $scope.param.date=$scope.param.date.replace(/00/g,'')
-            $scope.param.date=$scope.param.date.replace(/:/g,'')
-
+            $scope.param.startDate=$scope.param.startDate.replace(/00/g,'')
+            $scope.param.endDate=$scope.param.endDate.replace(/00/g,'')
+            $scope.param.startDate=$scope.param.startDate.replace(/:/g,'')
+            $scope.param.endDate=$scope.param.endDate.replace(/:/g,'')
+            $scope.selDate = function (style) {
+                $scope.param.style=style
+            }
             var disabledDates = [
                 new Date(1437719836326),
                 new Date(),
@@ -33,8 +38,9 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                 if (typeof (val) === 'undefined') {
                 } else {
                     var dateValue = $filter('date')(val, 'yyyy-MM-dd') + " 00:00:00";
-                    $scope.param.date =$filter('date')(val, 'yyyy-MM-dd')
-                    $scope.getInfo();
+                     $timeout(function () {
+                         $scope.param[$scope.param.style] =$filter('date')(val, 'yyyy-MM-dd');
+                     },500)
                 }
             };
             //主体对象
@@ -65,6 +71,20 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
             };
 
             $scope.getInfo = function(){
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天")
+                    return
+                }
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -73,7 +93,7 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
                     showDelay: 0
                 });
                 GetBossExpenditureAndIncome.get({
-                    startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59"},function (data) {
+                    startTime:$scope.param.startDate.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",endTime:$scope.param.endDate.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59"},function (data) {
                     if(data.result==Global.SUCCESS&&data.responseData!=null) {
                         $ionicLoading.hide();
                         $scope.comprehensive = data.responseData;
@@ -86,10 +106,38 @@ angular.module('controllers',["ionic-datepicker"]).controller('comprehensiveCtrl
 
 
             $scope.beautyAllGo = function(sysShopId){
-                $state.go("beautyAll",{sysShopId:sysShopId,date:$scope.param.date})
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天")
+                    return
+                }
+                $state.go("beautyAll",{sysShopId:sysShopId,startDate:$scope.param.startDate,endDate:$scope.param.endDate})
             }
             
             $scope.sevenDayChartsViewClick = function () {
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天")
+                    return
+                }
                 $state.go('sevenDayCharts',{id:"a"});
             }
 }]);
