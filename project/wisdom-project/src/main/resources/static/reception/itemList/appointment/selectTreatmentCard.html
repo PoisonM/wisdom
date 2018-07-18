@@ -1,23 +1,23 @@
 
-        <div class="selectRight bgfff selectTreatmentCard" style="height:10.67rem;overflow-y: scroll;border-bottom-right-radius: 0.58125rem;">
-           <!-- <p class="wz">合作.微整系列</p>-->
-            <ul class="height120 ">
-                <li ng-repeat="item in param.consumptionObj.singleByshopId.detailProject">
-                    <div>
-                        <img ng-src="{{selectTreatmentDataPic[$index]}}" class="mt" ng-click = "selectTreatment($index)">
-                        <div class="detail">
-                            <p class="color333FS30">{{item.projectName}}</p>
-                            <p class="color999FS24">剩余两次</p>
-                        </div>
-                    </div>
-                    <div class="money">
-                        <div>
-                            <span class="color333FS30 floatR">￥{{item.marketPrice}}</span>
-                        </div>
+<div class="selectRight bgfff selectTreatmentCard" style="height:10.67rem;overflow-y: scroll;border-bottom-right-radius: 0.58125rem;">
+   <!-- <p class="wz">合作.微整系列</p>-->
+    <ul class="height120 ">
+        <li ng-repeat="item in param.consumptionObj.singleByshopId.detailProject">
+            <div>
+                <img ng-src="{{selectTreatmentDataPic[$index]}}" class="mt" ng-click = "selectTreatment($index)">
+                <div class="detail">
+                    <p class="color333FS30">{{item.projectName}}</p>
+                    <p class="color999FS24">剩余两次</p>
+                </div>
+            </div>
+            <div class="money">
+                <div>
+                    <span class="color333FS30 floatR">￥{{item.marketPrice}}</span>
+                </div>
 
-                    </div>
-                </li>
-            </ul>
-        </div>
+            </div>
+        </li>
+    </ul>
+</div>
 
 
