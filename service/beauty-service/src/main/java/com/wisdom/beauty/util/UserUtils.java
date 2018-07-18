@@ -119,7 +119,7 @@ public class UserUtils {
      * 获取登陆的token信息
      * @return
      */
-    private static String getUserToken(LoginEnum loginEnum) {
+    public static String getUserToken(LoginEnum loginEnum) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String> tokenValue = getHeadersInfo(request);
         //只能获取到usertype对应的token
