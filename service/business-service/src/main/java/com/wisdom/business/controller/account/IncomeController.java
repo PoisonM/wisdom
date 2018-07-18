@@ -326,7 +326,7 @@ public class IncomeController {
 				List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO1);
 				if(userInfoDTOS.size() > 0){
 					String token = WeixinUtil.getUserToken();
-					WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(incomeRecordDTOS.get(0).getAmount()+"","一笔",DateUtils.DateToStr(new Date()),token,"",userInfoDTOS.get(0).getUserOpenid());
+					WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(incomeRecordDTOS.get(0).getAmount()+"","1 笔",DateUtils.DateToStr(new Date()),token,"",userInfoDTOS.get(0).getUserOpenid());
 					logger.info("运营审核通过了此条月度={},给用户={}发送月度可提现模板消息",incomeRecordId,incomeRecordDTOS.get(0).getSysUserId());
 				}else {
 					logger.info("审核成功,模板消息发送失败,因为没有查到此月度的用户=={}",incomeRecordDTOS.get(0).getSysUserId());
