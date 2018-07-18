@@ -66,7 +66,7 @@ public class IncomeAndExpenseStatisticController {
         PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopCashFlowDTO shopCashFlowDTO=new ShopCashFlowDTO();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
-        shopCashFlowDTO.setSysBossCode(bossInfo.getId());
+        shopCashFlowDTO.setSysBossCode(bossInfo.getSysBossCode());
         String sysShopId = redisUtils.getShopId();
         if(StringUtils.isNotBlank(sysShopId)){
             shopCashFlowDTO.setSysShopId(sysShopId);
@@ -152,7 +152,7 @@ public class IncomeAndExpenseStatisticController {
         PageParamVoDTO<ShopCashFlowDTO> pageParamVoDTO = new PageParamVoDTO<>();
         ShopCashFlowDTO shopCashFlowDTO=new ShopCashFlowDTO();
         shopCashFlowDTO.setSysShopId(sysShopId);
-        shopCashFlowDTO.setSysBossCode(bossInfo.getId());
+        shopCashFlowDTO.setSysBossCode(bossInfo.getSysBossCode());
         pageParamVoDTO.setRequestData(shopCashFlowDTO);
         pageParamVoDTO.setPaging(true);
         pageParamVoDTO.setPageNo(0);

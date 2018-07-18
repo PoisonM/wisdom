@@ -314,7 +314,6 @@ public class IncomeController {
 		incomeRecordManagementService.insertIncomeRecordManagement(incomeRecordManagementDTO);
 		logger.info("第一次审核,创建审核记录,向incomeRecordManagement表中插入数据");
 
-		//发送模板消息
 		//查询此条佣金信息
 		IncomeRecordDTO incomeRecordDTO = new IncomeRecordDTO();
 		incomeRecordDTO.setId(incomeRecordId);
@@ -327,7 +326,7 @@ public class IncomeController {
 				List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO1);
 				if(userInfoDTOS.size() > 0){
 					String token = WeixinUtil.getUserToken();
-					WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(incomeRecordDTOS.get(0).getSysUserId(),incomeRecordDTOS.get(0).getAmount()+"",DateUtils.DateToStr(new Date()),token,"",userInfoDTOS.get(0).getUserOpenid());
+					WeixinTemplateMessageUtil.sendMonthIncomeTemplateWXMessage(incomeRecordDTOS.get(0).getAmount()+"","1 笔",DateUtils.DateToStr(new Date()),token,"",userInfoDTOS.get(0).getUserOpenid());
 					logger.info("运营审核通过了此条月度={},给用户={}发送月度可提现模板消息",incomeRecordId,incomeRecordDTOS.get(0).getSysUserId());
 				}else {
 					logger.info("审核成功,模板消息发送失败,因为没有查到此月度的用户=={}",incomeRecordDTOS.get(0).getSysUserId());

@@ -11,13 +11,10 @@
                 <p class="textDiscount">折扣:
                     <span class="" ng-if="item.timeDiscount==1">次卡无折|</span>
                     <span class="" ng-if="item.timeDiscount<1">次卡{{item.timeDiscount*10}}折|</span>
-
                     <span class="" ng-if="item.periodDiscount==1">疗程卡无折|</span>
                     <span class="" ng-if="item.periodDiscount<1">疗程卡{{item.periodDiscount*10}}折|</span>
-
                     <span class="" ng-if="item.productDiscount==1">产品无折</span>
                     <span class="" ng-if="item.productDiscount<1">产品{{item.productDiscount*10}}折</span>
-
                 </p>
             </div>
         </li>

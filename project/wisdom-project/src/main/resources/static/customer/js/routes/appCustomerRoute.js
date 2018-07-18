@@ -591,6 +591,19 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    /*选择项目的详情*/
+                    .state('beautyProjectDetails', {
+                        url: '/beautyProjectDetails/:projectId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyProjectDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyProjectDetailsCtrl',
+                                    ['js/controllers/beauty/beautyProjectDetailsCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyProjectDetails.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                     .state('beautyLogin', {
                         url: '/beautyLogin/:redirectUrl',
                         templateProvider: function() { return lazyDeferred.promise; },

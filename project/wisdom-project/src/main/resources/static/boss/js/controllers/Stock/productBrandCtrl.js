@@ -4,6 +4,7 @@ angular.module('controllers',[]).controller('productBrandCtrl',
         function ($scope,$rootScope,$stateParams,$state,SearchShopProductList,$ionicLoading) {
 
             $rootScope.title = "产品品牌";
+
             $scope.addSeriesGo = function(){
                 $state.go("addSeries")
             };
@@ -22,15 +23,8 @@ angular.module('controllers',[]).controller('productBrandCtrl',
                     showDelay: 0
                 });
                 SearchShopProductList.get({filterStr:''},function (date) {
-                    if(date.result == '0x00001'){
-                        $scope.productBrand = date.responseData.oneAndTwoLevelList
-                        $ionicLoading.hide();
-                        if(date.responseData == null){
-                            $scope.productBrand=[]
-                        }
-                    }
-
-
+                    $ionicLoading.hide();
+                    $scope.productBrand = date.responseData.oneAndTwoLevelList
                 })
             })
 

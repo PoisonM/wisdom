@@ -190,8 +190,8 @@
         <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
             <ion-slide ng-repeat="item in param.bannerList" ng-if="item.bannerType=='banner'">
                 <div class="box" style="height:3.98rem;width: 7.50rem">
-                    <div  ng-click="goActivity(item.forward)"> <img ng-src="{{item.uri}}"
-                                                                                          style="height:3.98rem;width:7.50rem"/></div>
+                    <a ng-href="{{item.forward}}" ng-click="clickCarousel(item.id)"> <img ng-src="{{item.uri}}"
+                                                                                          style="height:3.98rem;width:7.50rem"/></a>
                 </div>
             </ion-slide>
         </ion-slide-box>
@@ -254,10 +254,10 @@
                         <p class="bigsize">399</p>
                         <p style="position: absolute;top: 40px">元专区</p>
                     </li>
-                    <li ng-click="checkPrice(499)" ng-class="{'checckFourHundredNine':shopHomeParam== 499,'fourHundredNine':shopHomeParam!=499}" style="position: relative" >
+                    <!--<li ng-click="checkPrice(499)" ng-class="{'checckFourHundredNine':shopHomeParam== 499,'fourHundredNine':shopHomeParam!=499}" style="position: relative" >
                         <p class="bigsize">499</p>
                         <p style="position: absolute;top: 40px">元专区</p>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
             <div class="tab_conetnt">
@@ -341,7 +341,7 @@
                             </div>
                         </div>
                         <!--499-->
-                        <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
+                       <!-- <div style="width: 100%" class="row row-wrap" ng-if="allProductFlag">
                             <div style="width: 100%;height: 50px;line-height: 50px;margin-bottom: 4px;margin-top: 20px;">
                                 <img src="images/499.png" style="width: 227px;margin: 0 auto">
                             </div>
@@ -355,7 +355,7 @@
                                 <p style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;line-height: 17px;margin-top: 5px">零售价 <del>￥{{item.productDetail.productMarketPrice}}</del></p>
                                 </p>
                             </div>
-                        </div>
+                        </div>-->
 
 
                     </div>

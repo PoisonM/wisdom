@@ -39,12 +39,11 @@ public class ShopBossRelationController {
      * @return
      */
     @RequestMapping(value = "/getBossShopList", method = {RequestMethod.POST, RequestMethod.GET})
-
     public @ResponseBody
     ResponseDTO<Object> getBossShopList() {
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ShopBossRelationDTO bossRelationDTO = new ShopBossRelationDTO();
-        bossRelationDTO.setSysBossCode(bossInfo.getId());
+        bossRelationDTO.setSysBossCode(bossInfo.getSysBossCode());
         List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossService.shopBossRelationList(bossRelationDTO);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         responseDTO.setResult(StatusConstant.SUCCESS);

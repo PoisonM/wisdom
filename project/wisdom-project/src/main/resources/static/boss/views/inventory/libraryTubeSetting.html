@@ -11,7 +11,6 @@
             </div>
             <ul class="bgfff" ng-show="item.id == param.id" ui-sref="kuTube({id:param.id,storeManagerId:peopleKuTube.storeManagerId})">
                 <li class="h50  ml20 bbl sb"  >
-
                   <p class="fs16">
                       <span class="col888">库管</span>
                       <span class="colff66">*</span>
@@ -21,11 +20,9 @@
                       <span class="fs14 col333" ng-if="!show">{{storeManagerName}}</span>
                      <img src="images/more.png" class="more mr10">
                   </p>
-
                 </li>
             </ul>
         </div>
-
     </ion-content>
     <div class="h45 center fs16 colfff bgff66 tabs" ng-if="!show" ng-click="save()" >
         保存

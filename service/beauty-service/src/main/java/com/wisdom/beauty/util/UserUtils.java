@@ -92,8 +92,12 @@ public class UserUtils {
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
         try {
-            bossDTO.setNickname(java.net.URLDecoder.decode(bossDTO.getNickname(), "utf-8"));
-            bossDTO.setName(java.net.URLDecoder.decode(bossDTO.getName(), "utf-8"));
+            if(StringUtils.isNotBlank(bossDTO.getNickname())){
+                bossDTO.setNickname(java.net.URLDecoder.decode(bossDTO.getNickname(), "utf-8"));
+            }
+            if(StringUtils.isNotBlank(bossDTO.getName())){
+                bossDTO.setName(java.net.URLDecoder.decode(bossDTO.getName(), "utf-8"));
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -115,7 +119,7 @@ public class UserUtils {
      * 获取登陆的token信息
      * @return
      */
-    private static String getUserToken(LoginEnum loginEnum) {
+    public static String getUserToken(LoginEnum loginEnum) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Map<String, String> tokenValue = getHeadersInfo(request);
         //只能获取到usertype对应的token

@@ -361,7 +361,7 @@ public class TimerMessageQueueReceiver {
             calendar.setTime(date);
             calendar.add(Calendar.YEAR, 1);
             date = calendar.getTime();
-            WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
+            WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getId()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
         }
     }
 

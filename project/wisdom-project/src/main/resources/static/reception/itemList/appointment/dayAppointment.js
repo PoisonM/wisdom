@@ -401,6 +401,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             for (var d = 0; d < $scope.tswTimeList.length; d++) { //所有需要的时间节点
                 $scope.param.zhongjiList[$scope.tswTimeList[d]] = {};
                 for (mrname in $scope.meirongshiList) {
+                    if(mrname == 'remove' || mrname == 'removeObj' || mrname == 'timeCode'){ break}
                     $scope.param.zhongjiList[$scope.tswTimeList[d]][mrname] = $scope.meirongshiList[mrname]
                 }
             }
