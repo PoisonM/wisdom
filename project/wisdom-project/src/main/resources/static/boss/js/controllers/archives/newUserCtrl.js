@@ -101,7 +101,7 @@ angular.module('controllers',[]).controller('newUserCtrl',
                     $scope.userInformation=$scope.newUser;
                     /*修改档案更新保存*/
                     UpdateArchiveInfo.save($scope.userInformation,function (data) {
-                        if(Gdata.result==lobal.SUCCESS){
+                        if(data.result==Global.SUCCESS){
                             $state.go("archives",{id:$stateParams.id})
 
                         }
