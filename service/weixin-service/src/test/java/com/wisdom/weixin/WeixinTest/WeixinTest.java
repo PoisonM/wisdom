@@ -104,8 +104,7 @@ public class WeixinTest {
                 parentUserInfoDTO = parentUserInfoDTOList.get(0);
                 if (null != parentUserInfoDTO) {
                     //向父节点推送消息
-                    WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(), "c级代理商", "0元", token,
-                            "", parentUserInfoDTO.getUserOpenid());
+                    WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(), "c级代理商", "0元", token, parentUserInfoDTO.getUserOpenid());
                 }
             }
 
