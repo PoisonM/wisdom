@@ -49,7 +49,7 @@ angular.module('controllers',[]).controller('sharePageCtrl',
             }
 
             GetCustomerQRCode.get({userPhone:$stateParams.userPhone},function (data) {
-
+                console.log(data)
                 $scope.param.weixinShareInfo = data.responseData;
 
                 //获取$scope.param.canvas

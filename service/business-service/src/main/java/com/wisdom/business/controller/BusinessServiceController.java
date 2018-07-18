@@ -120,7 +120,8 @@ public class BusinessServiceController {
 	AccountDTO getUserAccountInfo(@RequestParam String userId){
 		AccountDTO accountDTO = new AccountDTO();
 		accountDTO.setSysUserId(userId);
-		return accountService.getUserAccountInfo(accountDTO).get(0);
+		accountDTO = accountService.getUserAccountInfo(accountDTO).get(0);
+		return accountDTO;
 	};
 
 	@RequestMapping(value = "/updateUserAccountInfo",method=RequestMethod.POST)
