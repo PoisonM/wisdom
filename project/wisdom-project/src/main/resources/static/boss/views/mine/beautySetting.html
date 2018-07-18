@@ -2,11 +2,11 @@
     <ion-content>
        <div class="list">
            <li class="item"><span class="fs16">名称<span class="colff66">*</span></span><input class="fr fs15" ng-model="beautySetting.name" style="text-align: right;width:80%;"></li>
-           <li class="item" style="position: relative"><span class="fs16">图片</span>
+           <li class="item" style="position: relative">
+               <span class="fs16">图片</span>
                <input type="file" style="opacity: 0;position: absolute;top: 15px;right: 15px;width: 126px;height: 79px;" onchange="angular.element(this).scope().img_upload(this.files,'shopImageUrl')">
-               <p style="width: 126px;height: 79px;float: right;background: url('{{beautySetting.shopImageUrl}}');background-size: contain;background-repeat: no-repeat;background-position: right">
-
-               </p>
+               <p style="width: 126px;height: 79px;float: right;background: url('{{beautySetting.shopImageUrl}}');background-size: contain;background-repeat: no-repeat;background-position: right"></p>
+           </li>
        </div>
         <div class="list">
             <li class="item"><span class="fs16">客服电话<span class="colff66">*</span></span>
