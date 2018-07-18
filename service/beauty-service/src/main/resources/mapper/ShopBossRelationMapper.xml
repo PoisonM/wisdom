@@ -8,6 +8,7 @@
     <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="sys_boss_name" property="sysBossName" jdbcType="VARCHAR" />
     <result column="sys_shop_address" property="sysShopAddress" jdbcType="VARCHAR" />
+    <result column="sys_boss_id" property="sysBossId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, sys_shop_id, sys_shop_name, sys_boss_code, sys_boss_name, sys_shop_address
+    id, sys_shop_id, sys_shop_name, sys_boss_code, sys_boss_name, sys_shop_address, sys_boss_id
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationCriteria" >
     select
@@ -105,11 +106,11 @@
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationDTO" >
     insert into shop_boss_relation (id, sys_shop_id, sys_shop_name, 
-      sys_boss_code, sys_boss_name, sys_shop_address
-      )
+      sys_boss_code, sys_boss_name, sys_shop_address, 
+      sys_boss_id)
     values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{sysShopName,jdbcType=VARCHAR}, 
-      #{sysBossCode,jdbcType=VARCHAR}, #{sysBossName,jdbcType=VARCHAR}, #{sysShopAddress,jdbcType=VARCHAR}
-      )
+      #{sysBossCode,jdbcType=VARCHAR}, #{sysBossName,jdbcType=VARCHAR}, #{sysShopAddress,jdbcType=VARCHAR}, 
+      #{sysBossId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopBossRelationDTO" >
     insert into shop_boss_relation
@@ -132,6 +133,9 @@
       <if test="sysShopAddress != null" >
         sys_shop_address,
       </if>
+      <if test="sysBossId != null" >
+        sys_boss_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -151,6 +155,9 @@
       </if>
       <if test="sysShopAddress != null" >
         #{sysShopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossId != null" >
+        #{sysBossId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -181,6 +188,9 @@
       <if test="record.sysShopAddress != null" >
         sys_shop_address = #{record.sysShopAddress,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysBossId != null" >
+        sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -193,7 +203,8 @@
       sys_shop_name = #{record.sysShopName,jdbcType=VARCHAR},
       sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       sys_boss_name = #{record.sysBossName,jdbcType=VARCHAR},
-      sys_shop_address = #{record.sysShopAddress,jdbcType=VARCHAR}
+      sys_shop_address = #{record.sysShopAddress,jdbcType=VARCHAR},
+      sys_boss_id = #{record.sysBossId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -216,6 +227,9 @@
       <if test="sysShopAddress != null" >
         sys_shop_address = #{sysShopAddress,jdbcType=VARCHAR},
       </if>
+      <if test="sysBossId != null" >
+        sys_boss_id = #{sysBossId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -225,7 +239,8 @@
       sys_shop_name = #{sysShopName,jdbcType=VARCHAR},
       sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
       sys_boss_name = #{sysBossName,jdbcType=VARCHAR},
-      sys_shop_address = #{sysShopAddress,jdbcType=VARCHAR}
+      sys_shop_address = #{sysShopAddress,jdbcType=VARCHAR},
+      sys_boss_id = #{sysBossId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>
