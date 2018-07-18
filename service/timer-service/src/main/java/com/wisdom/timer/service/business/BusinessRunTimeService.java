@@ -137,8 +137,8 @@ public class BusinessRunTimeService {
                             WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
                                     businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
                             logger.info("待付款订单={}超过10分钟={}给用户={}发送提醒消息",businessOrder.getBusinessOrderId(),time,userInfoDTOList.get(0).getMobile());
+                            JedisUtils.set("waitPayNotify:"+userInfoDTOList.get(0).getUserOpenid(),userInfoDTOList.get(0).getUserOpenid(),1200);
                         }
-                        JedisUtils.set("waitPayNotify:"+userInfoDTOList.get(0).getUserOpenid(),userInfoDTOList.get(0).getUserOpenid(),1200);
                         }
                 }
                 //超过20分钟
