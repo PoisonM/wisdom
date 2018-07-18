@@ -173,4 +173,11 @@ public class BusinessServiceController {
 		return incomeService.getIncomeRecordManagement(incomeRecordManagementDTO);
 	}
 
+	@RequestMapping(value = "/getProductInfoByOrderId",method=RequestMethod.POST)
+	@ResponseBody
+	BusinessOrderDTO getProductInfoByOrderId(@RequestBody String orderId)
+	{
+		return transactionMapper.getBusinessOrderDetailInfoByOrderId(orderId);
+	}
+
 }

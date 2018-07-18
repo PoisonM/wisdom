@@ -291,6 +291,10 @@ define(['appCustomer'], function (app) {
         .factory('GetRankingsList',['$resource',function ($resource){
             return $resource('/business/income/getIncomeRanking')
         }])
+    /*用户端选择项目 查看项目详情接口*/
+        .factory('ProjectInfo',['$resource',function ($resource){
+            return $resource(projectInfo+"/:id", { id: '@id' })
+        }])
 
 
 });

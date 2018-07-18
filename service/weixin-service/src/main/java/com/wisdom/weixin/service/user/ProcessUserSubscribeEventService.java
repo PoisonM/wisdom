@@ -11,6 +11,7 @@ import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.entity.WeixinUserBean;
+import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
@@ -154,7 +155,7 @@ public class ProcessUserSubscribeEventService {
                         }
                         if(null != parentUserInfoDTO){
                             //向父节点推送消息
-                            WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(),"c级代理商","0元",token,
+                            WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(), DateUtils.DateToStr(new Date()),token,
                                     "",parentUserInfoDTO.getUserOpenid());
                         }
                     }

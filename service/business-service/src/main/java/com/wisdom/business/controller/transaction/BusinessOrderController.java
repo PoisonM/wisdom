@@ -528,6 +528,13 @@ public class BusinessOrderController {
                 e.printStackTrace();
             }
         }
+
+
+        BusinessOrderDTO businessOrder = transactionService.getBusinessOrderByOrderId(orderCopRelationDTO.getOrderId());
+        UserInfoDTO userInfoDTO = userServiceClient.getUserInfoFromUserId(businessOrder.getSysUserId());
+        String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/1";
+        String token = WeixinUtil.getUserToken();
+        WeixinTemplateMessageUtil.sendProductAlreadySendTemplateWXMessage(orderCopRelationDTO.getOrderId(),DateUtils.formatDateTime(new Date()),token,url,userInfoDTO.getUserOpenid());
         logger.info("给订单绑定相应的COP号,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }

@@ -15,6 +15,12 @@ define(['angular'], function (angular) {
                         if(window.location.href.indexOf("beautyAppoint")!=-1||window.location.href.indexOf("beautyUserCenter")!=-1) {
                             window.localStorage.setItem("userType",Global.userType.BEAUTY_USER);
                         }
+                        else if(window.location.href.indexOf("trainingHome")!=-1||window.location.href.indexOf("shopHome")!=-1||
+                            window.location.href.indexOf("shareHome")!=-1||window.location.href.indexOf("myselfCenter")!=-1||
+                            window.location.href.indexOf("beautyTraining")!=-1)
+                        {
+                            window.localStorage.removeItem("userType");
+                        }
 
                         if(window.localStorage.getItem("userType")!=undefined
                             &&window.localStorage.getItem("userType")!=null)

@@ -354,7 +354,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		List<ShopUserArchivesDTO> shopUserArchivesInfo = getShopUserArchivesInfo(shopUserArchivesDTO);
 		if (CommonUtils.objectIsNotEmpty(shopUserArchivesInfo)) {
 			responseDTO.setResponseData("用户已经存在了");
-			responseDTO.setResult(StatusConstant.FAILURE);
+			responseDTO.setResult(StatusConstant.ALREADY_EXISTED);
 			return responseDTO;
 		}
 
@@ -418,7 +418,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		SysShopDTO shopInfoByPrimaryKey = shopService.getShopInfoByPrimaryKey(sysShopId);
 		if (null != shopInfoByPrimaryKey) {
 			logger.error("查询的shopId为空{}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
-			shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getShopId());
+			shopUserArchivesDTO.setShopid(shopInfoByPrimaryKey.getId());
 		}
 		shopUserArchivesDTO.setSysBossCode(sysBossCode);
 		int info = saveShopUserArchivesInfo(shopUserArchivesDTO);

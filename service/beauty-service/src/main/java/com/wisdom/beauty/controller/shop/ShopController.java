@@ -108,14 +108,14 @@ public class ShopController {
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         ResponseDTO<Object> responseDTO = new ResponseDTO();
         ExtSysShopDTO extSysShopDTO = new ExtSysShopDTO();
-        extSysShopDTO.setSysBossCode(bossInfo.getId());
+        extSysShopDTO.setSysBossCode(bossInfo.getSysBossCode());
         if(StringUtils.isNotBlank(type)){
             extSysShopDTO.setType(type);
         }
         List<ExtSysShopDTO> bossShopInfo = shopUserRelationService.getBossShopInfo(extSysShopDTO);
         if (CollectionUtils.isNotEmpty(bossShopInfo)) {
             logger.info("老板{}切换店铺", bossInfo.getId());
-            bossInfo.setCurrentShopId(bossShopInfo.get(0).getShopId());
+            bossInfo.setCurrentShopId(bossShopInfo.get(0).getId());
             UserUtils.bossSwitchShops(bossInfo);
         }
         responseDTO.setResponseData(bossShopInfo);

@@ -1,7 +1,9 @@
 package com.wisdom.business.mqreceiver;
 
+import com.aliyun.opensearch.util.URLEncoder;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.netflix.discovery.util.StringUtil;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mqsender.BusinessMessageQueueSender;
 import com.wisdom.business.service.transaction.PayFunction;
@@ -14,10 +16,7 @@ import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.ObjectUtils;
-import com.wisdom.common.util.SMSUtil;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
-import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -29,6 +28,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -234,7 +235,9 @@ public class BusinessMessageQueueReceiver {
         logger.info("receive handleUserLevelPromotion==="+handleUserLevelPromotion);
         String messageValue[] = handleUserLevelPromotion.split("########");
         UserInfoDTO userInfoDTO = gson.fromJson(messageValue[0],UserInfoDTO.class);
+        String fromUserType = userInfoDTO.getUserType();
         float expenseMoney = Float.parseFloat(messageValue[1]);
+        String toLevel  = "";
 
         logger.info("根据消费金额处理用户的等级提升=="+userInfoDTO.getMobile());
         //判断，消费额度是否可以提升用户的等级
@@ -245,11 +248,13 @@ public class BusinessMessageQueueReceiver {
             {
                 //消费金额在B的区间段，升级为B
                 payFunction.promoteUserBusinessTypeForExpenseSecond(userInfoDTO,ConfigConstant.businessB1,ConfigConstant.livingPeriodYear);
+                toLevel  = ConfigConstant.businessB1;
             }
             else if(expenseMoney>=ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE)
             {
                 //消费金额在A的区间段，升级为A
                 payFunction.promoteUserBusinessTypeForExpenseSecond(userInfoDTO,ConfigConstant.businessA1,ConfigConstant.livingPeriodYear);
+                toLevel  = ConfigConstant.businessA1;
             }
         }
         else if(ConfigConstant.businessB1.equals(userInfoDTO.getUserType()))
@@ -258,6 +263,7 @@ public class BusinessMessageQueueReceiver {
             {
                 //消费金额在A的区间段，升级为A
                 payFunction.promoteUserBusinessTypeForExpenseSecond(userInfoDTO,ConfigConstant.businessA1,ConfigConstant.livingPeriodYear);
+                toLevel  = ConfigConstant.businessA1;
             }
             if(expenseMoney>=ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&expenseMoney<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE)
             {
@@ -273,7 +279,30 @@ public class BusinessMessageQueueReceiver {
                 payFunction.deFrozenUserType(userInfoDTO);
             }
         }
-        logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
 
+        if(StringUtils.isNotNull(toLevel)){
+            String leveName = toLevel.equals(ConfigConstant.businessA1)?"大当家":"9小主";
+            String token = WeixinUtil.getUserToken();
+            WeixinTemplateMessageUtil.sendBusinessPromoteForOneSelfTemplateWXMessage(URLDecoder.decode(userInfoDTO.getNickname(),"utf-8"),leveName
+            ,DateUtils.DateToStr(new Date(),"datetime"),token,"",userInfoDTO.getUserOpenid());
+            if(StringUtils.isNotNull(userInfoDTO.getParentUserId())){
+                UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
+                if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
+                    String fromLeveName = "";
+                    if(fromUserType.equals(ConfigConstant.businessC1)){
+                        fromLeveName = "普通用户";
+                    }else if(fromUserType.equals(ConfigConstant.businessB1)){
+                        fromLeveName = "9小主";
+                    }else {
+                        fromLeveName = "大当家";
+                    }
+                    WeixinTemplateMessageUtil.agentUpgradeTemplateWXMessage(token,grandpaUserInfoDTO.getUserOpenid(), URLDecoder.decode(userInfoDTO.getNickname(),"utf-8"),fromLeveName,leveName, DateUtils.DateToStr(new Date(),"date"));
+                }
+            }
+
+        }
+
+
+        logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
     }
 }

@@ -682,8 +682,14 @@ public class ProjectController {
 		if (!ExtCardTypeEnum.ONE_TIME_CARD.getCode().equals(extShopProjectInfoDTO.getCardType())) {
 			extShopProjectInfoDTO.setUseStyle(ExtCardTypeEnum.TREATMENT_CARD.getCode());
 		}
-		extShopProjectInfoDTO.setMarketPrice(
+		//add zhanghuan,后台的marketPrice 对应 优惠价格
+		//              后台的initialPrice 对应 市场价格
+		//项目为单次的时候，办卡价格相当于是优惠价格
+
+		//设置市场价格
+		extShopProjectInfoDTO.setInitialPrice(
 				extShopProjectInfoDTO.getOncePrice().multiply(new BigDecimal(extShopProjectInfoDTO.getServiceTimes())));
+		//设置优惠价格
 		if(extShopProjectInfoDTO.getProjectDuration()>0){
 			int projectDuration = extShopProjectInfoDTO.getProjectDuration() / 30;
 			extShopProjectInfoDTO.setProjectDuration(projectDuration*30);

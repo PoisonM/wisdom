@@ -22,15 +22,12 @@
                     <p class="mr10">
                         <input class="tr fs14" placeholder="请输入顾客的名字" ng-model="newUser.sysUserName" class="mr10"/>
                     </p>
-
-
                 </ion-item>
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10 " >手机<span class="colff66 fs15">*</span></p>
                     <p class="mr10" style="width:50%;">
-                        <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number"   class="tr fs14" placeholder="请输入顾客的手机号" ng-model="newUser.phone" ng-blur="pho()" style="width:100%;" />
+                        <input type="tel" min="1" inputmode="numeric" pattern="[0-9]*" title="Non-negative integral number"   class="tr fs14" placeholder="请输入顾客的手机号" ng-model="newUser.phone" ng-blur="pho()" style="width:100%;" />
                     </p>
-
                 </ion-item>
                 <ion-item class="h45 sb" ng-click="shop(); $event.stopPropagation()">
                     <p>
@@ -44,10 +41,8 @@
                 <ion-item  class="h54 bgfff" style="display: flex;justify-content: space-between">
                     <p class="ml10">性别</p>
                     <span class="fr mr10">
-
                     <input type="radio"   ng-checked="newUser.sex == '女'"   name="names" ng-click="female()"  style="width: 15px;height: 15px;border: 1px solid #FF6666;border-radius: 50%"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">女</span>
               <input type="radio" name="names" ng-click="male()"  style="width: 15px;height: 15px;border: 1px solid #FF6666; border-radius: 50%;margin-left: 0.1rem"  ng-checked="newUser.sex == '男'"><span style="margin-left: 0.2rem;font-size: 0.3rem;color: #333333">男</span>
-
               </span>
                    <!-- <div class="mr10" style="display: flex;justify-content: space-between">
                         <label class="item item-radio" style="border:none;padding:0;">

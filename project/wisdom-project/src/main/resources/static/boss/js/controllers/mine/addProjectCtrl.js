@@ -14,7 +14,7 @@ angular.module('controllers',[]).controller('addProjectCtrl',
             $rootScope.settingAddsome.extShopProjectInfoDTO={
                 functionIntr:"",/*功能介绍*/
                 oncePrice:"",/*单次价格*/
-                discountPrice:"",/*办卡价格*/
+                marketPrice:"",/*办卡价格*/
                 projectTypeOneId:'',/*类型id*/
                 projectTypeOneName:"",/*类型名称*/
                 projectTypeTwoId:"",/*系列id*/
@@ -126,7 +126,7 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                            $rootScope.settingAddsome.extShopProjectInfoDTO={
                                functionIntr:"",/*功能介绍*/
                                oncePrice:"",/*单次价格*/
-                               discountPrice:"",/*办卡价格*/
+                               marketPrice:"",/*办卡价格*/
                                projectTypeOneId:'',/*类型id*/
                                projectTypeOneName:"",/*类型名称*/
                                projectTypeTwoId:"",/*系列id*/

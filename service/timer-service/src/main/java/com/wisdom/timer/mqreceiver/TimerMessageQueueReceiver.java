@@ -65,14 +65,15 @@ public class TimerMessageQueueReceiver {
                 String autoReceiveProductDate = DateUtils.DateToStr(businessOrder.getUpdateDate());
 
                 String token = WeixinUtil.getUserToken();
-                String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/1";
+                String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/2";
 
                 UserInfoDTO userInfoDTO = new UserInfoDTO();
                 userInfoDTO.setId(businessOrder.getSysUserId());
                 List<UserInfoDTO> userInfoDTOList =  userServiceClient.getUserInfo(userInfoDTO);
                 if(userInfoDTOList.size()>0)
                 {
-                    WeixinTemplateMessageUtil.sendOrderConfirmReceiveTemplateWXMessage(businessOrder.getBusinessOrderId(), businessOrder.getBusinessProductName(),
+                    BusinessOrderDTO businessOrderDTO = businessServiceClient.getProductInfoByOrderId(businessOrder.getOrderId());
+                    WeixinTemplateMessageUtil.sendOrderConfirmReceiveTemplateWXMessage(businessOrder.getBusinessOrderId(), businessOrderDTO.getBusinessProductName(),
                             sendProductDate,autoReceiveProductDate,token,url,userInfoDTOList.get(0).getUserOpenid());
                     logger.info("用户15天后，自动收货发送消息,用户openid={}" ,userInfoDTOList.get(0).getUserOpenid());
                 }
@@ -360,7 +361,7 @@ public class TimerMessageQueueReceiver {
             calendar.setTime(date);
             calendar.add(Calendar.YEAR, 1);
             date = calendar.getTime();
-            WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getNickname()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
+            WeixinTemplateMessageUtil.sendBusinessPromoteForRecommendTemplateWXMessage(CommonUtils.nameDecoder(userInfo.getId()),DateUtils.DateToStr(date),token, "", userInfo.getUserOpenid());
         }
     }
 

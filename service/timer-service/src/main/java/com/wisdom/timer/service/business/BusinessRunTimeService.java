@@ -131,11 +131,15 @@ public class BusinessRunTimeService {
                     List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
                     if(userInfoDTOList.size()>0)
                     {
-                        String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/0";
-                        WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
-                                businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
-                        logger.info("待付款订单={}超过10分钟={}给用户={}发送提醒消息",businessOrder.getBusinessOrderId(),time,userInfoDTOList.get(0).getMobile());
-                    }
+                        String userId = JedisUtils.get("waitPayNotify:"+userInfoDTOList.get(0).getUserOpenid());
+                        if(StringUtils.isNull(userId)){
+                            String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/0";
+                            WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
+                                    businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
+                            logger.info("待付款订单={}超过10分钟={}给用户={}发送提醒消息",businessOrder.getBusinessOrderId(),time,userInfoDTOList.get(0).getMobile());
+                            JedisUtils.set("waitPayNotify:"+userInfoDTOList.get(0).getUserOpenid(),userInfoDTOList.get(0).getUserOpenid(),1200);
+                        }
+                        }
                 }
                 //超过20分钟
                 else if(outTime > autoDeleteBusinessOrder)
@@ -552,7 +556,10 @@ public class BusinessRunTimeService {
         float returnMonthlyMoney_A = 0;
         float returnMonthlyMoney_B = 0;
         float returnMonthlyMoney_C = 0;
-        float importLevelMoney = 0;
+        //c升级时候的返利
+        float importLevelMoneyC = 0;
+        //B升级时候的返利
+        float importLevelMoneyB = 0;
 
         String startDate =  DateUtils.formatDate(startDateM,"yyyy-MM-dd HH-mm-ss");
         String endDate = DateUtils.formatDate(endDateM,"yyyy-MM-dd HH-mm-ss");
@@ -567,21 +574,33 @@ public class BusinessRunTimeService {
             }
             else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessB1))
             {
-                returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
+                if(monthTransactionRecordDTO.getAmount()>= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+                    importLevelMoneyB = monthTransactionRecordDTO.getAmount();
+                }else{
+                    returnMonthlyMoney_B = returnMonthlyMoney_B + monthTransactionRecordDTO.getAmount();
+                }
             }else if(monthTransactionRecordDTO.getUserType().equals(ConfigConstant.businessC1)){
                 returnMonthlyMoney_C = returnMonthlyMoney_C + monthTransactionRecordDTO.getAmount();
-                importLevelMoney = monthTransactionRecordDTO.getAmount();
+                importLevelMoneyC = returnMonthlyMoney_C;
             }
         }
-        if(returnMonthlyMoney_B>0||returnMonthlyMoney_A>0||returnMonthlyMoney_C>0){
-            if(returnMonthlyMoney_C>0){
-                if(importLevelMoney >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&importLevelMoney<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
-                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + returnMonthlyMoney_C*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
-                }else if(importLevelMoney>= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
-                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + returnMonthlyMoney_C*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+        if(returnMonthlyMoney_B>0||returnMonthlyMoney_A>0||importLevelMoneyC>0||importLevelMoneyB>0){
+            if(importLevelMoneyC>0){
+                if(importLevelMoneyC >= ConfigConstant.PROMOTE_B1_LEVEL_MIN_EXPENSE&&importLevelMoneyC<=ConfigConstant.PROMOTE_B1_LEVEL_MAX_EXPENSE){
+                    if(importLevelMoneyB>0){
+                        returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + importLevelMoneyC*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100+ importLevelMoneyB*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+                    }else{
+                        returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + importLevelMoneyC*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+                    }
+                }else if(importLevelMoneyC >= ConfigConstant.PROMOTE_A_LEVEL_MIN_EXPENSE){
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100 + importLevelMoneyC*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
                 }
             }else{
-                returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+                if(importLevelMoneyB>0){
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100+importLevelMoneyB*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100;
+                }else{
+                    returnMonthlyMoney = returnMonthlyMoney_A*ConfigConstant.MONTH_A_INCOME_PERCENTAGE/100 + returnMonthlyMoney_B*ConfigConstant.MONTH_B1_INCOME_PERCENTAGE/100;
+                }
             }
         }
 

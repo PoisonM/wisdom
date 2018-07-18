@@ -1,6 +1,6 @@
 <!--划卡-->
 <div class="drawCardConsumption">
-    <div class="drawCardConsumption_box">
+    <div ng-if="!housekeeperFlag" class="drawCardConsumption_box">
         <div ng-if="params.type == 1">
             <div class="card_details">
                 <div lass="card_details_box" style="position: relative">
@@ -26,11 +26,10 @@
                         </span>
                     </li>
                     <li ng-click="goHousekeeper()">
-                        <span>关联员工</span>
-                        <span style="float: right; margin-right: 40px;">
-                            <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
-                        </span>
-                        <div class="go_set"></div>
+                        <div style="float: left">关联员工</div>
+                        <span style="float: right;margin-right: 10px;">
+                <e ng-repeat="staffItem in userNameList" style="margin-right: 3px">{{staffItem}}</e>
+                ></span>
                     </li>
                 </ul>
             </div>
@@ -60,12 +59,11 @@
                             <button class="add_btn" ng-click="consumeNumInc()">+</button>
                         </span>
                     </li>
-                    <li  ng-click="goHousekeeper()">
-                        <span>关联员工</span>
-                        <span style="float: right; margin-right: 40px;">
-                            <e ng-repeat="staffItem in staffListNames" style="margin-right: 3px">{{staffItem}}</e>
-                        </span>
-                        <div class="go_set"></div>
+                    <li ng-click="goHousekeeper()">
+                        <div>关联员工</div>
+                        <span>
+                <e ng-repeat="staffItem in userNameList" style="margin-right: 3px">{{staffItem}}</e>
+                ></span>
                     </li>
                 </ul>
             </div>
@@ -93,8 +91,6 @@
                 </li>
             </ul>
             <div class="signConfirmRightContent" id="signConfirmRight"></div>
-
-
         </div>
 
         <div class="card_remark">
@@ -106,5 +102,17 @@
             <textarea name="" id="" cols="30" rows="5" ng-model='shopUserConsumeDTO[0].detail'></textarea>
         </div>
         <div ng-click="goConfirmations()" class="save_btn">保存</div>
+    </div>
+    <div  ng-if="housekeeperFlag" class="drawCardConsumption_box">
+        <div class="housekeeper">
+            <ul class="sourcesUl">
+                <li ng-repeat="item in UserList" ng-click="housekeeperCheck($index,item.id,item.name)">
+                    <div>
+                        <!--check-->
+                        <b class="checkRadio" ng-class="{check:userIdList.indexOf(item.id)!= -1}"></b>{{item.name}}({{item.mobile}}）
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

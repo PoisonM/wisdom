@@ -8,14 +8,17 @@
             <div class="item item-divider">
                 店内项目
             </div>
-            <ion-item ng-repeat="item in param.shopProjectList" ng-click="chooseProject(item.id)">
-                <i class="icon ion-ios-checkmark-outline" style="color:deeppink;font-size:30px;position:absolute" ng-if="shopAppointInfo.shopProjectIds.indexOf(item.id)==-1"></i>
-                <i class="icon icon ion-ios-checkmark" style="color:deeppink;font-size:30px;position:absolute" ng-if="shopAppointInfo.shopProjectIds.indexOf(item.id)!=-1"></i>
-                <div style="margin-left:60px">
-                    <h style="font-weight:600;">{{item.projectName}}</h>
-                    <br>
-                    <p style="margin-top:10px">{{item.projectDuration}}分钟</p>
+            <ion-item ng-repeat="item in param.shopProjectList" >
+                <div ng-click="chooseProject(item.id)">
+                    <i class="icon ion-ios-checkmark-outline" style="color:deeppink;font-size:30px;position:absolute" ng-if="shopAppointInfo.shopProjectIds.indexOf(item.id)==-1"></i>
+                    <i class="icon icon ion-ios-checkmark" style="color:deeppink;font-size:30px;position:absolute" ng-if="shopAppointInfo.shopProjectIds.indexOf(item.id)!=-1"></i>
+                    <div style="margin-left:60px">
+                        <h style="font-weight:600;">{{item.projectName}}</h>
+                        <br>
+                        <p style="margin-top:10px">{{item.projectDuration}}分钟</p>
+                    </div>
                 </div>
+                <i style="float:right;color:#979797;font-size: 30px;margin-top: -36px" class="ion ion-ios-arrow-right" ng-click="goDetails(item.id);event.stopPropagation()" ></i>
             </ion-item>
         </ion-list>
     </ion-scroll>

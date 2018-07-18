@@ -21,11 +21,8 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $scope.fenShop = data.responseData
                         $scope.param.flag = true;
-
                     }
-
                 })
-
             }
 
             $scope.selShop = function(id,sysShopName){

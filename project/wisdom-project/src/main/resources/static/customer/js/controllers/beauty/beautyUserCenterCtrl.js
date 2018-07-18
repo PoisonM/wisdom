@@ -74,7 +74,7 @@ angular.module('controllers',[]).controller('beautyUserCenterCtrl',
                         $rootScope.shopAppointInfo.shopUserInfo = data.responseData;
                         console.log($rootScope.shopAppointInfo.shopUserInfo);
                     }
-                })
+                });
 
             $scope.chooseProject = function() {
                 $state.go("beautyAppoint");

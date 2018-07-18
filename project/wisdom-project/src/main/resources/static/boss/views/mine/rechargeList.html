@@ -3,9 +3,7 @@
         <div class="list">
             <ion-item  class="row " ng-repeat="item in rechargeList" ng-click="editedRechargeGo(item.id)" ng-if="item.rechargeCardType !='0'">
                 <div class="col col-25" style="line-height: 49px;background: url('{{item.imageUrl}}');background-size: contain;background-position: center center;background-repeat: no-repeat" >
-
                 </div>
-
                 <div class="col col-75 ml10 mr10" >
                     <p class="fs15" style="color: #333333!important;"><span>{{item.name}}</span></p >
                     <p class="fs15" style="color: #FF6666!important; "><span class="fs11">面额：</span><span class="fs14">{{item.amount}}</span></p >
@@ -15,9 +13,7 @@
                         <span >产品{{item.productDiscount==null||item.productDiscount==1?'无折':item.productDiscount*10+'折'}}</span>
                     </div >
                 </div>
-
-                    <i class=" ion ion-ios-arrow-right fr" style="margin-top: 40px;position: absolute;right:10px;top:-10px;"></i>
-
+                <i class=" ion ion-ios-arrow-right fr" style="margin-top: 40px;position: absolute;right:10px;top:-10px;"></i>
             </ion-item>
         </div>
     </ion-content>

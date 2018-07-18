@@ -389,7 +389,7 @@ public class PayFunction {
                 accountDTO = this.updateUserAccount(accountDTO, parentUserId, returnMoney);
 
                 this.insertIncomeServiceIm(instanceReturnMoneySignalDTO, parentUserId, returnMoney, expenseAmount, parentRuleType, ConfigConstant.INCOME_TYPE_I);
-                // WeixinTemplateMessageUtil.sendLowLevelBusinessExpenseTemplateWXMessage(nextUserInfoDTOList.get(0).getNickname(), expenseAmount + "", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
+                 WeixinTemplateMessageUtil.sendInstanceIncomeTemplateWXMessage(returnMoney + "","一笔", DateUtils.DateToStr(new Date()), token, "", accountDTO.getUserOpenId());
             }
             //永久性奖励
             if (permanentReward >= 0) {

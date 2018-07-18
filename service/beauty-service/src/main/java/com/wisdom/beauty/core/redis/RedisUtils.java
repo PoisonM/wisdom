@@ -1,10 +1,12 @@
 package com.wisdom.beauty.core.redis;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.ShopAppointServiceDTO;
 import com.wisdom.beauty.api.dto.ShopProjectInfoDTO;
 import com.wisdom.beauty.api.dto.ShopUserRelationDTO;
 import com.wisdom.beauty.api.enums.ImageEnum;
+import com.wisdom.beauty.api.enums.LoginEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.ShopUserLoginDTO;
 import com.wisdom.beauty.client.UserServiceClient;
@@ -12,6 +14,8 @@ import com.wisdom.beauty.core.service.ShopAppointmentService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.core.service.ShopUserRelationService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.ConfigConstant;
+import com.wisdom.common.dto.user.SysBossDTO;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.util.CommonUtils;
@@ -20,6 +24,7 @@ import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -245,8 +250,21 @@ public class RedisUtils {
             System.out.println("用户端登陆");
             sysShopId = getUserLoginShop(UserUtils.getUserInfo().getId()).getSysShopId();
         }
-        if (null != UserUtils.getBossInfo()) {
-            sysShopId = UserUtils.getBossInfo().getCurrentShopId();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (null != bossInfo) {
+            sysShopId = bossInfo.getCurrentShopId();
+            if(StringUtils.isBlank(sysShopId)){
+                Gson gson = new Gson();
+                String logintoken = UserUtils.getUserToken(LoginEnum.BOSS);
+                bossInfo = userServiceClient.getBossInfo(bossInfo);
+                String bossInfoStr = gson.toJson(bossInfo);
+                JedisUtils.set(logintoken,bossInfoStr, ConfigConstant.logintokenPeriod);
+                sysShopId = bossInfo.getCurrentShopId();
+            }
+            if(StringUtils.isBlank(sysShopId)){
+                logger.error("沒有查詢老闆,bossInfoId={}的店鋪信息"+bossInfo.getId());
+                throw new RuntimeException("沒有查詢老闆"+"bossInfoId"+bossInfo+"的店鋪信息");
+            }
         }
         return sysShopId;
     }
