@@ -1,24 +1,22 @@
 <div class="selectRight bgfff selectProduct"  style="height:10.67rem;overflow-y: scroll;border-bottom-right-radius: 0.58125rem;">
-           <!-- <p class="wz">合作.微整系列</p>-->
-            <ul class="height120">
-                <li ng-repeat="item in param.consumptionObj.singleByshopId.detailProject">
-                    <div>
-                        <img ng-src="{{selectProductDataPic[$index]}}" class="mt" ng-click="ProductPic($index)">
-                        <div class="detail">
-                            <p class="color333FS30">{{item.productName}}</p>
-                            <p class="color999FS24">剩余两次</p>
-                        </div>
-                    </div>
-                    <div class="money">
-                        <div>
-                            <span class="color333FS30 floatR">￥98.00</span>
-                            <del class="color999FS24">168.00</del>
-                        </div>
-
-                    </div>
-                </li>
-
-            </ul>
-        </div>
+   <!-- <p class="wz">合作.微整系列</p>-->
+    <ul class="height120">
+        <li ng-repeat="item in param.consumptionObj.singleByshopId.detailProject">
+            <div>
+                <img ng-src="{{selectProductDataPic[$index]}}" class="mt" ng-click="ProductPic($index)">
+                <div class="detail">
+                    <p class="color333FS30">{{item.productName}}</p>
+                    <p class="color999FS24">剩余两次</p>
+                </div>
+            </div>
+            <div class="money">
+                <div>
+                    <span class="color333FS30 floatR">￥98.00</span>
+                    <del class="color999FS24">168.00</del>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
 
 

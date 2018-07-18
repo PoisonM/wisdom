@@ -1,49 +1,49 @@
-    <div class="">
-        <div class="btnArea bgfff">
-          <div class="btnLis fs32">
-             <button class="btlr8 bblr8" ng-click="newProductBtn(0)" ng-class="{'btnActive':param.newProductObject.index==0}">顾客疗程卡</button>
-             <button class="ml-6  btrr8 bbrr8 " ng-click="newProductBtn(1)" ng-class="{'btnActive':param.newProductObject.index==1}">本店项目</button>
-          </div>
+<div class="">
+    <div class="btnArea bgfff">
+      <div class="btnLis fs32">
+         <button class="btlr8 bblr8" ng-click="newProductBtn(0)" ng-class="{'btnActive':param.newProductObject.index==0}">顾客疗程卡</button>
+         <button class="ml-6  btrr8 bbrr8 " ng-click="newProductBtn(1)" ng-class="{'btnActive':param.newProductObject.index==1}">本店项目</button>
       </div>
-        <div class="searchArea">
-         <div class="search">
-             <span class="ser_ion"></span>
-             <input type="search" placeholder="可用项目名字搜索" class="br8 fs30" ng-model="param.newProductObject.filterStr" ng-change="newProductSearch()">
-         </div>
+  </div>
+    <div class="searchArea">
+     <div class="search">
+         <span class="ser_ion"></span>
+         <input type="search" placeholder="可用项目名字搜索" class="br8 fs30" ng-model="param.newProductObject.filterStr" ng-change="newProductSearch()">
      </div>
-        <div >
-            <div ng-repeat = "item in param.newProductObject.selfProductData" ng-show="param.newProductObject.titleFlag">
-                <div  ng-repeat="(key,val) in item">
-                    <p class="fs34 color333 h70 bgeee pl30" >{{key}}</p>
-                    <ul class="bgfff" >
-                        <li class="h100 space-between bte5 "  ng-repeat="(index,items) in val" ng-click="selectTheProduct(items,$parent.$index,$index,'本店项目')" >
-                            <P class="redCorrectFlag" >
-                                <img ng-if = "param.tempRedgArr.indexOf(items.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
-                                <img ng-if = "param.tempRedgArr.indexOf(items.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
-                                <span class="fs30 color333 selfProductDataIndex" id="selfProductDataIndex" projectName="{{items.projectName}}" shopProjectId="{{items.id}}" appointPeriod="{{items.projectDuration}}">{{items.projectName}}</span>
-                            </P>
-                            <P ng-if="param.newProductObject.content"><span class="colff6666 fs28 mr30">剩余{{items.maxContainTimes}}次</span></P>
-                        </li>
-                    </ul>
-                </div>
+ </div>
+    <div >
+        <div ng-repeat = "item in param.newProductObject.selfProductData" ng-show="param.newProductObject.titleFlag">
+            <div  ng-repeat="(key,val) in item">
+                <p class="fs34 color333 h70 bgeee pl30" >{{key}}</p>
+                <ul class="bgfff" >
+                    <li class="h100 space-between bte5 "  ng-repeat="(index,items) in val" ng-click="selectTheProduct(items,$parent.$index,$index,'本店项目')" >
+                        <P class="redCorrectFlag" >
+                            <img ng-if = "param.tempRedgArr.indexOf(items.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
+                            <img ng-if = "param.tempRedgArr.indexOf(items.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
+                            <span class="fs30 color333 selfProductDataIndex" id="selfProductDataIndex" projectName="{{items.projectName}}" shopProjectId="{{items.id}}" appointPeriod="{{items.projectDuration}}">{{items.projectName}}</span>
+                        </P>
+                        <P ng-if="param.newProductObject.content"><span class="colff6666 fs28 mr30">剩余{{items.maxContainTimes}}次</span></P>
+                    </li>
+                </ul>
             </div>
-
-
-            <div ng-repeat="item in param.newProductObject.newProjectData"  class="bgfff" ng-show="!param.newProductObject.titleFlag&&item.surplusTimes>0">
-                <div>
-                    <ul class="bgfff" >
-                        <li class="h100 space-between bte5 "  ng-click="selectTheProduct(item,$parent.$index,$index,'疗程')" >
-                            <P class="redCorrectFlag" >
-                                <img ng-if = "param.tempRedgArr.indexOf(item.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
-                                <img ng-if = "param.tempRedgArr.indexOf(item.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
-                                <span class="fs30 color333 selfProductDataIndex"  projectName="{{item.projectName}}" shopProjectId="{{item.id}}" >{{item.projectName}}</span>
-                            </P>
-                            <P ng-if="param.newProductObject.content"><span class="colff6666 fs28 mr30">剩余{{item.surplusTimes}}次</span></P>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-                <img ng-if="param.newProductObject.newProjectData.length == 0 && !param.newProductObject.titleFlag" style="width: 150px;height: 150px;margin-top: 100px;margin-left: 124px" src="images/noProject.png">
-                <p ng-if="param.newProductObject.newProjectData.length == 0 && !param.newProductObject.titleFlag" style="font-size: 17px;margin-left: 124px;margin-top: 20px;color: #f66667;">暂无可用的疗程卡</p>
         </div>
+
+
+        <div ng-repeat="item in param.newProductObject.newProjectData"  class="bgfff" ng-show="!param.newProductObject.titleFlag&&item.surplusTimes>0">
+            <div>
+                <ul class="bgfff" >
+                    <li class="h100 space-between bte5 "  ng-click="selectTheProduct(item,$parent.$index,$index,'疗程')" >
+                        <P class="redCorrectFlag" >
+                            <img ng-if = "param.tempRedgArr.indexOf(item.id)!=-1" src="images/bt_Single%20election_select.png" class="singleSelsectPic ml30 mr20">
+                            <img ng-if = "param.tempRedgArr.indexOf(item.id)==-1" src="images/bt_Single%20election_nor_.png" class="singleSelsectPic ml30 mr20">
+                            <span class="fs30 color333 selfProductDataIndex"  projectName="{{item.projectName}}" shopProjectId="{{item.id}}" >{{item.projectName}}</span>
+                        </P>
+                        <P ng-if="param.newProductObject.content"><span class="colff6666 fs28 mr30">剩余{{item.surplusTimes}}次</span></P>
+                    </li>
+                </ul>
+            </div>
+        </div>
+            <img ng-if="param.newProductObject.newProjectData.length == 0 && !param.newProductObject.titleFlag" style="width: 150px;height: 150px;margin-top: 100px;margin-left: 124px" src="images/noProject.png">
+            <p ng-if="param.newProductObject.newProjectData.length == 0 && !param.newProductObject.titleFlag" style="font-size: 17px;margin-left: 124px;margin-top: 20px;color: #f66667;">暂无可用的疗程卡</p>
     </div>
+</div>
