@@ -311,17 +311,17 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword1);
-		m.put("ordertape", templateData);
+		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword2);
-		m.put("ordeID", templateData);
+		m.put("keyword2", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword3);
-		m.put("ordeID", templateData);
+		m.put("keyword3", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
