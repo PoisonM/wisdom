@@ -6,9 +6,7 @@ angular.module('controllers',[]).controller('shopActivityCtrl',
         function ($scope,$rootScope,$stateParams,$state) {
 
             $rootScope.title = "MX99活动";
-
-            $scope.goBuy = function()
-            {
-                $state.go("offlineProductDetail",{productId:"88888888888"});
+            $scope.param={
+                forward:$stateParams.forward
             }
-        }])
+        }]);
