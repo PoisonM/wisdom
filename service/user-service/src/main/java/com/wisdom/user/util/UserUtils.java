@@ -86,8 +86,12 @@ public class UserUtils {
         String sysBossDTO = JedisUtils.get(token);
         SysBossDTO bossDTO = (new Gson()).fromJson(sysBossDTO, SysBossDTO.class);
         try {
-            bossDTO.setNickname(java.net.URLDecoder.decode(bossDTO.getNickname(), "utf-8"));
-            bossDTO.setName(java.net.URLDecoder.decode(bossDTO.getName(), "utf-8"));
+            if(StringUtils.isNotBlank(bossDTO.getNickname())){
+                bossDTO.setNickname(java.net.URLDecoder.decode(bossDTO.getNickname(), "utf-8"));
+            }
+            if(StringUtils.isNotBlank(bossDTO.getName())){
+                bossDTO.setName(java.net.URLDecoder.decode(bossDTO.getName(), "utf-8"));
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
