@@ -132,7 +132,7 @@ public class BusinessRunTimeService {
                     if(userInfoDTOList.size()>0)
                     {
                         String userId = JedisUtils.get("waitPayNotify:"+userInfoDTOList.get(0).getUserOpenid());
-                        if(StringUtils.isNotNull(userId)){
+                        if(StringUtils.isNull(userId)){
                             String url = ConfigConstant.USER_BUSINESS_WEB_URL + "orderManagement/0";
                             WeixinTemplateMessageUtil.sendOrderNotPayTemplateWXMessage(DateUtils.DateToStr(businessOrder.getCreateDate()),
                                     businessOrder.getBusinessOrderId(),token,url,userInfoDTOList.get(0).getUserOpenid());
