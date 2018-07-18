@@ -17,9 +17,13 @@ PADWeb.controller("left_navCtrl", function($scope,$rootScope, $state,$stateParam
             if (data.result == "0x00001") {
                 $rootScope.loadingFlag = false;
                 $scope.dataList = [];
-                $scope.info = data.responseData.info
-                $rootScope.recordNum = data.responseData.data
-                $scope.$parent.param.headerCash.leftContent = "档案("+data.responseData.data+")"
+                console.log(data.responseData);
+                if(data.responseData!=null)
+                {
+                    $scope.info = data.responseData.info
+                    $rootScope.recordNum = data.responseData.data
+                    $scope.$parent.param.headerCash.leftContent = "档案("+data.responseData.data+")"
+                }
             }
         })
     }
