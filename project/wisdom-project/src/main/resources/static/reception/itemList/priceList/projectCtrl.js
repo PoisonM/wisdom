@@ -40,10 +40,12 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,$rootScop
     OneLevelProject.get(({
         status:$scope.status
     }),function (data) {
-        $scope.selectSingleList=data.responseData;
-        $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
-        $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
-        // $scope.selection(0,"1") //data.responseData.id //初始化默认页面项目的第一项
+        if(data.responseData.length>0){
+            $scope.selectSingleList=data.responseData;
+            $scope.selectSingleList[0].status=3;//给一个值用来点击切换图片的时候图片的样式
+            $scope.selection(0,data.responseData[0].id) //获取二级为了调去3级默认选择
+        }
+        $rootScope.loadingFlag = false;
     });
     //点击二级列表调取三级项目列表产品数据方法
     $scope.refreshGoods=function (id) {
@@ -56,10 +58,10 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,$rootScop
             pageSize:$scope.param.pageSize,
             status:$scope.status
         },function (data) {
+            if(data.responseData.length>0){
+                $scope.threeList=data.responseData;
+            }
             $rootScope.loadingFlag = false;
-            $scope.threeList=data.responseData;
-            // $scope.param.projectAppear=false;
-            // $scope.selectSingleList[0].status=3
         })
     };
 
@@ -71,7 +73,9 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,$rootScop
         TwoLevelProject.get({id:id,status:$scope.status},function (data) {
             if(data.result="0x00001"){
                 $rootScope.loadingFlag = false;
-                $scope.project2List=data.responseData;
+                if(data.responseData.length>0){
+                    $scope.project2List=data.responseData;
+                }
             }
         });
         if($scope.param.childrenFlag == index){
@@ -113,9 +117,9 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,$rootScop
                 status:$scope.status
             },function (data) {
                 if(data.result="0x00001"){
-                    $rootScope.loadingFlag = false;
                     $scope.threeList=data.responseData;
                 }
+                $rootScope.loadingFlag = false;
             });
         });
         $scope.param.childrenFlag = index;
