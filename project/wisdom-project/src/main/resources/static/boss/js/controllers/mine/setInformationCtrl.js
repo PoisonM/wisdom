@@ -19,18 +19,14 @@ angular.module('controllers',[]).controller('setInformationCtrl',
                     showDelay: 0
                 })
                 GetBossShopList.get({},function(data){
-                    if(data.result==Global.SUCCESS&&data.responseData==null){
+                    if((data.result==Global.SUCCESS&&data.responseData==null)||(data.result==Global.SUCCESS&&data.responseData.length<=0)){
                         $ionicLoading.hide()
                          alert('请先添加店铺')
                     }else if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        GetBossShopList.get({
-                        },function(data){
-                            if(data.result==Global.SUCCESS&&data.responseData!=null) {
-                                $ionicLoading.hide()
-                                $scope.setInformation = data.responseData
-                                $scope.param.flag = true;
-                            }
-                        })
+                        $ionicLoading.hide()
+                        $scope.param.flag = true;
+                        $scope.setInformation = data.responseData
+
 
                     }
 
