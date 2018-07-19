@@ -103,6 +103,9 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                 if($rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeTwoName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectName ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.projectDuration ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.oncePrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.discountPrice ==''||$rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth==''||$rootScope.settingAddsome.extShopProjectInfoDTO.serviceTimes==''){
                     alert("请检查信息")
                 }
+
+                $scope.settingAddsome.extShopProjectInfoDTO.sysShopId = $rootScope.infoShop.sysShopId;
+
                 UpdateProjectInfo.save($scope.settingAddsome.extShopProjectInfoDTO,function (data) {
                     if(data.result=="0x00001"){
                       $state.go("projectList")

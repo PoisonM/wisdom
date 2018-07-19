@@ -29,6 +29,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
             qualityPeriod:"",
             productWarningDay:"",
             productWarningNum:"",
+            sysShopId:$rootScope.infoShop.sysShopId
 
         }
 
@@ -273,6 +274,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             qualityPeriod:"",
                             productWarningDay:"",
                             productWarningNum:"",
+                            sysShopId:$rootScope.infoShop.sysShopId
 
                         }
                     }else{

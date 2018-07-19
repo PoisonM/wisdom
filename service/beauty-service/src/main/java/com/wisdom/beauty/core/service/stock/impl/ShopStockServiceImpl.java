@@ -426,8 +426,6 @@ public class ShopStockServiceImpl implements ShopStockService {
 		shopStockRecordDTO.setStockStyle(shopStockDto.getStockStyle());
 		shopStockRecordDTO.setDetail(shopStockDto.getDetail());
 
-
-
 		//生成单据号
 		Random random = new Random();
 		String result="";
@@ -587,7 +585,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		logger.info("getShopStock方法传入的参数shopStockNumberDTO={}", shopStockNumberDTO);
 		ShopStockNumberCriteria criteria = new ShopStockNumberCriteria();
 		ShopStockNumberCriteria.Criteria c = criteria.createCriteria();
-		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopProcId())) {
+		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopProcId())){
 			c.andShopProcIdEqualTo(shopStockNumberDTO.getShopProcId());
 		}
 		if (StringUtils.isNotBlank(shopStockNumberDTO.getShopStoreId())) {
