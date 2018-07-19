@@ -38,9 +38,12 @@ PADWeb.controller("productCtrl", function($scope, $state, $rootScope,$stateParam
     OneLevelProduct.get(({
         status:$scope.status
     }),function (data) {
-        $scope.selectSingleData=data.responseData;
-        $scope.selectSingleData[0].status=3;
-        $scope.selection(0,data.responseData[0].id)
+        if(data.responseData.length>0){
+            $scope.selectSingleData=data.responseData;
+            $scope.selectSingleData[0].status=3;
+            $scope.selection(0,data.responseData[0].id)
+        }
+        $rootScope.loadingFlag = false;
     });
     $scope.checkImg = function (index,status,id) {
         $rootScope.loadingFlag = true;
@@ -103,9 +106,9 @@ PADWeb.controller("productCtrl", function($scope, $state, $rootScope,$stateParam
                 status:$scope.status
             },function (data) {
                 if(data.result == "0x00001"){
-                    $rootScope.loadingFlag = false;
                     $scope.product3List=data.responseData;
                 }
+                $rootScope.loadingFlag = false;
             })
         });
         $scope.param.childrenFlag = index;

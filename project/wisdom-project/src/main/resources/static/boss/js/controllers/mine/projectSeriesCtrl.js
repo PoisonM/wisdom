@@ -66,22 +66,26 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
               };
             $scope.sel = function(index){
-                $scope.projectType = $scope.requestList[index];
-                ThreeLevelProject.get({
-                    projectTypeTwoId:$scope.projectType.id,
-                    projectTypeOneId: $scope.projectType.parentId,
-                    projectName:$scope.projectType.projectName,
-                    pageSize:'1',
-                    status:'0'
-                },function (data) {
-                    $scope.threeList=data.responseData;
-                    if($scope.threeList && $scope.threeList[0]){
-                        alert("对不起，此系列不允许删除");
-                        return false
-                    }else{
-                        $scope.requestList[index].status = '1'
-                    }
-                })
+                if($scope.requestList[index].projectTypeName==''){
+                    $scope.requestList.splice(index,1)
+                }else{
+                    $scope.projectType = $scope.requestList[index];
+                    ThreeLevelProject.get({
+                        projectTypeTwoId:$scope.projectType.id,
+                        projectTypeOneId: $scope.projectType.parentId,
+                        projectName:$scope.projectType.projectName,
+                        pageSize:'1',
+                        status:'0'
+                    },function (data) {
+                        $scope.threeList=data.responseData;
+                        if($scope.threeList && $scope.threeList[0]){
+                            alert("对不起，此系列不允许删除");
+                            return false
+                        }else{
+                            $scope.requestList[index].status = '1'
+                        }
+                    })
+                }
             };
             $scope.addSeriesLis = function(){
                 var obj = {
