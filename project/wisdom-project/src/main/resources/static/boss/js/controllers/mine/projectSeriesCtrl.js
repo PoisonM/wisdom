@@ -66,7 +66,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                 $scope.param.selTrue[index] =!$scope.param.selTrue[index]
               };
             $scope.sel = function(index){
-                if($scope.requestList.projectTypeName==''){
+                if($scope.requestList[index].projectTypeName==''){
                     $scope.requestList.splice(index,1)
                 }else{
                     $scope.projectType = $scope.requestList[index];
