@@ -207,6 +207,7 @@ public class ProductController {
             responseDTO.setErrorInfo("产品编码不能为空！");
         }
 
+        shopProductInfo.setSysShopId(extShopProductInfoDTO.getSysShopId());
         shopProductInfo.setProductCode(extShopProductInfoDTO.getProductCode());
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
 
@@ -446,6 +447,7 @@ public class ProductController {
 
         ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
         shopProductInfo.setProductCode(shopProductInfoDTO.getProductCode());
+        shopProductInfo.setSysShopId(shopProductInfoDTO.getSysShopId());
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfo);
         if(shopProductInfos!=null&&shopProductInfos.size()>0){
             responseDTO.setResult(StatusConstant.FAILURE);
