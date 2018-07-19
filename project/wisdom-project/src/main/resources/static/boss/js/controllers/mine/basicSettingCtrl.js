@@ -9,7 +9,6 @@ angular.module('controllers',[]).controller('basicSettingCtrl',
             $scope.param = {
                 sysShopName:$stateParams.sysShopName
             };
-
             /*点击美容院设置*/
             $scope.beautySettingGo=function () {
                 $state.go("beautySetting")

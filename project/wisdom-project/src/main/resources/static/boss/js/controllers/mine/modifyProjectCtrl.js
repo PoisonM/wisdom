@@ -104,7 +104,7 @@ angular.module('controllers',[]).controller('modifyProjectCtrl',
                     alert("请检查信息")
                 }
 
-                $scope.settingAddsome.extShopProjectInfoDTO.sysShopId = $rootScope.infoShop.sysShopId;
+
 
                 UpdateProjectInfo.save($scope.settingAddsome.extShopProjectInfoDTO,function (data) {
                     if(data.result=="0x00001"){
