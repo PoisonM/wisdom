@@ -7,7 +7,6 @@ import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.errorcode.BusinessErrorCode;
 import com.wisdom.beauty.api.responseDto.ShopRechargeCardResponseDTO;
-import com.wisdom.beauty.api.responseDto.UserConsumeRequestDTO;
 import com.wisdom.beauty.client.UserServiceClient;
 import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
@@ -213,7 +212,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		ShopRechargeCardResponseDTO shopRechargeCard = shopRechargeCardService.getShopRechargeCard(shopRechargeCardDTO);
 		if (null == shopRechargeCard) {
 			logger.error("保存用户的建档案信息，查询店={}的特殊卡位空", shopUserArchivesDTO.getSysShopId());
-			return 0;
+			throw new RuntimeException("店铺特殊充值卡信息为空！");
 		}
 		// 生成用户的特殊充值卡
 		ShopUserRechargeCardDTO rechargeCardDTO = new ShopUserRechargeCardDTO();
