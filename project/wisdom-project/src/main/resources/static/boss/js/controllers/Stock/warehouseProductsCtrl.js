@@ -51,7 +51,6 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
             $scope.checkThree = function(productTypeTwoId,productTypeTwoName){
                 $scope.param.levelTwoId =productTypeTwoId;
                 $scope.param.levelTwoName =productTypeTwoName;
-
                 $scope.param.flag = false;
                 $scope.getInfo()
             }
@@ -89,11 +88,7 @@ angular.module('controllers',[]).controller('warehouseProductsCtrl',
                         $ionicLoading.hide();
                         if($scope.param.levelOneId == ''){
                         }
-
                     }
-
                 })
-
             }
-
         }]);
