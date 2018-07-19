@@ -43,6 +43,7 @@ angular.module('controllers',[]).controller('setInformationCtrl',
                             sysShopName:sysShopName,
                             sysShopId:sysShopId
                         }
+
                         $scope.param.flag = false;
                     }
                 })

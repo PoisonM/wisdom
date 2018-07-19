@@ -18,4 +18,6 @@ public interface BeautyUserInfoService {
 
 	// 多个sysUserId查询UserInfoDTO信息
 	List<UserInfoDTO> getUserInfoFromUserId(List<String> sysUserIds, String searchFile);
+
+	void updateUserInfo(UserInfoDTO userInfoDTO);
 }

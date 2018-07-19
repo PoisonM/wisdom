@@ -117,7 +117,55 @@
         WHERE
         id = #{id}
     </update>
-
+    <!-- 更新用户 -->
+    <update id="updateUserInfo">
+        UPDATE sys_user_beauty SET
+        id = #{id}
+        <if test="nickname!= ''and nickname!=null">
+            ,nickname=#{nickname}
+        </if>
+        <if test="password!= ''and password!=null">
+            ,password=#{password}
+        </if>
+        <if test="email!= '' and email!=null">
+            ,email=#{email}
+        </if>
+        <if test="identifyNumber!= '' and identifyNumber!=null">
+            ,identify_number=#{identifyNumber}
+        </if>
+        <if test="mobile!= '' and mobile!=null">
+            ,mobile=#{mobile}
+        </if>
+        <if test="userType!= '' and userType!=null">
+            ,user_type=#{userType}
+        </if>
+        <if test="userOpenid!= '' and userOpenid!=null">
+            ,user_openid=#{userOpenid}
+        </if>
+        <if test="parentUserId!= '' and parentUserId!=null">
+            ,parent_user_id=#{parentUserId}
+        </if>
+        <if test="weixinAttentionStatus!= '' and weixinAttentionStatus!=null">
+            ,weixin_attention_status=#{weixinAttentionStatus}
+        </if>
+        <if test="photo!= '' and photo!=null">
+            ,photo=#{photo}
+        </if>
+        <if test="loginIp!= '' and loginIp!=null">
+            ,login_ip=#{loginIp}
+        </if>
+        <if test="loginDate!=null">
+            ,login_date=#{loginDate}
+        </if>
+        <if test="createDate!=null">
+            ,create_date=#{createDate}
+        </if>
+        <if test="delFlag!= '' and delFlag!=null">
+            ,del_flag=#{delFlag}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
     <!-- 插入用户 -->
     <insert id="insertBeautyUserInfo">
         INSERT INTO sys_user_beauty(

@@ -1,23 +1,16 @@
 package com.wisdom.weixin.service.beauty;
 
 import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.account.AccountDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.dto.transaction.BonusFlagDTO;
 import com.wisdom.common.dto.wexin.WeixinAttentionDTO;
 import com.wisdom.common.dto.wexin.WeixinTokenDTO;
 import com.wisdom.common.entity.Article;
 import com.wisdom.common.entity.ReceiveXmlEntity;
-import com.wisdom.common.entity.WeixinUserBean;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
 import com.wisdom.common.util.WeixinUtil;
-import com.wisdom.weixin.client.BeautyServiceClient;
-import com.wisdom.weixin.client.BusinessServiceClient;
-import com.wisdom.weixin.client.UserServiceClient;
+import com.wisdom.weixin.client.UserBeautyServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +25,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,10 +37,7 @@ public class ProcessBeautySubscribeEventService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private UserServiceClient userServiceClient;
-
-    @Autowired
-    private BeautyServiceClient beautyServiceClient;
+    private UserBeautyServiceClient userBeautyServiceClient;
     
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -103,7 +92,7 @@ public class ProcessBeautySubscribeEventService {
             //为关注公众号的用户创建新的或修订之前的账户
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setId(userId);
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+            List<UserInfoDTO> userInfoDTOList = userBeautyServiceClient.getUserInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
             {
@@ -122,7 +111,7 @@ public class ProcessBeautySubscribeEventService {
                 userInfoDTO.setNickname(nickname);
                 userInfoDTO.setUserOpenid(openId);
                 userInfoDTO.setLoginIp("");
-                userServiceClient.updateUserInfo(userInfoDTO);
+                userBeautyServiceClient.updateUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
                 ResponseDTO<String> responseDTO = new ResponseDTO<String>();
@@ -198,12 +187,12 @@ public class ProcessBeautySubscribeEventService {
             //修改sys_user表中微信关注状态
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setUserOpenid(xmlEntity.getFromUserName());
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+            List<UserInfoDTO> userInfoDTOList = userBeautyServiceClient.getUserInfo(userInfoDTO);
             if(userInfoDTOList.size()>0)
             {
                 userInfoDTO = userInfoDTOList.get(0);
                 userInfoDTO.setWeixinAttentionStatus("0");
-                userServiceClient.updateUserInfo(userInfoDTO);
+                userBeautyServiceClient.updateUserInfo(userInfoDTO);
             }
 
             //为用户的此次取消关注插入到mongodb记录中

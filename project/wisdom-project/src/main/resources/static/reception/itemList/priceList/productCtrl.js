@@ -43,6 +43,7 @@ PADWeb.controller("productCtrl", function($scope, $state, $rootScope,$stateParam
             $scope.selectSingleData[0].status=3;
             $scope.selection(0,data.responseData[0].id)
         }
+        $scope.selectSingleData=data.responseData;
         $rootScope.loadingFlag = false;
     });
     $scope.checkImg = function (index,status,id) {

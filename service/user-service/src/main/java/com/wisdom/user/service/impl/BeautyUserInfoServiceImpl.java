@@ -129,6 +129,19 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
 		List<UserInfoDTO> userInfoDTOS = beautyUserInfoMapper.getUserByInfoList(map);
 		return userInfoDTOS;
 	}
+	@Override
+	public void updateUserInfo(UserInfoDTO userInfoDTO) {
+		RedisLock redisLock = new RedisLock("userInfo"+userInfoDTO.getId());
+		try{
+			redisLock.lock();
+			beautyUserInfoMapper.updateUserInfo(userInfoDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			redisLock.unlock();
+		}
+	}
+
 
 	private class processBeautyUserInfoSynchronize extends Thread {
 
