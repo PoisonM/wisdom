@@ -10,8 +10,7 @@ import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
-import com.wisdom.weixin.client.BeautyServiceClient;
-import com.wisdom.weixin.client.UserServiceClient;
+import com.wisdom.weixin.client.UserBeautyServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +39,7 @@ public class ProcessBeautyScanEventService {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    private BeautyServiceClient beautyServiceClient;
-
-    @Autowired
-    private UserServiceClient userServiceClient;
+    private UserBeautyServiceClient userBeautyServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -85,7 +81,7 @@ public class ProcessBeautyScanEventService {
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setId(userId);
-            List<UserInfoDTO> userInfoDTOList = userServiceClient.getUserInfo(userInfoDTO);
+            List<UserInfoDTO> userInfoDTOList = userBeautyServiceClient.getUserInfo(userInfoDTO);
 
             if(userInfoDTOList.size()>0)
             {
@@ -108,7 +104,7 @@ public class ProcessBeautyScanEventService {
                 userInfoDTO.setNickname(nickname);
                 userInfoDTO.setUserOpenid(openId);
                 userInfoDTO.setLoginIp("");
-                userServiceClient.updateUserInfo(userInfoDTO);
+                userBeautyServiceClient.updateUserInfo(userInfoDTO);
 
                 //根据shopId和openId查询用户是否绑定了此美容院
                 ResponseDTO<String> responseDTO = new ResponseDTO<String>();
