@@ -130,7 +130,7 @@ angular.module('controllers',[]).controller('addCardsCtrl',
             $scope.numMarkerPrice = function () {
                 $rootScope.settingAddsome.editorCard.initialPrice =0
                 for(var i=0;i<$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS.length;i++){
-                    $rootScope.settingAddsome.editorCard.initialPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].marketPrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
+                    $rootScope.settingAddsome.editorCard.initialPrice +=$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].oncePrice*$rootScope.settingAddsome.editorCard.shopProjectInfoDTOS[i].serviceTimes
                 }
             }
             $scope.save=function(){

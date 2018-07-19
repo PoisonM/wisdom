@@ -25,6 +25,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
             qualityPeriod:"",
             productWarningDay:"",
             productWarningNum:"",
+            sysShopId:$rootScope.infoShop.sysShopId
 
         }
             $scope.$on('$ionicView.enter', function() {
@@ -272,6 +273,7 @@ angular.module('controllers',[]).controller('addProductCtrl',
                             qualityPeriod:"",
                             productWarningDay:"",
                             productWarningNum:"",
+                            sysShopId:$rootScope.infoShop.sysShopId
 
                         }
                     }else{
