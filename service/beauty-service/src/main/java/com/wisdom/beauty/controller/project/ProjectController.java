@@ -179,9 +179,9 @@ public class ProjectController {
 				if (shopProjectTypeDTO.getId().equals(dto.getProjectTypeOneId())) {
 					twoLevelMap.put(dto.getProjectTypeTwoName(), dto);
 				}
-				if(twoMap.get(shopProjectTypeDTO.getId())!=null){
-					oneAndTwoLevelMap.putAll(twoMap.get(shopProjectTypeDTO.getId()));
-				}
+			}
+			if(twoMap.get(shopProjectTypeDTO.getId())!=null){
+				oneAndTwoLevelMap.putAll(twoMap.get(shopProjectTypeDTO.getId()));
 			}
 			helperMap.put("levelTwoDetail", twoLevelMap);
 			helperMap.put("levelOneDetail", shopProjectTypeDTO);
