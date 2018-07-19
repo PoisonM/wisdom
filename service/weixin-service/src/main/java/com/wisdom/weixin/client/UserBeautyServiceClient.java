@@ -91,4 +91,7 @@ public interface UserBeautyServiceClient {
 	@RequestMapping(value = "/beauty/getUserInfoListFromUserId", method = RequestMethod.GET)
 	List<UserInfoDTO> getUserInfoListFromUserId(@RequestParam(value = "userIds") String[] userIds,
                                                 @RequestParam(required = false, value = "searchFile") String searchFile);
+
+	@RequestMapping(value = "/beauty/updateUserInfo",method=RequestMethod.POST)
+	void updateUserInfo(@RequestBody UserInfoDTO userInfoDTO);
 }

@@ -92,4 +92,11 @@ public class BeautyUserServiceController {
         List<String> list = Arrays.asList(userIds);
         return beautyUserInfoService.getUserInfoFromUserId(list, searchFile);
     }
+
+    @RequestMapping(value = "/beauty/updateUserInfo",method=RequestMethod.POST)
+    @ResponseBody
+    void updateUserInfo(@RequestBody UserInfoDTO userInfoDTO)
+    {
+        beautyUserInfoService.updateUserInfo(userInfoDTO);
+    }
 }

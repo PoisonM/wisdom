@@ -29,4 +29,6 @@ public interface BeautyUserInfoMapper {
 	// 更加多个id查询用户信息集合
 	List<UserInfoDTO> getUserByInfoList(Map<String, Object> userIdMap);
 
+	void updateUserInfo(UserInfoDTO userInfoDTO);
+
 }
