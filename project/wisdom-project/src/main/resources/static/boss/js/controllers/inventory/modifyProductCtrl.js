@@ -239,6 +239,8 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                     alert('信息不完全')
                     return
                 }
+
+                $rootScope.settingAddsome.product.sysShopId = $rootScope.infoShop.sysShopId;
                 UpdateProductInfo.save($rootScope.settingAddsome.product,function(data){
                     if(data.result==Global.SUCCESS){
                         $state.go("warehouseProducts")
