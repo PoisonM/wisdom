@@ -4,7 +4,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
             $rootScope.title = "修改产品";
 
             $scope.param = {
-                status:""
+                status: ""
             };
 
             /*日期插件*/
@@ -56,152 +56,152 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
 
-                if( $stateParams.id !=''){
-                    $rootScope.settingAddsome.productId = $stateParams.id
-                    $ionicLoading.show({
-                        content: 'Loading',
-                        animation: 'fade-in',
-                        showBackdrop: true,
-                        maxWidth: 200,
-                        showDelay: 0
-                    })
-                    ProductInfoMess.get({
-                        productId:$rootScope.settingAddsome.productId
-                    },function (data) {
-                        if(data.result==Global.SUCCESS&&data.responseData!=null){
-                            $ionicLoading.hide()
-                            $rootScope.settingAddsome.product = data.responseData;
-                            if($rootScope.settingAddsome.product.status =='0'){
-                                $scope.param.status = true;
-                            }else{
-                                $scope.param.status = false;
-                            }
+            if ($stateParams.id != '') {
+                $rootScope.settingAddsome.productId = $stateParams.id
+                $ionicLoading.show({
+                    content: 'Loading',
+                    animation: 'fade-in',
+                    showBackdrop: true,
+                    maxWidth: 200,
+                    showDelay: 0
+                })
+                ProductInfoMess.get({
+                    productId: $rootScope.settingAddsome.productId
+                }, function (data) {
+                    if (data.result == Global.SUCCESS && data.responseData != null) {
+                        $ionicLoading.hide()
+                        $rootScope.settingAddsome.product = data.responseData;
+                        if ($rootScope.settingAddsome.product.status == '0') {
+                            $scope.param.status = true;
+                        } else {
+                            $scope.param.status = false;
                         }
-                    })
-                }
+                    }
+                })
+            }
 
 
-             $.ajax({
-                 url:"/weixin/beauty/getBeautyConfig",// 跳转到 action
-                 async:true,
-                 type:'get',
-                 data:{url:location.href.split('#')[0]},//得到需要分享页面的url
-                 cache:false,
-                 dataType:'json',
-                 success:function(data) {
-                     var configValue = data.responseData;
-                     if(configValue!=null ){
-                         timestamp = configValue.timestamp;//得到时间戳
-                         nonceStr = configValue.nonceStr;//得到随机字符串
-                         signature = configValue.signature;//得到签名
-                         appid = configValue.appid;//appid
-                         //微信配置
-                         wx.config({
-                             debug: false,
-                             appId: appid,
-                             timestamp:timestamp,
-                             nonceStr: nonceStr,
+            $.ajax({
+                url: "/weixin/beauty/getBeautyConfig",// 跳转到 action
+                async: true,
+                type: 'get',
+                data: {url: location.href.split('#')[0]},//得到需要分享页面的url
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+                    var configValue = data.responseData;
+                    if (configValue != null) {
+                        timestamp = configValue.timestamp;//得到时间戳
+                        nonceStr = configValue.nonceStr;//得到随机字符串
+                        signature = configValue.signature;//得到签名
+                        appid = configValue.appid;//appid
+                        //微信配置
+                        wx.config({
+                            debug: false,
+                            appId: appid,
+                            timestamp: timestamp,
+                            nonceStr: nonceStr,
                             signature: signature,
-                             jsApiList: [
-                                 'scanQRCode'
-                             ] // 功能列表
-                         });
-                         wx.ready(function () {
-                             // config信息验证后会执行ready方法，
-                             // 所有接口调用都必须在config接口获得结果之后，
-                             // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
-                             // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
-                             // 则可以直接调用，不需要放在ready函数中。
-                         })
-                     }else{
-                     }
-                 },
-                 error : function() {
-                 }
-             });
+                            jsApiList: [
+                                'scanQRCode'
+                            ] // 功能列表
+                        });
+                        wx.ready(function () {
+                            // config信息验证后会执行ready方法，
+                            // 所有接口调用都必须在config接口获得结果之后，
+                            // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，
+                            // 则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，
+                            // 则可以直接调用，不需要放在ready函数中。
+                        })
+                    } else {
+                    }
+                },
+                error: function () {
+                }
+            });
 
 
-             $scope.scan = function(){
+            $scope.scan = function () {
                 //扫码添加产品
                 wx.scanQRCode({
                     needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
                     success: function (res) {
                         var result1 = JSON.stringify(res);
                         var result = res.resultStr;
                         GetProductInfoByScanCode.get({
-                            code:result
-                        },function(data){
-                             if(data.result == "0x00001"){
-                                $rootScope.settingAddsome.product.productName=data.responseData.productName;
-                                $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
+                            code: result
+                        }, function (data) {
+                            if (data.result == "0x00001") {
+                                $rootScope.settingAddsome.product.productName = data.responseData.productName;
+                                $rootScope.settingAddsome.product.productSpec = data.responseData.productSpec;
                                 $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
                                 $rootScope.settingAddsome.product.productUnit = data.responseData.productSpecUnit;
                                 $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
                                 $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
-                             }else{
+                            } else {
                                 alert("该二维码或一维码无效!");
-                             }
+                            }
                         })
 
                     },
-                     error: function(){
-                          alert("未查询到此商品信息,请手动添加！！");
-                     }
+                    error: function () {
+                        alert("未查询到此商品信息,请手动添加！！");
+                    }
                 });
-             }
+            }
 
 
-            $scope.selProductType = function(type){
+            $scope.selProductType = function (type) {
                 $rootScope.settingAddsome.product.productType = type
             };
-            $scope.numLimit=function (style,value) {
-                $rootScope.settingAddsome.product[style]=value.replace(/[^0-9.0-9]+/,'')
+            $scope.numLimit = function (style, value) {
+                $rootScope.settingAddsome.product[style] = value.replace(/[^0-9.0-9]+/, '')
             }
 
             /*选择品牌*/
             $scope.selBrandGo = function () {
-                $state.go('selBrand',{url:'modifyProduct'});
+                $state.go('selBrand', {url: 'modifyProduct'});
             }
             /*选择系列*/
-            $scope.selectionSeriesGo=function(){
-                $state.go("selectionSeries",{url:'modifyProduct'})
+            $scope.selectionSeriesGo = function () {
+                $state.go("selectionSeries", {url: 'modifyProduct'})
             }
             /*选择规格*/
-            $scope.specificationsGo = function(){
-                $state.go("specifications",{url:'modifyProduct'})
+            $scope.specificationsGo = function () {
+                $state.go("specifications", {url: 'modifyProduct'})
 
             }
             /*选择单位*/
-            $scope.unitGo = function(){
-                $state.go("unit",{url:'modifyProduct'})
+            $scope.unitGo = function () {
+                $state.go("unit", {url: 'modifyProduct'})
             }
             /*适用部位*/
-            $scope.applicablePartsGo = function(){
-                $state.go("applicableParts",{url:'modifyProduct'})
+            $scope.applicablePartsGo = function () {
+                $state.go("applicableParts", {url: 'modifyProduct'})
 
             }
             /*选择功效*/
-            $scope.efficacyGo = function(){
-                $state.go("efficacy",{url:'modifyProduct'})
+            $scope.efficacyGo = function () {
+                $state.go("efficacy", {url: 'modifyProduct'})
 
             }
             /*上传图片*/
             $scope.reader = new FileReader();   //创建一个FileReader接口
             $scope.thumb = "";      //用于存放图片的base64
-            $scope.img_upload = function(files) {
-                if($rootScope.settingAddsome.product.imageList ==null) $rootScope.settingAddsome.product.imageList=[]
-                if($rootScope.settingAddsome.product.imageList.length>=6){
+            $scope.img_upload = function (files) {
+                if ($rootScope.settingAddsome.product.imageList == null) $rootScope.settingAddsome.product.imageList = []
+                if ($rootScope.settingAddsome.product.imageList.length >= 6) {
                     alert("图片上传不能大于6张")
                     return
                 }
                 var file = files[0];
-                if(window.FileReader) {
+                if (window.FileReader) {
                     var fr = new FileReader();
-                    fr.onloadend = function(e) {
+                    fr.onloadend = function (e) {
                         $scope.thumb = e.target.result
-                        ImageBase64UploadToOSS.save($scope.thumb,function (data) {
-                            if(data.result==Global.SUCCESS&&data.responseData!=null){
+                        ImageBase64UploadToOSS.save($scope.thumb, function (data) {
+                            if (data.result == Global.SUCCESS && data.responseData != null) {
                                 $rootScope.settingAddsome.product.imageList.push(data.responseData)
                             }
 
@@ -209,19 +209,18 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                     };
                     fr.readAsDataURL(file);
 
-                }else {
+                } else {
                     alert("浏览器不支持")
                 }
 
 
             };
-            $scope.delPic = function(index){
-                $rootScope.settingAddsome.product.imageList.splice(index,1)
-            }
+            $scope.delPic = function (index) {
+                $rootScope.settingAddsome.product.imageList.splice(index, 1)
+            };
 
 
-
-            $scope.save = function(type){
+                $scope.save = function(type){
                 if(type=="0"){
                     $rootScope.settingAddsome.product.status = '1';
                 }else{

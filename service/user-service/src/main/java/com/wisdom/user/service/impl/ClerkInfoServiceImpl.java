@@ -138,6 +138,9 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		sysClerkDTO.setRole(sysClerkDTO.getRole());
 		sysClerkDTO.setCreateDate(new Date());
 		sysClerkDTO.setUpdateDate(new Date());
+		if(StringUtils.isBlank(sysClerkDTO.getPhoto())){
+			sysClerkDTO.setPhoto("https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png");
+		}
 		int reult=sysClerkMapper.insertSelective(sysClerkDTO);
 		//设置默认排班
 		SysClerkDTO sysClerk =new SysClerkDTO();

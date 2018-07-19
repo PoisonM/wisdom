@@ -77,6 +77,7 @@ angular.module('controllers',[]).controller('addSeriesCtrl',
                         $scope.product3List = data.responseData;
                         if($scope.product3List && $scope.product3List[0]){
                             alert("对不起，此系列不允许删除");
+                            $scope.param.selTrue[index]=false;
                             return false
                         }else{
                             $scope.requestList[index].status = '1'
