@@ -40,7 +40,10 @@ angular.module('controllers',[]).controller('beautyProjectListCtrl',
         shopProjectList : [],
         shopProjectId : $rootScope.shopAppointInfo.shopProjectId
     };
-
+   /*点击项目列表的项目跳转到项目详情页面*/
+   $scope.goDetails=function (projectId) {
+     $state.go("beautyProjectDetails",{projectId:projectId})
+   };
     $scope.doRefresh = function()
     {
         GetUserClientShopProjectList.get({pageNo:$scope.param.pageNo,pageSize:$scope.param.pageSize},function(data){

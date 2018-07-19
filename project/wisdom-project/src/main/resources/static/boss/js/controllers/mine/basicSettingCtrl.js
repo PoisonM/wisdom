@@ -15,9 +15,9 @@ angular.module('controllers',[]).controller('basicSettingCtrl',
                 $state.go("beautySetting")
             };
             /*点击编辑分店*/
-            $scope.shopListGo=function () {
+          /*  $scope.shopListGo=function () {
                 $state.go("shopList")
-            };
+            };*/
              /*添加项目*/
             $scope.addProjectGo=function () {
                 $state.go("addProject")

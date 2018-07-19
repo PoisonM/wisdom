@@ -10,9 +10,10 @@ angular.module('controllers',[]).controller('efficacyCtrl',
             }
             $scope.save = function(){
                 if($scope.param.func !=""){
-                    $scope.param.productFunc =  $scope.param.productFunc+";"+$scope.param.func
-                }else{
-                    $scope.param.productFunc = $scope.param.productFunc
+                    $scope.param.productFunc =  $scope.param.productFunc+";"+$scope.param.func;
+                    $scope.param.productFunc=$scope.param.productFunc.replace(/(^\;*)|(\;*$)/g, "")
+                }else {
+                    $scope.param.productFunc = $scope.param.productFunc;
                 }
                 $state.go($stateParams.url);
                 $rootScope.settingAddsome.product.productFunction = $scope.param.productFunc

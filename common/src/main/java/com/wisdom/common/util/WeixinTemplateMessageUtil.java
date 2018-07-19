@@ -311,17 +311,17 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword1);
-		m.put("ordertape", templateData);
+		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword2);
-		m.put("ordeID", templateData);
+		m.put("keyword2", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword3);
-		m.put("ordeID", templateData);
+		m.put("keyword3", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
@@ -438,7 +438,7 @@ public class WeixinTemplateMessageUtil {
 	 * @Param url 跳转的URL
 	 * @Param 用户的微信ID
 	 **/
-	public static void sendLowLevelBusinessTemplateWXMessage(String keyword1,String keyword2,String keyword3,String token, String url, String openid){
+	public static void sendLowLevelBusinessTemplateWXMessage(String keyword1,String keyword2,String token, String url, String openid){
 		WxTemplate t = new WxTemplate();
 		t.setUrl(url);
 		t.setTouser(openid);
@@ -459,7 +459,7 @@ public class WeixinTemplateMessageUtil {
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
 		templateData.setValue(keyword2);
-		m.put("keyword1", templateData);
+		m.put("keyword2", templateData);
 
 		t.setData(m);
 		String jsonobj = HttpRequestUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+

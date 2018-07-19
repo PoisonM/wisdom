@@ -2,7 +2,6 @@
     <ion-content class="partialFiles bgf6">
         <div>
             <p class="h45 bgfff fs16 colff66">
-
                 <span ng-click="sel()"><img src="images/screening.png" class="screeningPic ml10 mr10">筛选</span>
             </p>
             <ion-list >
@@ -19,10 +18,8 @@
                             <span class=" ">{{item.sumAmount}}</span>
                             <img src="images/more.png" class="more mr10">
                         </p>
-
                     </div>
                 </ion-item>
-
             </ion-list>
         </div>
         <div style="position: absolute;height:100%;background: #000;opacity: 0.2;top:0;width:100%;z-index: 100;" ng-show="param.flag" ng-click="disNone()"></div>
@@ -60,7 +57,6 @@
                     </p>
                 </div>
             </div>
-
             <div class="mt10">
                 <ion-list>
                     <ion-item  class="h45 bgfff" style="display: flex;justify-content: space-between">
@@ -70,7 +66,6 @@
                                 {{param.startDate}}
                                 <img src="images/more.png" style="width:8px;height:14.1px;">
                             </ionic-datepicker>
-
                         </p>
                     </ion-item>
                     <ion-item  class="h45 bgfff" style="display: flex;justify-content: space-between">
@@ -84,7 +79,6 @@
                     </ion-item>
                 </ion-list>
             </div>
-
             <div class="tabs bgfff">
                 <a class="tab-item True" ng-click="reset()">
                     重置
@@ -92,10 +86,7 @@
                 <a class="tab-item True activeTrue" ng-click="selTrue()">
                     确认
                 </a>
-
             </div>
-
-
         </div>
     </ion-content>
 </ion-view>

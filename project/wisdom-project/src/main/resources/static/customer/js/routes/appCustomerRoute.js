@@ -387,7 +387,7 @@ define(['appCustomer'], function(app){
                         }
                     })
                     .state('shopActivity', {
-                        url: '/shopActivity',
+                        url: '/shopActivity/:forward',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'shopActivityCtrl',
                         resolve: {
@@ -588,6 +588,19 @@ define(['appCustomer'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyShopListCtrl',
                                     ['js/controllers/beauty/beautyShopListCtrl.js?ver='+ customerVersion],
                                     'views/beauty/beautyShopList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    /*选择项目的详情*/
+                    .state('beautyProjectDetails', {
+                        url: '/beautyProjectDetails/:projectId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'beautyProjectDetailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.beautyProjectDetailsCtrl',
+                                    ['js/controllers/beauty/beautyProjectDetailsCtrl.js?ver='+ customerVersion],
+                                    'views/beauty/beautyProjectDetails.html?ver=' + customerVersion);
                             }
                         }
                     })

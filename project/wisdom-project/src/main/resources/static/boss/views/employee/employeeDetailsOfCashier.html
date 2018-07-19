@@ -44,19 +44,12 @@
                 </ion-list>
             </div>
             <div ng-repeat = 'item in details.userConsumeRecordResponseList'>
-                <div  ng-if="item.goodsType
- == 2">
-
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType
- == 0">单次</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 1">疗程卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 2">充值卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 3">套卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 4">产品</p>
+                <div  ng-if="item.goodsType== 2">
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType==0">单次</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType== 1">疗程卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType== 2">充值卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType== 3">套卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType== 4">产品</p>
                     <ion-list>
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10 fs16 col333">卡名称</p>
@@ -70,13 +63,9 @@
                                 ¥{{item.price}}
                             </p>
                         </ion-item>
-
                         <ion-item  class=" bgfff h50 sb" >
                             <p class="ml10 fs16 col333 h50">折扣</p>
-                            <p class="mr10 fs15 col888">
-
-                            </p>
-
+                            <p class="mr10 fs15 col888"></p>
                         </ion-item>
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
@@ -116,18 +105,12 @@
                     </ion-list>
                 </div>
 
-                <div ng-if="item.goodsType
- != 2">
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType
- == 0">单次</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 1">疗程卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 2">充值卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 3">套卡</p>
-                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType
- == 4">产品</p>
+                <div ng-if="item.goodsType!= 2">
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5  " ng-if="item.goodsType==0">单次</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType==1">疗程卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType==2">充值卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType==3">套卡</p>
+                    <p style="width: 100%;height: 35px;" class="col33 fs15 p5" ng-if="item.goodsType==4">产品</p>
                     <div class="list">
                         <ion-item  class="h50 bgfff" style="display: flex;justify-content: space-between">
                             <p class="ml10 fs16 col333">{{item.flowName}}</p>
@@ -156,7 +139,6 @@
                                 <span class="mr10">{{item.consumeNumber}}</span>
                             </p>
                         </ion-item>
-
                         <ion-item  class=" bgfff h50" >
                             <p class="sb">
                                 <span class="ml20 fs15 col666">金额</span>
@@ -173,13 +155,9 @@
                                 </div>
                             </div>
                         </ion-item>
-
                     </div>
                 </div>
             </div>
-
-
-
             <!-- <div>
                  <p class="h50 ml10">赠送</p>
                  <div>

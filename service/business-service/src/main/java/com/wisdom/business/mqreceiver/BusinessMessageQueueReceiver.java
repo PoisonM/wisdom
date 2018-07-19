@@ -235,6 +235,7 @@ public class BusinessMessageQueueReceiver {
         logger.info("receive handleUserLevelPromotion==="+handleUserLevelPromotion);
         String messageValue[] = handleUserLevelPromotion.split("########");
         UserInfoDTO userInfoDTO = gson.fromJson(messageValue[0],UserInfoDTO.class);
+        String fromUserType = userInfoDTO.getUserType();
         float expenseMoney = Float.parseFloat(messageValue[1]);
         String toLevel  = "";
 
@@ -288,9 +289,9 @@ public class BusinessMessageQueueReceiver {
                 UserInfoDTO grandpaUserInfoDTO = userServiceClient.getUserInfoFromUserId(userInfoDTO.getParentUserId());
                 if(null != grandpaUserInfoDTO && ConfigConstant.businessB1.equals(grandpaUserInfoDTO.getUserType())){
                     String fromLeveName = "";
-                    if(userInfoDTO.getUserType().equals(ConfigConstant.businessC1)){
+                    if(fromUserType.equals(ConfigConstant.businessC1)){
                         fromLeveName = "普通用户";
-                    }else if(userInfoDTO.getUserType().equals(ConfigConstant.businessB1)){
+                    }else if(fromUserType.equals(ConfigConstant.businessB1)){
                         fromLeveName = "9小主";
                     }else {
                         fromLeveName = "大当家";

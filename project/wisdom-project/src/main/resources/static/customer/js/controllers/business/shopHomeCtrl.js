@@ -102,7 +102,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     $scope.twoPriductList = [];/*199*/
                     $scope.threePriductList = [];/*299*/
                     $scope.fourPriductList = [];/*399*/
-                    $scope.fivePriductList = [];/*499*/
+                   /* $scope.fivePriductList = [];*//*499*/
                     $scope.allPriductList = $scope.param.productList;
                     $scope.repeatList=$scope.param.productList;/*一进入商城默认全部商城*/
                     for(var i = 0; i < $scope.param.productList.length; i++){
@@ -114,9 +114,9 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                             $scope.threePriductList.push($scope.param.productList[i])
                         }else if($scope.param.productList[i].price == "399.00"){
                             $scope.fourPriductList.push($scope.param.productList[i])
-                        }else if($scope.param.productList[i].price == "499.00"){
+                        }/*else if($scope.param.productList[i].price == "499.00"){
                             $scope.fivePriductList.push($scope.param.productList[i])
-                        }
+                        }*/
                     }
                    /*在这写销量排序 按照销量由大到小*/
                    /*99*/
@@ -192,7 +192,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     }
                     bubbleSort3($scope.fourPriductList);
                     /*499*/
-                    function bubbleSort4(arr) {
+                   /* function bubbleSort4(arr) {
                         var len = $scope.fivePriductList.length;
                         if(len>1) {
                             for (var i = 0; i < len; i++) {
@@ -201,14 +201,14 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                                         var temp = arr[j + 1]; //元素交换
                                         arr[j + 1] = arr[j];
                                         arr[j] = temp;
-                                        /*console.log(arr)*/
+                                        /!*console.log(arr)*!/
                                     }
                                 }
                             }
                             return arr;
                         }
                     }
-                    bubbleSort4($scope.fivePriductList);
+                    bubbleSort4($scope.fivePriductList);*/
                     $scope.checkPrice($rootScope.shopHomeParam);
                 });
                 /*点击底部切换按钮更改背景色 字体*/
@@ -251,6 +251,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             });
 
             $scope.clickCarousel=function(item){
+
                 BusinessUtil.twoParameters(LoginGlobal.MX_SC_BADJ,item);
             };
             $scope.enterDetails=function(item){
@@ -386,12 +387,16 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     $scope.repeatList = $scope.fourPriductList;
                     $scope.allProductFlag = false;
 
-                }else if(price == 499){
+                }/*else if(price == 499){
                     $scope.repeatList = $scope.fivePriductList;
                     $scope.allProductFlag = false
-                }
+                }*/
             };
             $("li").on("click", function () {
                 $("div").scrollLeft($(this).position().left-150)
-            })
+            });
+            /*点击浮层跳转到相应页面 且传值*/
+            $scope.goActivity=function (forward) {
+                $state.go("shopActivity",{forward:forward})
+            }
         }]);

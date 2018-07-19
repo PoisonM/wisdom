@@ -2,18 +2,23 @@
  * Created by Administrator on 2018/5/2.
  */
 angular.module('controllers',[]).controller('allFamilyCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetFamilyList','Global','BossUtil','$filter','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetFamilyList,Global,BossUtil,$filter,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetFamilyList','Global','BossUtil','$filter','$ionicLoading','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,GetFamilyList,Global,BossUtil,$filter,$ionicLoading,$timeout) {
 
             $rootScope.title = "全部家人";
             $scope.param = {
-                startDate : $stateParams.date,
-                date:$stateParams.date,
+                startDate : $stateParams.startDate,
+                endDate:$stateParams.endDate,
                 picFlag:false,
                 sysShopId:$stateParams.sysShopId
             };
-            $scope.param.date=$scope.param.date.replace(/00/g,'')
-            $scope.param.date=$scope.param.date.replace(/:/g,'')
+            $scope.param.startDate=$scope.param.startDate.replace(/00/g,'')
+            $scope.param.startDate=$scope.param.startDate.replace(/:/g,'')
+            $scope.param.endDate=$scope.param.endDate.replace(/00/g,'')
+            $scope.param.endDate=$scope.param.endDate.replace(/:/g,'')
+            $scope.selDate = function (style) {
+                $scope.param.style=style
+            }
  /*日期插件*/
             var disabledDates = [
                 new Date(1437719836326),
@@ -31,8 +36,9 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
             var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    $scope.param.date =$filter('date')(val,'yyyy-MM-dd');
-                    $scope.getInfo()
+                    $timeout(function () {
+                        $scope.param[$scope.param.style] =$filter('date')(val, 'yyyy-MM-dd');
+                    },500)
                 }
             };
             //主体对象
@@ -62,6 +68,20 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                 closeOnSelect: true, //可选,设置选择日期后是否要关掉界面。呵呵，原本是false。
             };
             $scope.getInfo = function () {
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天");
+                    return
+                }
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -70,8 +90,8 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                     showDelay: 0
                 })
                 GetFamilyList.get({
-                    endTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59",
-                    startTime:$scope.param.date.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",
+                    endTime:$scope.param.endDate.replace(/(^\s*)|(\s*$)/g, "")+" 23:59:59",
+                    startTime:$scope.param.startDate.replace(/(^\s*)|(\s*$)/g, "")+" 00:00:00",
                     pageSize:1000,
                     sysShopId:$stateParams.sysShopId
                 },function(data){
@@ -88,6 +108,10 @@ angular.module('controllers',[]).controller('allFamilyCtrl',
                     }
                 })
             };
+            $scope.beautyAllGo = function (sysShopClerkId) {
+                $state.go("beautyAll",{sysClerkId:sysShopClerkId,startDate:param.startDate,endDate:param.endDate,nameType:'allFamily'})
+            }
+
             $scope.$on('$ionicView.enter', function() {
                 $scope.getInfo()
             })

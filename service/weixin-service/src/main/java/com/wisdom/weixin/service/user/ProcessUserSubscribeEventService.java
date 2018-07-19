@@ -155,7 +155,7 @@ public class ProcessUserSubscribeEventService {
                         }
                         if(null != parentUserInfoDTO){
                             //向父节点推送消息
-                            WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(), DateUtils.DateToStr(new Date()),"0元",token,
+                            WeixinTemplateMessageUtil.sendLowLevelBusinessTemplateWXMessage(weixinUserBean.getNickname(), DateUtils.DateToStr(new Date()),token,
                                     "",parentUserInfoDTO.getUserOpenid());
                         }
                     }

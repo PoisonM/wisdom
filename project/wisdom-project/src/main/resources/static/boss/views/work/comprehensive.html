@@ -1,12 +1,21 @@
 0<ion-view class="bg">
     <ion-content>
       <!--日期部分-->
-        <div class="bgRgb">
-            <ionic-datepicker input-obj="datepickerObjectEnd">
-                <img src="images/work/date.png" class="dateImg" >
-                <span class="date">{{param.date}}</span>
-                <img src="images/work/drop-down.png" class="dropImg">
-            </ionic-datepicker>
+        <div class="bgRgb sb">
+            <div class="sb">
+                <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selDate('startDate')">
+                    <img src="images/work/date.png" class="dateImg" >
+                    <span class="date">{{param.startDate}}</span>
+                </ionic-datepicker>
+                <span class="colfff center"  style="width:50px;display: inline-block">至</span>
+                <ionic-datepicker input-obj="datepickerObjectEnd" ng-click="selDate('endDate')">
+                    <span class="date">{{param.endDate}}</span>
+                </ionic-datepicker>
+            </div>
+            <div class="mr10 colfff fs15" ng-click="getInfo()">
+                筛选
+            </div>
+
         </div>
         <div >
             <!--业绩耗卡-->

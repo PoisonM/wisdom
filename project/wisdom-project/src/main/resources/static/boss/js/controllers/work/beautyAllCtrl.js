@@ -2,21 +2,27 @@
  * Created by Administrator on 2018/5/3.
  */
 angular.module('controllers',[]).controller('beautyAllCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetShopConsumeAndRecharge','BossUtil','Global','$filter','$ionicLoading','GetClerkWorkDetail',
-        function ($scope,$rootScope,$stateParams,$state,GetShopConsumeAndRecharge,BossUtil,Global,$filter,$ionicLoading,GetClerkWorkDetail) {
+    ['$scope','$rootScope','$stateParams','$state','GetShopConsumeAndRecharge','BossUtil','Global','$filter','$ionicLoading','GetClerkWorkDetail','$timeout',
+        function ($scope,$rootScope,$stateParams,$state,GetShopConsumeAndRecharge,BossUtil,Global,$filter,$ionicLoading,GetClerkWorkDetail,$timeout) {
 
             $rootScope.title = "唯美度养生会所";
 
 
             $scope.param = {
-                startDate : BossUtil.getNowFormatDate(),
-                date:$stateParams.date,
+                startDate : $stateParams.startDate,
+                endDate:$stateParams.endDate,
                 sysShopId:$stateParams.sysShopId,
                 sysClerkId:$stateParams.sysClerkId,
-                nameType:$stateParams.nameType
+                nameType:$stateParams.nameType,
+                style:""
             }
-            $scope.param.date=$scope.param.date.replace(/00/g,'')
-            $scope.param.date=$scope.param.date.replace(/:/g,'')
+            $scope.param.startDate=$scope.param.startDate.replace(/00/g,'')
+            $scope.param.endDate=$scope.param.endDate.replace(/00/g,'')
+            $scope.param.startDate=$scope.param.startDate.replace(/:/g,'')
+            $scope.param.endDate=$scope.param.endDate.replace(/:/g,'')
+            $scope.selDate = function (style) {
+                $scope.param.style=style
+            }
 /*日期插件*/
             var disabledDates = [
                 new Date(1437719836326),
@@ -34,8 +40,9 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
             var datePickerCallback = function (val) {
                 if (typeof (val) === 'undefined') {
                 } else {
-                    $scope.param.date =$filter('date')(val, 'yyyy-MM-dd');
-                    $scope.getInfo()
+                    $timeout(function () {
+                        $scope.param[$scope.param.style] =$filter('date')(val, 'yyyy-MM-dd');
+                    },500)
                 }
             };
             //主体对象
@@ -66,6 +73,20 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
             };
 
             $scope.getInfo = function () {
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天");
+                    return
+                }
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -77,8 +98,8 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
                 if($scope.param.sysShopId!=""){
                     GetShopConsumeAndRecharge.get({
                         shopId:$stateParams.sysShopId,
-                        startTime:$scope.param.date+" 00:00:00",
-                        endTime:$scope.param.date+" 23:59:59"
+                        startTime:$scope.param.startDate+" 00:00:00",
+                        endTime:$scope.param.endDate+" 23:59:59"
                     },function (data) {
                         $ionicLoading.hide()
                         if(data.result==Global.SUCCESS&&data.responseData!=null)
@@ -90,8 +111,8 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
                 if($scope.param.sysClerkId!=""){
                     GetClerkWorkDetail.get({
                         sysClerkId:$stateParams.sysClerkId,
-                        startTime:$scope.param.date+" 00:00:00",
-                        endTime:$scope.param.date+" 23:59:59"
+                        startTime:$scope.param.startDate+" 00:00:00",
+                        endTime:$scope.param.endDate+" 23:59:59"
                     },function(data){
                         $ionicLoading.hide()
                         if(data.result==Global.SUCCESS&&data.responseData!=null)
@@ -107,16 +128,44 @@ angular.module('controllers',[]).controller('beautyAllCtrl',
             })
 
             $scope.detailedPerformanceGo = function(type){
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天");
+                    return
+                }
                 if ($scope.param.sysClerkId != "") {
-                    $state.go("detailedPerformance",{sysClerkId:$stateParams.sysClerkId,searchFile:type,date:$scope.param.date})
+                    $state.go("detailedPerformance",{sysClerkId:$stateParams.sysClerkId,searchFile:type,startDate:$scope.param.startDate,endDate:$scope.param.endDate})
                 }
                 if ($scope.param.sysShopId != "") {
-                    $state.go("detailedPerformance",{sysShopId:$stateParams.sysShopId,searchFile:type,date:$scope.param.date})
+                    $state.go("detailedPerformance",{sysShopId:$stateParams.sysShopId,searchFile:type,startDate:$scope.param.startDate,endDate:$scope.param.endDate})
                 }
 
             }
             $scope.allFamilyGo = function(){
-                $state.go("allFamily",{date:$scope.param.date,sysShopId:$stateParams.sysShopId})
+                var d1 = new Date($scope.param.startDate);
+                var d2 =  new Date($scope.param.endDate);
+                if(d1>d2){
+                    alert("开始时间不能大于结束时间");
+                    return
+                }
+                start =d1.getTime();
+                end =d2.getTime();
+                var time =0
+                time =end-start;
+                if(Math.floor(time/86400000)>31){
+                    alert("最大时间间隔不能超过31天");
+                    return
+                }
+                $state.go("allFamily",{startDate:$scope.param.startDate,endDate:$scope.param.endDate,sysShopId:$stateParams.sysShopId})
             }
 
         }]);
