@@ -469,7 +469,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         $("#ofix1_div_top_left").remove();
 
         setTimeout(function () {
-            if ($("#tbTest1 thead tr td").length > 1) {
+            if ($("#tbTest1 thead tr td").length > 6) {
                 var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
             }
         },100)

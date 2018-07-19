@@ -80,6 +80,7 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                         $scope.threeList=data.responseData;
                         if($scope.threeList && $scope.threeList[0]){
                             alert("对不起，此系列不允许删除");
+                            $scope.param.selTrue[index]=false;
                             return false
                         }else{
                             $scope.requestList[index].status = '1'

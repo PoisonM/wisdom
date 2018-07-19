@@ -59,6 +59,11 @@ public class BeautyLoginController {
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("手机号不可用手机号错误");
             return result;
+        }else if(loginResult.getResult().equals("delete"))
+        {
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("手机号已从系统中删除");
+            return result;
         }
         else
         {

@@ -58,9 +58,7 @@ PADWeb.controller("projectCtrl", function($scope, $state, $stateParams,$rootScop
             pageSize:$scope.param.pageSize,
             status:$scope.status
         },function (data) {
-            if(data.responseData.length>0){
-                $scope.threeList=data.responseData;
-            }
+           $scope.threeList=data.responseData;
             $rootScope.loadingFlag = false;
         })
     };

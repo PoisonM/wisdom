@@ -81,7 +81,7 @@ img {display: inline-block}
 .scroll{height:100%;}
 .floatR{float:right;}
 .pd15{padding:0 15px;}
-.partialFiles .pd15{padding:0 15px;}
+.partialFiles .pd15{padding:0 25px 0 15px;}
 .warningFile .list{top:48px;}
 .item p{font-size: 15px;}
 .item{border-color: #f6f6f6;}
@@ -214,6 +214,7 @@ img {display: inline-block}
 .popup-buttons{
  display: none;
 }*/
+.boss .item{padding:16px 25px 16px 16px;}
 
 
 

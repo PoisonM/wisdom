@@ -13,6 +13,7 @@
                 </ion-item>
             </ion-list>
             <p class="h45"></p>
+
             <ion-list>
                 <ion-item class="pd15 h50 sb"  ng-click="selBrandGo()">
                     <p class="fs16 col333">选择品牌<span class="colff66">*</span></p>
@@ -29,7 +30,7 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">产品名称<span class="colff66">*</span></p>
                     <p class="fs14 col999 mt5 " style="width:70%">
-                        <input type="text" class="textL" ng-model="settingAddsome.product.productName" style="width:100%">
+                        <input type="text" class="textL " id='productName' ng-model="settingAddsome.product.productName" style="width:100%" >
                     </p>
                 </ion-item>
             </ion-list>
@@ -58,7 +59,7 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">市场价<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                       <input type="text" ng-change="numLimit('initialPrice',settingAddsome.product.initialPrice)" ng-model="settingAddsome.product.initialPrice" class="textL" >
+                       <input type="text" ng-change="numLimit('initialPrice',settingAddsome.product.initialPrice)" ng-model="settingAddsome.product.initialPrice" class="textL"   >
                     </p>
                 </ion-item>
                 <ion-item class="pd15 h50 sb">

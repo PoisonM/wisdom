@@ -36,9 +36,6 @@ import java.util.concurrent.Executors;
 public class ProcessBeautySubscribeEventService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-//    @Autowired
-//    private UserServiceClient userServiceClient;
-
     @Autowired
     private UserBeautyServiceClient userBeautyServiceClient;
     
