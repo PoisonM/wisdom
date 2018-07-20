@@ -3,6 +3,7 @@
  */
 package com.wisdom.user.controller;
 
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
@@ -15,8 +16,6 @@ import com.wisdom.user.util.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -50,9 +49,10 @@ public class ClerkServiceController {
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 
 		logger.info("获取店员列表信息传入参数shopId = {}", shopId);
-		SysClerkDTO SysClerkDTO = new SysClerkDTO();
-		SysClerkDTO.setSysShopId(shopId);
-		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(SysClerkDTO);
+		SysClerkDTO sysClerkDTO = new SysClerkDTO();
+		sysClerkDTO.setSysShopId(shopId);
+		sysClerkDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
 		if (CommonUtils.objectIsEmpty(clerkInfo)) {
 			logger.info("获取的店员列表信息为空！");
 			listResponseDTO.setResult(StatusConstant.SUCCESS);
@@ -106,6 +106,7 @@ public class ClerkServiceController {
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
 		sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
 		sysClerkDTO.setSysShopId(bossInfo.getCurrentShopId());
+		sysClerkDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
 		PageParamVoDTO<SysClerkDTO> pageParamVoDTO = new PageParamVoDTO<>();
 		pageParamVoDTO.setRequestData(sysClerkDTO);
 		pageParamVoDTO.setPageSize(pageSize);
@@ -163,6 +164,7 @@ public class ClerkServiceController {
 		logger.info("获取店员列表信息传入参数shopId = {}", clerkId);
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
 		sysClerkDTO.setId(clerkId);
+		sysClerkDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
 
 		listResponseDTO.setResponseData(clerkInfo);
@@ -196,6 +198,7 @@ public class ClerkServiceController {
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		SysClerkDTO sysClerkDTO = new SysClerkDTO();
 		sysClerkDTO.setSysBossCode(sysBossDTO.getSysBossCode());
+		sysClerkDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(sysClerkDTO);
 
 		listResponseDTO.setResponseData(clerkInfo);
