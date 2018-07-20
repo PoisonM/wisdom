@@ -129,10 +129,22 @@ public class ScheduleController {
     }
 
     private List<ShopClerkScheduleDTO> getShopClerkScheduleDTOS(@RequestParam(required = false) String sysShopId, List<ShopClerkScheduleDTO> clerkScheduleList, List<String> monthFullDay, List<SysClerkDTO> clerkDTOS) {
-        if (CommonUtils.objectIsEmpty(clerkScheduleList)) {
+        List<SysClerkDTO> clerkDTOSCp = new ArrayList<>();
+        clerkDTOSCp.addAll(clerkDTOS);
+        for(ShopClerkScheduleDTO shopClerkScheduleDTO : clerkScheduleList){
+            Iterator it = clerkDTOSCp.iterator();
+            while(it.hasNext()){
+                SysClerkDTO sysClerkDTO =  (SysClerkDTO)it.next();
+                if(shopClerkScheduleDTO.getSysClerkId().equals(sysClerkDTO.getId())){
+                   it.remove();
+                }
+            }
+        }
+
+        if (!CommonUtils.objectIsEmpty(clerkDTOSCp)) {
             logger.info("获取某个店的排班信息为空");
             clerkScheduleList = new ArrayList<>();
-            for (SysClerkDTO sysClerkDTO : clerkDTOS) {
+            for (SysClerkDTO sysClerkDTO : clerkDTOSCp) {
                 for (String string : monthFullDay) {
                     ShopClerkScheduleDTO scheduleDTO = new ShopClerkScheduleDTO();
                     scheduleDTO.setId(IdGen.uuid());
