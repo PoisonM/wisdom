@@ -140,7 +140,7 @@ angular.module('controllers',[]).controller('modifyProductCtrl',
                                 $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
                                 $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
                              }else{
-                                alert("该二维码或一维码无效!");
+                                alert("该二维码或条形码无效!");
                              }
                         })
 
