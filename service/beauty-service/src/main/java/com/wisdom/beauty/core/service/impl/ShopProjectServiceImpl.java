@@ -269,18 +269,29 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 	}
 
 	@Override
-	public List<ShopProjectTypeDTO> getOneLevelProjectList(String sysShopId,String status) {
-		logger.info("getOneLevelProjectList传入的参数,sysShopId={}", sysShopId);
-		if (StringUtils.isBlank(sysShopId)) {
+	public List<ShopProjectTypeDTO> getOneLevelProjectList(ShopProjectTypeDTO shopProjectTypeDTO) {
+
+		if (null == shopProjectTypeDTO) {
 			logger.info("getOneLevelProjectList传入的参数sysShopId为空");
 			return null;
 		}
+		String sysShopId = shopProjectTypeDTO.getSysShopId();
+		String status = shopProjectTypeDTO.getStatus();
+		String projectTypeName = shopProjectTypeDTO.getProjectTypeName();
+
 		ShopProjectTypeCriteria shopProjectTypeCriteria = new ShopProjectTypeCriteria();
 		ShopProjectTypeCriteria.Criteria criteria = shopProjectTypeCriteria.createCriteria();
-		criteria.andSysShopIdEqualTo(sysShopId);
+
+		if(StringUtils.isNotBlank(sysShopId)){
+			criteria.andSysShopIdEqualTo(sysShopId);
+		}
 		if(StringUtils.isNotBlank(status)){
 			criteria.andStatusEqualTo(status);
 		}
+		if(StringUtils.isNotBlank(projectTypeName)){
+			criteria.andProjectTypeNameEqualTo(projectTypeName);
+		}
+
 		criteria.andParentIdIsNull();
 
 		ShopProjectTypeCriteria.Criteria or = shopProjectTypeCriteria.createCriteria();

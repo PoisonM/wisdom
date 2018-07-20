@@ -24,6 +24,8 @@ public enum StatusConstant {
 
 	public static final String NO_USER_ADDRESS = "0x00011";
 
+	public static final String DATA_REPEAT = "0x00014";
+
 	public static final String WEIXIN_ATTENTION_ERROR = "0x00012";
 	public static final String ALREADY_EXISTED = "0x00013";
 

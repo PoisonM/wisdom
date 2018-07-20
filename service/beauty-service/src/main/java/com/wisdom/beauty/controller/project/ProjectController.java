@@ -163,7 +163,10 @@ public class ProjectController {
 		ArrayList<Object> oneAndTwoLevelList = new ArrayList<>();
 
 		// 缓存一级
-		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(sysShopId,status);
+		ShopProjectTypeDTO searchDto = new ShopProjectTypeDTO();
+		searchDto.setSysShopId(sysShopId);
+		searchDto.setStatus(status);
+		List<ShopProjectTypeDTO> shopProjectTypeDTOList = projectService.getOneLevelProjectList(searchDto);
 		if (CommonUtils.objectIsEmpty(shopProjectTypeDTOList)) {
 			responseDTO.setResult(StatusConstant.SUCCESS);
 			return responseDTO;
@@ -389,7 +392,10 @@ public class ProjectController {
 			}
 		}
 		ResponseDTO<List<ShopProjectTypeDTO>> responseDTO = new ResponseDTO<>();
-		List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(sysShopId,status);
+		ShopProjectTypeDTO searchDto = new ShopProjectTypeDTO();
+		searchDto.setSysShopId(sysShopId);
+		searchDto.setStatus(status);
+		List<ShopProjectTypeDTO> list = projectService.getOneLevelProjectList(searchDto);
 		responseDTO.setResponseData(list);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
