@@ -18,14 +18,15 @@ PADWeb.controller('feedbackCtrl', function($scope,$state, $stateParams,Suggestio
                     alert("提交成功");
                     $state.go("pad-web.userInfo.todayPerformance")
                 }
+                $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
+                $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = false
             })
         }else{
             alert("内容不能为空，请输入建议内容");
             $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = true;
             $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = true
         }
-        $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.rightFlag = false;
-        $scope.$parent.mainSwitch.headerCashFlag.headerCashRightFlag.leftBackFlag = false
+
     };
 
 });
