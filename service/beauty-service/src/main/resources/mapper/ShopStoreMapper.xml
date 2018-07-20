@@ -3,6 +3,7 @@
 <mapper namespace="com.wisdom.beauty.core.mapper.ShopStoreMapper" >
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopStoreDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_boss_code" property="sysBossCode" jdbcType="VARCHAR" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="sys_user_name" property="sysUserName" jdbcType="VARCHAR" />
     <result column="store_role" property="storeRole" jdbcType="CHAR" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, sys_user_name, store_role, store_manager_id, authority_status, create_by, 
-    create_date, update_user, update_date
+    id, sys_boss_code, name, sys_user_name, store_role, store_manager_id, authority_status, 
+    create_by, create_date, update_user, update_date
   </sql>
   <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopStoreCriteria" >
     select
@@ -109,20 +110,23 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopStoreDTO" >
-    insert into shop_store (id, name, sys_user_name, 
-      store_role, store_manager_id, authority_status, 
-      create_by, create_date, update_user, 
-      update_date)
-    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{sysUserName,jdbcType=VARCHAR}, 
-      #{storeRole,jdbcType=CHAR}, #{storeManagerId,jdbcType=VARCHAR}, #{authorityStatus,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+    insert into shop_store (id, sys_boss_code, name, 
+      sys_user_name, store_role, store_manager_id, 
+      authority_status, create_by, create_date, 
+      update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sysBossCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{sysUserName,jdbcType=VARCHAR}, #{storeRole,jdbcType=CHAR}, #{storeManagerId,jdbcType=VARCHAR}, 
+      #{authorityStatus,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopStoreDTO" >
     insert into shop_store
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="sysBossCode != null" >
+        sys_boss_code,
       </if>
       <if test="name != null" >
         name,
@@ -155,6 +159,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBossCode != null" >
+        #{sysBossCode,jdbcType=VARCHAR},
       </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
@@ -197,6 +204,9 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.sysBossCode != null" >
+        sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null" >
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -232,6 +242,7 @@
   <update id="updateByCriteria" parameterType="map" >
     update shop_store
     set id = #{record.id,jdbcType=VARCHAR},
+      sys_boss_code = #{record.sysBossCode,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       sys_user_name = #{record.sysUserName,jdbcType=VARCHAR},
       store_role = #{record.storeRole,jdbcType=CHAR},
@@ -248,6 +259,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopStoreDTO" >
     update shop_store
     <set >
+      <if test="sysBossCode != null" >
+        sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
+      </if>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -280,7 +294,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopStoreDTO" >
     update shop_store
-    set name = #{name,jdbcType=VARCHAR},
+    set sys_boss_code = #{sysBossCode,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
       sys_user_name = #{sysUserName,jdbcType=VARCHAR},
       store_role = #{storeRole,jdbcType=CHAR},
       store_manager_id = #{storeManagerId,jdbcType=VARCHAR},

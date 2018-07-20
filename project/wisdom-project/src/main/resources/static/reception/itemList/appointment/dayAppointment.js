@@ -458,6 +458,19 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                     }
                 }
             }
+
+            $scope.memedaArray = Object.keys($scope.param.memeda).map(
+                function(k) {
+                    return {key: k, value: $scope.param.memeda[k]}
+                });
+
+            $scope.zhongjiArray = Object.keys($scope.param.zhongjiList).map(
+                function(k) {
+                    return {key: k, value: $scope.param.zhongjiList[k]}
+                });
+            console.log($scope.memedaArray.sort(compare))
+            console.log($scope.zhongjiArray.sort(compare))
+
         })
         setTimeout(function(){$scope.tableThead()},2000);
     }
@@ -1362,13 +1375,15 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
 
                 // 查询选中的美容师的预约时间和姓名
 
-                var mrsList = [];
-                for (key in $scope.param.memeda) {
-                    mrsList.push($scope.param.memeda[key].sysClerkDTO);
-                }
-                $scope.param.ModifyAppointmentObject.beauticianName = mrsList[index].name;
-                $scope.param.ModifyAppointmentObject.beauticianId = mrsList[index].id;
-                $scope.param.selectMrsId = mrsList[index].id
+                // var mrsList = [];
+                // for (key in $scope.param.memeda) {
+                //     mrsList.push($scope.param.memedaArray[key].sysClerkDTO);
+                // }
+                $scope.param.ModifyAppointmentObject.beauticianName = $scope.memedaArray[index].value.sysClerkDTO.name;
+                $scope.param.ModifyAppointmentObject.beauticianId = $scope.memedaArray[index].value.sysClerkDTO.id;
+                $scope.param.selectMrsId = $scope.memedaArray[index].value.sysClerkDTO.id
+
+
                 GetClerkScheduleInfo.get({
                     appointmentId:"",
                     clerkId:$scope.param.selectMrsId,
@@ -1680,5 +1695,17 @@ Array.prototype.removeObj = function (val) {
         if (this[i].id == val.id){
             this.splice(i, 1);
         };
+    }
+}
+
+var compare = function (obj1, obj2) {
+    var val1 = obj1.key;
+    var val2 = obj2.key;
+    if (val1 < val2) {
+        return -1;
+    } else if (val1 > val2) {
+        return 1;
+    } else {
+        return 0;
     }
 }
