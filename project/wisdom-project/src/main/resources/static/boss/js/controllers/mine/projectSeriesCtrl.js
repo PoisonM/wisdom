@@ -20,6 +20,20 @@ angular.module('controllers',[]).controller('projectSeriesCtrl',
                         return*/
                     }
                 }
+
+                var ary =[]
+                for(var i=0;i<$scope.requestList.length;i++){
+                    if($scope.requestList[i].status==0)
+                        ary.push($scope.requestList[i].projectTypeName)
+                }
+                var nary=ary.sort();
+                for(var i=0;i<ary.length;i++){
+                    if (nary[i]==nary[i+1]){
+                        alert(nary[i]+"已存在，请勿重复添加");
+                        return
+                    }
+                }
+
                 var requestList = {
                     requestList:$scope.requestList
                 };

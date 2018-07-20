@@ -35,6 +35,8 @@ angular.module('controllers',[]).controller('productSettingCtrl',
                          console.log(data);
                          if(data.result=="0x00001"){
                              $state.go("productBrand")
+                         }else if(data.result==" 0x00014"){
+                             alert("该品牌已存在，请勿重复添加")
                          }else{
                              alert("添加未成功")
                          }
