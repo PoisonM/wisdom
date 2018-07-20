@@ -18,7 +18,7 @@
                 </div>
             </ion-item>
             <li class="item " style="padding: 10px;font-size: 14px">
-                <p  style="color: #333333">市场价格：¥{{projectInfo.oncePrice}}</p>
+                <p  style="color: #333333">市场价格：¥{{projectInfo.initialPrice}}</p>
                 <p style="color: #FF6666!important;margin-top: 5px">优惠价格：¥{{projectInfo.marketPrice}}/{{projectInfo.serviceTimes}}次</p>
             </li>
         </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="list">
             <p class="item " style="padding: 10px;font-family: PingFangSC-Regular;font-size: 15px;color: #888888;letter-spacing: 0;">功能介绍</p>
-            <textarea style="height:1rem;width:100%;font-size: 0.3rem;color: #333333;padding: 20px;" ng-model="projectInfo.functionIntr"></textarea>
+            <textarea style="width:100%;font-size: 0.3rem;color: #888888;padding: 20px;" ng-model="projectInfo.functionIntr"></textarea>
         </div>
     </ion-content>
 </ion-view>
