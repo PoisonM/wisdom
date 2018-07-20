@@ -39,18 +39,18 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                                 $rootScope.settingAddsome.editedRecharge.periodList = new Array;
                                 $rootScope.settingAddsome.editedRecharge.productList = new Array;
                             }
-                            for(var i=0;i<$scope.param.appearArr.length;i++){
+                            /*for(var i=0;i<$scope.param.appearArr.length;i++){
                                 $scope.param.appearArr[i]=true
-                            }
-                           /* if ($rootScope.settingAddsome.editedRecharge.productList.length > 0 || ($rootScope.settingAddsome.editedRecharge.productList != '' && $rootScope.settingAddsome.editedRecharge.productList != null)) {
+                            }*/
+                            if ($rootScope.settingAddsome.editedRecharge.productList.length > 0 ) {
                                 $scope.param.appearArr[2] = true
                             }
-                            if ($rootScope.settingAddsome.editedRecharge.periodList.length > 0 || ($rootScope.settingAddsome.editedRecharge.periodDiscount != '' && $rootScope.settingAddsome.editedRecharge.periodDiscount != null)) {
+                            if ($rootScope.settingAddsome.editedRecharge.periodList.length > 0 ) {
                                 $scope.param.appearArr[1] = true
                             }
-                            if ($rootScope.settingAddsome.editedRecharge.timesList.length > 0 || ($rootScope.settingAddsome.editedRecharge.timeDiscount != "" && $rootScope.settingAddsome.editedRecharge.timeDiscount != null)) {
+                            if ($rootScope.settingAddsome.editedRecharge.timesList.length > 0 ) {
                                 $scope.param.appearArr[0] = true
-                            }*/
+                            }
 
                             $ionicLoading.hide()
 
@@ -97,23 +97,51 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
 
             }
             $scope.discounts = function (style) {
-                if($rootScope.settingAddsome.editedRecharge[style]>1||$rootScope.settingAddsome.editedRecharge[style]<0.1){
-                    $rootScope.settingAddsome.editedRecharge[style] =1
+                if($rootScope.settingAddsome.editedRecharge[style]!=''){
+                    if($rootScope.settingAddsome.editedRecharge[style]>1||$rootScope.settingAddsome.editedRecharge[style]<0.1){
+                        $rootScope.settingAddsome.editedRecharge[style] ='';
+                        alert('折扣价格范围为0-1')
+                    }
                 }
             };
             $scope.numLimit=function (style,value) {
                 $rootScope.settingAddsome.editedRecharge[style]=value.replace(/[^0-9.0-9]+/,'')
             }
             $scope.save = function () {
-                if($rootScope.settingAddsome.editedRecharge.name==""||
-                    $rootScope.settingAddsome.editedRecharge.amount==""||
-                    ($rootScope.settingAddsome.editedRecharge.timesList.length<=0)||
-                    ($rootScope.settingAddsome.editedRecharge.periodList.length<=0)||
-                    ($rootScope.settingAddsome.editedRecharge.productList.length<=0)||
-                    ($rootScope.settingAddsome.editedRecharge.productDiscount=='')||
-                    ($rootScope.settingAddsome.editedRecharge.periodDiscount=='')||
-                    ($rootScope.settingAddsome.editedRecharge.timesList=='')){
-                    alert("信息不完全");
+                if($rootScope.settingAddsome.editedRecharge.name==""){
+                    alert("请填写充值卡名称")
+                    return
+                }
+                if ($rootScope.settingAddsome.editedRecharge.amount == "") {
+                    alert("请填写充值面额")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.timeDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.productDiscount==''){
+                    alert("请至少选择一个折扣")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.timeDiscount!=''&&$rootScope.settingAddsome.editedRecharge.timesList.length<=0){
+                    alert("请填写单次卡适用范围")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.timeDiscount==''&&$rootScope.settingAddsome.editedRecharge.timesList.length>0){
+                    alert("请填写单次卡折扣")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodList.length<=0){
+                    alert("请填写疗程卡适用范围")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodList.length>0){
+                    alert("请填写疗程卡折扣")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.productDiscount!=''&&$rootScope.settingAddsome.editedRecharge.productList.length<=0){
+                    alert("请填写产品适用范围")
+                    return
+                }
+                if($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.productList.length>0){
+                    alert("请填写产品折扣")
                     return
                 }
              if ($scope.param.status == true) {

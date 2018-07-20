@@ -25,7 +25,12 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                     if(data.result == "0x00001"){
                         $scope.fileList = [];
                         $ionicLoading.hide();
-                        $scope.info = data.responseData.info;
+                        if (data.responseData == null) {
+                            $scope.info=[]
+                        }else{
+                            $scope.info = data.responseData.info;
+                        }
+
                     }
                 });
             })
