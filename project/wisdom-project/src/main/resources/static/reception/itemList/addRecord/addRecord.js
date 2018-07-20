@@ -22,7 +22,7 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
 
 /*----------------------------------初始化参数------------------------------------------*/
     $scope.param = {
-        imgSrc:"images/default_logo.png",
+        imgSrc:"https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png",
         select_type:"",
         openSelectFlag:false,//选择页面开关
         selectContentName:"",
