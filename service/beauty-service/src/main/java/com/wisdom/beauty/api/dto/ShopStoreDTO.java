@@ -1,9 +1,9 @@
 package com.wisdom.beauty.api.dto;
 
+import com.wisdom.common.entity.BaseEntity;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import com.wisdom.common.entity.BaseEntity;
 
 public class ShopStoreDTO extends BaseEntity implements Serializable {
     //

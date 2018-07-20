@@ -1,6 +1,7 @@
 package com.wisdom.user.service.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.BeautyLoginResultDTO;
@@ -65,11 +66,14 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
 
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setMobile(loginDTO.getUserPhone());
-
             List<UserInfoDTO> userInfoDTOList = beautyUserMapper.getBeautyUserByInfo(userInfoDTO);
             if(userInfoDTOList.size()>0)
             {
                 userInfoDTO = userInfoDTOList.get(0);
+                if(CommonCodeEnum.DELETE.getCode().equals(userInfoDTO.getDelFlag())){
+                    beautyLoginResultDTO.setResult("delete");
+                    return beautyLoginResultDTO;
+                }
                 if(userInfoDTO.getMobile()==null)
                 {
                     UserInfoDTO userInfoDTO1 = new UserInfoDTO();

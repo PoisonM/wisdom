@@ -62,10 +62,13 @@ angular.module('controllers',[]).controller('newUserCtrl',
 
             };
             $scope.pho = function () {
-                if(!(/^1[34578]\d{9}$/.test($scope.newUser.phone))){
-                    alert("手机号格式不正确");
-                    $scope.newUser.phone = ''
+                if($scope.newUser.phone!=''){
+                    if(!(/^1[34578]\d{9}$/.test($scope.newUser.phone))){
+                        alert("手机号格式不正确");
+                        $scope.newUser.phone = ''
+                    }
                 }
+
 
             }
 

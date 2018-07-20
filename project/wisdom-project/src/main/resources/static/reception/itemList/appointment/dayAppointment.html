@@ -12,80 +12,6 @@
         </p>
     </div>
 
-    <!--<div id="divBox1"  style=" overflow: auto;height: 100%;width: 100%;float: left;" class="content H100 mt128" ng-show="param.dayFlag" >
-        &lt;!&ndash;<table>
-            <thead>
-                <tr>
-                    <td ng-repeat="item in param.appointmentObject.beautician" class="bgfff">
-                        <div>
-                            <p class="name">xia{{item}}</p>
-                            <p class="fs24 mt10 mb20">
-                                <img src="images/ic_point.png" class="mr12 ">
-                                {{param.appointmentObject.point[$index]}}
-                                <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                                <img src="images/ic_row.png" class="mr12">
-                                <span>**</span>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td ng-if="$index == 0"></td>
-                    <td ng-if="$index != 0"></td>
-                </tr>
-            </tbody>
-        </table>&ndash;&gt;
-        &lt;!&ndash;user信息&ndash;&gt;
-        <div id="tbTest1">
-            <div class="nameLis nowarp bgfff w" ng-show="flag.upDownScrollFlag">
-                <ul class=" ml156 messLis ">
-                    <li id="tbLisiItem" ng-repeat="item in param.appointmentObject.beautician" class="bgfff" >
-                        <p class="name">xia{{item}}</p>
-                        <p class="fs24 mt10 mb20">
-                            <img src="images/ic_point.png" class="mr12 ">
-                            {{param.appointmentObject.point[$index]}}
-                            <img src="images/ic_seg.png" class="seg ml20 mr20" >
-                            <img src="images/ic_row.png" class="mr12">
-                            <span>**</span>
-                        </p>
-                    </li>
-                </ul>
-            </div>
-            &lt;!&ndash;content信息&ndash;&gt;
-            <div class="messLis  pt117rem" >
-                <div class="mt128 ">
-                    <div class="" style="position: relative;top:0px">
-                        <ul class="time " style="position: absolute;z-index: 100;background: #ffffff" >
-                            <li  ng-repeat="item in param.days" style="text-align: center" >{{item}}</li>
-                        </ul>
-                        <div class=" nowarp" style="margin-left:1.21875rem;">
-                            <div class=" list-group" ng-repeat="(index1,item) in param.appointmentObject.list"style="width:500px">
-                                <div class="appointmentLis">
-                                    <ul >
-                                        <li ng-repeat="(index2,item1) in item.status track by $index" ng-class="{'bge4faff':item1==1,'bgffe7e7':item1==2,'bgf0e3ff':item1==3,'bge4faff':item1==0,'bgred':item1==5}" ng-click="detailsWrap(index1,index2,item1,item.sysUserId[index2],item.sysShopId[index2])" ng-onhold="onHold(index1,index2,item1)">
-                                            <p ng-if="item1 == 5" class="colred fs34" style="line-height: 0.96875rem;text-align:center ">{{item.sysUserName[index2]}}</p>
-                                            <div ng-if="item1 != 5">
-                                                <p class="ml28 mt10 fs32 " ng-class="{'colecb9ec':item1==1,'colfd3232':item1==2,'col333':item1==3,'colred':item1==0}" ng-if="item.textShowOrHide[$index]==1">{{item.sysUserName[index2]}}</p>
-                                                <p class="mt30" ng-if="item.textShowOrHide[$index]==1">
-                                                    <img src="images/ic_point.png" class="ml28 mr12 point" ng-show="item1 != 6">
-                                                    <span class="fs24">{{item.time[index2]}}</span>
-                                                    <span class="floatR mr28 fs24">{{item.shopProjectName[index2]}}</span>
-                                                </p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>-->
     <div ng-if="param.dayWeekFlag" class="complex_table" id="divBox1" style=" overflow: auto;height: 100%;width: 100%;float: left;">
         <table id="tbTest1" class="tb_test" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;">
             <thead>
@@ -93,14 +19,14 @@
                     <td style="width: 1.21875rem;">
                         <div style="height: 1.1rem;font-size: 0.25rem;color: #888888;width: 1.21875rem;"></div>
                     </td>
-                    <td style="width: 1.21875rem;" ng-repeat="(key,value) in param.memeda">
+                    <td style="width: 1.21875rem;" ng-repeat="obj in memedaArray">
                         <div  class="mr_info">
-                            <p>{{key}}</p>
+                            <p>{{obj.key}}</p>
                             <div class="info_num">
                                 <span>
                                     <em>客</em>
-                                     <i ng-if="value.appointmentInfo == null">0</i>
-                                    <i>{{value.appointmentInfo.length}}</i>
+                                     <i ng-if="obj.value.appointmentInfo == null">0</i>
+                                    <i>{{obj.value.appointmentInfo.length}}</i>
                                 </span>
                             </div>
                         </div>
@@ -109,18 +35,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="(key,value) in param.zhongjiList " >
+                <tr ng-repeat="obj in zhongjiArray" >
                     <td class="tiem_node">
-                        <div>{{key}}</div>
+                        <div>{{obj.key}}</div>
                     </td>
-                    <td  ng-click = "onHold($index,item.appointmentInfo)" ng-repeat="item in value" class="bor_e5">
+                    <td  ng-click = "onHold($index,item.value.appointment)" ng-repeat="item in memedaArray" class="bor_e5">
                         <div class="td_box" style="position: relative;width: 100%">
-                            <!--<span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0','bgFFE6E6':indexItem.status=='1','bgE1F8FF':indexItem.status=='2','bgF3F3F3':indexItem.status=='3','bgF3F3F3':indexItem.status=='4','bgE1F8FF':indexItem.status=='5','bgF3F3F3':indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}" ng-click="detailsWrap(indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">-->
                             <span data-meme="{{indexItem}}" ng-class="{'bgFFE6E6':indexItem.status=='0'||indexItem.status=='1','bgE1F8FF':indexItem.status=='2'||indexItem.status=='5','bgF3F3F3':indexItem.status=='3'||indexItem.status=='4'||indexItem.status=='6'}" style="position: absolute;top: 0px;left: 0px; right: 0px; bottom: 0px" data-stra="{{indexItem.status}}"
-                                  ng-click="detailsWrap(indexItem,indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id,$event)" class="dataremove"  ng-repeat="indexItem in item.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1)"  class="teshu_sty">
-                                <!--{{index.scheduling.split(',').indexOf(param.theOtherCode[key])!=-1}}-->
+                                  ng-click="detailsWrap(indexItem,indexItem.status,indexItem.sysUserId,indexItem.sysShopId,indexItem.id,$event)" class="dataremove"  ng-repeat="indexItem in item.value.appointmentInfo" ng-if="(indexItem.scheduling.split(',').indexOf(param.theOtherCode[obj.key])!=-1)"  class="teshu_sty">
                                 <div class="havedata">
-                                    <div ng-if="key == (indexItem.appointStartTime | date: 'HH:mm')">
+                                    <div ng-if="obj.key == (indexItem.appointStartTime | date: 'HH:mm')">
                                         <p class="user_name">{{indexItem.sysUserName}}</p>
                                         <div class="user_info">
                                             <em>客</em>

@@ -3,28 +3,27 @@ package com.wisdom.user.service.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysClerkCriteria;
 import com.wisdom.common.dto.user.SysClerkDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.*;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.IdGen;
+import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.StringUtils;
 import com.wisdom.user.client.BeautyServiceClient;
 import com.wisdom.user.mapper.SysClerkMapper;
 import com.wisdom.user.service.BeautyUserInfoService;
 import com.wisdom.user.service.ClerkInfoService;
 import com.wisdom.user.service.UserInfoService;
-import org.apache.commons.collections.CollectionUtils;
 import com.wisdom.user.util.UserUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +67,9 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		if (StringUtils.isNotBlank(SysClerk.getId())) {
 			criteria.andIdEqualTo(SysClerk.getId());
 		}
+		if (StringUtils.isNotBlank(SysClerk.getDelFlag())) {
+			criteria.andDelFlagEqualTo(SysClerk.getDelFlag());
+		}
 		List<SysClerkDTO> SysClerks = sysClerkMapper.selectByCriteria(SysClerkCriteria);
 
 		return SysClerks;
@@ -87,6 +89,9 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 
 		if (StringUtils.isNotBlank(sysClerkDTO.getSysShopId())) {
 			criteria.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
+		}
+		if (StringUtils.isNotBlank(sysClerkDTO.getDelFlag())) {
+			criteria.andDelFlagEqualTo(sysClerkDTO.getDelFlag());
 		}
 		if (StringUtils.isNotBlank(sysClerkDTO.getSysBossCode())) {
 			criteria.andSysBossCodeEqualTo(sysClerkDTO.getSysBossCode());
@@ -138,6 +143,9 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		sysClerkDTO.setRole(sysClerkDTO.getRole());
 		sysClerkDTO.setCreateDate(new Date());
 		sysClerkDTO.setUpdateDate(new Date());
+		if(StringUtils.isBlank(sysClerkDTO.getPhoto())){
+			sysClerkDTO.setPhoto("https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png");
+		}
 		int reult=sysClerkMapper.insertSelective(sysClerkDTO);
 		//设置默认排班
 		SysClerkDTO sysClerk =new SysClerkDTO();
