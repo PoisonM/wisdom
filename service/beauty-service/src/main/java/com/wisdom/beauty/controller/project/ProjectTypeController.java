@@ -7,6 +7,7 @@ import com.wisdom.beauty.core.service.ShopProjectGroupService;
 import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.interceptor.LoginAnnotations;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.SysBossDTO;
@@ -57,6 +58,17 @@ public class ProjectTypeController {
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         SysBossDTO bossInfo = UserUtils.getBossInfo();
         if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+        //查询是否已存在
+        ShopProjectTypeDTO searchDto = new ShopProjectTypeDTO();
+        searchDto.setSysShopId(redisUtils.getShopId());
+        searchDto.setStatus(CommonCodeEnum.ADD.getCode());
+        searchDto.setProjectTypeName(shopProjectTypeDTO.getProjectTypeName());
+        List<ShopProjectTypeDTO> oneLevelProjectList = projectService.getOneLevelProjectList(searchDto);
+        if(CommonUtils.objectIsNotEmpty(oneLevelProjectList)){
+            //数据重复
+            responseDTO.setResult(StatusConstant.DATA_REPEAT);
             return responseDTO;
         }
         int info = projectService.saveProjectTypeInfo(shopProjectTypeDTO, bossInfo);

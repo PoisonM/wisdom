@@ -140,6 +140,7 @@ public class ClerkServiceController {
 		sysClerkDTO.setSysBossCode(bossInfo.getSysBossCode());
 		sysClerkDTO.setName(searchFile);
 		sysClerkDTO.setMobile(searchFile);
+		sysClerkDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
 		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkBySearchFile(sysClerkDTO);
 
 		listResponseDTO.setResponseData(clerkInfo);

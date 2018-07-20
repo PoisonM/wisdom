@@ -179,6 +179,10 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 		if (StringUtils.isNotBlank(sysClerkDTO.getSysBossCode())) {
 			or.andSysBossCodeEqualTo(sysClerkDTO.getSysBossCode());
 		}
+		if (StringUtils.isNotBlank(sysClerkDTO.getDelFlag())) {
+			c.andDelFlagEqualTo(sysClerkDTO.getDelFlag());
+			or.andDelFlagEqualTo(sysClerkDTO.getDelFlag());
+		}
 		sysClerkCriteria.or(or);
 		return sysClerkMapper.selectByCriteria(sysClerkCriteria);
 

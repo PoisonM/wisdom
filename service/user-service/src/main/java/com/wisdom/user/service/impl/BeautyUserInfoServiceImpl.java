@@ -19,10 +19,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -84,6 +81,7 @@ public class BeautyUserInfoServiceImpl implements BeautyUserInfoService {
 		RedisLock redisLock = new RedisLock("userInfo" + userInfoDTO.getId());
 		try {
 			redisLock.lock();
+			userInfoDTO.setCreateDate(new Date());
 			beautyUserInfoMapper.insertBeautyUserInfo(userInfoDTO);
 		} catch (Exception e) {
 			e.printStackTrace();

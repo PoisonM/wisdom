@@ -168,6 +168,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductType())){
 			criteria.andProductTypeEqualTo(shopProductTypeDTO.getProductType());
 		}
+		if(StringUtils.isNotBlank(shopProductTypeDTO.getProductTypeName())){
+			criteria.andProductTypeNameEqualTo(shopProductTypeDTO.getProductTypeName());
+		}
 		if(StringUtils.isNotBlank(shopProductTypeDTO.getStatus())){
 			criteria.andStatusEqualTo(shopProductTypeDTO.getStatus());
 		}
