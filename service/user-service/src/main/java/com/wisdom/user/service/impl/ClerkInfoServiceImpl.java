@@ -48,27 +48,30 @@ public class ClerkInfoServiceImpl implements ClerkInfoService {
 	/**
 	 * 获取店员列表
 	 *
-	 * @param SysClerk
+	 * @param sysClerkDTO
 	 * @return
 	 */
 	@Override
-	public List<SysClerkDTO> getClerkInfo(SysClerkDTO SysClerk) {
+	public List<SysClerkDTO> getClerkInfo(SysClerkDTO sysClerkDTO) {
 		SysClerkCriteria SysClerkCriteria = new SysClerkCriteria();
 		SysClerkCriteria.Criteria criteria = SysClerkCriteria.createCriteria();
 
-		if (null == SysClerk) {
-			logger.error("获取某个店的店员列表传入参数为空{}", SysClerk);
+		if (null == sysClerkDTO) {
+			logger.error("获取某个店的店员列表传入参数为空{}", sysClerkDTO);
 			return null;
 		}
 
-		if (StringUtils.isNotBlank(SysClerk.getSysShopId())) {
-			criteria.andSysShopIdEqualTo(SysClerk.getSysShopId());
+		if (StringUtils.isNotBlank(sysClerkDTO.getSysShopId())) {
+			criteria.andSysShopIdEqualTo(sysClerkDTO.getSysShopId());
 		}
-		if (StringUtils.isNotBlank(SysClerk.getId())) {
-			criteria.andIdEqualTo(SysClerk.getId());
+		if (StringUtils.isNotBlank(sysClerkDTO.getId())) {
+			criteria.andIdEqualTo(sysClerkDTO.getId());
 		}
-		if (StringUtils.isNotBlank(SysClerk.getDelFlag())) {
-			criteria.andDelFlagEqualTo(SysClerk.getDelFlag());
+		if(StringUtils.isNotBlank(sysClerkDTO.getMobile())){
+			criteria.andMobileEqualTo(sysClerkDTO.getMobile());
+		}
+		if (StringUtils.isNotBlank(sysClerkDTO.getDelFlag())) {
+			criteria.andDelFlagEqualTo(sysClerkDTO.getDelFlag());
 		}
 		List<SysClerkDTO> SysClerks = sysClerkMapper.selectByCriteria(SysClerkCriteria);
 
