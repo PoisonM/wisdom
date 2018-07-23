@@ -281,8 +281,14 @@ define(['appBoss'], function (app) {
         .factory('GetShopProductLevelInfo',['$resource',function ($resource){
             return $resource(productTypeInfo+"getShopProductLevelInfo")
         }])
+
         .factory('ShopStockRecordDetail',['$resource',function ($resource){
             return $resource(stock+"shopStockRecordDetail")
+        }])
+
+        /*获取预警产品列表*/
+        .factory('GetEarlyWarningProductLevelInfo',['$resource',function ($resource){
+            return $resource(productTypeInfo+"getEarlyWarningProductLevelInfo")
         }])
 
 

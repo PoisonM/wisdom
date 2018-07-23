@@ -25,4 +25,10 @@ angular.module('controllers',[]).controller('funAreaCtrl',
             $scope.libraryTubeSettingGo = function(){
                 $state.go('libraryTubeSetting',{shopStoreId:$rootScope.shopInfo.shopStoreId})
             }
+
+
+            /*预警商品*/
+            $scope.earlyWarningGoods = function(){
+                $state.go('earlyWarningGoods',{sysShopId:$rootScope.shopInfo.shopStoreId});
+            }
  }]);
