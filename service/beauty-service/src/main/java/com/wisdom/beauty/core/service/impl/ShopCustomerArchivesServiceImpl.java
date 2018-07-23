@@ -12,6 +12,7 @@ import com.wisdom.beauty.core.mapper.ShopUserArchivesMapper;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.*;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
@@ -361,6 +362,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 		// 查询用户
 		UserInfoDTO userInfoDTO = new UserInfoDTO();
 		userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
+		userInfoDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
 		List<UserInfoDTO> userInfoDTOS = userServiceClient.getUserInfo(userInfoDTO);
 
 		logger.debug("保存用户档案接口，查询的用户信息为，{}", "userInfoDTOS = [" + userInfoDTOS + "]");
@@ -369,6 +371,7 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			userInfoDTO.setId(IdGen.uuid());
 			userInfoDTO.setNickname(shopUserArchivesDTO.getSysUserName());
 			userInfoDTO.setCreateDate(new Date());
+			userInfoDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
 			userInfoDTO.setUserType(ConfigConstant.beautySource);
 			userInfoDTO.setMobile(shopUserArchivesDTO.getPhone());
 			userInfoDTO.setPhoto(StringUtils.isBlank(shopUserArchivesDTO.getImageUrl()) ? ImageEnum.USER_HEAD.getDesc()
