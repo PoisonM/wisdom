@@ -9,12 +9,12 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.account.PrePayInfoDTO;
 import com.wisdom.common.dto.product.InvoiceDTO;
-import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderListDTO;
 import com.wisdom.common.util.*;
+import org.apache.commons.collections.map.HashedMap;
 import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -257,5 +257,70 @@ public class PayRecordService {
      * */
     public List<String> findTransactionIdList(PayRecordDTO payRecordDTO){
         return payRecordMapper.findTransactionIdList(payRecordDTO);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public String corssBorderPay(HttpServletRequest request,String mobile) {
+        logger.info("Service == 获取统一支付接口参数request={},mobile={},productType={}",request,mobile);
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        try{
+            SortedMap<Object, Object> prePayInfoMap = new TreeMap<>();
+            prePayInfoMap.put("appid", ConfigConstant.APP_ID);
+            prePayInfoMap.put("mch_id",ConfigConstant.MCH_ID);
+            prePayInfoMap.put("device_info",ConfigConstant.DEVICE_INFO);
+            prePayInfoMap.put("nonce_str",IdGen.uuid());
+            prePayInfoMap.put("body","跨境电商支付订单");
+            prePayInfoMap.put("attach","美享");
+            String outTradeNo = IdGen.uuid();
+            prePayInfoMap.put("out_trade_no",outTradeNo);
+            prePayInfoMap.put("fee_type",ConfigConstant.FEE_TYPE);
+            logger.info("获取统一支付接口参数==appid={},mch_id={},device_info={},out_trade_no={},fee_type={}"
+                    ,ConfigConstant.APP_ID,ConfigConstant.MCH_ID,ConfigConstant.DEVICE_INFO,outTradeNo,ConfigConstant.FEE_TYPE);
+            String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
+            NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
+
+
+            Float payPrice = 0F;
+            for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList())
+            {
+                payPrice = payPrice + Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum());
+            }
+
+            prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
+            prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
+            prePayInfoMap.put("notify_url",ConfigConstant.CROSS_BORDER_PRODUCT_BUY_NOTIFY_URL);
+            prePayInfoMap.put("trade_type","NATIVE");
+            //将上述参数进行签名
+            String sign = JsApiTicketUtil.createSign("UTF-8", prePayInfoMap);
+            prePayInfoMap.put("sign",sign);
+            String requestXML = JsApiTicketUtil.getRequestXml(prePayInfoMap);
+            String payResult = HttpRequestUtil.httpsRequest(ConfigConstant.GATE_URL, "POST", requestXML).replaceAll("200>>>>",""); //gate url是腾讯的支付URL
+            Map<String, Object> payResultMap = XMLUtil.doXMLParse(payResult);
+            if ("SUCCESS".equals(payResultMap.get("return_code"))) {
+                PayRecordDTO payRecordDTO = new PayRecordDTO();
+                payRecordDTO.setSysUserId(mobile);
+                String transactionId = CodeGenUtil.getTransactionCodeNumber();
+                logger.info("交易流水号=={}",transactionId);
+                String needInvoice = "0";
+                for(NeedPayOrderDTO needPayOrderDTO:needPayOrderListDTO.getNeedPayOrderList()){
+                    payRecordDTO.setId(UUID.randomUUID().toString());
+                    payRecordDTO.setAmount(Float.valueOf(needPayOrderDTO.getProductPrice())*Float.valueOf(needPayOrderDTO.getProductNum()));
+                    payRecordDTO.setInvoice(needInvoice);//todo 需要填入用户是否需要发票，需要调用junjie的接口
+                    payRecordDTO.setOrderId(needPayOrderDTO.getOrderId());
+                    payRecordDTO.setPayDate(new Date());
+                    payRecordDTO.setStatus("0");//等待支付
+                    payRecordDTO.setTransactionId(transactionId);
+                    payRecordDTO.setOutTradeNo(outTradeNo);
+                    payRecordDTO.setPayType("wx");
+                    payRecordMapper.insertPayRecord(payRecordDTO);
+                }
+                return (String) payResultMap.get("code_url");
+            }
+        }catch (Exception e)  {
+            logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
+            e.printStackTrace();
+        }
+        return "";
     }
 }
