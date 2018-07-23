@@ -198,6 +198,51 @@ public class PayController {
         logger.info("接收SpecialProductPay支付成后微信notify_url参数中传来的参数,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return "";
     }
-    
+
+    /**
+     * 接收支付成后微信notify_url参数中传来的参数
+     * 支付完成 后服务器故障 事物无法回滚
+     * */
+    @RequestMapping(value = "getCrossBorderProductPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    String getCrossBorderProductPayNotifyInfo(HttpServletRequest request) {
+        long startTime = System.currentTimeMillis();
+        logger.info("接收TrainingProductPay支付成后微信notify_url参数中传来的参数==={}开始",startTime);
+
+        RedisLock redisLock = new RedisLock("trainingProductPayNotifyInfo");
+        InputStream inStream = null;
+        try {
+            redisLock.lock();
+
+            inStream = request.getInputStream();
+            ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inStream.read(buffer)) != -1) {
+                outSteam.write(buffer, 0, len);
+            }
+            outSteam.close();
+            inStream.close();
+            String result  = new String(outSteam.toByteArray(),"utf-8");
+            Map<String, Object> map = XMLUtil.doXMLParse(result);
+
+            //放入service层进行事物控制
+            if("SUCCESS".equals(map.get("return_code"))){
+                PayRecordDTO payRecordDTO = new PayRecordDTO();
+                payRecordDTO.setOutTradeNo((String) map.get("out_trade_no"));
+                payRecordDTO.setStatus("0");
+                payCoreService.handleProductPayNotifyInfo(payRecordDTO,"special");
+            }
+            return  XMLUtil.setXML("SUCCESS", "");
+        } catch (Exception e) {
+            logger.error("接收TrainingProductPay支付成后微信notify_url参数中传来的参数,异常信息为=={}"+e.getMessage(),e);
+            e.printStackTrace();
+        }finally {
+            redisLock.unlock();
+        }
+        logger.info("接收TrainingProductPay支付成后微信notify_url参数中传来的参数,耗时{}毫秒",(System.currentTimeMillis() - startTime));
+        return "";
+    }
 
 }
