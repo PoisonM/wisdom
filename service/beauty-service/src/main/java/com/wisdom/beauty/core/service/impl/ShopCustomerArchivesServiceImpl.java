@@ -376,7 +376,9 @@ public class ShopCustomerArchivesServiceImpl implements ShopCustomerArchivesServ
 			logger.debug("保存用户档案接口,sys_user表中插入用户信息 {}", "shopUserArchivesDTO = [" + shopUserArchivesDTO + "]");
 			userServiceClient.insertUserInfo(userInfoDTO);
 		} else {
-			userInfoDTO = userInfoDTOS.get(0);
+			responseDTO.setResult(StatusConstant.DATA_REPEAT);
+			responseDTO.setErrorInfo("此手机号，系统已存在，请联系客服，谢谢");
+			return responseDTO;
 		}
 
 		SysClerkDTO clerkInfo = UserUtils.getClerkInfo();
