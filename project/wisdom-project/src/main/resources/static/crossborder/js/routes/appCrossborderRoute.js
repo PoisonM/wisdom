@@ -22,17 +22,17 @@ define(['appCrossborder'], function(app){
                 };
                 $stateProvider
                     .state('home', {
-                        url: '/home/:true／:status/:productsName/:productsId/:page',
+                        url: '/home',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'homeCtrl',
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeCtrl',
-                                    ['js/controllers/homeCtrl.js?ver=' + managementVersion],
-                                    'js/views/home.html?ver=' + managementVersion);
+                                    ['js/controllers/homeCtrl.js'],
+                                    'js/views/home.html');
                             }
                         }
                     })
-                $urlRouterProvider.otherwise('home/%EF%BC%8F///')
+                $urlRouterProvider.otherwise('home')
             }])
 })

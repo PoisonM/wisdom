@@ -3,8 +3,8 @@
  */
 
 define(['angular'], function (angular) {
-    var app = angular.module(crossborderApp',['ngResource','ui.router','ngSanitize',
-        'oc.lazyLoad','highcharts-ng','infinite-scroll',crossborderGlobal'])
+    var app = angular.module('crossborderApp',['ngResource','ui.router','ngSanitize',
+        'oc.lazyLoad','highcharts-ng','infinite-scroll','crossborderGlobal'])
         .config(['$httpProvider',function($httpProvider,$rootScope) {
 
             $httpProvider.interceptors.push(function($rootScope){
