@@ -1,0 +1,115 @@
+<div>
+    <nav-bar  index1="2" index2="21"></nav-bar>
+    <div class="main_content" >
+        <enjoy-menu></enjoy-menu>
+        <div class="content_box">
+            <div class="mum" ng-show="mum">
+                <div class="m-load2">
+                    <div class="line">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="circlebg"></div>
+                </div>
+            </div>
+            <div class="product_content_right">
+                <div class="rightCenter">
+                    <div class="product_lis">
+                        <button  ng-click="upAndDownWay('')" ng-class="{'active':status==''}">全部产品</button>
+                        <button ng-click="upAndDownWay('1')" ng-class="{'active':status=='1'}">上架产品</button>
+                        <button ng-click="upAndDownWay('0')" ng-class="{'active':status=='0'}">下架产品</button>
+
+                    </div>
+                    <div class="product_eara">
+                        <div class="product_name">
+                            <div class="product_nameEara ">
+                                <label  for="productName" >商品名称:</label>
+                                <input type="text" class="product_search" id="productName" ng-model="productsName">
+                            </div>
+                            <div class="product_nameEara ">
+                                <label for="produceId" >商品编码:</label>
+                                <input type="text" class="product_search" id="produceId" ng-model="productsId">
+                            </div>
+                        </div>
+                        <!-- <div class="product_name">
+                             <div>
+                                 <label>
+                                     <select class="product_type">
+                                         <option  value="type:产品类型" selected="selected">产品类型</option>
+                                         <option  value="type:面膜">视频</option>
+                                         <option  value="type:眼霜">线上产品</option>
+                                     </select>
+                                     <div class="vertical_line_home">
+                                     </div>
+                                 </label>
+                             </div>
+                             <div >
+                                 <label>
+                                     <select class="product_type">
+                                         <option  value="type:品牌" selected="selected">品牌</option>
+                                         <option value="type:米克诺斯">米克诺斯</option>
+                                         <option  value="type:韩世提">韩世提</option>
+                                     </select>
+                                     <div class="vertical_line_home">
+                                     </div>
+                                 </label>
+                             </div>
+                         </div>-->
+                        <div class="product_searchEara">
+                            <input type="button" value="搜索" class="search_btn" ng-click="show()" style="margin-left:3px;">
+                        </div>
+                    </div>
+                    <div class="table_lis">
+                        <div >
+                            <a class="order_lis simulateBtn" ng-click="educeLis()">导出列表</a>
+                        </div>
+                        <table class="table  text-center" >
+                            <thead>
+                            <tr id="product_lis_title">
+                                <th class="text-center" >商品编码</th>
+                                <th class="text-center" style="width:16%;">商品名称</th>
+                                <th class="text-center" >品牌</th>
+                                <th class="text-center" >分类</th>
+                                <th class="text-center" >价格</th>
+                                <th class="text-center" >市场零售价</th>
+                                <th class="text-center" >库存</th>
+                                <th class="text-center" >真实销量</th>
+                                <th class="text-center" >展示销量</th>
+                                <th class="text-center" >状态</th>
+                                <th class="text-center" style="width:20%;">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in allProducts">
+                                <td >
+                                    {{item.productId}}
+                                </td>
+                                <td>{{item.productName}}</td>
+                                <td >{{item.brand}}</td>
+                                <td >{{item.secondType}}</td>
+                                <td>{{item.price}}</td>
+                                <td>{{item.productDetail.productMarketPrice}}</td>
+                                <td>{{item.productAmount}}</td>
+                                <td>{{item.sellNum}}</td>
+                                <td>{{item.productDetail.productSalesVolume}}</td>
+                                <td>{{item.status}}</td>
+                                <td class="operatione">
+                                    <a ui-sref="uploadingParticulars({productId:item.productId,createDate:item.createDate,status:status,productsName:productsName,page:pageNo})" class="orderBtn">编辑</a>
+                                    <a ng-click="upAndDown(item.id,'上架',item.status)" class="orderBtn" ng-if="item.status != '上架'">上架</a>
+                                    <a ng-click="upAndDown(item.id,'下架',item.status)" class="orderBtn" ng-if="item.status != '下架'">下架</a>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div page-tool></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+</div>
