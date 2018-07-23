@@ -513,13 +513,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		return insertSelective;
 	}
 
-	/**
-	 * 获取达到预警产品列表
-	 *
-	 *
-	 *
-	 *
-	 * */
+
 	/**
 	 * 根据条件查询产品列表
 	 *
