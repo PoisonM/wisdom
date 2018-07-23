@@ -262,4 +262,134 @@ public class ProductTypeController {
         }
         return false;
     }
+
+
+
+    /**
+     * 根据产品类型、产品等级，查询一级二级产品
+     *
+     * @param sysShopId
+     * @param levelOneId
+     * @param levelTwoId
+     * @return
+     */
+    @RequestMapping(value = "/getEarlyWarningProductLevelInfo", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getEarlyWarningProductLevelInfo(@RequestParam(required = false) String sysShopId, @RequestParam(required = false) String levelOneId,
+                                                @RequestParam(required = false) String levelTwoId, @RequestParam(required = false) String pageNo,
+                                                @RequestParam(required = false) String pageSize, @RequestParam(required = false) String productInfo) {
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        SysBossDTO bossInfo = UserUtils.getBossInfo();
+        if (judgeBossCurrentShop(responseDTO, bossInfo)) {
+            return responseDTO;
+        }
+
+        if (StringUtils.isNotBlank(levelOneId)) {
+            shopProductInfoDTO.setProductTypeOneId(levelOneId);
+        }
+        if (StringUtils.isNotBlank(levelTwoId)) {
+            shopProductInfoDTO.setProductTypeTwoId(levelTwoId);
+        }
+        if(StringUtils.isNotBlank(productInfo)){
+            shopProductInfoDTO.setProductName(productInfo);
+            shopProductInfoDTO.setProductCode(productInfo);
+        }
+
+        shopProductInfoDTO.setSysShopId(sysShopId);
+        List<ShopProductInfoDTO> detailProductList = shopProductInfoService.ShopProductInfofindList(shopProductInfoDTO);
+
+        HashMap<Object, Object> responseMap = new HashMap<>(8);
+        if (CommonUtils.objectIsNotEmpty(detailProductList)) {
+            //缓存一级产品名牌
+            HashMap<String, ShopProductInfoDTO> oneMap = new LinkedHashMap<>(16);
+            logger.info("开始缓存一级产品品牌");
+            for (ShopProductInfoDTO dto : detailProductList) {
+                oneMap.put(dto.getProductTypeOneId(), dto);
+            }
+
+            List<Object> oneLevelList = new ArrayList<Object>();
+            for (Map.Entry entry : oneMap.entrySet()) {
+                oneLevelList.add(entry.getValue());
+            }
+            responseMap.put("oneLevelList", oneLevelList);
+
+
+            //缓存选中的二级产品品牌，如果levelTwo，默认取oneMap中的第一条作为查询结果
+            logger.info("开始缓存二级产品品牌,levelOneId={}", levelOneId);
+            HashMap<Object, ShopProductInfoDTO> twoMap = new HashMap<>(16);
+            HashMap<Object, HashMap<Object, Integer>> oneProductNumber = new HashMap<>(16);
+            for (ShopProductInfoDTO dto : detailProductList) {
+                twoMap.put(dto.getProductTypeTwoId(), dto);
+                if(dto.getProductTypeOneId()!=null&&oneProductNumber.get(dto.getProductTypeOneId())==null){
+                    HashMap<Object, Integer> twoProductNumber = new HashMap<>(16);
+                    for (ShopProductInfoDTO dto2 : detailProductList){
+                        if(dto2.getProductTypeOneId()!=null&&dto2.getProductTypeOneId().equals(dto.getProductTypeOneId())){
+                            if(dto2.getProductTypeTwoId()!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())!=0){
+
+                                int sum = twoProductNumber.get(dto2.getProductTypeTwoId())+1;
+                                twoProductNumber.put(dto2.getProductTypeTwoId(),sum);
+
+                            }else if(dto2.getProductTypeTwoId()!=null&&twoProductNumber.get(dto2.getProductTypeTwoId())==null){
+                                twoProductNumber.put(dto2.getProductTypeTwoId(),1);
+                            }
+                        }
+                    }
+                    oneProductNumber.put(dto.getProductTypeOneId(),twoProductNumber);
+                }
+
+            }
+            List<Object> twoLevelList = new ArrayList<>();
+            for (Map.Entry<Object,ShopProductInfoDTO> entry : twoMap.entrySet()) {
+                ShopProductInfoDTO productInfoDTO = entry.getValue();
+                ExtShopProductInfoDTO extShopProductInfoDTO = new ExtShopProductInfoDTO();
+                BeanUtils.copyProperties(productInfoDTO,extShopProductInfoDTO);
+                for(Map.Entry entrySum : oneProductNumber.entrySet()){
+                    if(extShopProductInfoDTO.getProductTypeOneId()!=null){
+                        if(entrySum.getKey().equals(extShopProductInfoDTO.getProductTypeOneId())){
+                            HashMap<Object, Integer> sumMap = (HashMap<Object, Integer>)entrySum.getValue();
+                            for(Map.Entry entrySumVal : sumMap.entrySet()){
+                                if(entry.getKey()!=null){
+                                    if(entry.getKey().equals(entrySumVal.getKey())){
+                                        extShopProductInfoDTO.setNumber((Integer) entrySumVal.getValue());
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    entry.setValue(extShopProductInfoDTO);
+                }
+                twoLevelList.add(entry.getValue());
+
+            }
+            responseMap.put("twoLevelList", twoLevelList);
+            responseMap.put("oneProductNumber",oneProductNumber);
+        }
+
+
+        responseMap.put("detailProductList", detailProductList);
+        //查询产品的库存信息
+        if (StringUtils.isNotBlank(sysShopId)) {
+            ShopStockNumberDTO shopStockNumberDTO = new ShopStockNumberDTO();
+            shopStockNumberDTO.setShopStoreId(sysShopId);
+            shopStockNumberDTO.setProductTypeTwoId(levelTwoId);
+            PageParamVoDTO<ShopStockNumberDTO> pageParamVoDTO = new PageParamVoDTO();
+            pageParamVoDTO.setPaging(true);
+            pageParamVoDTO.setPageNo(0);
+            pageParamVoDTO.setRequestData(shopStockNumberDTO);
+            //查询产品库存详情
+            Map<String, Object> map = shopStockService.getStockDetailList(pageParamVoDTO, detailProductList);
+            responseMap.put("allUseCost", map.get("allUseCost"));
+            responseMap.put("useCost", map.get("useCost"));
+            responseMap.put("detailProductList", map.get("extShopProductInfoDTOs"));
+        }
+
+        responseDTO.setResponseData(responseMap);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        return responseDTO;
+    }
+
+
 }

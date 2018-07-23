@@ -470,7 +470,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 		ShopStockDTO shopStockDTO = null;
 		Map<String, ShopStockRequestDTO> map = new HashedMap();
 
-		// 遍历传入过来的集合参数
+		//遍历传入过来的集合参数
 		for (ShopStockRequestDTO shopStock : shopStockRequestDTO) {
 			shopStockDTO = new ShopStockDTO();
 			BeanUtils.copyProperties(shopStock, shopStockDTO);

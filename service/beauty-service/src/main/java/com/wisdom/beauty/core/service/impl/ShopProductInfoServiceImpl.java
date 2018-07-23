@@ -5,6 +5,7 @@ import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.extDto.ExtShopProductInfoDTO;
 import com.wisdom.beauty.api.responseDto.ProductTypeResponseDTO;
 import com.wisdom.beauty.api.responseDto.ShopProductInfoResponseDTO;
+import com.wisdom.beauty.core.mapper.ExtShopProductInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopProductInfoMapper;
 import com.wisdom.beauty.core.mapper.ShopProductTypeMapper;
 import com.wisdom.beauty.core.mapper.ShopUserProductRelationMapper;
@@ -42,6 +43,9 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 
 	@Autowired
 	private ShopProductInfoMapper shopProductInfoMapper;
+
+	@Autowired
+	private ExtShopProductInfoMapper extShopProductInfoMapper;
 
     @Autowired
     private MongoUtils mongoUtils;
@@ -85,6 +89,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		if (StringUtils.isNotBlank(shopProductInfoDTO.getProductName())) {
 			criteria.andProductNameLike("%" + shopProductInfoDTO.getProductName() + "%");
 		}
+
 		
 		if(StringUtils.isNotBlank(shopProductInfoDTO.getStatus())){
 		    criteria.andStatusEqualTo(shopProductInfoDTO.getStatus());
@@ -505,4 +510,25 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 		return insertSelective;
 	}
 
+	/**
+	 * 获取达到预警产品列表
+	 *
+	 *
+	 *
+	 *
+	 * */
+	/**
+	 * 根据条件查询产品列表
+	 *
+	 * @param shopProductInfoDTO
+	 * @return
+	 */
+	public List<ShopProductInfoDTO> ShopProductInfofindList(ShopProductInfoDTO shopProductInfoDTO) {
+		if (CommonUtils.objectIsEmpty(shopProductInfoDTO)) {
+			logger.info("根据条件查询产品列表传入参数为空");
+			return null;
+		}
+		List<ShopProductInfoDTO> shopProductInfoDTOS = extShopProductInfoMapper.findEarlyWarningProductLevelInfo(shopProductInfoDTO);
+		return shopProductInfoDTOS;
+	}
 }

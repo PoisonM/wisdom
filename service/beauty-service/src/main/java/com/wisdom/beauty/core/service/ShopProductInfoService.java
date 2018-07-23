@@ -141,4 +141,13 @@ public interface ShopProductInfoService {
      * @return
      */
     int saveProductInfo(ExtShopProductInfoDTO shopProductInfoDTO);
+
+    /**
+     * 获取达到预警值的产品列表
+     * @param shopProductInfoDTO
+     *
+     * @return
+     * */
+    List<ShopProductInfoDTO> ShopProductInfofindList(ShopProductInfoDTO shopProductInfoDTO);
+
 }

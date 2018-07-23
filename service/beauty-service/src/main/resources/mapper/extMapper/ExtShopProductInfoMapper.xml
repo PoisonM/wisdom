@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wisdom.beauty.core.mapper.ShopProductInfoMapper" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopProductInfoMapper" >
   <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
@@ -687,5 +687,23 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
+  <!--查询预警产品列表-->
+  <select id="findEarlyWarningProductLevelInfo" resultType="com.wisdom.beauty.api.dto.ShopProductInfoDTO">
+    SELECT
+      *
+    FROM
+      shop_stock_number ssn,
+      shop_product_info spi
+    WHERE
+      spi.sys_shop_id = ssn.shop_store_id
+      AND spi.id = ssn.shop_proc_id
+      AND spi.product_warning_num >= ssn.stock_number
+      <if test="productCode!=null and productCode != ''">
+        AND (spi.product_code  LIKE CONCAT(CONCAT('%',#{productCode}),'%')
+        or spi.product_name LIKE CONCAT(CONCAT('%',#{productCode}),'%') )
+      </if>
+      AND spi.sys_shop_id = #{sysShopId}
+      AND spi.STATUS = '0'
+  </select>
 
 </mapper>
