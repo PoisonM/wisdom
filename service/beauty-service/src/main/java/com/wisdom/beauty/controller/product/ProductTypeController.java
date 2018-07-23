@@ -67,6 +67,12 @@ public class ProductTypeController {
         shopProductTypeDTO.setStatus(status);
         shopProductTypeDTO.setProductTypeName(productTypeName);
         shopProductTypeDTO.setSysShopId(bossInfo.getCurrentShopId());
+        List<ShopProductTypeDTO> oneLevelProductList = shopProductInfoService.getOneLevelProductList(shopProductTypeDTO);
+        if(CommonUtils.objectIsNotEmpty(oneLevelProductList)){
+            //数据重复
+            responseDTO.setResult(StatusConstant.DATA_REPEAT);
+            return responseDTO;
+        }
         int updateInfo = shopProductInfoService.saveProductTypeInfo(shopProductTypeDTO);
         responseDTO.setResult(updateInfo > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
         return responseDTO;

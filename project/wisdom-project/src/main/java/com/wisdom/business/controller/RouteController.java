@@ -39,6 +39,14 @@ public class RouteController {
 		return "angular/receptionIndex";
 	}
 
+	@RequestMapping(value ="crossborder",method = {RequestMethod.POST, RequestMethod.GET})
+	public String crossborder(HttpServletResponse response) {
+		response.addHeader("Pragma","no-cache");
+		response.setHeader("Cache-Control","no-cache");
+		response.setHeader("Expires","0");
+		return "angular/crossborderIndex";
+	}
+
 	@RequestMapping(value ="MP_verify_338eDaTfFCfMKzmb.txt",method = {RequestMethod.POST, RequestMethod.GET})
 	@ResponseBody
 	public String value1(HttpServletResponse response) {

@@ -77,15 +77,15 @@
             <div class="basic">
                 <p>折扣</p>
                 <ul>
-                    <li>
+                    <li ng-if="item1.goodsType == 0">
                         <label for="">单次</label>
                         <span>{{item1.timeDiscount=='1'||item1.timeDiscount == null?'无':item1.timeDiscount*10}}折</span>
                     </li>
-                    <li>
+                    <li ng-if="item1.goodsType == 1">
                         <label for="">疗程卡</label>
                         <span>{{item1.periodDiscount=='1'||item1.timeDiscount == null?'无':item1.periodDiscount*10}}折</span>
                     </li>
-                    <li>
+                    <li ng-if="item1.goodsType == 4">
                         <label for="">产品</label>
                         <span>{{item1.productDiscount=='1'||item1.timeDiscount == null?'无':item1.productDiscount*10}}折</span>
                     </li>
