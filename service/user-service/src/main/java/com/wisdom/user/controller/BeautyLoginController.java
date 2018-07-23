@@ -61,7 +61,7 @@ public class BeautyLoginController {
             return result;
         }else if(loginResult.getResult().equals("delete"))
         {
-            result.setResult(StatusConstant.FAILURE);
+            result.setResult(StatusConstant.USER_DELETE);
             result.setErrorInfo("手机号已从系统中删除");
             return result;
         }

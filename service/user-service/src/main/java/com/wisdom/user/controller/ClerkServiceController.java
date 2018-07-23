@@ -72,6 +72,14 @@ public class ClerkServiceController {
 	@RequestMapping(value = "saveClerkInfo", method = { RequestMethod.POST, RequestMethod.GET })
 	@ResponseBody
 	ResponseDTO<Object>  saveClerkInfo(@RequestBody SysClerkDTO sysClerkDTO) {
+		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+		SysClerkDTO searchDto = new SysClerkDTO();
+		searchDto.setMobile(sysClerkDTO.getMobile());
+		List<SysClerkDTO> clerkInfo = clerkInfoService.getClerkInfo(searchDto);
+		if(CommonUtils.objectIsNotEmpty(clerkInfo)){
+			responseDTO.setResult(StatusConstant.DATA_REPEAT);
+			return responseDTO;
+		}
 		SysBossDTO bossInfo = UserUtils.getBossInfo();
 		ResponseDTO<List<SysClerkDTO>> listResponseDTO = new ResponseDTO<>();
 		if(bossInfo!=null){
@@ -79,7 +87,6 @@ public class ClerkServiceController {
 			sysClerkDTO.setSysBossName(bossInfo.getName());
 		}
 		clerkInfoService.saveSysClerk(sysClerkDTO);
-		ResponseDTO<Object> responseDTO = new ResponseDTO<>();
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		return responseDTO;
 	}
