@@ -687,7 +687,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <!--查询预警产品列表-->
+  <!--查询预警产品列表 暂时写死为3个作为预警值-->
   <select id="findEarlyWarningProductLevelInfo" resultType="com.wisdom.beauty.api.dto.ShopProductInfoDTO">
     SELECT
       *
@@ -697,7 +697,7 @@
     WHERE
       spi.sys_shop_id = ssn.shop_store_id
       AND spi.id = ssn.shop_proc_id
-      AND spi.product_warning_num >= ssn.stock_number
+      AND 3 >= ssn.stock_number
       <if test="productCode!=null and productCode != ''">
         AND (spi.product_code  LIKE CONCAT(CONCAT('%',#{productCode}),'%')
         or spi.product_name LIKE CONCAT(CONCAT('%',#{productCode}),'%') )
