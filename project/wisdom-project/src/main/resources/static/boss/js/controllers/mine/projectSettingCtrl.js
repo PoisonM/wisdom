@@ -31,7 +31,7 @@ angular.module('controllers',[]).controller('projectSettingCtrl',
                     SaveShopProjectType.save({projectTypeName:$scope.param.projectTypeName,status:status},function (data) {
                         if(data.result=="0x00001"){
                             $state.go("projectBrand")
-                        }else if(data.result==" 0x00014"){
+                        }else if(data.result=="0x00014"){
                             alert("该品牌已存在，请勿重复添加")
                         }else{
                             alert("保存未成功")
