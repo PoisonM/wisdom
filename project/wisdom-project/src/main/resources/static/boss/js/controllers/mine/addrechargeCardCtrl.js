@@ -115,6 +115,12 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                     alert("请填写产品折扣")
                     return
                 }
+
+                if(($rootScope.settingAddsome.editedRecharge.timesList.length>0&&($rootScope.settingAddsome.editedRecharge.timeDiscount<=0.1||$rootScope.settingAddsome.editedRecharge.timeDiscount>1))||
+                    ($rootScope.settingAddsome.editedRecharge.productList.length>0&&($rootScope.settingAddsome.editedRecharge.productDiscount<=0.1||$rootScope.settingAddsome.editedRecharge.productDiscount>1))||
+                    ($rootScope.settingAddsome.editedRecharge.productList.periodList>0&&($rootScope.settingAddsome.editedRecharge.periodDiscount<=0.1||$rootScope.settingAddsome.editedRecharge.periodDiscount>1))){
+                    return
+                }
                 SaveRechargeCardInfo.save($rootScope.settingAddsome.editedRecharge, function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("basicSetting")

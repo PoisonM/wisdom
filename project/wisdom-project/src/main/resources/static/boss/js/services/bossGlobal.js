@@ -38,6 +38,14 @@ angular.module('bossGlobal',[])
         MX_YX_SZCJ:"MX_YX_SZCJ",
         MX_YX_YXABF:"MX_YX_YXABF"
     })
+    .constant("Chinese",{
+        "beautyAchievement":"业绩"
+
+    })
+    .constant("English",{
+        "beautyAchievement":"achievement"
+
+    })
     .factory('BossUtil', ['Global','$ionicPopup','$state',
         function(Global,$ionicPopup,$state) {
             return {

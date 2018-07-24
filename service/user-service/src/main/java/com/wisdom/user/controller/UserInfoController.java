@@ -44,7 +44,9 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "customer")
 public class UserInfoController {
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private UserInfoService userInfoService;
 

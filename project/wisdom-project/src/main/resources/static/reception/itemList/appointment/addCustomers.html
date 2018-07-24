@@ -1,8 +1,8 @@
 <div>
     <!--点击可以选择头像部分-->
     <div class="photoBox"  >
-        <input type="file" id="userPic" ng-click="uploadPic()">
-        <img src="images/bt_taking%20pictures.png" alt="" >
+        <input type="file" id="userPic" onchange="angular.element(this).scope().img_upload(this.files)">
+        <img ng-src="{{param.imgSrc}}" alt="" style="border-radius: 50%">
     </div>
     <!--顾客信息-->
     <div class="customerBox">

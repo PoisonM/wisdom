@@ -64,6 +64,8 @@ angular.module('controllers',[]).controller('addEmployeesCtrl',
                 SaveClerkInfo.save($scope.sysClerkDTO,function (data) {
                     if(data.result==Global.SUCCESS){
                         $state.go("addFamily")
+                    }else if(data.result =='0x00014'){
+                        alert('该家人已经存在，请勿重新添加')
                     }else {
                         alert(data.errorInfo)
                     }

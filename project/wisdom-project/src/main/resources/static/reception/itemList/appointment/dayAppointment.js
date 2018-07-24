@@ -1535,9 +1535,34 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
     $scope.goArrangeWorkList = function () {
         $state.go("pad-web.arrangeWorkList")
     }
-    $scope.param.imgSrc = 'images/bt_taking%20pictures.png'
+    $scope.param.imgSrc = 'https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png'
     var pattern = /^1[34578]\d{9}$/;
     /*添加顾客*/
+
+    /*上传图片*/
+    $scope.reader = new FileReader();   //创建一个FileReader接口
+    $scope.thumb = "";      //用于存放图片的base64
+    $scope.img_upload = function(files) {
+        var file = files[0];
+        if(window.FileReader) {
+            var fr = new FileReader();
+            fr.onloadend = function(e) {
+                $scope.thumb = e.target.result
+                ImageBase64UploadToOSS.save($scope.thumb,function (data) {
+                    /*if(data.result == "0x00001"){
+
+                     }*/
+                    $scope.param.imgSrc = data.responseData//图片地址
+                })
+            };
+            fr.readAsDataURL(file);
+        }else {
+            alert("浏览器不支持")
+        }
+
+    };
+
+
     $scope.addCustomersCtrl = function(){
         ngDialog.open({
             template: 'addCustomers',
@@ -1586,7 +1611,7 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
                         $scope.param.addCustomersObject.userName = ""
                         $scope.param.addCustomersObject.userPhone = ""
                         $scope.param.addCustomersObject.sex = "女"
-                        $scope.param.imgSrc = "images/bt_taking%20pictures.png"
+                        $scope.param.imgSrc = "https://mx-beauty.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F.png"
                     }
                     $scope.closeThisDialog();
 
