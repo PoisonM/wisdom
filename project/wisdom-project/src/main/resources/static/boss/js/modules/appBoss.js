@@ -49,7 +49,7 @@ define(['angular'], function (angular) {
             $ionicConfigProvider.tabs.position('bottom');// other values: top
 
         }])
-        .run(function($rootScope){
+        .run(function($rootScope,Chinese){
             $rootScope.shopInfo = {
                 entryShopProductList:[],
                 outShopProductList:[],
@@ -62,6 +62,11 @@ define(['angular'], function (angular) {
                 extShopProjectInfoDTO:'',/*项目信息*/
                 product:"",/*产品信息*/
                 productId:''/*用于查询产品详情*/
+            };
+            if(true)
+            {
+                $rootScope.language = Chinese;
+
             }
         })
     return app;
