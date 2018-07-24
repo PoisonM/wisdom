@@ -110,6 +110,8 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
                     $state.go("pad-web.left_nav.blankPage")
                 }else if(data.result == "0x00002"){
                     alert(data.responseData)
+                }else if(data.result == "0x00014"){
+                    alert("此用户已存在")
                 }
             })
         }else{
@@ -119,6 +121,10 @@ PADWeb.controller('addRecordCtrl', function($scope,$stateParams,$rootScope,$stat
                     alert("更新成功");
                     // $state.go("pad-web.left_nav.blankPage")
                     window.history.go(-1)
+                }else if(data.result == "0x00002"){
+                    alert(data.responseData)
+                }else if(data.result == "0x00014"){
+                    alert("此用户已存在")
                 }
             });
         }

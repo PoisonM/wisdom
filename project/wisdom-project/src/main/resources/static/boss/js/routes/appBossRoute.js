@@ -1888,6 +1888,21 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+
+                    /**预警商品**/
+                    .state('earlyWarningGoods', {
+                        url: '/earlyWarningGoods/:sysShopId',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'earlyWarningGoodsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.earlyWarningGoodsCtrl',
+                                    ['js/controllers/inventory/earlyWarningGoodsCtrl.js?ver='+ bossVersion],
+                                    'views/inventory/earlyWarningGoods.html?ver=' + bossVersion);
+                            }
+                        }
+                    })
+
                /* addressBook 库存 通讯录导入*/
                     .state('addressBook', {
                         url: '/addressBook',
@@ -2456,6 +2471,11 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
+
+
+
+
+
                     /* employeeRefillCard  充值卡*/
                     .state('employeeRefillCard', {
                         url: '/employeeRefillCard/:sysShopId/:sysUserId',

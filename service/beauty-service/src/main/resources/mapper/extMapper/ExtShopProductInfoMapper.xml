@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.beauty.core.mapper.ExtShopProductInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="sys_shop_id" property="sysShopId" jdbcType="VARCHAR" />
+    <result column="parent_shop_id" property="parentShopId" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_type_one_name" property="productTypeOneName" jdbcType="VARCHAR" />
+    <result column="product_type_one_id" property="productTypeOneId" jdbcType="VARCHAR" />
+    <result column="product_type_two_name" property="productTypeTwoName" jdbcType="VARCHAR" />
+    <result column="product_type_two_id" property="productTypeTwoId" jdbcType="VARCHAR" />
+    <result column="product_url" property="productUrl" jdbcType="VARCHAR" />
+    <result column="product_position" property="productPosition" jdbcType="VARCHAR" />
+    <result column="product_function" property="productFunction" jdbcType="VARCHAR" />
+    <result column="qr_code_url" property="qrCodeUrl" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="CHAR" />
+    <result column="manu_address" property="manuAddress" jdbcType="VARCHAR" />
+    <result column="quality_period" property="qualityPeriod" jdbcType="INTEGER" />
+    <result column="manu_name" property="manuName" jdbcType="VARCHAR" />
+    <result column="trade_mark" property="tradeMark" jdbcType="VARCHAR" />
+    <result column="effect_date" property="effectDate" jdbcType="VARCHAR" />
+    <result column="Invalid_date" property="invalidDate" jdbcType="VARCHAR" />
+    <result column="product_warning_day" property="productWarningDay" jdbcType="INTEGER" />
+    <result column="product_warning_num" property="productWarningNum" jdbcType="INTEGER" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="initial_price" property="initialPrice" jdbcType="DECIMAL" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="product_unit" property="productUnit" jdbcType="VARCHAR" />
+    <result column="product_spec" property="productSpec" jdbcType="VARCHAR" />
+    <result column="product_spec_unit" property="productSpecUnit" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+    <result column="is_display" property="isDisplay" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sys_shop_id, parent_shop_id, product_name, product_type_one_name, product_type_one_id, 
+    product_type_two_name, product_type_two_id, product_url, product_position, product_function, 
+    qr_code_url, product_type, manu_address, quality_period, manu_name, trade_mark, effect_date, 
+    Invalid_date, product_warning_day, product_warning_num, market_price, initial_price, 
+    product_code, product_unit, product_spec, product_spec_unit, note, introduce, is_display, 
+    status, create_by, create_date, update_user, update_date
+  </sql>
+  <select id="selectByCriteria" resultMap="BaseResultMap" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoCriteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_product_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0" >
+      limit ${limitStart},${pageSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from shop_product_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from shop_product_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoCriteria" >
+    delete from shop_product_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
+    insert into shop_product_info (id, sys_shop_id, parent_shop_id, 
+      product_name, product_type_one_name, product_type_one_id, 
+      product_type_two_name, product_type_two_id, product_url, 
+      product_position, product_function, qr_code_url, 
+      product_type, manu_address, quality_period, 
+      manu_name, trade_mark, effect_date, 
+      Invalid_date, product_warning_day, product_warning_num, 
+      market_price, initial_price, product_code, 
+      product_unit, product_spec, product_spec_unit, 
+      note, introduce, is_display, 
+      status, create_by, create_date, 
+      update_user, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{sysShopId,jdbcType=VARCHAR}, #{parentShopId,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{productTypeOneName,jdbcType=VARCHAR}, #{productTypeOneId,jdbcType=VARCHAR}, 
+      #{productTypeTwoName,jdbcType=VARCHAR}, #{productTypeTwoId,jdbcType=VARCHAR}, #{productUrl,jdbcType=VARCHAR}, 
+      #{productPosition,jdbcType=VARCHAR}, #{productFunction,jdbcType=VARCHAR}, #{qrCodeUrl,jdbcType=VARCHAR}, 
+      #{productType,jdbcType=CHAR}, #{manuAddress,jdbcType=VARCHAR}, #{qualityPeriod,jdbcType=INTEGER}, 
+      #{manuName,jdbcType=VARCHAR}, #{tradeMark,jdbcType=VARCHAR}, #{effectDate,jdbcType=VARCHAR}, 
+      #{invalidDate,jdbcType=VARCHAR}, #{productWarningDay,jdbcType=INTEGER}, #{productWarningNum,jdbcType=INTEGER}, 
+      #{marketPrice,jdbcType=DECIMAL}, #{initialPrice,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, 
+      #{productUnit,jdbcType=VARCHAR}, #{productSpec,jdbcType=VARCHAR}, #{productSpecUnit,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{isDisplay,jdbcType=CHAR}, 
+      #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
+    insert into shop_product_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sysShopId != null" >
+        sys_shop_id,
+      </if>
+      <if test="parentShopId != null" >
+        parent_shop_id,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productTypeOneName != null" >
+        product_type_one_name,
+      </if>
+      <if test="productTypeOneId != null" >
+        product_type_one_id,
+      </if>
+      <if test="productTypeTwoName != null" >
+        product_type_two_name,
+      </if>
+      <if test="productTypeTwoId != null" >
+        product_type_two_id,
+      </if>
+      <if test="productUrl != null" >
+        product_url,
+      </if>
+      <if test="productPosition != null" >
+        product_position,
+      </if>
+      <if test="productFunction != null" >
+        product_function,
+      </if>
+      <if test="qrCodeUrl != null" >
+        qr_code_url,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="manuAddress != null" >
+        manu_address,
+      </if>
+      <if test="qualityPeriod != null" >
+        quality_period,
+      </if>
+      <if test="manuName != null" >
+        manu_name,
+      </if>
+      <if test="tradeMark != null" >
+        trade_mark,
+      </if>
+      <if test="effectDate != null" >
+        effect_date,
+      </if>
+      <if test="invalidDate != null" >
+        Invalid_date,
+      </if>
+      <if test="productWarningDay != null" >
+        product_warning_day,
+      </if>
+      <if test="productWarningNum != null" >
+        product_warning_num,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="initialPrice != null" >
+        initial_price,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="productUnit != null" >
+        product_unit,
+      </if>
+      <if test="productSpec != null" >
+        product_spec,
+      </if>
+      <if test="productSpecUnit != null" >
+        product_spec_unit,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+      <if test="isDisplay != null" >
+        is_display,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sysShopId != null" >
+        #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentShopId != null" >
+        #{parentShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneName != null" >
+        #{productTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneId != null" >
+        #{productTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeTwoName != null" >
+        #{productTypeTwoName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeTwoId != null" >
+        #{productTypeTwoId,jdbcType=VARCHAR},
+      </if>
+      <if test="productUrl != null" >
+        #{productUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="productPosition != null" >
+        #{productPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="productFunction != null" >
+        #{productFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCodeUrl != null" >
+        #{qrCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=CHAR},
+      </if>
+      <if test="manuAddress != null" >
+        #{manuAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="qualityPeriod != null" >
+        #{qualityPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="manuName != null" >
+        #{manuName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeMark != null" >
+        #{tradeMark,jdbcType=VARCHAR},
+      </if>
+      <if test="effectDate != null" >
+        #{effectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidDate != null" >
+        #{invalidDate,jdbcType=VARCHAR},
+      </if>
+      <if test="productWarningDay != null" >
+        #{productWarningDay,jdbcType=INTEGER},
+      </if>
+      <if test="productWarningNum != null" >
+        #{productWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="initialPrice != null" >
+        #{initialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productUnit != null" >
+        #{productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpec != null" >
+        #{productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpecUnit != null" >
+        #{productSpecUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        #{isDisplay,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByCriteria" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoCriteria" resultType="java.lang.Integer" >
+    select count(1) from shop_product_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCriteriaSelective" parameterType="map" >
+    update shop_product_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysShopId != null" >
+        sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentShopId != null" >
+        parent_shop_id = #{record.parentShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeOneName != null" >
+        product_type_one_name = #{record.productTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeOneId != null" >
+        product_type_one_id = #{record.productTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeTwoName != null" >
+        product_type_two_name = #{record.productTypeTwoName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeTwoId != null" >
+        product_type_two_id = #{record.productTypeTwoId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productUrl != null" >
+        product_url = #{record.productUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productPosition != null" >
+        product_position = #{record.productPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productFunction != null" >
+        product_function = #{record.productFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qrCodeUrl != null" >
+        qr_code_url = #{record.qrCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null" >
+        product_type = #{record.productType,jdbcType=CHAR},
+      </if>
+      <if test="record.manuAddress != null" >
+        manu_address = #{record.manuAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qualityPeriod != null" >
+        quality_period = #{record.qualityPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.manuName != null" >
+        manu_name = #{record.manuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeMark != null" >
+        trade_mark = #{record.tradeMark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.effectDate != null" >
+        effect_date = #{record.effectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invalidDate != null" >
+        Invalid_date = #{record.invalidDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productWarningDay != null" >
+        product_warning_day = #{record.productWarningDay,jdbcType=INTEGER},
+      </if>
+      <if test="record.productWarningNum != null" >
+        product_warning_num = #{record.productWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.marketPrice != null" >
+        market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.initialPrice != null" >
+        initial_price = #{record.initialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productCode != null" >
+        product_code = #{record.productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productUnit != null" >
+        product_unit = #{record.productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productSpec != null" >
+        product_spec = #{record.productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productSpecUnit != null" >
+        product_spec_unit = #{record.productSpecUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.note != null" >
+        note = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introduce != null" >
+        introduce = #{record.introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDisplay != null" >
+        is_display = #{record.isDisplay,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateUser != null" >
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByCriteria" parameterType="map" >
+    update shop_product_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      sys_shop_id = #{record.sysShopId,jdbcType=VARCHAR},
+      parent_shop_id = #{record.parentShopId,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      product_type_one_name = #{record.productTypeOneName,jdbcType=VARCHAR},
+      product_type_one_id = #{record.productTypeOneId,jdbcType=VARCHAR},
+      product_type_two_name = #{record.productTypeTwoName,jdbcType=VARCHAR},
+      product_type_two_id = #{record.productTypeTwoId,jdbcType=VARCHAR},
+      product_url = #{record.productUrl,jdbcType=VARCHAR},
+      product_position = #{record.productPosition,jdbcType=VARCHAR},
+      product_function = #{record.productFunction,jdbcType=VARCHAR},
+      qr_code_url = #{record.qrCodeUrl,jdbcType=VARCHAR},
+      product_type = #{record.productType,jdbcType=CHAR},
+      manu_address = #{record.manuAddress,jdbcType=VARCHAR},
+      quality_period = #{record.qualityPeriod,jdbcType=INTEGER},
+      manu_name = #{record.manuName,jdbcType=VARCHAR},
+      trade_mark = #{record.tradeMark,jdbcType=VARCHAR},
+      effect_date = #{record.effectDate,jdbcType=VARCHAR},
+      Invalid_date = #{record.invalidDate,jdbcType=VARCHAR},
+      product_warning_day = #{record.productWarningDay,jdbcType=INTEGER},
+      product_warning_num = #{record.productWarningNum,jdbcType=INTEGER},
+      market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      initial_price = #{record.initialPrice,jdbcType=DECIMAL},
+      product_code = #{record.productCode,jdbcType=VARCHAR},
+      product_unit = #{record.productUnit,jdbcType=VARCHAR},
+      product_spec = #{record.productSpec,jdbcType=VARCHAR},
+      product_spec_unit = #{record.productSpecUnit,jdbcType=VARCHAR},
+      note = #{record.note,jdbcType=VARCHAR},
+      introduce = #{record.introduce,jdbcType=VARCHAR},
+      is_display = #{record.isDisplay,jdbcType=CHAR},
+      status = #{record.status,jdbcType=CHAR},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
+    update shop_product_info
+    <set >
+      <if test="sysShopId != null" >
+        sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentShopId != null" >
+        parent_shop_id = #{parentShopId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneName != null" >
+        product_type_one_name = #{productTypeOneName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeOneId != null" >
+        product_type_one_id = #{productTypeOneId,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeTwoName != null" >
+        product_type_two_name = #{productTypeTwoName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeTwoId != null" >
+        product_type_two_id = #{productTypeTwoId,jdbcType=VARCHAR},
+      </if>
+      <if test="productUrl != null" >
+        product_url = #{productUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="productPosition != null" >
+        product_position = #{productPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="productFunction != null" >
+        product_function = #{productFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCodeUrl != null" >
+        qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=CHAR},
+      </if>
+      <if test="manuAddress != null" >
+        manu_address = #{manuAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="qualityPeriod != null" >
+        quality_period = #{qualityPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="manuName != null" >
+        manu_name = #{manuName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeMark != null" >
+        trade_mark = #{tradeMark,jdbcType=VARCHAR},
+      </if>
+      <if test="effectDate != null" >
+        effect_date = #{effectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidDate != null" >
+        Invalid_date = #{invalidDate,jdbcType=VARCHAR},
+      </if>
+      <if test="productWarningDay != null" >
+        product_warning_day = #{productWarningDay,jdbcType=INTEGER},
+      </if>
+      <if test="productWarningNum != null" >
+        product_warning_num = #{productWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="marketPrice != null" >
+        market_price = #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="initialPrice != null" >
+        initial_price = #{initialPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null" >
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productUnit != null" >
+        product_unit = #{productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpec != null" >
+        product_spec = #{productSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="productSpecUnit != null" >
+        product_spec_unit = #{productSpecUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="isDisplay != null" >
+        is_display = #{isDisplay,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wisdom.beauty.api.dto.ShopProductInfoDTO" >
+    update shop_product_info
+    set sys_shop_id = #{sysShopId,jdbcType=VARCHAR},
+      parent_shop_id = #{parentShopId,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_type_one_name = #{productTypeOneName,jdbcType=VARCHAR},
+      product_type_one_id = #{productTypeOneId,jdbcType=VARCHAR},
+      product_type_two_name = #{productTypeTwoName,jdbcType=VARCHAR},
+      product_type_two_id = #{productTypeTwoId,jdbcType=VARCHAR},
+      product_url = #{productUrl,jdbcType=VARCHAR},
+      product_position = #{productPosition,jdbcType=VARCHAR},
+      product_function = #{productFunction,jdbcType=VARCHAR},
+      qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=CHAR},
+      manu_address = #{manuAddress,jdbcType=VARCHAR},
+      quality_period = #{qualityPeriod,jdbcType=INTEGER},
+      manu_name = #{manuName,jdbcType=VARCHAR},
+      trade_mark = #{tradeMark,jdbcType=VARCHAR},
+      effect_date = #{effectDate,jdbcType=VARCHAR},
+      Invalid_date = #{invalidDate,jdbcType=VARCHAR},
+      product_warning_day = #{productWarningDay,jdbcType=INTEGER},
+      product_warning_num = #{productWarningNum,jdbcType=INTEGER},
+      market_price = #{marketPrice,jdbcType=DECIMAL},
+      initial_price = #{initialPrice,jdbcType=DECIMAL},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      product_unit = #{productUnit,jdbcType=VARCHAR},
+      product_spec = #{productSpec,jdbcType=VARCHAR},
+      product_spec_unit = #{productSpecUnit,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      is_display = #{isDisplay,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!--查询预警产品列表 暂时写死为3个作为预警值-->
+  <select id="findEarlyWarningProductLevelInfo" resultType="com.wisdom.beauty.api.dto.ShopProductInfoDTO">
+    SELECT
+      *
+    FROM
+      shop_stock_number ssn,
+      shop_product_info spi
+    WHERE
+      spi.sys_shop_id = ssn.shop_store_id
+      AND spi.id = ssn.shop_proc_id
+      AND 3 >= ssn.stock_number
+      <if test="productCode!=null and productCode != ''">
+        AND (spi.product_code  LIKE CONCAT(CONCAT('%',#{productCode}),'%')
+        or spi.product_name LIKE CONCAT(CONCAT('%',#{productCode}),'%') )
+      </if>
+      AND spi.sys_shop_id = #{sysShopId}
+      AND spi.STATUS = '0'
+  </select>
+
+</mapper>

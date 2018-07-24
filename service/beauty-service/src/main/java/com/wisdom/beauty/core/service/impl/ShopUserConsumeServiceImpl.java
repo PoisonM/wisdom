@@ -326,7 +326,7 @@ public class ShopUserConsumeServiceImpl implements ShopUserConsumeService {
                 userConsumeRecordDTO.setSysUserId(archivesInfo.getSysUserId());
                 userConsumeRecordDTO.setSysShopName(archivesInfo.getSysShopName());
                 userConsumeRecordDTO.setSysShopId(clerkInfo.getSysShopId());
-                userConsumeRecordDTO.setSysClerkId(clerkInfo.getId());
+                userConsumeRecordDTO.setSysClerkId(dto.getSysClerkId());
                 userConsumeRecordDTO.setSignUrl(shopUserPayDTO.getSignUrl());
                 userConsumeRecordDTO.setSysBossCode(clerkInfo.getSysBossCode());
                 userConsumeRecordDTO.setPrice(consumeAmount);

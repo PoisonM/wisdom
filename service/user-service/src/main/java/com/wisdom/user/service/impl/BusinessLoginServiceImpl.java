@@ -218,4 +218,33 @@ public class BusinessLoginServiceImpl implements BusinessLoginService {
             return StatusConstant.FAILURE;
         }
     }
+
+    @Override
+    public String crossBorderLogin(LoginDTO loginDTO,String ip) {
+        //判断validateCode是否还有效
+        if(LoginUtil.processValidateCode(loginDTO).equals(StatusConstant.VALIDATECODE_ERROR))
+        {
+            return StatusConstant.VALIDATECODE_ERROR;
+        }
+
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setMobile(loginDTO.getUserPhone());
+        userInfoDTO.setUserType("special");
+        List<UserInfoDTO> userInfoDTOList = userMapper.getUserByInfo(userInfoDTO);
+        if(userInfoDTOList.size()>0) {
+            userInfoDTO = userInfoDTOList.get(0);
+            userInfoDTO.setLoginIp(ip);
+            userInfoDTO.setLoginDate(new Date());
+        }else{
+            userInfoDTO.setId(UUID.randomUUID().toString());
+            userInfoDTO.setDelFlag("0");
+            userInfoDTO.setLoginIp(ip);
+            userInfoDTO.setCreateDate(new Date());
+            userInfoService.insertUserInfo(userInfoDTO);
+        }
+        String logintoken = UUID.randomUUID().toString();
+        String userInfoStr = gson.toJson(userInfoDTO);
+        JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
+        return logintoken;
+    }
 }

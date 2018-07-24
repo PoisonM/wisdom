@@ -185,4 +185,55 @@ public class BuyCartService {
 
     }
 
+
+    /**
+     *跨境电商 加入购物车
+     *
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public String addCrossBorderProduct(String productId,int num,String mobile) {
+        logger.info("用户=={}将货品id=={}数量=={}",mobile,productId,num);
+        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,"specialProduct",mobile);
+
+        if(ObjectUtils.isNullOrEmpty(orderProductRelationUnPaid)){
+            try {
+                String businessOrderId = CodeGenUtil.getOrderCodeNumber();
+                logger.info("如果没有加入过，则直接增加订单中=={}，并设置产品的数量为1",businessOrderId);
+                BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
+                businessOrderDTO.setId(UUID.randomUUID().toString());
+                businessOrderDTO.setSysUserId(mobile);
+                businessOrderDTO.setBusinessOrderId(businessOrderId);
+                businessOrderDTO.setType("specialProduct");
+                businessOrderDTO.setStatus("3");
+                businessOrderDTO.setCreateDate(new Date());
+                businessOrderDTO.setUpdateDate(new Date());
+                transactionMapper.createBusinessOrder(businessOrderDTO);
+                OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
+                orderProductRelationDTO.setId(UUID.randomUUID().toString());
+                orderProductRelationDTO.setBusinessOrderId(businessOrderId);
+                orderProductRelationDTO.setBusinessProductId(productId);
+                orderProductRelationDTO.setProductNum(num);
+                orderProductRelationDTO.setProductSpec("specialProduct");
+                transactionMapper.createOrderProductRelation(orderProductRelationDTO);
+                return StatusConstant.SUCCESS;
+            }
+            catch (Exception e){
+                logger.error("则直接增加订单异常,异常信息为{}"+e.getMessage(),e);
+                return  StatusConstant.FAILURE;
+            }
+        }else{
+            try{
+                Integer productNum = orderProductRelationUnPaid.getProductNum() + num;
+                logger.info("购物车已经加入过，则直接增加订单中，产品的数量=={}",productNum);
+                orderProductRelationUnPaid.setProductNum(productNum);
+                transactionMapper.updateOrderProductRelation(orderProductRelationUnPaid);
+                return StatusConstant.SUCCESS;
+            }catch (Exception e) {
+                logger.error("购物车已经加入过，则直接增加订单中，产品的数量异常,异常信息为{}"+e.getMessage(),e);
+                e.printStackTrace();
+                return StatusConstant.FAILURE;
+            }
+        }
+    }
+
 }

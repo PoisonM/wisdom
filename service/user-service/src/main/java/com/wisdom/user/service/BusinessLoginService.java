@@ -17,4 +17,6 @@ public interface BusinessLoginService {
     String businessUserLoginOut(String logintoken, HttpServletRequest request, HttpServletResponse response, HttpSession session);
 
     String managerLogin(String userPhone, String code);
+
+    String crossBorderLogin(LoginDTO loginDTO,String ip);
 }

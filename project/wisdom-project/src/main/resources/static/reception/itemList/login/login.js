@@ -72,7 +72,6 @@ PADWeb.controller('loginCtrl', function ($scope,$state,$stateParams, ngDialog, B
                     window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
                 }
 
-
                 //店员返回user和clerk
                 if(data.responseData.beautyClerkLoginToken != "0x00006" && data.responseData.beautyUserLoginToken != "0x00006"){
                     alert("登录成功")
@@ -82,6 +81,9 @@ PADWeb.controller('loginCtrl', function ($scope,$state,$stateParams, ngDialog, B
                 }else {
                     alert("请使用店员帐号登录")
                 }
+            }
+            if(data.result == "0x00015"){
+                alert("账号已停用，请联系客服，谢谢")
             }
         })
     }

@@ -10,6 +10,7 @@ import com.wisdom.common.entity.ReceiveXmlEntity;
 import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
+import com.wisdom.weixin.client.BeautyServiceClient;
 import com.wisdom.weixin.client.UserBeautyServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class ProcessBeautyScanEventService {
 
     @Autowired
     private UserBeautyServiceClient userBeautyServiceClient;
+
+    @Autowired
+    private BeautyServiceClient beautyServiceClient;
 
     private static ExecutorService threadExecutorCached = Executors.newCachedThreadPool();
 
@@ -106,20 +110,8 @@ public class ProcessBeautyScanEventService {
                 userInfoDTO.setLoginIp("");
                 userBeautyServiceClient.updateUserInfo(userInfoDTO);
 
-                //根据shopId和openId查询用户是否绑定了此美容院
-                ResponseDTO<String> responseDTO = new ResponseDTO<String>();
-                if("N".equals(responseDTO.getResponseData()))
-                {
-                    logger.info("根据shopId和openId查询,用户绑定了此美容院,redis中设置的key为 "+shopId+"_"+userId);
-                    System.out.println("redis中设置的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,"notBind",ConfigConstant.logintokenPeriod);
-                }
-                else if("Y".equals(responseDTO.getResponseData()))
-                {
-                    logger.info("根据shopId和openId查询,用户未绑定了此美容院,redis中设置已经绑定过的的key为"+shopId+"_"+userId);
-                    System.out.println("redis中设置已经绑定过的的key为 "+shopId+"_"+userId);
-                    JedisUtils.set(shopId+"_"+userId,"alreadyBind",ConfigConstant.logintokenPeriod);
-                }
+                //通知beauty
+                beautyServiceClient.getUserBindingInfo(openId, shopId, userId);
             }
 
             List<Article> articleList = new ArrayList<>();

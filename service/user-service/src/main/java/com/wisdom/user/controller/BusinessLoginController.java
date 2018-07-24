@@ -3,9 +3,11 @@
  */
 package com.wisdom.user.controller;
 
+import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.*;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.CookieUtils;
 import com.wisdom.common.util.SMSUtil;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
@@ -157,6 +159,32 @@ public class BusinessLoginController {
         else
         {
             logger.info( "managerLogin方法返回结果,用户登录成功,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+            result.setResult(StatusConstant.SUCCESS);
+            result.setErrorInfo("用户登录成功");
+            result.setResponseData(loginResult);
+            return result;
+        }
+    }
+
+    /**
+     * 跨境平台用户登录
+     */
+    @RequestMapping(value = "crossBorderLogin", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<String> crossBorderLogin(@RequestBody LoginDTO loginDTO,HttpServletRequest request,
+                                         HttpServletResponse response,HttpSession session) throws Exception {
+        long startTime = System.currentTimeMillis();
+        logger.info("crossBorderLogin,方法开始==={}" ,startTime);
+        ResponseDTO<String> result = new ResponseDTO<>();
+        String loginResult = businessLoginService.crossBorderLogin(loginDTO,request.getRemoteAddr().toString());
+        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR)){
+            logger.info( "crossBorderLogin方法返回结果,用户登录失败,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+            result.setResult(StatusConstant.FAILURE);
+            result.setErrorInfo("用户登录失败");
+            return result;
+        }else{
+            logger.info( "crossBorderLogin方法返回结果,用户登录成功,耗时{}毫秒", (System.currentTimeMillis() - startTime));
             result.setResult(StatusConstant.SUCCESS);
             result.setErrorInfo("用户登录成功");
             result.setResponseData(loginResult);
