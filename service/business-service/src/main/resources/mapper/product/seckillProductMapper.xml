@@ -3,17 +3,17 @@
 <mapper namespace="com.wisdom.business.mapper.product.SeckillProductMapper">
 
 	<resultMap id="SeckillProductResultMap" type="com.wisdom.common.dto.product.SeckillProductDTO" >
-		<result column="id" property="id" jdbcType="Integer" />
-		<result column="fieldId" property="fieldId" jdbcType="Integer" />
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<result column="fieldId" property="fieldId" jdbcType="INTEGER" />
 		<result column="name" property="productName" jdbcType="VARCHAR" />
 		<result column="product_id" property="productId" jdbcType="VARCHAR" />
 		<result column="description" property="description" jdbcType="VARCHAR" />
 		<result column="first_url" property="firstUrl" jdbcType="VARCHAR" />
 		<result column="price" property="price" jdbcType="REAL" />
 		<result column="favorable_price" property="favorablePrice" jdbcType="REAL" />
-		<result column="product_amount" property="productAmount" jdbcType="Integer" />
-		<result column="activity_num" property="activityNum" jdbcType="Integer" />
-		<result column="product_num" property="productNum" jdbcType="Integer" />
+		<result column="product_amount" property="productAmount" jdbcType="INTEGER" />
+		<result column="activity_num" property="activityNum" jdbcType="INTEGER" />
+		<result column="product_num" property="productNum" jdbcType="INTEGER" />
 		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
 		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
 	</resultMap>
