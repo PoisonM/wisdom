@@ -15,6 +15,7 @@ var clerkSchedule = '/beauty/clerkSchedule/';
 var mine = '/beauty/mine/';
 var userIP = '/user/';
 var cardInfo = '/beauty/cardInfo/'
+var seckillProduct = '/business/seckillProduct'
 
 define(['appCustomer'], function (app) {
     app
@@ -291,10 +292,12 @@ define(['appCustomer'], function (app) {
         .factory('GetRankingsList',['$resource',function ($resource){
             return $resource('/business/income/getIncomeRanking')
         }])
-    /*用户端选择项目 查看项目详情接口*/
+         /*用户端选择项目 查看项目详情接口*/
         .factory('ProjectInfo',['$resource',function ($resource){
             return $resource(projectInfo+"/:id", { id: '@id' })
         }])
-
+        .factory('SeckillList',['$resource',function ($resource){
+            return $resource(seckillProduct+"/getSeckillProductList")
+        }])
 
 });
