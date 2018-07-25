@@ -101,7 +101,8 @@ angular.module('controllers',[]).controller('reminderCtrl',
             }
             
             $scope.depaly=function (typeName) {
-                if(typeName == '4'){
+                console.log(typeName);
+                if(typeName == 4){
                     setTimeout(function(){
                         document.body.scrollTop = document.body.scrollHeight;
                     },300);
@@ -111,7 +112,7 @@ angular.module('controllers',[]).controller('reminderCtrl',
                 $("input").blur()
             });
             $scope.num = function (time,index,type) {
-                $scope.reminder[index][type]=time.replace(/[^0-9:0-9]+/,'')
+                $scope.reminder[index][type]=time.replace(/[^0-9]{2}\:[0-9]{2}/,'')
             }
 
         }]);
