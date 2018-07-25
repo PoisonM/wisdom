@@ -22,23 +22,23 @@ define(['appCrossborder'], function(app){
                 };
                 $stateProvider
                     //公共部分
-                    .state('home', {
-                        url: '/home',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'homeCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeCtrl',
-                                    [
-                                        'js/controllers/homeCtrl.js',
-                                        'js/css/home.css',
-                                    ],
-                                    'js/views/home.html');
-                            }
-                        }
-                    })
+                    // .state('home', {
+                    //     url: '/home',
+                    //     templateProvider: function() { return lazyDeferred.promise; },
+                    //     controller: 'homeCtrl',
+                    //     resolve: {
+                    //         load: function($templateCache, $ocLazyLoad, $q, $http) {
+                    //             loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeCtrl',
+                    //                 [
+                    //                     'js/controllers/homeCtrl.js',
+                    //                     'js/css/home.css',
+                    //                 ],
+                    //                 'js/views/home.html');
+                    //         }
+                    //     }
+                    // })
                     //首页
-                    .state('home.goodsList', {
+                    .state('goodsList', {
                         url: '/goodsList',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'goodsListCtrl',
@@ -57,7 +57,7 @@ define(['appCrossborder'], function(app){
 
 
                     //详情页
-                    .state('home.details', {
+                    .state('details', {
                         url: '/details',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsCtrl',
@@ -73,6 +73,6 @@ define(['appCrossborder'], function(app){
                         }
                     })
 
-                $urlRouterProvider.otherwise('home/goodsList')
+                $urlRouterProvider.otherwise('goodsList')
             }])
 })
