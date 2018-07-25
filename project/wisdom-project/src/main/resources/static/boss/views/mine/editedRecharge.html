@@ -22,7 +22,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="item"><span class="fs16">折扣<span class="colff66">*</span></span></li>
+            <li class="item"><span class="fs16">折扣<span class="colff66"></span></span></li>
             <li class="item" style="width:100%;" ng-click="appear(0)">
                 <i class="icon ion-android-radio-button-off colff66 fs16 mr10"   ng-if="param.appearArr[0] != true"></i>
                 <i class="icon icon ion-ios-checkmark colff66 fs16 mr10"   ng-if="param.appearArr[0] == true"></i>
@@ -38,7 +38,7 @@
             <li class="item" style="width:100%;"  ng-click="appear(1)"> <i class="icon ion-android-radio-button-off colff66 fs16 mr10"   ng-if="param.appearArr[1] != true"></i>
                 <i class="icon icon ion-ios-checkmark colff66 fs16 mr10"   ng-if="param.appearArr[1] == true"></i> 疗程卡</li>
             <div class="bgfff partialFiles" ng-show="param.appearArr[1]">
-                <p class="  ml30 h40 fs14 col888 bbl"><span class="fs16">设置折扣(折)</span><input type="text" placeholder="请输入0.1-1.0的折扣值" class="fr col99 fs14 tr mr15" ng-model="settingAddsome.editedRecharge.periodDiscount" ng-change="discount('periodDiscount')" ng-blur="discounts('periodDiscount')"></p>
+                <p class="  ml30 h40 fs14 col888 bbl"><span class="fs16">设置折扣(折)</span><input type="text" placeholder="请输入0.1-1.0的折扣值" class="fr col99 fs14 tr mr15" ng-model="settingAddsome.editedRecharge.periodDiscount" ng-change="discount('periodDiscount')" ng-blur="discounts('periodDiscount')" ></p>
                 <p class="  ml30 h40 fs14 col888">
                     <span class="fs16">设置适用范围</span>
                     <span class="fr col99 fs14 tr mr15"  ui-sref="treatment({url:'editedRecharge',id:param.id})">适用范围 <img src="images/more.png" class="more"></span>

@@ -43,15 +43,15 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                             for(var i=0;i<$scope.param.appearArr.length;i++){
                                 $scope.param.appearArr[i]=true
                             }
-                          /*  if ($rootScope.settingAddsome.editedRecharge.productDiscount!=null&&$rootScope.settingAddsome.editedRecharge.productDiscount!="" ) {
-                                $scope.param.appearArr[2] = true
+                            if ($rootScope.settingAddsome.editedRecharge.productDiscount==null) {
+                                $rootScope.settingAddsome.editedRecharge.productDiscount=1
                             }
-                            if ($rootScope.settingAddsome.editedRecharge.periodDiscount!=null&&$rootScope.settingAddsome.editedRecharge.periodDiscount!="" ) {
-                                $scope.param.appearArr[1] = true
+                            if ($rootScope.settingAddsome.editedRecharge.periodDiscount==null) {
+                                $rootScope.settingAddsome.editedRecharge.periodDiscount=1
                             }
-                            if ($rootScope.settingAddsome.editedRecharge.timeDiscount!=null&&$rootScope.settingAddsome.editedRecharge.timeDiscount!="" ) {
-                                $scope.param.appearArr[0] = true
-                            }*/
+                            if ($rootScope.settingAddsome.editedRecharge.timeDiscount==null) {
+                                $rootScope.settingAddsome.editedRecharge.timeDiscount=1
+                            }
 
                             $ionicLoading.hide()
 
