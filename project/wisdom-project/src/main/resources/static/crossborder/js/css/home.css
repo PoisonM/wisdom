@@ -1,0 +1,126 @@
+.home{
+    width: 100%;
+}
+
+.home .shortcut{
+    width: 100%;
+    height: 30px;
+    background-color: #F8F8F8;
+    margin-bottom: 10px;
+}
+.home .shortcut_box {
+    width: 1200px;
+    margin: 0 auto;
+}
+.home .shortcut_box ul li{
+    height: 100%;
+    line-height: 30px;
+}
+
+.home .shortcut_box ul li:nth-child(1){
+    float: left;
+}
+.home .shortcut_box ul li:nth-child(2){
+    float: right;
+}
+.home .shortcut_box ul li a{
+    font-size: 12px;
+    color: #808080;
+    letter-spacing: 0;
+    text-align: center;
+    padding-right: 15px;
+}
+
+
+.home .header{
+    width: 1200px;
+    margin: 0 auto;
+    height: 130px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+.home .header .search{
+    width: 100%;
+    height: 100%;
+}
+
+.home .header .search .search_box{
+    height: 36px;
+    margin: 47px auto;
+    border: 2px solid #FF3D3D;
+    width: 646px;
+    position: relative;
+}
+.home .header .search .search_box input {
+    padding: 4px 44px 4px 4px;
+    width: 610px;
+    height: 32px;
+    border: 1px solid transparent;
+    line-height: 25px;
+    font-size: 14px;
+}
+.home .header .search .search_box>div{
+    position: absolute;
+    right: 0px;
+    top: -2px;
+    width: 52px;
+    height: 36px;
+    background-color: #FF3D3D;
+    padding: 8px 16px;
+}
+.home .header .search .search_box>div img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.home .header .logo{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+}
+.home .header .logo img{
+    display: block;
+    height: 100%;
+    width: auto;
+}
+
+.home .header .settleup{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 100%;
+    width: auto;
+    margin: 47px auto;
+}
+.home .header .settleup>div{
+    width: 136px;
+    height: 36px;
+    line-height: 36px;
+    border: 2px solid #F0F3EF;
+    font-size: 14px;
+    color: #808080;
+    letter-spacing: 0;
+    text-align: center;
+    position: relative;
+    padding-left: 20px;
+}
+.home .header .settleup>div>i{
+    position: absolute;
+    top: 8px;
+    left: 20px;
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    background: url("../../images/mall_img/settleup.png") no-repeat;
+    background-size: 100%;
+}
+.home .main {
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #F8F8F8;
+    overflow: hidden;
+}
+/*-----------------------------------------------------------------------------------------------*/
