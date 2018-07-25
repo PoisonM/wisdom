@@ -23,8 +23,8 @@
 	<select id="queryAllProducts" resultMap="SeckillProductResultMap"
 			resultType="com.wisdom.common.persistence.Page">
 		SELECT
-		sa.id,saf.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,sa.product_num,bp.description
+		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description
 		from seckill_activity sa
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
