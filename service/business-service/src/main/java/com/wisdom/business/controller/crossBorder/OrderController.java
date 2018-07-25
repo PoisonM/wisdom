@@ -113,8 +113,7 @@ public class OrderController {
     @ResponseBody
     ResponseDTO payOrder(@RequestBody HttpServletRequest request) {
         ResponseDTO responseDTO = new ResponseDTO();
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        String codeUrl = payRecordService.corssBorderPay(request,userInfoDTO.getMobile());
+        String codeUrl = payRecordService.corssBorderPay(request);
         responseDTO.setResult(codeUrl);
         return responseDTO;
     }
