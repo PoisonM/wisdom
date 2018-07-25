@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisdom.business.mapper.product.SeckillProductMapper">
+
+	<resultMap id="SeckillProductResultMap" type="com.wisdom.common.dto.product.SeckillProductDTO" >
+		<result column="id" property="id" jdbcType="Integer" />
+		<result column="fieldId" property="fieldId" jdbcType="Integer" />
+		<result column="name" property="productName" jdbcType="VARCHAR" />
+		<result column="product_id" property="productId" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="first_url" property="firstUrl" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="favorable_price" property="favorablePrice" jdbcType="REAL" />
+		<result column="product_amount" property="productAmount" jdbcType="Integer" />
+		<result column="activity_num" property="activityNum" jdbcType="Integer" />
+		<result column="product_num" property="productNum" jdbcType="Integer" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<!--查询所有商品-->
+	<select id="queryAllProducts" resultMap="SeckillProductResultMap"
+			resultType="com.wisdom.common.persistence.Page">
+		SELECT
+		sa.id,saf.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,sa.product_num,bp.description
+		from seckill_activity sa
+		left join
+		(SELECT * FROM (select * from seckill_activity_field
+		where  ( now()>=start_time and  end_time >= now()) or start_time >= now()
+		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
+		) ncs
+		on sa.id = ncs.activity_id
+		LEFT JOIN business_product bp on sa.product_id = bp.id
+		order by ncs.create_time desc
+	</select>
+</mapper>
