@@ -35,6 +35,7 @@
 		<module>service/timer-service</module>
 		<module>service/business-service</module>
 		<module>service/user-service</module>
+		<module>service/search-service</module>
 
 		<module>project/wisdom-project</module>
 
