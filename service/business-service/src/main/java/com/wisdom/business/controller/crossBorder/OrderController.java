@@ -58,8 +58,7 @@ public class OrderController {
         ResponseDTO responseDTO = new ResponseDTO<>();
         long startTime = System.currentTimeMillis();
         logger.info("将货品加入用户的购物车==={}开始",startTime);
-        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        String result = buyCartService.addCrossBorderProduct(productId,productNum,userInfoDTO.getMobile());
+        String result = buyCartService.addCrossBorderProduct(productId,productNum);
         responseDTO.setResult(result);
         logger.info("将货品加入用户的购物车,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
