@@ -1,5 +1,5 @@
-angular.module('controllers',[]).controller('homeCtrl',
+angular.module('controllers',[]).controller('detailsCtrl',
     ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout) {
-            console.log("111")
-}]);
+            console.log("details")
+        }]);
