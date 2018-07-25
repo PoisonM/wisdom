@@ -12,6 +12,15 @@ public class ImageUrl {
     private ObjectId _id;
     private List<String> url;
 
+    @Override
+    public String toString() {
+        return "ImageUrl{" +
+                "imageId='" + imageId + '\'' +
+                ", _id=" + _id +
+                ", url=" + url +
+                '}';
+    }
+
     public ObjectId get_id() {
         return _id;
     }
