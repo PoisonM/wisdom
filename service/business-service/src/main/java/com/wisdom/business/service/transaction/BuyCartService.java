@@ -191,19 +191,19 @@ public class BuyCartService {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public String addCrossBorderProduct(String productId,int num,String mobile) {
-        logger.info("用户=={}将货品id=={}数量=={}",mobile,productId,num);
-        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,"specialProduct",mobile);
-
+    public String addCrossBorderProduct(String productId,int num) {
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),productId,num);
+        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,"special",userInfoDTO.getId());
         if(ObjectUtils.isNullOrEmpty(orderProductRelationUnPaid)){
             try {
                 String businessOrderId = CodeGenUtil.getOrderCodeNumber();
                 logger.info("如果没有加入过，则直接增加订单中=={}，并设置产品的数量为1",businessOrderId);
                 BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                 businessOrderDTO.setId(UUID.randomUUID().toString());
-                businessOrderDTO.setSysUserId(mobile);
+                businessOrderDTO.setSysUserId(userInfoDTO.getId());
                 businessOrderDTO.setBusinessOrderId(businessOrderId);
-                businessOrderDTO.setType("specialProduct");
+                businessOrderDTO.setType("special");
                 businessOrderDTO.setStatus("3");
                 businessOrderDTO.setCreateDate(new Date());
                 businessOrderDTO.setUpdateDate(new Date());
@@ -213,7 +213,7 @@ public class BuyCartService {
                 orderProductRelationDTO.setBusinessOrderId(businessOrderId);
                 orderProductRelationDTO.setBusinessProductId(productId);
                 orderProductRelationDTO.setProductNum(num);
-                orderProductRelationDTO.setProductSpec("specialProduct");
+                orderProductRelationDTO.setProductSpec("special");
                 transactionMapper.createOrderProductRelation(orderProductRelationDTO);
                 return StatusConstant.SUCCESS;
             }

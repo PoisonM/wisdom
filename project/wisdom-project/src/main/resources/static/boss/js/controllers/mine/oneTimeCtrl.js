@@ -16,8 +16,9 @@ angular.module('controllers',[]).controller('oneTimeCtrl',
                     filterStr:"",
                     useStyle:'0'
                 },function(data){
+                    $ionicLoading.hide();
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
-                        $ionicLoading.hide();
+
                         $scope.oneTime =data.responseData
                         if($rootScope.settingAddsome.editedRecharge.timesList.length>0){
                             for(var  i=0;i<$rootScope.settingAddsome.editedRecharge.timesList.length;i++){

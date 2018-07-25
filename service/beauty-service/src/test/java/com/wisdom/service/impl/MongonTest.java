@@ -45,5 +45,6 @@ public class MongonTest {
         mongoTemplate.save(imageUrl, "imageUrl");
         Query query = new Query(Criteria.where("_id").is(new ObjectId(_id)));
         ImageUrl test=mongoTemplate.findOne(query, ImageUrl.class, "imageUrl");
+        System.out.println(test.toString());
     }
 }
