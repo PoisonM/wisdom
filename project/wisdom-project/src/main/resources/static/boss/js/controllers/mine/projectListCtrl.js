@@ -33,6 +33,8 @@ angular.module('controllers',[]).controller('projectListCtrl',
                             $scope.projectList[i].cardType='半年卡';
                         }else if($scope.projectList[i].cardType=="4"){
                             $scope.projectList[i].cardType='年卡';
+                        }else if($scope.projectList[i].cardType=="5"){
+                            $scope.projectList[i].cardType='疗程卡';
                         }
                     }
                 });
