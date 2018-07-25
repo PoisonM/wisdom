@@ -8,8 +8,9 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
             $scope.param={
                 appearArr:[false,false,false],
                 status:true,
-                id:$stateParams.id,
+                id:$stateParams.id
             };
+
                 $ionicLoading.show({
                     content: 'Loading',
                     animation: 'fade-in',
@@ -39,10 +40,10 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                                 $rootScope.settingAddsome.editedRecharge.periodList = new Array;
                                 $rootScope.settingAddsome.editedRecharge.productList = new Array;
                             }
-                            /*for(var i=0;i<$scope.param.appearArr.length;i++){
+                            for(var i=0;i<$scope.param.appearArr.length;i++){
                                 $scope.param.appearArr[i]=true
-                            }*/
-                            if ($rootScope.settingAddsome.editedRecharge.productDiscount!=null&&$rootScope.settingAddsome.editedRecharge.productDiscount!="" ) {
+                            }
+                          /*  if ($rootScope.settingAddsome.editedRecharge.productDiscount!=null&&$rootScope.settingAddsome.editedRecharge.productDiscount!="" ) {
                                 $scope.param.appearArr[2] = true
                             }
                             if ($rootScope.settingAddsome.editedRecharge.periodDiscount!=null&&$rootScope.settingAddsome.editedRecharge.periodDiscount!="" ) {
@@ -50,7 +51,7 @@ angular.module('controllers',[]).controller('editedRechargeCtrl',
                             }
                             if ($rootScope.settingAddsome.editedRecharge.timeDiscount!=null&&$rootScope.settingAddsome.editedRecharge.timeDiscount!="" ) {
                                 $scope.param.appearArr[0] = true
-                            }
+                            }*/
 
                             $ionicLoading.hide()
 

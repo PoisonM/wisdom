@@ -101,7 +101,6 @@ angular.module('controllers',[]).controller('reminderCtrl',
             }
             
             $scope.depaly=function (typeName) {
-                console.log(typeName);
                 if(typeName == 4){
                     setTimeout(function(){
                         document.body.scrollTop = document.body.scrollHeight;
