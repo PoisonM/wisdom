@@ -8,9 +8,7 @@ import com.wisdom.common.dto.user.UserInfoDTO;
 import com.wisdom.common.dto.system.UserOrderAddressDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
-import com.wisdom.common.util.CodeGenUtil;
-import com.wisdom.common.util.ObjectUtils;
-import com.wisdom.common.util.RedisLock;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,11 @@ import java.util.UUID;
 
 @Service
 public class BuyCartService {
+
+    /**
+     * 预约详情缓存时常，20分钟
+     */
+    private int productInfoCacheSeconds = 1200;
 
     @Autowired
     private UserOrderAddressService userOrderAddressService;
@@ -236,4 +239,30 @@ public class BuyCartService {
         }
     }
 
+    /**
+     *秒杀活动 抢购
+     *
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public String seckillProductBuyNow(String fieldId,int num,String productSpec) {
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),fieldId,num);
+            try {
+                String businessOrderId = CodeGenUtil.getOrderCodeNumber();
+                BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
+                businessOrderDTO.setId(UUID.randomUUID().toString());
+                businessOrderDTO.setSysUserId(userInfoDTO.getId());
+                businessOrderDTO.setBusinessOrderId(businessOrderId);
+                businessOrderDTO.setType(productSpec);
+                businessOrderDTO.setStatus("0");
+                businessOrderDTO.setCreateDate(new Date());
+                businessOrderDTO.setUpdateDate(new Date());
+                JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+businessOrderDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
+                return StatusConstant.SUCCESS;
+            }
+            catch (Exception e){
+                logger.error("则直接增加订单异常,异常信息为{}"+e.getMessage(),e);
+                return  StatusConstant.FAILURE;
+            }
+    }
 }
