@@ -261,9 +261,9 @@ public class PayRecordService {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String corssBorderPay(HttpServletRequest request,String mobile) {
-        logger.info("Service == 获取统一支付接口参数request={},mobile={},productType={}",request,mobile);
+    public String corssBorderPay(HttpServletRequest request) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        logger.info("Service == 获取统一支付接口参数request={},mobile={},productType={}",request,userInfoDTO.getId());
         try{
             SortedMap<Object, Object> prePayInfoMap = new TreeMap<>();
             prePayInfoMap.put("appid", ConfigConstant.APP_ID);
@@ -299,7 +299,7 @@ public class PayRecordService {
             Map<String, Object> payResultMap = XMLUtil.doXMLParse(payResult);
             if ("SUCCESS".equals(payResultMap.get("return_code"))) {
                 PayRecordDTO payRecordDTO = new PayRecordDTO();
-                payRecordDTO.setSysUserId(mobile);
+                payRecordDTO.setSysUserId(userInfoDTO.getId());
                 String transactionId = CodeGenUtil.getTransactionCodeNumber();
                 logger.info("交易流水号=={}",transactionId);
                 String needInvoice = "0";

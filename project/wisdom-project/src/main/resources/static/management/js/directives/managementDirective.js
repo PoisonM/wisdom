@@ -542,8 +542,8 @@ define(['appManagement','jquery'], function (app,$) {
                      '</li>' +*/
 
                     '<li >' +
-                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==2}"><img ng-src="{{index1==2?\'images/bt-product-pre.png\':\'images/bt-product-nor.png\'}}">商品管理</a></p>' +
-                    '<div class="administration_content" >' +
+                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==2}" ng-click=showOrHide(2)><img ng-src="{{index1==2?\'images/bt-product-pre.png\':\'images/bt-product-nor.png\'}}" >商品管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==2">' +
                     '<p><a ui-sref="home" ng-class="{\'activeNavbarSide\':index2==21}">查询</a></p>' +
                     '<p><a ui-sref="uploading" ng-class="{\'activeNavbarSide\':index2==22}">商品管理-上传</a></p>' +
                     '<p><a ui-sref="homePageEditor" ng-class="{\'activeNavbarSide\':index2==23}">商城首页编辑</a></p>' +
@@ -551,27 +551,27 @@ define(['appManagement','jquery'], function (app,$) {
                     '</li>' +
 
                     '<li  >' +
-                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==3}"><img ng-src="{{index1==3?\'images/btOrderPre.png\':\'images/btOrderNor.png\'}}" >订单管理</a></p>' +
-                    '<div class="administration_content" >' +
+                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==3}" ng-click=showOrHide(3)><img ng-src="{{index1==3?\'images/btOrderPre.png\':\'images/btOrderNor.png\'}}" >订单管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==3">' +
                     '<p><a ui-sref="order" ng-class="{\'activeNavbarSide\':index2==31}">查询</a></p>' +
                     '</div>' +
                     '</li>' +
                     '<li>' +
-                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==4}"><img ng-src="{{index1==4?\'images/btOperationsPre.png\':\'images/btOperationsNor.png\'}}">视频管理</a></p>' +
-                    '<div class="administration_content" >' +
+                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==4}" ng-click=showOrHide(4)><img ng-src="{{index1==4?\'images/btOperationsPre.png\':\'images/btOperationsNor.png\'}}">视频管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==4">' +
                     '<p><a ui-sref="operation" ng-class="{\'activeNavbarSide\':index2==41}" >视频管理-展示</a></p>' +
                     '<p><a ui-sref="operationUploading" ng-class="{\'activeNavbarSide\':index2==42}" >视频管理-上传</a></p>' +
                     '</div>' +
                     '</li>' +
                     '<li>' +
-                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==5}"><img ng-src="{{index1==5?\'images/bProxyPre.png\':\'images/bProxyNor.png\'}}" >代理管理</a></p>' +
-                    '<div class="administration_content" >' +
+                    '<p class="stairMenu"><a  ng-class="{\'activeNavbarSide\':index1==5}" ng-click=showOrHide(5)><img ng-src="{{index1==5?\'images/bProxyPre.png\':\'images/bProxyNor.png\'}}" >代理管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==5">' +
                     '<p><a ui-sref="agency" ng-class="{\'activeNavbarSide\':index2==51}" >查询</a></p>' +
                     '</div>' +
                     '</li>' +
                     '<li >' +
-                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==6}"><img ng-src="{{index1==6?\'images/btFinancialPre.png\':\'images/btFinancialNor.png\'}}">财务管理</a></p>' +
-                    '<div class="administration_content" >' +
+                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==6}" ng-click=showOrHide(6)><img ng-src="{{index1==6?\'images/btFinancialPre.png\':\'images/btFinancialNor.png\'}}">财务管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==6">' +
                     '<p><a ui-sref="finance" ng-class="{\'activeNavbarSide\':index2==61}">账单管理</a></p>' +
                     '<p><a ui-sref="balance" ng-class="{\'activeNavbarSide\':index2==62}">余额管理</a></p>' +
                     '<p><a ui-sref="withdraw" ng-class="{\'activeNavbarSide\':index2==63}">提现管理</a></p>' +
@@ -599,6 +599,9 @@ define(['appManagement','jquery'], function (app,$) {
                         var w = $(window).width()-260;
                         $(" .main_content").width(w);
                         $(" .main_content").height(h);
+                        scope.showOrHide = function (num) {
+                            scope.index1=num
+                        }
 
                         /* var stairMenu = document.querySelectorAll(".stairMenu");
                          var secondLevelMenu = document.querySelectorAll(".administration_content");
