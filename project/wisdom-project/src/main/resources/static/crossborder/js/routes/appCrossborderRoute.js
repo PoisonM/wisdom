@@ -21,6 +21,7 @@ define(['appCrossborder'], function(app){
                     });
                 };
                 $stateProvider
+                    //公共部分
                     .state('home', {
                         url: '/home',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -28,11 +29,50 @@ define(['appCrossborder'], function(app){
                         resolve: {
                             load: function($templateCache, $ocLazyLoad, $q, $http) {
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homeCtrl',
-                                    ['js/controllers/homeCtrl.js'],
+                                    [
+                                        'js/controllers/homeCtrl.js',
+                                        'js/css/home.css',
+                                    ],
                                     'js/views/home.html');
                             }
                         }
                     })
-                $urlRouterProvider.otherwise('home')
+                    //首页
+                    .state('home.goodsList', {
+                        url: '/goodsList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'goodsListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.goodsListCtrl',
+                                    [
+                                        'js/controllers/goodsListCtrl.js',
+                                        'js/css/goodsList.css',
+                                    ],
+                                    'js/views/goodsList.html');
+                            }
+                        }
+                    })
+
+
+
+                    //详情页
+                    .state('home.details', {
+                        url: '/details',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'detailsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.detailsCtrl',
+                                    [
+                                        'js/controllers/detailsCtrl.js',
+                                        'js/css/details.css',
+                                    ],
+                                    'js/views/details.html');
+                            }
+                        }
+                    })
+
+                $urlRouterProvider.otherwise('home/goodsList')
             }])
 })
