@@ -17,6 +17,7 @@ public class WisdomProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WisdomProjectApplication.class, args);
 	}
+
 	@Bean
 	public CorsFilter corsFilter() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
