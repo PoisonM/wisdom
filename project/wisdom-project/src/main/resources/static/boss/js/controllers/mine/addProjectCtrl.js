@@ -56,6 +56,9 @@ angular.module('controllers',[]).controller('addProjectCtrl',
                         $scope.cardBox=false;
                         $rootScope.settingAddsome.extShopProjectInfoDTO.useStyle='0';
                         $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth=''
+                    }else if(type=='5'){
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.useStyle='1';
+                        $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth=''
                     }else{
                         $scope.cardBox=true;
                         $rootScope.settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth = timeLength

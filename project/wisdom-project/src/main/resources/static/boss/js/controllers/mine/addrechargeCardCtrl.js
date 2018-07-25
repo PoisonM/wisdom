@@ -87,30 +87,30 @@ angular.module('controllers',[]).controller('addrechargeCardCtrl',
                     alert("请填写充值面额")
                     return
                 }
-                if($rootScope.settingAddsome.editedRecharge.timeDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.productDiscount==''){
+               /* if($rootScope.settingAddsome.editedRecharge.timeDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.productDiscount==''){
                     alert("请至少选择一个折扣")
                     return
-                }
-                if($rootScope.settingAddsome.editedRecharge.timeDiscount!=''&&$rootScope.settingAddsome.editedRecharge.timesList.length<=0){
+                }*/
+               /* if($rootScope.settingAddsome.editedRecharge.timeDiscount!=''&&$rootScope.settingAddsome.editedRecharge.timesList.length<=0){
                     alert("请填写单次卡适用范围")
                     return
-                }
+                }*/
                 if($rootScope.settingAddsome.editedRecharge.timeDiscount==''&&$rootScope.settingAddsome.editedRecharge.timesList.length>0){
                     alert("请填写单次卡折扣")
                     return
                 }
-                if($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodList.length<=0){
+               /* if($rootScope.settingAddsome.editedRecharge.periodDiscount!=''&&$rootScope.settingAddsome.editedRecharge.periodList.length<=0){
                     alert("请填写疗程卡适用范围")
                     return
-                }
+                }*/
                 if($rootScope.settingAddsome.editedRecharge.periodDiscount==''&&$rootScope.settingAddsome.editedRecharge.periodList.length>0){
                     alert("请填写疗程卡折扣")
                     return
                 }
-                if($rootScope.settingAddsome.editedRecharge.productDiscount!=''&&$rootScope.settingAddsome.editedRecharge.productList.length<=0){
+               /* if($rootScope.settingAddsome.editedRecharge.productDiscount!=''&&$rootScope.settingAddsome.editedRecharge.productList.length<=0){
                     alert("请填写产品适用范围")
                     return
-                }
+                }*/
                 if($rootScope.settingAddsome.editedRecharge.productDiscount==''&&$rootScope.settingAddsome.editedRecharge.productList.length>0){
                     alert("请填写产品折扣")
                     return

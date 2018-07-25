@@ -77,7 +77,7 @@
 .tr{text-align: right}
 .mb44{margin-bottom: 44px}
 .bge5e5{background: #e5e5e5}
-.project1{display: inline-block;width: 70px;height: 24px;line-height: 24px;text-align: center;color: #ff6666;border: 1px solid #ff6666}
+.project1{display: inline-block;height: 24px;line-height: 24px;text-align: center;color: #ff6666;border: 1px solid #ff6666;width: 70px;padding:0;}
 .project2{display: inline-block;width: 70px;height: 24px;line-height: 24px;text-align: center;color: #ffffff;border: 1px solid #ff6666;
     background: #ff6666;}
 /*综合分析页面*/
