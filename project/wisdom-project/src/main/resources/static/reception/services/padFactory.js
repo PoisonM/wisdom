@@ -1,8 +1,8 @@
-var beautyIP = 'http://mx99.kpbeauty.com.cn/beauty/';
-var userIP = 'http://mx99.kpbeauty.com.cn/user/';
-var systemService = 'http://mx99.kpbeauty.com.cn/system-service/';
-var weixinService = 'http://mx99.kpbeauty.com.cn/weixin/';
-var  mine='http://mx99.kpbeauty.com.cn/beauty/mine/';
+var beautyIP = '/beauty/';
+var userIP = '/user/';
+var systemService = '/system-service/';
+var weixinService = '/weixin/';
+var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
         return {
             request: function(config){
@@ -288,7 +288,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
     .factory('GetUserRechargeCardList', ['$resource', function($resource) {
         return $resource(beautyIP + 'cardInfo/getUserRechargeCardList')
     }])
-    //用户产品列表  http://localhost:9051/productInfo/getUserProductList?sysUserId=1&sysShopId=1
+    //用户产品列表  http://:9051/productInfo/getUserProductList?sysUserId=1&sysShopId=1
     .factory('GetUserProductList', ['$resource', function($resource) {
         return $resource(beautyIP + 'productInfo/getUserProductList')
     }])
@@ -402,7 +402,7 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
     .factory('GetProductDrawRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/id')
     }])
-    // http://localhost:9051/consume/getRechargeRecord
+    // http://:9051/consume/getRechargeRecord
     .factory('GetRechargeRecord', ['$resource', function($resource) {
         return $resource(beautyIP + 'consume/getRechargeRecord')
     }])
