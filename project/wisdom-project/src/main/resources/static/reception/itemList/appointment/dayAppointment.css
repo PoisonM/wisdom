@@ -99,7 +99,7 @@
 .ngdialog-overlay{background: rgba(0, 0, 0,0.4);}
 
 .dayAppointment .complex_table table{
-    width: 100%;
+   /* width: 100%;*/
 }
 .dayAppointment .complex_table table tr{
     width: 100%;
