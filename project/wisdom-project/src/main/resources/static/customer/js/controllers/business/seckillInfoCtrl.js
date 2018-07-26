@@ -5,12 +5,7 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                   $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo) {
 
             $rootScope.title = "秒杀详情";
-
-            $scope.explain=false;// 点击24小时发货显示说明
-
             $scope.model=false;
-           /* $scope.inputModel=false;*//*点击购买数量出现的弹框*/
-
             $scope.myObj = {
                 background:"red",
                 padding: "5px 20px",
@@ -45,9 +40,8 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                 $scope.explain=false;
             };
 
-
-
             $scope.goPay = function(){
+                $scope.loginCart();
                 /*根据商品状态来判断商品是否为下架商品*/
                 if($scope.param.product.status == "0"){
                     return;
@@ -82,11 +76,15 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                     $scope.model = true
                 }
             };
+
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productAmount){
+                if($scope.param.productNum>$scope.param.product.productNum){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
+                }else{
+                    $("#Car").css("background","red");
+                    $("#goPay").css("background","red");
                 }
             };
 
@@ -145,7 +143,20 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                     showDelay: 0
                 });
 
-                SeckillInfo.get({activtyId:$stateParams.id+""},function (data) {
+                SeckillInfo.get({activtyId:$stateParams.id+""},function (data){
+                    $ionicLoading.hide();
+                    $scope.param.product = data;
+                    $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
+                    if($scope.param.product.productNum <= 0){
+                        $("#add").css("background","grey");
+                        $("#go").css("background","grey");
+                    }
+                    $ionicSlideBoxDelegate.update();
+                    $ionicSlideBoxDelegate.loop(true);
+                    $interval(function(){
+                        $scope.param.currentIndex =  $ionicSlideBoxDelegate.currentIndex()+1;
+                        $scope.param.totalIndex =  $ionicSlideBoxDelegate.slidesCount()
+                    },100);
                     console.log(data)
                 })
 

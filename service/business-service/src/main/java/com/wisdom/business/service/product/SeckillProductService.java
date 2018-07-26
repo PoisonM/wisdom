@@ -69,6 +69,7 @@ public class SeckillProductService {
             }else{
                 productDTO.setStatus(0);
             }
+            productDTO.setSellNum(productDTO.getActivityNum()-productDTO.getProductNum());
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
