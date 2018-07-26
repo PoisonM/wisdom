@@ -1,4 +1,4 @@
-PADWeb.controller('loginCtrl', function ($scope,$state,$stateParams, ngDialog, BeautyLogin, GetUserValidateCode) {
+PADWeb.controller('loginCtrl', function ($scope,$rootScope,$state,$stateParams, ngDialog, BeautyLogin, GetUserValidateCode) {
 
     /*------------------------------------------头部开关--------------------------------------------------*/
 
@@ -7,6 +7,8 @@ PADWeb.controller('loginCtrl', function ($scope,$state,$stateParams, ngDialog, B
     $scope.$parent.mainSwitch.headerCashAllFlag = false
     $scope.$parent.mainSwitch.footerBoxFlag = false
     $scope.$parent.mainSwitch.headerPriceListAllFlag = false
+
+    $rootScope.loadingFlag = false;
     $scope.param = {
         code: "",
         phone: "",
