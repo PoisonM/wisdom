@@ -165,6 +165,7 @@ public class TimerMessageQueueReceiver {
                     incomeRecord.setStatus("1");
                     incomeRecord.setUpdateDate(new Date());
                     businessServiceClient.updateIncomeInfo(incomeRecord);
+                    logger.info("此记录={}，财务和运营人员，审核通过可提现完成" , incomeRecord.getId());
                 }catch (Exception e){
                     logger.info("解冻用户的提成，先找出要解冻返现的用户账户，做资金解冻异常,异常信息为={}" +e.getMessage(),e);
                     e.printStackTrace();
