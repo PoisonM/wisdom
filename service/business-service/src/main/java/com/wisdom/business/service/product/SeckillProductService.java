@@ -57,7 +57,7 @@ public class SeckillProductService {
 //            0马上抢 1即将开始 2活动已结束 3已抢光
             if(productAmount<=0){
                 productDTO.setStatus(3);
-            }else if(productDTO.getEndTime().getTime()>=nowTime.getTime()){
+            }else if(nowTime.getTime() >= productDTO.getEndTime().getTime()){
                 productDTO.setStatus(2);
             }else if(productDTO.getStartTime().getTime()>=nowTime.getTime()){
                 productDTO.setStatus(1);
