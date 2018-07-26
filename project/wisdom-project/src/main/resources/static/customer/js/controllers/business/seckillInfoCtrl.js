@@ -82,8 +82,8 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                 if($scope.param.productNum>$scope.param.product.productNum){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
+                    $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }else{
-                    $("#Car").css("background","red");
                     $("#goPay").css("background","red");
                 }
             };
@@ -94,9 +94,10 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                 }else{
                     $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }
-                if($scope.param.productNum<=$scope.param.product.productAmount){
-                    $("#Car").css("background","#fca1a8");
+                if($scope.param.productNum<=$scope.param.product.productNum){
                     $("#goPay").css("background","red");
+                }else{
+                    $("#goPay").css("background","grey");
                 }
             };
 

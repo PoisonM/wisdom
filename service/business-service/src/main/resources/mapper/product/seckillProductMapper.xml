@@ -14,7 +14,6 @@
 		<result column="product_amount" property="productAmount" jdbcType="INTEGER" />
 		<result column="activity_num" property="activityNum" jdbcType="INTEGER" />
 		<result column="product_num" property="productNum" jdbcType="INTEGER" />
-		<result column="product_amount" property="productAmount" jdbcType="INTEGER" />
 		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
 		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
 	</resultMap>

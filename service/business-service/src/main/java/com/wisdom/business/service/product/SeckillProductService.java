@@ -6,10 +6,7 @@ import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.persistence.Page;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.FrontUtils;
-import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.StringUtils;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 微商城秒杀服务层
@@ -95,6 +93,8 @@ public class SeckillProductService {
             }
             JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
         }
+        int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
+        seckillproductDTO.setProductAmount(productAmount);
         return seckillproductDTO;
     }
 
@@ -103,8 +103,8 @@ public class SeckillProductService {
      * 秒杀 查询缓存中的库存量
      * */
     public int getProductAmout(String fieldId){
-        List<Object> orderMap = JedisUtils.getObjectList("seckillproductOrder:" + fieldId);
-        int ordeNum = null == orderMap? 0:orderMap.size();
+        Set orderSet = JedisUtils.vagueSearch("seckillproductOrder:" + fieldId);
+        int ordeNum = null == orderSet? 0:orderSet.size();
         String productAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
         if (StringUtils.isNotNull(productAmountStr) && Integer.parseInt(productAmountStr)-ordeNum>0) {
             return Integer.parseInt(productAmountStr)-ordeNum;
