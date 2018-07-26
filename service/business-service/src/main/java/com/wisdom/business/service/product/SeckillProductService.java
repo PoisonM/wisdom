@@ -34,6 +34,11 @@ public class SeckillProductService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * 预约详情缓存时常，20分钟
+     */
+    private int productInfoCacheSeconds = 12000;
+
     @Autowired
     private SeckillProductMapper seckillProductMapper;
     @Autowired
@@ -87,7 +92,7 @@ public class SeckillProductService {
                 offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
                 seckillproductDTO.setProductDetail(offlineProductDTO);
             }
-            JedisUtils.setObject("seckillProductInfo:"+activtyId,offlineProductDTO,1);
+            JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
         }
         return seckillproductDTO;
     }
