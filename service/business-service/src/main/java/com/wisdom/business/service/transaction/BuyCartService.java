@@ -244,7 +244,7 @@ public class BuyCartService {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public String seckillProductBuyNow(String productId,int num,String productSpec) {
+    public void seckillProductBuyNow(String productId,int num,String productSpec) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),productId,num);
             try {
@@ -266,11 +266,9 @@ public class BuyCartService {
                 orderProductRelationDTO.setProductNum(num);
                 orderProductRelationDTO.setProductSpec(productSpec);
                 transactionMapper.createOrderProductRelation(orderProductRelationDTO);
-                return StatusConstant.SUCCESS;
             }
             catch (Exception e){
                 logger.error("则直接增加订单异常,异常信息为{}"+e.getMessage(),e);
-                return  StatusConstant.FAILURE;
             }
     }
 }
