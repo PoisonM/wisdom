@@ -67,7 +67,7 @@ public class SeckillProductService {
             }else{
                 productDTO.setStatus(0);
             }
-            productDTO.setSellNum(productDTO.getActivityNum()-productDTO.getProductNum());
+
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
@@ -84,6 +84,7 @@ public class SeckillProductService {
         SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
         if(null == seckillproductDTO){
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
+            seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductNum());
             Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             if(seckillproductDTO!=null)
