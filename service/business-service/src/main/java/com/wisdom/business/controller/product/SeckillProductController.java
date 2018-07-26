@@ -3,8 +3,10 @@ package com.wisdom.business.controller.product;
 import com.wisdom.business.service.product.SeckillProductService;
 import com.wisdom.business.service.transaction.BuyCartService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.persistence.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,26 @@ public class SeckillProductController {
         int productAmount = seckillProductService.getProductAmout(fieldId);
         responseDTO.setResponseData(productAmount);
         logger.info("获取某个商品的基本信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * 获取活动列表
+     *
+     * */
+    @RequestMapping(value ="findSeckillActivityList",method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<PageParamVoDTO<List<SeckillActivityDTO>>> findSeckillActivityList(PageParamVoDTO<SeckillActivityDTO> pageParamVoDTO){
+        long startTime = System.currentTimeMillis();
+        ResponseDTO<PageParamVoDTO<List<SeckillActivityDTO>>> responseDTO = new ResponseDTO<>();
+        SeckillActivityDTO seckillActivityDTO = new SeckillActivityDTO();
+        seckillActivityDTO = pageParamVoDTO.getRequestData();
+        seckillActivityDTO.setPageNo(pageParamVoDTO.getPageNo());
+        seckillActivityDTO.setPageSize(pageParamVoDTO.getPageSize());
+        logger.info("获取某个商品的基本信息==={}开始" , startTime);
+        PageParamVoDTO<List<SeckillActivityDTO>> page = seckillProductService.findSeckillActivitylist(seckillActivityDTO);
+        responseDTO.setResponseData(page);
         return responseDTO;
     }
 }

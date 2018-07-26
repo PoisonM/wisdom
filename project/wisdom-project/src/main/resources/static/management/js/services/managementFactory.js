@@ -3,7 +3,7 @@ var withdraw ='/business/withdraw/';
 var income ='/business/income/';
 var account = '/business/account/';
 var transaction = '/business/transaction/';
-
+var secKill = '/business/seckillProduct/'
 
 var user = '/user/';
 var customer = '/user/customer/';
@@ -228,5 +228,10 @@ define(['appManagement'], function (app) {
         //更新获取用户信息
         .factory('GetUserInfo',['$resource',function ($resource){
             return $resource(income + 'getUserInfo');
+        }])
+
+         //获取活动列表
+        .factory('FindSeckillActivityList',['$resource',function ($resource){
+            return $resource(secKill + 'findSeckillActivityList');
         }])
 });

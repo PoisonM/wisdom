@@ -323,17 +323,30 @@ define(['appManagement'], function(app){
                             }
                         })
                     .state('homePageEditor', {
-                        url: '/homePageEditor',
-                        templateProvider: function() { return lazyDeferred.promise; },
-                        controller: 'homePageEditorCtrl',
-                        resolve: {
-                            load: function($templateCache, $ocLazyLoad, $q, $http) {
-                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homePageEditorCtrl',
-                                    ['js/controllers/homePageEditorCtrl.js?ver=' + managementVersion],
-                                    'js/views/homePageEditor.html?ver=' + managementVersion);
-                            }
-                        }
-                    })
+                                              url: '/homePageEditor',
+                                              templateProvider: function() { return lazyDeferred.promise; },
+                                              controller: 'homePageEditorCtrl',
+                                              resolve: {
+                                                  load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                                      loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.homePageEditorCtrl',
+                                                          ['js/controllers/homePageEditorCtrl.js?ver=' + managementVersion],
+                                                          'js/views/homePageEditor.html?ver=' + managementVersion);
+                                                  }
+                                              }
+                                          })
+
+                    .state('secKillProduct', {
+                          url: '/secKillProduct',
+                          templateProvider: function() { return lazyDeferred.promise; },
+                          controller: 'secKillProductCtrl',
+                          resolve: {
+                              load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                  loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.secKillProductCtrl',
+                                      ['js/controllers/secKillProductCtrl.js?ver=' + managementVersion],
+                                      'js/views/secKillProduct.html?ver=' + managementVersion);
+                              }
+                          }
+                      })
 
                     .state('homeImageUpload', {
                         url: '/homePageEditor/:bannerId',

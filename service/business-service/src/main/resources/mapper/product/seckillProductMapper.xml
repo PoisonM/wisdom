@@ -35,4 +35,74 @@
 		LEFT JOIN business_product bp on sa.product_id = bp.id
 		order by ncs.create_time desc
 	</select>
+
+
+	<!--查询所有商品-->
+	<select id="queryAllProducts1"
+			resultType="com.wisdom.common.persistence.Page">
+		SELECT
+		sa.id,saf.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,sa.product_num,bp.description
+		from seckill_activity sa
+		left join
+		(SELECT * FROM (select * from seckill_activity_field
+		where  ( now()>=start_time and  end_time >= now()) or start_time >= now()
+		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
+		) ncs
+		on sa.id = ncs.activity_id
+		LEFT JOIN business_product bp on sa.product_id = bp.id
+		order by ncs.create_time desc
+	</select>
+
+	<!--查询活动列表-->
+	<select id="findSeckillActivityList" parameterType="com.wisdom.common.dto.product.SeckillActivityDTO"
+			resultType="com.wisdom.common.dto.product.SeckillActivityDTO">
+		SELECT
+			sa.id,
+			sa.activity_no,
+			sa.activity_name,
+			sa.product_id,
+			sa.start_time,
+			sa.end_time,
+			sa.favorable_price,
+			sa.activity_num,
+			sa.product_num,
+			sa.is_enable
+		FROM
+			seckill_activity sa
+		<where>
+			<if test="activityNo!=null and activityNo!=''">
+				sa.activity_no LIKE concat('%',concat(#{activityNo},'%'))
+			</if>
+			<if test="startTime !=null and startTime!=''">
+				AND sa.start_time >= startTime
+			</if>
+			<if test="endTime !=null and endTime!=''">
+				AND sa.end_time &lt;= endTime
+			</if>
+		</where>
+		ORDER BY sa.create_time
+		limit #{pageNo},#{pageSize}
+	</select>
+
+	<!--查询活动列表-->
+	<select id="findSeckillActivityCount" parameterType="com.wisdom.common.dto.product.SeckillActivityDTO"
+			resultType="com.wisdom.common.dto.product.SeckillActivityDTO">
+		SELECT
+		 count(1)
+		FROM
+		seckill_activity sa
+		<where>
+			<if test="activityNo!=null and activityNo!=''">
+				sa.activity_no LIKE concat('%',concat(#{activityNo},'%'))
+			</if>
+			<if test="startTime !=null and startTime!=''">
+				AND sa.start_time >= startTime
+			</if>
+			<if test="endTime !=null and endTime!=''">
+				AND sa.end_time &lt;= endTime
+			</if>
+		</where>
+		ORDER BY sa.create_time
+	</select>
 </mapper>

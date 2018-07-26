@@ -2,6 +2,7 @@ package com.wisdom.business.service.product;
 
 import com.wisdom.business.mapper.product.SeckillProductMapper;
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.FrontUtils;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +73,42 @@ public class SeckillProductService {
             return Integer.parseInt(productAmountStr)-ordeNum;
         }
         return 0;
+    }
+
+
+    /**
+     * 获取活动列表
+     * */
+    public PageParamVoDTO<List<SeckillActivityDTO>> findSeckillActivitylist(SeckillActivityDTO seckillActivityDTO){
+
+        PageParamVoDTO<List<SeckillActivityDTO>> page = new PageParamVoDTO();
+        List<SeckillActivityDTO> seckillActivityList = seckillProductMapper.findSeckillActivityList(seckillActivityDTO);
+        Date now = new Date();
+        for(SeckillActivityDTO seckillActivity : seckillActivityList){
+            if(now.getTime()>= seckillActivity.getStartTime().getTime()){
+                if(now.getTime()<=seckillActivity.getEndTime().getTime()){
+                    seckillActivity.setActivityStatus("进行中");
+                }else if(now.getTime()>seckillActivity.getEndTime().getTime()){
+                    seckillActivity.setActivityStatus("已结束");
+                }
+            }else{
+                seckillActivity.setActivityStatus("未开始");
+                Calendar beginCalendar = Calendar.getInstance();
+                beginCalendar.set(seckillActivity.getStartTime().getYear(),seckillActivity.getStartTime().getMonth(),seckillActivity.getStartTime().getDate(),seckillActivity.getStartTime().getHours(),seckillActivity.getStartTime().getMinutes(),seckillActivity.getStartTime().getSeconds());		//设定时间为2017年3月2日20:20:20
+                Calendar endCalendar = Calendar.getInstance();
+                endCalendar.set(now.getYear(),now.getMonth(),now.getDay(),now.getHours(),now.getMinutes(),now.getSeconds());		//设定时间为2017年3月3日10:10:10
+                long beginTime = beginCalendar.getTime().getTime();
+                long endTime = endCalendar.getTime().getTime();
+                long betweenDays = (long)((endTime - beginTime) / (1000 * 60 * 60 *24));
+                seckillActivity.setActivityDays(betweenDays);
+            }
+        }
+        int count = seckillProductMapper.findSeckillActivityCount(seckillActivityDTO);
+        page.setRequestData(seckillActivityList);
+        page.setTotalCount(count);
+        page.setPageNo(seckillActivityDTO.getPageNo());
+        page.setPageSize(seckillActivityDTO.getPageSize());
+        return page;
     }
 
 }
