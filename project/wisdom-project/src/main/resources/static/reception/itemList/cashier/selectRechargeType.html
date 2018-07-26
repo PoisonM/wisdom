@@ -26,7 +26,7 @@
             <span class="price">剩余金额：￥{{item.surplusAmount}}.00</span>
             <span class="price" style="color: #999999">面额：￥{{item.initAmount}}.00</span>
             <br/>
-            <span class="discount">折扣：单次{{item.timeDiscount*10}}折 疗程卡{{item.periodDiscount*10}}折 产品{{item.productDiscount*10}}折</span>
+            <span class="discount">折扣：单次{{item.timeDiscount=='1'?'无':item.timeDiscount*10}}折 疗程卡{{item.periodDiscount=='1'?'无':item.periodDiscount*10}}折 产品{{item.productDiscount=='1'?'无':item.productDiscount*10}}折</span>
         </li>
     </ul>
     <ul class="selectRechargeTypeUl" ng-if="RechargeCardListAll!=undefined">
@@ -40,7 +40,7 @@
             <br/>
             <span class="price">面额：￥{{item.amount}}.00</span>
             <br/>
-            <span class="discount">折扣：单次{{item.timeDiscount*10}}折 疗程卡{{item.periodDiscount*10}}折 产品{{item.productDiscount*10}}折</span>
+            <span class="discount">折扣：单次{{item.timeDiscount=='1'?'无':item.timeDiscount*10}}折 疗程卡{{item.periodDiscount=='1'?'无':item.periodDiscount*10}}折 产品{{item.productDiscount=='1'?'无':item.productDiscount*10}}折</span>
         </li>
     </ul>
 </div>
