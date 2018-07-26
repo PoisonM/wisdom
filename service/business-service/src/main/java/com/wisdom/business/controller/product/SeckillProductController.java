@@ -53,7 +53,7 @@ public class SeckillProductController {
     @RequestMapping(value = "getseckillProductDetailById", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    SeckillProductDTO getseckillProductDetailById(String activtyId) {
+    SeckillProductDTO getseckillProductDetailById(@RequestParam String activtyId) {
         return seckillProductService.getseckillProductDetailById(activtyId);
     }
 

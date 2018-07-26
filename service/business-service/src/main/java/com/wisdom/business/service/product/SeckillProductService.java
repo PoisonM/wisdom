@@ -82,9 +82,9 @@ public class SeckillProductService {
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
             Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-            offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
             if(seckillproductDTO!=null)
             {
+                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
                 seckillproductDTO.setProductDetail(offlineProductDTO);
             }
             JedisUtils.setObject("seckillProductInfo:"+activtyId,offlineProductDTO,1);

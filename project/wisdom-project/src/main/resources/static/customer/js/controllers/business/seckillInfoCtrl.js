@@ -145,7 +145,7 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                     showDelay: 0
                 });
 
-                SeckillInfo.save({fieldId:$stateParams.id},function (data) {
+                SeckillInfo.get({activtyId:$stateParams.id+""},function (data) {
                     console.log(data)
                 })
 

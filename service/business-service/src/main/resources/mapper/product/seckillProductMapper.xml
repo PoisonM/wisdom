@@ -32,7 +32,7 @@
 		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
 		) ncs
 		on sa.id = ncs.activity_id
-		LEFT JOIN business_product bp on sa.product_id = bp.id
+		LEFT JOIN business_product bp on sa.product_id = bp.product_id
 		order by ncs.create_time desc
 	</select>
 
@@ -100,8 +100,7 @@
 		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
 		) ncs
 		on sa.id = ncs.activity_id
-		LEFT JOIN business_product bp on sa.product_id = bp.id
-		order by ncs.create_time desc
+		LEFT JOIN business_product bp on sa.product_id = bp.product_id
 		<where>
 			<if test="id!=null and id!=''">
 				sa.id = #{id}
