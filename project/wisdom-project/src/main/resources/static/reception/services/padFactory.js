@@ -1,8 +1,8 @@
-var beautyIP = 'http://192.168.1.117/beauty/';
-var userIP = 'http://192.168.1.117/user/';
-var systemService = 'http://192.168.1.117/system-service/';
-var weixinService = 'http://192.168.1.117/weixin/';
-var  mine='http://192.168.1.117/beauty/mine/';
+var beautyIP = 'http://mx99.kpbeauty.com.cn/beauty/';
+var userIP = 'http://mx99.kpbeauty.com.cn/user/';
+var systemService = 'http://mx99.kpbeauty.com.cn/system-service/';
+var weixinService = 'http://mx99.kpbeauty.com.cn/weixin/';
+var  mine='http://mx99.kpbeauty.com.cn/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
         return {
             request: function(config){
