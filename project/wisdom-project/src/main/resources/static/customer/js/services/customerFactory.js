@@ -299,5 +299,8 @@ define(['appCustomer'], function (app) {
         .factory('SeckillList',['$resource',function ($resource){
             return $resource(seckillProduct+"/getSeckillProductList")
         }])
+        .factory('SeckillInfo',['$resource',function ($resource){
+            return $resource(seckillProduct+"/getseckillProductDetailById")
+        }])
 
 });
