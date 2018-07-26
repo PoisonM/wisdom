@@ -100,6 +100,9 @@ public class SeckillProductDTO<T> {
     @JSONField(name = "endTime")
     private Date endTime;
 
+    @JSONField(name = "productDetail")
+    private T productDetail;
+
     public int getId() {
         return id;
     }
@@ -218,5 +221,13 @@ public class SeckillProductDTO<T> {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public T getProductDetail() {
+        return productDetail;
+    }
+
+    public void setProductDetail(T productDetail) {
+        this.productDetail = productDetail;
     }
 }

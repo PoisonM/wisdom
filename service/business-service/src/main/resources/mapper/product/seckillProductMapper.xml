@@ -24,29 +24,11 @@
 			resultType="com.wisdom.common.persistence.Page">
 		SELECT
 		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount
 		from seckill_activity sa
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
-		where  ( now()>=start_time and  end_time >= now()) or start_time >= now()
-		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
-		) ncs
-		on sa.id = ncs.activity_id
-		LEFT JOIN business_product bp on sa.product_id = bp.id
-		order by ncs.create_time desc
-	</select>
-
-
-	<!--查询所有商品-->
-	<select id="queryAllProducts1"
-			resultType="com.wisdom.common.persistence.Page">
-		SELECT
-		sa.id,saf.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,sa.product_num,bp.description
-		from seckill_activity sa
-		left join
-		(SELECT * FROM (select * from seckill_activity_field
-		where  ( now()>=start_time and  end_time >= now()) or start_time >= now()
+		where  ( now() &gt;= start_time and  end_time &gt;= now()) or start_time &gt;= now()
 		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
 		) ncs
 		on sa.id = ncs.activity_id
@@ -105,4 +87,26 @@
 		</where>
 		ORDER BY sa.create_time
 	</select>
+
+	<!--查询所有商品-->
+	<select id="findSeckillProductInfoById" resultMap="SeckillProductResultMap">
+		SELECT
+		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount
+		from seckill_activity sa
+		left join
+		(SELECT * FROM (select * from seckill_activity_field
+		where  ( now() &gt;= start_time and  end_time &gt;= now()) or start_time &gt;= now()
+		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
+		) ncs
+		on sa.id = ncs.activity_id
+		LEFT JOIN business_product bp on sa.product_id = bp.id
+		order by ncs.create_time desc
+		<where>
+			<if test="id!=null and id!=''">
+				sa.id = #{id}
+			</if>
+		</where>
+	</select>
+
 </mapper>

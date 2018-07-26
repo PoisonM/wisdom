@@ -1,10 +1,8 @@
 package com.wisdom.business.service.product;
 
-import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.mapper.product.SeckillProductMapper;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
-import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.persistence.Page;
@@ -40,8 +38,6 @@ public class SeckillProductService {
     private SeckillProductMapper seckillProductMapper;
     @Autowired
     private MongoTemplate mongoTemplate;
-    @Autowired
-    private ProductMapper productMapper;
 
     /**
      * 查询所有商品
@@ -58,12 +54,13 @@ public class SeckillProductService {
         Date nowTime = new Date();
         for (SeckillProductDTO productDTO : resultPage.getList()){
             int productAmount = productDTO.getProductAmount();
+//            0马上抢 1即将开始 2活动已结束 3已抢光
             if(productAmount<=0){
                 productDTO.setStatus(3);
-            }else if(productDTO.getStartTime().getTime()>=nowTime.getTime()){
-                productDTO.setStatus(1);
             }else if(productDTO.getEndTime().getTime()>=nowTime.getTime()){
                 productDTO.setStatus(2);
+            }else if(productDTO.getStartTime().getTime()>=nowTime.getTime()){
+                productDTO.setStatus(1);
             }else{
                 productDTO.setStatus(0);
             }
@@ -80,22 +77,19 @@ public class SeckillProductService {
      */
     public SeckillProductDTO getseckillProductDetailById(String activtyId) {
         logger.info("service -- 根据活动id={}查询商品信息 getseckillProductDetailById,方法执行",activtyId);
-
         SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
         if(null == seckillproductDTO){
-            SeckillProductDTO seckillProductDTO  = seckillProductMapper.getSeckillProductInfo(activtyId);
-            ProductDTO<OfflineProductDTO> productDTO = productMapper.getBusinessProductInfo(seckillProductDTO.getProductId());
-            Query query = new Query().addCriteria(Criteria.where("productId").is(seckillProductDTO.getId()));
+            seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
+            Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-            if(productDTO!=null)
+            if(seckillproductDTO!=null)
             {
-                productDTO.setProductDetail(offlineProductDTO);
+                seckillproductDTO.setProductDetail(offlineProductDTO);
             }
-            JedisUtils.setObject("seckillProductInfo:"+activtyId,productDTO,1);
+            JedisUtils.setObject("seckillProductInfo:"+activtyId,offlineProductDTO,1);
         }
-
-        return null;
+        return seckillproductDTO;
     }
 
 
