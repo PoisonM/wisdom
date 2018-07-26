@@ -61,6 +61,32 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    /*新人专享页面*/
+                    .state('newlyweds', {
+                        url: '/newlyweds',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'newlywedsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.newlywedsCtrl',
+                                    ['js/controllers/business/newlywedsCtrl.js?ver='+ customerVersion],
+                                    'views/business/newlyweds.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    /*分区页面*/
+                    .state('areaPage', {
+                        url: '/areaPage',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'areaPageCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.areaPageCtrl',
+                                    ['js/controllers/business/areaPageCtrl.js?ver='+ customerVersion],
+                                    'views/business/areaPage.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                     .state('shareHome', {
                         url: '/shareHome',
                         templateProvider: function() { return lazyDeferred.promise; },
