@@ -44,20 +44,20 @@ public class SeckillOrderController {
      * @param productNum
      * output ResponseDTO<String>
      */
-    @RequestMapping(value = "createBusinessOrder", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "createSeckillOrder", method = {RequestMethod.POST, RequestMethod.GET})
     @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<String> createBusinessOrder(@RequestParam String fieldId, @RequestParam String productSpec,@RequestParam int productNum) {
+    ResponseDTO<String> createSeckillOrder(@RequestParam String fieldId,@RequestParam String productId, @RequestParam String productSpec,@RequestParam int productNum) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         long startTime = System.currentTimeMillis();
         logger.info("秒杀某个商品，创建订单==={}开始", startTime);
-        RedisLock productAmountLock = new RedisLock("seckillProduct" + fieldId);
+        RedisLock productAmountLock = new RedisLock("seckillProduct" + productId);
         logger.info("秒杀商品生成订单加锁");
         try {
             productAmountLock.lock();
             if (seckillProductService.getProductAmout(fieldId)>0) {
-                buyCartService.seckillProductBuyNow(fieldId,productNum,productSpec);
+                buyCartService.seckillProductBuyNow(productId,productNum,productSpec);
             } else {
                 logger.info("库存不足");
                 responseDTO.setResult(StatusConstant.FAILURE);

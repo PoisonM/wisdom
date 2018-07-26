@@ -1,8 +1,8 @@
 angular.module('controllers',[]).controller('seckillInfoCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicPopup',
-        '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo',
+        '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global',
         function ($scope,$rootScope,$stateParams,$state,$ionicPopup,
-                  $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo) {
+                  $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global) {
 
             $rootScope.title = "秒杀详情";
             $scope.model=false;
@@ -43,22 +43,15 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
             $scope.goPay = function(){
                 $scope.loginCart();
                 /*根据商品状态来判断商品是否为下架商品*/
-                if($scope.param.product.status == "0"){
-                    return;
-                }
-
                 if($scope.model){
-
                     if($scope.param.checkFlag=="")
                     {
                         $scope.model=true;
                     }
-
                         if($scope.param.productNum=="0"){
                             alert("请选择正确的数量");
                             return
                         }
-                        /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
                         if($scope.param.productNum>$scope.param.product.productAmount){
                             alert("库存不足~");
                             return;
@@ -66,12 +59,17 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                         else
                         {
                             showToast("加载中");
-
+                            CreateSeckillOrder.save(
+                                {fieldId:$scope.param.product.fieldId,
+                                    productId:$scope.param.product.productId,
+                                    productSpec:$scope.param.checkFlag,productNum:$scope.param.productNum},
+                                function (data) {
+                                    if(data.result==Global.SUCCESS) {
+                                        window.location.href = "orderPay.do?productType=seckill&random=" + Math.random();
+                                    }
+                            });
 
                         }
-
-
-
                 }else{
                     $scope.model = true
                 }
@@ -120,8 +118,6 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                         showToast("请先登录账号");
                         hideToast();
                         $state.go("login");
-                    }else{
-                        $state.go("buyCart");
                     }
                 })
             };
