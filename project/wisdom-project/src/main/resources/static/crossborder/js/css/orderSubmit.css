@@ -1,0 +1,72 @@
+.orderSubmit{
+    width: 1200px;
+    margin: 0 auto;
+    background-color: #F8F8F8;
+}
+
+.orderSubmit .address{
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    margin-bottom: 30px;
+}
+
+.orderSubmit .address p{
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #DDDDDD;
+    padding-left: 20px;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.orderSubmit .address ul li{
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    ont-family: MicrosoftYaHei;
+    font-size: 14px;
+    color: #2A2A2A;
+    letter-spacing: 0;
+    padding-left: 20px;
+
+}
+.orderSubmit .address ul li i{
+    color: #FF3D3D;;
+    vertical-align: middle;
+}
+.orderSubmit .address ul li label{
+    width: 140px;
+    width: 80px;
+    display: inline-block;
+    width: 80px;
+    display: inline-block;
+    font-family: MicrosoftYaHei;
+    font-size: 14px;
+    color: #2A2A2A;
+    letter-spacing: 0;
+    line-height: 19px;
+}
+.orderSubmit .address ul li input{
+    width: 310px;
+    height: 26px;
+    line-height: 26px;
+    padding: 2px 3px;
+    border: 1px solid #DDDDDD
+}
+.orderSubmit .order_info{
+    background-color: #ffffff;
+    border: 1px solid #DDDDDD;
+}
+.orderSubmit .order_info p {
+    height: 46px;
+    line-height: 46px;
+    border-bottom: 1px solid #DDDDDD;
+    padding-left: 20px;
+    font-family: MicrosoftYaHei;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+}

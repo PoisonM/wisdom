@@ -1,0 +1,73 @@
+
+<home-top params="option"></home-top>
+
+<div class="shoppingCart">
+    <div class="header">
+        <ul>
+            <li>
+                <span class="check"></span>
+                全选
+            </li>
+            <li>
+                商品名称
+            </li>
+            <li>
+                单价
+            </li>
+            <li>
+                数量
+            </li>
+            <li>小计(元)</li>
+            <li>操作</li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="content_top">
+            <div ng-repeat="item in [1,2,3]" class="goods_box">
+                <ul>
+                    <li>
+                        <span class="check"></span>
+                        <img src="//img13.360buyimg.com/n5/s54x54_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg" alt="">
+                    </li>
+                    <li>
+                        商品名称商品名称商品名称商品名称商品名称多特海伦修复精华液150ml
+                    </li>
+                    <li>
+                        <del>¥999.00</del>
+                        </br>
+                        <span>¥899.00</span>
+                    </li>
+                    <li>
+                        <span>-</span><input type="text"><span>+</span>
+                    </li>
+                    <li>
+                        <span>¥899.00</span>
+                    </li>
+                    <li>
+                        删除
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content_bottom">
+            <ul>
+                <li>
+                    <span class="check"></span>
+                    全选
+                </li>
+
+                <li>
+                    已选择商品 <span>1</span> 件
+                </li>
+
+                <li>
+                    <i>总价</i>(不含运费)： <span>¥899.00 </span>
+                </li>
+
+                <li>
+                    去结算
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
