@@ -40,9 +40,10 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 GetRankingsList.save(function(data){
                     $scope.rankingsList = data.responseData;
 
-                })
+                });
 
                 GetHomeBannerList.save(function(data){
+                    $ionicLoading.hide();
                     $scope.param.bannerList = data.responseData;
                     /*轮播图排序 按照后台返回来的那个值*/
                     $ionicSlideBoxDelegate.update();
@@ -55,12 +56,12 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                     }
                 });
 
-                GetOfflineProductList.save({pageNo:0,pageSize:100},function(data){
+               /* GetOfflineProductList.save({pageNo:0,pageSize:100},function(data){
                     $ionicLoading.hide();
-                    /*底部切换初始默认为首页*/
+                    /!*底部切换初始默认为首页*!/
                     $scope.param.checkType="0";
                     $scope.param.productList = data.responseData;
-              /*      var partNames = [];
+              /!*      var partNames = [];
                     angular.forEach($scope.param.productList,function(value1,index1){
                         var same = false;
                         angular.forEach(partNames,function(value2,index){
@@ -96,15 +97,15 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                         }
                     }
                     $scope.param.product2List = tempArr;
-                    console.log( $scope.param.product2List)*/
+                    console.log( $scope.param.product2List)*!/
                     $scope.repeatList = [];
-                    $scope.onePriductList = [];/*99*/
-                    $scope.twoPriductList = [];/*199*/
-                    $scope.threePriductList = [];/*299*/
-                    $scope.fourPriductList = [];/*399*/
-                   /* $scope.fivePriductList = [];*//*499*/
+                    $scope.onePriductList = [];/!*99*!/
+                    $scope.twoPriductList = [];/!*199*!/
+                    $scope.threePriductList = [];/!*299*!/
+                    $scope.fourPriductList = [];/!*399*!/
+                   /!* $scope.fivePriductList = [];*!//!*499*!/
                     $scope.allPriductList = $scope.param.productList;
-                    $scope.repeatList=$scope.param.productList;/*一进入商城默认全部商城*/
+                    $scope.repeatList=$scope.param.productList;/!*一进入商城默认全部商城*!/
                     for(var i = 0; i < $scope.param.productList.length; i++){
                         if($scope.param.productList[i].price == "99.00"){
                             $scope.onePriductList.push($scope.param.productList[i])
@@ -114,103 +115,12 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                             $scope.threePriductList.push($scope.param.productList[i])
                         }else if($scope.param.productList[i].price == "399.00"){
                             $scope.fourPriductList.push($scope.param.productList[i])
-                        }/*else if($scope.param.productList[i].price == "499.00"){
+                        }/!*else if($scope.param.productList[i].price == "499.00"){
                             $scope.fivePriductList.push($scope.param.productList[i])
-                        }*/
+                        }*!/
                     }
-                   /*在这写销量排序 按照销量由大到小*/
-                   /*99*/
-                    function bubbleSort(arr) {
-                        var len = $scope.onePriductList.length;
-                        if(len>1){
-                            for (var i = 0; i < len; i++) {
-                                for (var j = 0; j < len - 1 - i; j++) {
-                                    if (arr[j].productDetail.productSalesVolume/1 < arr[j+1].productDetail.productSalesVolume/1) { //相邻元素两两对比
-                                        var temp = arr[j+1]; //元素交换
-                                        arr[j+1] = arr[j];
-                                        arr[j] = temp;
-                                        /*console.log(arr)*/
-                                    }
-                                }
-                            }
-                            return arr;
-                        }
-                    }
-                   bubbleSort($scope.onePriductList);
-                    /*199*/
-                    function bubbleSort1(arr) {
-                        var len = $scope.twoPriductList.length;
-                        if(len>1){
-                            for (var i = 0; i < len; i++) {
-                                for (var j = 0; j < len - 1 - i; j++) {
-                                    if (arr[j].productDetail.productSalesVolume/1 < arr[j+1].productDetail.productSalesVolume/1) { //相邻元素两两对比
-                                        var temp = arr[j+1]; //元素交换
-                                        arr[j+1] = arr[j];
-                                        arr[j] = temp;
-                                        /*console.log(arr)*/
-                                    }
-                                }
-                            }
-                            return arr;
-                        }
-                    }
-                    bubbleSort1($scope.twoPriductList);
-                  /*299*/
-                    function bubbleSort2(arr) {
-                        var len = $scope.threePriductList.length;
-                        if(len>1) {
-                            for (var i = 0; i < len; i++) {
-                                for (var j = 0; j < len - 1 - i; j++) {
-                                    if (arr[j].productDetail.productSalesVolume / 1 < arr[j + 1].productDetail.productSalesVolume / 1) { //相邻元素两两对比
-                                        var temp = arr[j + 1]; //元素交换
-                                        arr[j + 1] = arr[j];
-                                        arr[j] = temp;
-                                       /* console.log(arr)*/
-                                    }
-                                }
-                            }
-                        return arr;
-                        }
-                    }
-                    bubbleSort2($scope.threePriductList);
-                    /*399*/
-                    function bubbleSort3(arr) {
-                        var len = $scope.fourPriductList.length;
-                        if(len>1) {
-                            for (var i = 0; i < len; i++) {
-                                for (var j = 0; j < len - 1 - i; j++) {
-                                    if (arr[j].productDetail.productSalesVolume / 1 < arr[j + 1].productDetail.productSalesVolume / 1) { //相邻元素两两对比
-                                        var temp = arr[j + 1]; //元素交换
-                                        arr[j + 1] = arr[j];
-                                        arr[j] = temp;
-                                        /*console.log(arr)*/
-                                    }
-                                }
-                            }
-                            return arr;
-                        }
-                    }
-                    bubbleSort3($scope.fourPriductList);
-                    /*499*/
-                   /* function bubbleSort4(arr) {
-                        var len = $scope.fivePriductList.length;
-                        if(len>1) {
-                            for (var i = 0; i < len; i++) {
-                                for (var j = 0; j < len - 1 - i; j++) {
-                                    if (arr[j].productDetail.productSalesVolume / 1 < arr[j + 1].productDetail.productSalesVolume / 1) { //相邻元素两两对比
-                                        var temp = arr[j + 1]; //元素交换
-                                        arr[j + 1] = arr[j];
-                                        arr[j] = temp;
-                                        /!*console.log(arr)*!/
-                                    }
-                                }
-                            }
-                            return arr;
-                        }
-                    }
-                    bubbleSort4($scope.fivePriductList);*/
                     $scope.checkPrice($rootScope.shopHomeParam);
-                });
+                });*/
                 /*点击底部切换按钮更改背景色 字体*/
                $scope.checkBg=function (checkType) {
                 $scope.param.checkType=checkType;
@@ -299,6 +209,10 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
 
             };*/
+           /*点击 跳入新人专享页面*/
+           $scope.Newlyweds=function () {
+             $state.go("newlyweds")
+           };
                 /*点击首页浮层 取消让浮层隐藏*/
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
