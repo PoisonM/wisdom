@@ -58,6 +58,7 @@ public class SeckillOrderController {
             productAmountLock.lock();
             if (seckillProductService.getProductAmout(fieldId)>0) {
                 buyCartService.seckillProductBuyNow(productId,productNum,productSpec);
+                responseDTO.setResult(StatusConstant.SUCCESS);
             } else {
                 logger.info("库存不足");
                 responseDTO.setResult(StatusConstant.FAILURE);

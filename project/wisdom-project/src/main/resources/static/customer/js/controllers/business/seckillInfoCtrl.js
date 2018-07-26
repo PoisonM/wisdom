@@ -58,14 +58,15 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                         }
                         else
                         {
-                            showToast("加载中");
-                            CreateSeckillOrder.save(
-                                {   fieldId:$scope.param.product.fieldId,
+                            // showToast("加载中");
+                            CreateSeckillOrder.get(
+                                {   fieldId:$scope.param.product.fieldId+"",
                                     productId:$scope.param.product.productId,
                                     productSpec:$scope.param.checkFlag,
                                     productNum:$scope.param.productNum
                                 },
                                 function (data) {
+                                    console.log(data)
                                     if(data.result==Global.SUCCESS) {
                                         window.location.href = "orderPay.do?productType=seckill&random=" + Math.random();
                                     }

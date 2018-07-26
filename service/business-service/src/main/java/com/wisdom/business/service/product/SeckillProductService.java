@@ -84,7 +84,7 @@ public class SeckillProductService {
         SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
         if(null == seckillproductDTO){
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
-            seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductNum());
+            seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
             Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             if(seckillproductDTO!=null)
@@ -94,8 +94,10 @@ public class SeckillProductService {
             }
             JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
         }
+        //这里有个弊端带付款后更新缓存信息
         int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
         seckillproductDTO.setProductAmount(productAmount);
+        seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
         return seckillproductDTO;
     }
 
