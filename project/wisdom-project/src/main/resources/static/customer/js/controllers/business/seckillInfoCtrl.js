@@ -1,8 +1,8 @@
 angular.module('controllers',[]).controller('seckillInfoCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicPopup',
-        '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global',
+        '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis',
         function ($scope,$rootScope,$stateParams,$state,$ionicPopup,
-                  $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global) {
+                  $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global,PutNeedPayOrderListToRedis) {
 
             $rootScope.title = "秒杀详情";
             $scope.model=false;
@@ -59,6 +59,12 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                         else
                         {
                             // showToast("加载中");
+
+
+
+
+
+
                             CreateSeckillOrder.get(
                                 {   fieldId:$scope.param.product.fieldId+"",
                                     productId:$scope.param.product.productId,
@@ -68,7 +74,33 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                                 function (data) {
                                     console.log(data)
                                     if(data.result==Global.SUCCESS) {
-                                        window.location.href = "orderPay.do?productType=seckill&random=" + Math.random();
+                                        var needPayOrderList = [];
+                                        var payOrder = {
+                                            orderId:data.responseData,
+                                            productFirstUrl:$scope.param.product.firstUrl,
+                                            productId:$scope.param.product.productId,
+                                            productName:$scope.param.product.productName,
+                                            productNum:$scope.param.productNum,
+                                            productPrice:$scope.param.product.price,
+                                            productSpec:$scope.param.checkFlag
+                                        };
+                                        needPayOrderList.push(payOrder);
+                                        //将needPayOrderList数据放入后台list中
+                                        PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+                                            if(data.result==Global.SUCCESS)
+                                            {
+                                                hideToast()
+                                                $scope.showFlag(false);
+                                                $scope.param.checkFlag = "";
+                                                $scope.param.productNum = 1;
+                                                window.location.href = "orderPay.do?productType=seckill&random="+Math.random();
+                                            }else if(data.result==Global.FAILURE){
+                                                alert("购买失败");
+                                                hideToast()
+                                                $scope.showFlag(false);
+                                            }
+
+                                        })
                                     }
                             });
 

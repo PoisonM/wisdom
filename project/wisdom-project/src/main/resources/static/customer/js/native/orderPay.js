@@ -64,7 +64,7 @@ var orderPayInit = function(){
     productType = GetQueryString("productType");
     specialShopId = GetQueryString("specialShopId");
 
-    if(productType=='offline'||productType=='special')
+    if(productType=='offline'||productType=='special' ||productType=='seckill' )
     {
         var userAddressInfo = {};
         var needPayOrderList = {};

@@ -150,5 +150,4 @@ public class SeckillProductService {
         page.setPageSize(seckillActivityDTO.getPageSize());
         return page;
     }
-
 }

@@ -244,7 +244,7 @@ public class BuyCartService {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public void seckillProductBuyNow(String productId,int num,String productSpec) {
+    public void seckillProductBuyNow(String fieldId,String productId,int num,String productSpec) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),productId,num);
             try {
@@ -257,8 +257,7 @@ public class BuyCartService {
                 businessOrderDTO.setType("seckill");
                 businessOrderDTO.setCreateDate(new Date());
                 businessOrderDTO.setUpdateDate(new Date());
-                JedisUtils.setObject("seckillproductOrder:"+productId+":"+businessOrderDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
-
+                JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+businessOrderDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
                 OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
                 orderProductRelationDTO.setId(UUID.randomUUID().toString());
                 orderProductRelationDTO.setBusinessOrderId(businessOrderId);

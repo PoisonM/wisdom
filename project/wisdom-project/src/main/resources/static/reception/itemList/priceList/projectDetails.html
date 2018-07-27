@@ -35,7 +35,11 @@
                 <p class="mt40 fs32"><span class="c99">类型</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectTypeOneName}}</span></p>
                 <p class="mt50 fs32"><span class="c99 ">系列</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectTypeTwoName}}</span></p>
                 <p class="mt50 fs32"><span class="c99">时长</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{projectInformation.projectDuration}}分钟</span></p>
-                <p class="mt126 fs32 c99 mb50" style="margin-top: 0.4rem">功能介绍：{{projectInformation.functionIntr}}</p>
+                <p class="mt126 fs32 c99 mb50" style="margin-top: 0.4rem">
+                    功能介绍：
+                    <br>
+                    <textarea  readonly="readonly" style="width: 100%; border: none;resize:none;color: #999" cols="30" rows="10" ng-model="projectInformation.functionIntr"></textarea>
+                </p>
             </div>
         </div>
     </div>
