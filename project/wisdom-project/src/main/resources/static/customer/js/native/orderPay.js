@@ -275,7 +275,7 @@ var orderPayInit = function(){
 
 $('#payButton').attr('disabled',"true");//添加disabled属性
 var confirmPay = function(){
-    if(receiveOrderAddressId==""&&(productType=='offline'||productType=='special'))
+    if(receiveOrderAddressId==""&&(productType=='offline'||productType=='special'||productType=='seckill'))
     {
         alert("请先选择收货地址");
     }
@@ -347,7 +347,7 @@ var confirmPay = function(){
                 }
             });
         }
-        else if(productType=='offline'||productType=='special')
+        else if(productType=='offline'||productType=='special'||productType=='seckill')
         {
             if(productType=='special')
             {

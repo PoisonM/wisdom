@@ -16,6 +16,7 @@
 		<result column="product_num" property="productNum" jdbcType="INTEGER" />
 		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
 		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="type" property="productType" jdbcType="TIMESTAMP" />
 	</resultMap>
 
 
@@ -24,7 +25,7 @@
 			resultType="com.wisdom.common.persistence.Page">
 		SELECT
 		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount,bp.type
 		from seckill_activity sa
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
@@ -92,7 +93,7 @@
 	<select id="findSeckillProductInfoById" resultMap="SeckillProductResultMap">
 		SELECT
 		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount,bp.type
 		from seckill_activity sa
 		left join
 		(SELECT * FROM (select * from seckill_activity_field

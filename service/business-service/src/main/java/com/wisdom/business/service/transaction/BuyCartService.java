@@ -257,7 +257,7 @@ public class BuyCartService {
                 businessOrderDTO.setType("seckill");
                 businessOrderDTO.setCreateDate(new Date());
                 businessOrderDTO.setUpdateDate(new Date());
-                JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+businessOrderDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
+                JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+userInfoDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
                 OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
                 orderProductRelationDTO.setId(UUID.randomUUID().toString());
                 orderProductRelationDTO.setBusinessOrderId(businessOrderId);
