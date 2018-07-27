@@ -547,10 +547,18 @@ public class ShopStockServiceImpl implements ShopStockService {
 
 		// 查询产品信息，用户获取到
 		ShopStockNumberDTO shopStockNumberDTO = null;
+		//入库的时候或者消费的时候会执行到此处，单单出库的时候，出库数量大于库存量是不会执行到此代码的
 		for (ShopStockRequestDTO addShopStockRequest : values) {
 			shopStockNumberDTO = new ShopStockNumberDTO();
 			shopStockNumberDTO.setId(IdGen.uuid());
-			shopStockNumberDTO.setStockNumber(addShopStockRequest.getStockNumber());
+			if(StockStyleEnum.MANUAL_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())||
+					StockStyleEnum.SCAN_CARD_OUT_STORAGE.getCode().equals(shopStockDto.getStockStyle())){
+
+				shopStockNumberDTO.setStockNumber(0-addShopStockRequest.getStockOutNumber());
+			}else {
+				shopStockNumberDTO.setStockNumber(addShopStockRequest.getStockNumber());
+			}
+
 			if(sysBossDTO!=null){
 				shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
 			}

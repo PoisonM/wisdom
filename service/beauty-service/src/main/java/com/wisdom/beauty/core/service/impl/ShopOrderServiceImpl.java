@@ -3,7 +3,6 @@ package com.wisdom.beauty.core.service.impl;
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
-import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
 import com.wisdom.beauty.api.extDto.ExtShopUserProductRelationDTO;
 import com.wisdom.beauty.api.extDto.ExtShopUserProjectGroupRelRelationDTO;
 import com.wisdom.beauty.api.extDto.ExtShopUserProjectRelationDTO;
@@ -180,8 +179,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                     logger.info("订单号={}，对应产品折扣价格信息为，{}", orderId, shopUserRechargeCardDTO);
                     //折扣价格，也就是单个产品的价格
                     //如果是特殊充值卡或包含在充值卡折扣范围内的产品
-                    if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())
-                            ||scopeStr.toString().contains(new StringBuffer(userProductRelationDTO.getProductTypeTwoId()).append(":").append(GoodsTypeEnum.PRODUCT.getCode()))
+                    if(scopeStr.toString().contains(new StringBuffer(userProductRelationDTO.getProductTypeTwoId()).append(":").append(GoodsTypeEnum.PRODUCT.getCode()))
                             ){
                         BigDecimal discountPrice = userProductRelationDTO.getPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getProductDiscount()));
                         BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProductRelationDTO.getInitTimes()));
@@ -209,8 +207,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                 if (null != userProjectRelationDTO && null != userProjectRelationDTO.getSysShopProjectPurchasePrice() && null != userProjectRelationDTO.getSysShopProjectInitTimes()) {
                     //如果是次卡的话
                     if (GoodsTypeEnum.TIME_CARD.getCode().equals(userProjectRelationDTO.getUseStyle())) {
-                        //折扣价格，也是单个价格
-                        if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())||scopeStr.toString().contains(new StringBuffer(userProjectRelationDTO.getProjectTypeTwoId()).append(":").append(GoodsTypeEnum.TIME_CARD.getCode()))) {
+                        if(scopeStr.toString().contains(new StringBuffer(userProjectRelationDTO.getProjectTypeTwoId()).toString())) {
                             BigDecimal discountPrice = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getTimeDiscount()));
                             BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes()));
                             userProjectRelationDTO.setSysShopProjectInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -225,7 +222,7 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                         }
                         updateFlag = true;
                     } else {
-                        if(RechargeCardTypeEnum.SPECIAL.getCode().equals(shopUserRechargeCardDTO.getRechargeCardType())||scopeStr.toString().contains(new StringBuffer(userProjectRelationDTO.getProjectTypeTwoId()).append(":").append(GoodsTypeEnum.TREATMENT_CARD.getCode()))) {
+                        if(scopeStr.toString().contains(new StringBuffer(userProjectRelationDTO.getProjectTypeTwoId()).toString())) {
                             BigDecimal discountPrice = userProjectRelationDTO.getSysShopProjectPurchasePrice().multiply(new BigDecimal(shopUserRechargeCardDTO.getPeriodDiscount()));
                             BigDecimal initAmount = discountPrice.multiply(new BigDecimal(userProjectRelationDTO.getSysShopProjectInitTimes()));
                             userProjectRelationDTO.setSysShopProjectInitAmount(initAmount.setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -236,9 +233,8 @@ public class ShopOrderServiceImpl implements ShopOrderService {
                             userProjectRelationDTO.setDiscountPrice(userProjectRelationDTO.getSysShopProjectPurchasePrice());
                             userProjectRelationDTO.setSysShopProjectInitAmount(userProjectRelationDTO.getSysShopProjectPurchasePrice());
                             userProjectRelationDTO.setDiscount(1f);
-                            logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，用户疗程卡id={}",userProjectRelationDTO.getDiscount(),userRechargeId,userProjectRelationDTO.getId());
+                            logger.info("充值卡组合次卡打折折扣为={}，充值卡id={}，用户次卡id={}",userProjectRelationDTO.getDiscount(),userRechargeId,userProjectRelationDTO.getId());
                         }
-
                         updateFlag = true;
                     }
                 }

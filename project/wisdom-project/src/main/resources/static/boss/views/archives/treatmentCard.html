@@ -6,8 +6,11 @@
         <div class="colfff" ng-show="!param.picFlag" ng-class="{'hidden':param.flag==true}">
             <ion-list class="colfff" >
                 <ion-item style="height:100px;width:90%;background: url('images/treatmentCardRed.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;"  ng-click="goTreatmentCard(item.id)" ng-repeat="item in treatmentCard" ng-if="item.overdue=='0'&&(item.sysShopProjectSurplusTimes/1 !=0)">
-                    <p class="fs15 colfff ml10" style="margin-top:7px;" >
-                        {{item.sysShopProjectName}}
+                    <p class="fs15 colfff ml10 " style="margin-top:7px;padding:0" >
+
+                        <span style="display: inline-block;width:130px;"> {{item.sysShopProjectName}}</span>
+                        <span class="fs13" ng-if="invalidDays!='0'">失效期：{{item.invalidDays|date:'yyyy-MM-dd'}}</span>
+                        <span class="fs13" ng-if="invalidDays=='0'">失效期：永久有效</span>
                     </p>
                     <p class="fs13 colfff ml10" style="margin-top:7px;">
                         <span style="display: inline-block;width:130px;">金额：{{item.sysShopProjectPurchasePrice}}元</span>
@@ -20,7 +23,9 @@
                 </ion-item>
                 <ion-item style="height:112px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-repeat="item in treatmentCard" ng-click="goTreatmentCard(item.id)" ng-if="(item.sysShopProjectSurplusTimes/1 ==0)&&item.overdue=='0'">
                     <p class="fs15 colfff ml10" style="margin-top:7px;" >
-                        {{item.sysShopProjectName}}
+                        <span style="display: inline-block;width:130px;"> {{item.sysShopProjectName}}</span>
+                        <span class="fs13" ng-if="invalidDays!='0'">失效期：{{item.invalidDays|date:'yyyy-MM-dd'}}</span>
+                        <span class="fs13" ng-if="invalidDays=='0'">失效期：永久有效</span>
                     </p>
                     <p class="fs13 colfff ml10" style="margin-top:7px;">
                         <span style="display: inline-block;width:130px;">金额：{{item.sysShopProjectPurchasePrice}}元</span>
@@ -34,7 +39,9 @@
                 </ion-item>
                 <ion-item style="height:112px;width:90%;background: url('images/treatmentCardGray.png');background-size: 100% 100%;margin:10px auto;border-radius: 4px;position: relative;" ng-repeat="item in treatmentCard" ng-click="goTreatmentCard(item.id)" ng-if="item.overdue=='1'">
                     <p class="fs15 colfff ml10" style="margin-top:7px;" >
-                        {{item.sysShopProjectName}}
+                        <span style="display: inline-block;width:130px;"> {{item.sysShopProjectName}}</span>
+                        <span class="fs13" ng-if="invalidDays!='0'">失效期：{{item.invalidDays|date:'yyyy-MM-dd'}}</span>
+                        <span class="fs13" ng-if="invalidDays=='0'">失效期：永久有效</span>
                     </p>
                     <p class="fs13 colfff ml10" style="">
                         <span style="display: inline-block;width:130px;">金额：{{item.sysShopProjectPurchasePrice}}元</span>

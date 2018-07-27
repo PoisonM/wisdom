@@ -37,6 +37,7 @@
                         <span class="recorderCardTopPrice">金额:   <b>{{item1.marketPrice}}</b></span>
                         <!--<span class="recorderCardTopPrice" ng-if="item1.expirationDate!='0' && (item1.expirationDate<currentTime)" ><b>已过期</b></span>-->
                         <span class="recorderCardTopPrice" ng-if="item1.expirationDate=='0'"><b>永久有效</b></span>
+                        <span class="recorderCardTopPrice" ng-if="item1.expirationDate!='0'"><b>有效期:{{item1.expirationDate |date:"yyyy-MM-dd"}}</b></span>
                     </div>
                     <!--<div class="recorderCardNote clearfix">
                         <span>备注：</span>
