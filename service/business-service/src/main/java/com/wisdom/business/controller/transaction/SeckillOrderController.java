@@ -57,7 +57,7 @@ public class SeckillOrderController {
         try {
             productAmountLock.lock();
             if (seckillProductService.getProductAmout(fieldId)>0) {
-                buyCartService.seckillProductBuyNow(productId,productNum,productSpec);
+                buyCartService.seckillProductBuyNow(fieldId,productId,productNum,productSpec);
                 responseDTO.setResult(StatusConstant.SUCCESS);
             } else {
                 logger.info("库存不足");
@@ -74,8 +74,6 @@ public class SeckillOrderController {
         logger.info("购买某个商品，创建订单,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return responseDTO;
     }
-
-
 
     /**
      * 根据订单状态获取订单列表

@@ -42,6 +42,10 @@ public class OrderPayController {
             model.addAttribute("productType", productType);
             model.addAttribute("productId", productId);
             return "native/orderPay";
+        }else if(productType.equals("seckill")){
+            model.addAttribute("productType", productType);
+            model.addAttribute("productId", productId);
+            return "native/orderPay";
         }else{
             return null;
         }
