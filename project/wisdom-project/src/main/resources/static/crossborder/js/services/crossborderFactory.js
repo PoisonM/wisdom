@@ -1,6 +1,6 @@
 
 
-var product ='business/crossBorder/order/';
+var product ='/crossBorder/order/';
 // var product ='http://192.168.1.197/business/crossBorder/order/';
 
 define(['appCrossborder'], function (app) {
