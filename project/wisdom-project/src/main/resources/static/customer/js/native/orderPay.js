@@ -352,6 +352,24 @@ var confirmPay = function(){
             if(productType=='special')
             {
                 $("#specialProductInfo").show();
+            }else if(productType=='seckill'){
+                //检测是否过期
+                $.ajax({
+                    url:"/business/seckillOrder/cheackSeckillOrder?orderID="+orderIds,// 跳转到 action
+                    beforeSend: function(request) {
+                        request.setRequestHeader("logintoken", loginttoken);
+                    },
+                    async:true,
+                    type:'get',
+                    data:'',
+                    cache:false,
+                    success:function(data) {
+                        if(data.result=="0x00001"){
+                            processPay();
+                        }else{
+                            alert("订单已失效!");
+                        }
+                    }})
             }
             else
             {
