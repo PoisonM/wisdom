@@ -86,7 +86,7 @@
                 运费：<span>￥0</span>
             </div>
             <div class="num">
-                数量：<span>-</span><input type="text" ng-model="params.goodsNum"><span>+</span>
+                数量：<span ng-click="reducenum()">-</span><input type="text" ng-blur = "verifyNum()" ng-model="params.goodsNum"><span ng-click="addnum()">+</span>
             </div>
             <div class="pay">
                 <ul>

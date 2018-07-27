@@ -3,7 +3,8 @@ angular.module('controllers',[]).controller('detailsCtrl',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductDetail) {
             console.log("details")
             $scope.params = {
-                goodsNum:"1"
+                goodsNum:"1",
+                minNum:"1"
             }
 
             GetBorderSpecialProductDetail.get({
@@ -12,8 +13,32 @@ angular.module('controllers',[]).controller('detailsCtrl',
                 if(data.result == Global.SUCCESS){
                     $scope.goodDetails = data.responseData
                 }
-
             })
+
+            /**/
+            $scope.addnum = function () {
+                if($scope.params.goodsNum >= $scope.goodDetails.productDetail.productAmount){
+                    return
+                }
+                $scope.params.goodsNum++
+            }
+            $scope.reducenum = function () {
+                if($scope.params.goodsNum <= 1){
+                    return
+                }
+                $scope.params.goodsNum--
+            }
+            $scope.verifyNum = function () {
+                if($scope.params.goodsNum <= 1){
+                    $scope.params.goodsNum = 1
+                    return
+                }
+                if($scope.params.goodsNum >= $scope.goodDetails.productDetail.productAmount){
+                    $scope.params.goodsNum = $scope.goodDetails.productDetail.productAmount
+                    return
+                }
+            }
+
 
 
             var viewSwiper = new Swiper('.view .swiper-container', {
