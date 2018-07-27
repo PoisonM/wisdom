@@ -118,6 +118,11 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                 String userInfoStr = gson.toJson(userInfoDTO);
                 JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
                 beautyLoginResultDTO.setBeautyUserLoginToken(logintoken);
+            }else{
+                userInfoDTO.setId(IdGen.uuid());
+                userInfoDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
+                userInfoDTO.setCreateDate(new Date());
+                beautyUserMapper.insertBeautyUserInfo(userInfoDTO);
             }
 
             SysBossDTO sysBossDTO = new SysBossDTO();
