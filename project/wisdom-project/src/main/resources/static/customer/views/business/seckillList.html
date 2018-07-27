@@ -15,22 +15,26 @@
                 <br>
                 <span style="margin-left:1.55rem;font-size: 18px;color: #FF6666;letter-spacing: 0;line-height: 18px;">￥{{item2.favorablePrice}}</span>
                 <span style="color: #9B9B9B;line-height: 14px;font-size: 14px;margin-left: 16px">市场价<span style="text-decoration:line-through;">￥{{item2.price}}</span></span>
-                <a style="background: #D0021B;border-radius: 100px;width: 89px;height: 23px;margin-left: 240px;margin-top: 19px;"
+                <a style="background: #FF6666 100%;border-radius: 100px;width: 89px;height: 24px;margin-left: 240px;margin-top: 19px;"
                    ng-if="item2.status == 0" ng-click="seckillInfo(item2.id)" >
                     &nbsp;&nbsp;立即秒杀
                 </a>
-                <a style="background: #D0021B;border-radius: 100px;width: 89px;height: 23px;margin-left: 240px;margin-top: 19px;"
+                <a style="background: #D0021B;border-radius: 100px;width: 89px;height: 24px;margin-left: 240px;margin-top: 19px;"
                    ng-if="item2.status == 1" >
                     &nbsp;&nbsp;即将开始
                 </a>
-                <a style="background: #9B9B9B;border-radius: 100px;width: 89px;height: 23px;margin-left: 240px;margin-top: 19px;"
+                <a style="background: #9B9B9B;border-radius: 100px;width: 89px;height: 24px;margin-left: 240px;margin-top: 19px;"
                    ng-if="item2.status == 2">
                     &nbsp;&nbsp;活动已结束
                 </a>
-                <a style="background: #EB5E0F;border-radius: 100px;width: 89px;height: 23px;margin-left: 240px;margin-top: 19px;"
+                <a style="background: #EB5E0F;border-radius: 100px;width: 89px;height: 24px;margin-left: 240px;margin-top: 19px;"
                    ng-if="item2.status == 3">
                     &nbsp;&nbsp;&nbsp;&nbsp;已抢光
                 </a>
             </div>
+        <!--我是有底线的-->
+        <div style="margin-bottom: 20px">
+            <img src="images/line.png" style="width: 100%">
+        </div>
     </ion-content>
 </ion-view>
