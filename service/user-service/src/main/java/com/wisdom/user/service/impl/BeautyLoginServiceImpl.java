@@ -111,8 +111,9 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                     beautyLoginResultDTO.setResult("phoneIsError");
                     return beautyLoginResultDTO;
                 }
-
-                userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
+                if(StringUtils.isNotBlank(userInfoDTO.getNickname())){
+                    userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
+                }
             }else{
                 userInfoDTO.setId(IdGen.uuid());
                 userInfoDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
