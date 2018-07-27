@@ -113,17 +113,17 @@ public class BeautyLoginServiceImpl implements BeautyLoginService {
                 }
 
                 userInfoDTO.setNickname(URLEncoder.encode(userInfoDTO.getNickname(),"utf-8"));
-                //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
-                logintoken = UUID.randomUUID().toString();
-                String userInfoStr = gson.toJson(userInfoDTO);
-                JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
-                beautyLoginResultDTO.setBeautyUserLoginToken(logintoken);
             }else{
                 userInfoDTO.setId(IdGen.uuid());
                 userInfoDTO.setDelFlag(CommonCodeEnum.ADD.getCode());
                 userInfoDTO.setCreateDate(new Date());
                 beautyUserMapper.insertBeautyUserInfo(userInfoDTO);
             }
+            //登录成功后，将用户信息放置到redis中，生成logintoken供前端使用
+            logintoken = UUID.randomUUID().toString();
+            String userInfoStr = gson.toJson(userInfoDTO);
+            JedisUtils.set(logintoken,userInfoStr, ConfigConstant.logintokenPeriod);
+            beautyLoginResultDTO.setBeautyUserLoginToken(logintoken);
 
             SysBossDTO sysBossDTO = new SysBossDTO();
             sysBossDTO.setMobile(loginDTO.getUserPhone());
