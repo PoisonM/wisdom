@@ -151,4 +151,8 @@ public class ProductService {
         mongoTemplate.insert(productDTO.getProductDetail(),"offlineProduct");
         productMapper.addOfflineProduct(productDTO);
     }
+
+    public List<String> getBorderSpecialProductBrandList() {
+        return productMapper.getBorderSpecialProductBrandList();
+    }
 }

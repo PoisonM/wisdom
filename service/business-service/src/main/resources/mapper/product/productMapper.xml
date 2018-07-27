@@ -44,9 +44,21 @@
 			resultMap="ProductResultMap"
 			parameterType="com.wisdom.common.dto.system.PageParamDTO">
 		select * from
-		business_product
+		business_product p
 		where
-		type='offline' AND  status = '1'
+		p.type='offline' AND  p.status = '1'
+		<if test="requestData.productName != null and requestData.productName != ''">
+			AND p.name LIKE "%${requestData.productName}%"
+		</if>
+		<if test="requestData.productPrefecture != null and requestData.productPrefecture != ''">
+			AND p.product_prefecture = #{requestData.productPrefecture}
+		</if>
+		<if test="requestData.price != null and requestData.price != ''">
+			AND p.price = ${requestData.price}
+		</if>
+		<if test="requestData.brand != null and requestData.brand != ''">
+			AND p.brand = #{requestData.brand}
+		</if>
 		ORDER BY
 		create_date DESC
 		limit #{pageNo},#{pageSize}
@@ -59,6 +71,24 @@
 		business_product
 		where
 		type='special' AND  status = '1'
+		<if test="requestData.productName != null and requestData.productName != ''">
+			AND p.name LIKE "%${requestData.productName}%"
+		</if>
+		<if test="requestData.productId != null and requestData.productId != ''">
+			AND p.product_id = #{requestData.productId}
+		</if>
+		<if test="requestData.price != null and requestData.price != ''">
+			AND p.price = ${requestData.price}
+		</if>
+		<if test="requestData.type != null and requestData.type != ''">
+			AND p.type = #{requestData.type}
+		</if>
+		<if test="requestData.brand != null and requestData.brand != ''">
+			AND p.brand LIKE "%${requestData.brand}%"
+		</if>
+		<if test="requestData.status != null and requestData.status != ''">
+			AND p.status = #{requestData.status}
+		</if>
 		ORDER BY
 		create_date DESC
 		limit #{pageNo},#{pageSize}
@@ -131,7 +161,7 @@
 			AND p.type = #{requestData.type}
 		</if>
 		<if test="requestData.brand != null and requestData.brand != ''">
-			AND p.brand = #{requestData.brand}
+			AND p.brand LIKE "%${requestData.brand}%"
 		</if>
 		<if test="requestData.status != null and requestData.status != ''">
 			AND p.status = #{requestData.status}
@@ -157,7 +187,7 @@
 			AND p.type = #{requestData.type}
 		</if>
 		<if test="requestData.brand != null and requestData.brand != ''">
-			AND p.brand = #{requestData.brand}
+			AND p.brand LIKE "%${requestData.brand}%"
 		</if>
 		<if test="requestData.status != null and requestData.status != ''">
 			AND p.status = #{requestData.status}
@@ -262,5 +292,10 @@
 		#{teacherName}
 		)
 	</insert>
-	
+	<select id="getBorderSpecialProductBrandList" resultType="java.lang.String">
+		select
+		DISTINCT brand
+		from
+		business_product
+	</select>
 </mapper>
