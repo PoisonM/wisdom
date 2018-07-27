@@ -13,7 +13,10 @@
                 <div ng-click="goCureCardRecords(item0.id,$event)" ng-repeat="item0 in courseProjectList0" class="treatmentCardTop clearfix">
                     <span class="treatmentCardTopName">{{item0.sysShopProjectName}}</span>
                     <!--<span class="treatmentCardTopName" ng-if="item0.invalidDays!='0' && (item0.invalidDays<currentTime)"><b>已过期</b></span>-->
-                    <span class="treatmentCardTopName" ng-if="item0.invalidDays=='0'"><b>永久有效</b></span>
+                    <span class="treatmentCardTopName" >
+                        <b ng-if="item0.invalidDays=='0'">永久有效</b>
+                        <b ng-if="item0.invalidDays!='0'">{{item0.invalidDays|date:'yyyy-MM-dd'}}</b>
+                    </span>
                     <span class="treatmentCardTopPrice">金额:￥{{item0.sysShopProjectInitAmount}}</span>
                     <div class="useNub">
                         <span class="treatmentCardTopUsed">{{item0.sysShopProjectSurplusTimes}}</span>

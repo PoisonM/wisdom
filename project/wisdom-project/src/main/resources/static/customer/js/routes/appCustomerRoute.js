@@ -123,6 +123,18 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    .state('seckillList', {
+                        url: '/seckillList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'seckillListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.seckillListCtrl',
+                                    ['js/controllers/business/seckillListCtrl.js?ver='+ customerVersion],
+                                    'views/business/seckillList.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                     .state('login', {
                         url: '/login/:redirectUrl',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -156,6 +168,18 @@ define(['appCustomer'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.offlineProductDetailCtrl',
                                     ['js/controllers/business/offlineProductDetailCtrl.js?ver='+ customerVersion],
                                     'views/business/offlineProductDetail.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    .state('seckillInfo', {
+                        url: '/seckillInfoCtrl/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'seckillInfoCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.seckillInfoCtrl',
+                                    ['js/controllers/business/seckillInfoCtrl.js?ver='+ customerVersion],
+                                    'views/business/seckillInfo.html?ver=' + customerVersion);
                             }
                         }
                     })

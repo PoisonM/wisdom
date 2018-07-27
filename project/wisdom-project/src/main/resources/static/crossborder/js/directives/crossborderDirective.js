@@ -684,7 +684,6 @@ define(['appCrossborder','jquery'], function (app,$) {
                     conf: '='
                 },
                 link: function (scope, element, attrs) {
-
                     var conf = scope.conf;
 
                     // 默认分页长度
@@ -931,15 +930,22 @@ define(['appCrossborder','jquery'], function (app,$) {
                 '<a href="">登录</a> <a href="">首页</a> </li> <li> <a href="">我的订单</a> ' +
                 '<a href="">客户服务</a> </li> </ul> </div> </div> <div class="header"> ' +
                 '<div class="logo"> <img src="images/mall_img/logo.png" alt=""> </div> ' +
-                '<div class="search"> <div class="search_box"> <input type="text" placeholder="请搜索商品">' +
-                ' <div><img src="images/mall_img/search.png" alt=""></div> </div> </div> <div class="settleup"> ' +
+                '<div class="search"> <div class="search_box"> <input ng-model="params.inportContent" type="text" placeholder="请搜索商品">' +
+                '<div ng-click="searchGoods()"><img src="images/mall_img/search.png" alt=""></div> </div> </div> <div class="settleup"> ' +
                 '<div> <i></i>购物车 </div> </div> </div></div>',
                 replace: true,
                 scope: {
-                    conf: '='
+                    params: '='
                 },
+                // scope: false,
                 link: function (scope, element, attrs) {
-
+                    scope.searchGoods = function () {
+                        scope.params.method.get({
+                            params:scope.inportContent
+                        },function (res) {
+                            scope.params.dataList = res
+                        })
+                    }
                 }
             };
         }])

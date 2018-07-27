@@ -2,12 +2,13 @@ package com.wisdom.common.dto.transaction;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zbm84 on 2017/8/3.
  */
-public class BusinessOrderDTO {
+public class BusinessOrderDTO implements Serializable{
 
     @JSONField(name = "id")
     private String id;

@@ -2,9 +2,10 @@ package com.wisdom.common.dto.product;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SeckillProductDTO<T> {
+public class SeckillProductDTO<T> implements Serializable {
 
     /**
      * 活动id

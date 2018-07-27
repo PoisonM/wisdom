@@ -6,10 +6,7 @@ import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.persistence.Page;
-import com.wisdom.common.util.DateUtils;
-import com.wisdom.common.util.FrontUtils;
-import com.wisdom.common.util.JedisUtils;
-import com.wisdom.common.util.StringUtils;
+import com.wisdom.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 微商城秒杀服务层
@@ -33,6 +31,11 @@ import java.util.List;
 public class SeckillProductService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    /**
+     * 预约详情缓存时常，20分钟
+     */
+    private int productInfoCacheSeconds = 12000;
 
     @Autowired
     private SeckillProductMapper seckillProductMapper;
@@ -64,6 +67,7 @@ public class SeckillProductService {
             }else{
                 productDTO.setStatus(0);
             }
+
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
@@ -80,15 +84,20 @@ public class SeckillProductService {
         SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
         if(null == seckillproductDTO){
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
+            seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
             Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-            offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
             if(seckillproductDTO!=null)
             {
+                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
                 seckillproductDTO.setProductDetail(offlineProductDTO);
             }
-            JedisUtils.setObject("seckillProductInfo:"+activtyId,offlineProductDTO,1);
+            JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
         }
+        //这里有个弊端带付款后更新缓存信息
+        int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
+        seckillproductDTO.setProductAmount(productAmount);
+        seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
         return seckillproductDTO;
     }
 
@@ -97,8 +106,8 @@ public class SeckillProductService {
      * 秒杀 查询缓存中的库存量
      * */
     public int getProductAmout(String fieldId){
-        List<Object> orderMap = JedisUtils.getObjectList("seckillproductOrder:" + fieldId);
-        int ordeNum = null == orderMap? 0:orderMap.size();
+        Set orderSet = JedisUtils.vagueSearch("seckillproductOrder:" + fieldId);
+        int ordeNum = null == orderSet? 0:orderSet.size();
         String productAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
         if (StringUtils.isNotNull(productAmountStr) && Integer.parseInt(productAmountStr)-ordeNum>0) {
             return Integer.parseInt(productAmountStr)-ordeNum;
@@ -141,5 +150,4 @@ public class SeckillProductService {
         page.setPageSize(seckillActivityDTO.getPageSize());
         return page;
     }
-
 }

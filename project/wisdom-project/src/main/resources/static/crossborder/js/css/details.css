@@ -1,4 +1,363 @@
 .details{
+    background-color: #ffffff;
     width: 1200px;
     margin: 0 auto;
+    overflow: hidden;
+}
+.details .details_top{
+    margin-bottom: 20px;
+    /*overflow: hidden;*/
+}
+.details .details_img{
+    float: left;
+    width: 442px;
+    height: 542px;
+}
+.details .details_img .img_big{
+    width: 442px;
+    height: 442px;
+    border: 1px solid #DDDDDD
+}
+.details .details_img .img_big ul li img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.details .details_text{
+    float: left;
+    width: 490px;
+    padding: 22px;
+}
+
+.details .details_text>div{
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.details .details_text .goods_name p{
+    width: 100%;
+    font-family: MicrosoftYaHei-Bold;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+    margin-bottom: 12px;
+}
+
+.details .details_text .goods_name span{
+    width: 100%;
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.details .details_text .price{
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    font-size: 12px;
+    color: #666666;
+    letter-spacing: 0;
+    background: #FDE5E0;
+    border: 1px solid #FFD0C6;
+    padding-left: 15px;
+}
+
+.details .details_text .price span{
+    font-family: MicrosoftYaHei-Bold;
+    font-size: 22px;
+    letter-spacing: 0;
+    color: #FF3D3D;
+    margin-left: 20px;
+}
+
+.details .details_text .tax{
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+}
+.details .details_text .freight{
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+}
+.details .details_text .num{
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+}
+.details .details_text .num span{
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border: 1px solid #cccccc;
+    vertical-align:middle
+}
+
+.details .details_text .num input{
+    width: 48px;
+    height: 28px;
+    line-height: 28px;
+    caret-color: #CCCCCC;
+    padding-left: 10px;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    vertical-align:middle
+}
+
+.details .details_text .pay ul li{
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    font-size: 18px;
+    letter-spacing: 0;
+    text-align: center;
+}
+.details .details_text .pay ul li:nth-child(1){
+    width: 137px;
+    background: #FFCDCD;
+    border: 1px solid #FCBFBF;
+    border-radius: 1px;
+    color: #FF3D3D;
+}
+
+
+.details .details_text .pay ul li:nth-child(2){
+    width: 179px;
+    background: #FF3D3D;
+    border: 1px solid #FF8D8D;
+    border-radius: 1px;
+    color: #ffffff;
+    margin-left: 10px;
+}
+.details .details_bootom{
+    width: 100%;
+}
+.details .details_bootom img{
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.details .pc-slide {
+    width: 442px;
+    margin: 0 auto;
+}
+
+.details .view .swiper-container {
+    width: 442px;
+    height: 442px;
+}
+
+.details .view .arrow-left {
+    background: url(../../images/details_img/index_tab_l.png) no-repeat left top;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -25px;
+    width: 28px;
+    height: 51px;
+    z-index: 10;
+}
+
+.details .view .arrow-right {
+    background: url(../../images/details_img/index_tab_r.png) no-repeat left bottom;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -25px;
+    width: 28px;
+    height: 51px;
+    z-index: 10;
+}
+
+.details .preview {
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+}
+
+.details .preview .swiper-container {
+    width: 430px;
+    width: 372px;
+    height: 82px;
+    margin-left: 35px;
+}
+
+.details .preview .swiper-slide {
+    width: 87px;
+    width: 75px;
+    height: 82px;
+}
+
+.details .preview .slide6 {
+    width: 82px;
+}
+
+.details .preview .arrow-left {
+    background: url(../../images/details_img/feel3.png) no-repeat left top;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    margin-top: -9px;
+    width: 9px;
+    height: 18px;
+    z-index: 10;
+}
+
+.details .preview .arrow-right {
+    background: url(../../images/details_img/feel4.png) no-repeat left bottom;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -9px;
+    width: 9px;
+    height: 18px;
+    z-index: 10;
+}
+
+.details .preview img {
+    padding: 1px;
+}
+
+.details .preview .active-nav img {
+    padding: 0;
+    border: 1px solid #F00;
+}
+
+
+
+
+
+
+    /*
+     * Swiper 2.7.6
+     * Mobile touch slider and framework with hardware accelerated transitions
+     *
+     * http://www.idangero.us/sliders/swiper/
+     *
+     * Copyright 2010-2015, Vladimir Kharlampidi
+     * The iDangero.us
+     * http://www.idangero.us/
+     *
+     * Licensed under GPL & MIT
+     *
+     * Released on: February 11, 2015
+    */
+    /* ===============================================================
+    Basic Swiper Styles
+    ================================================================*/
+.details .swiper-container {
+    margin:0 auto;
+    position:relative;
+    overflow:hidden;
+    direction:ltr;
+    -webkit-backface-visibility:hidden;
+    -moz-backface-visibility:hidden;
+    -ms-backface-visibility:hidden;
+    -o-backface-visibility:hidden;
+    backface-visibility:hidden;
+    /* Fix of Webkit flickering */
+    z-index:1;
+}
+.details .swiper-wrapper {
+    position:relative;
+    width:100%;
+    -webkit-transition-property:-webkit-transform, left, top;
+    -webkit-transition-duration:0s;
+    -webkit-transform:translate3d(0px,0,0);
+    -webkit-transition-timing-function:ease;
+
+    -moz-transition-property:-moz-transform, left, top;
+    -moz-transition-duration:0s;
+    -moz-transform:translate3d(0px,0,0);
+    -moz-transition-timing-function:ease;
+
+    -o-transition-property:-o-transform, left, top;
+    -o-transition-duration:0s;
+    -o-transform:translate3d(0px,0,0);
+    -o-transition-timing-function:ease;
+    -o-transform:translate(0px,0px);
+
+    -ms-transition-property:-ms-transform, left, top;
+    -ms-transition-duration:0s;
+    -ms-transform:translate3d(0px,0,0);
+    -ms-transition-timing-function:ease;
+
+    transition-property:transform, left, top;
+    transition-duration:0s;
+    transform:translate3d(0px,0,0);
+    transition-timing-function:ease;
+
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.details .swiper-free-mode > .details .swiper-wrapper {
+    -webkit-transition-timing-function: ease-out;
+    -moz-transition-timing-function: ease-out;
+    -ms-transition-timing-function: ease-out;
+    -o-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+    margin: 0 auto;
+}
+.details .swiper-slide {
+    float: left;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+/* IE10 Windows Phone 8 Fixes */
+.details .swiper-wp8-horizontal {
+    -ms-touch-action: pan-y;
+}
+.details .swiper-wp8-vertical {
+    -ms-touch-action: pan-x;
+}
+
+/* ===============================================================
+Your custom styles, here you need to specify container's and slide's
+sizes, pagination, etc.
+================================================================*/
+.details .swiper-container {
+    /* Specify Swiper's Size: */
+
+    /*width:200px;
+    height: 100px;*/
+}
+.details .swiper-slide {
+    /* Specify Slides's Size: */
+
+    /*width: 100%;
+    height: 100%;*/
+}
+.details .swiper-slide-active {
+    /* Specific active slide styling: */
+
+}
+.details .swiper-slide-visible {
+    /* Specific visible slide styling: */
+
+}
+/* ===============================================================
+Pagination Styles
+================================================================*/
+.details .swiper-pagination-switch {
+    /* Stylize pagination button: */
+
+}
+.details .swiper-active-switch {
+    /* Specific active button style: */
+
+}
+.details .swiper-visible-switch {
+    /* Specific visible button style: */
+
 }
