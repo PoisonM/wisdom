@@ -39,7 +39,7 @@
              <ion-slide ng-repeat="item in param.product.productDetail.listPic">
                  <div class="box" style="height:7.32rem;width: 7.5rem;">
                      <img ng-src="{{item}}" style="height:7.32rem;width: 7.5rem;"/>
-                     <div style="position: absolute;bottom: 20px;right: 20px;font-size: 0.34rem;color: #999999"><span >{{param.currentIndex}}</span>/<span >{{param.totalIndex}}</span></div>
+                     <div style="position: absolute;bottom: 20px;right: 20px;font-size: 0.34rem;color: #999999"><span >{{$index+1}}</span>/<span >{{param.product.productDetail.listPic.length}}</span></div>
                  </div>
              </ion-slide>
          </ion-slide-box>
