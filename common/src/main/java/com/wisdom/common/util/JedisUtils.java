@@ -872,6 +872,27 @@ public class JedisUtils {
 		return result;
 	}
 
+
+	/**
+	 * 根据前缀查询匹配的值
+	 * @param key 键
+	 * @return set
+	 */
+	public static Set vagueSearch(String key) {
+		Set set= null;
+		Jedis jedis = null;
+		try {
+			jedis = getResource();
+			set = jedis.keys(key+"*");
+			logger.debug("mapExists {}  {}", key);
+		} catch (Exception e) {
+			logger.warn("mapExists {}  {}", key, e);
+		} finally {
+			returnResource(jedis);
+		}
+		return set;
+	}
+
 	/**
 	 * 获取资源
 	 * @return

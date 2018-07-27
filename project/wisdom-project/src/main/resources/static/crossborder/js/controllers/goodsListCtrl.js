@@ -1,9 +1,13 @@
 angular.module('controllers',[]).controller('goodsListCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','oneLevelProject',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,oneLevelProject) {
             console.log("goodsList")
 
-
+            $scope.option = {
+                inportContent:"goodsList",
+                method:oneLevelProject,
+                dataList:""
+            }
             //分页
             $scope.paginationConf = {
                 currentPage: 1,//当前页
@@ -15,4 +19,5 @@ angular.module('controllers',[]).controller('goodsListCtrl',
                     // $scope.getOrderList();
                 }
             };
+
         }]);

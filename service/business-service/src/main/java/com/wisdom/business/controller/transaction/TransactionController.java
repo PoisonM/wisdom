@@ -116,26 +116,28 @@ public class TransactionController {
                 //todo log
                 logger.info("查询订单前订单号=={}",needPayOrderDTO.getOrderId());
                 businessOrderDTO = transactionService.getBusinessOrderByOrderId(needPayOrderDTO.getOrderId());
-                if("3".equals(businessOrderDTO.getStatus())){
-                    //todo log
-                    logger.info("状态3进入订单号=={}",needPayOrderDTO.getOrderId());
-                    logger.info("状态3进入订单状态=={}",businessOrderDTO.getStatus());
-                    logger.info("状态3进入商品数量=={}",needPayOrderDTO.getProductNum());
-                    ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
-                    logger.info("状态3进入查出库中商品库存=={}",productDTO.getProductAmount());
-                    if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
+                if(null != businessOrderDTO){
+                    if("3".equals(businessOrderDTO.getStatus())){
                         //todo log
-                        logger.info("商品数量大于商品库存订单号=={}",needPayOrderDTO.getOrderId());
-                        responseDTO.setErrorInfo("库存不足");
-                        responseDTO.setResult(StatusConstant.FAILURE);
-                        return responseDTO;
+                        logger.info("状态3进入订单号=={}",needPayOrderDTO.getOrderId());
+                        logger.info("状态3进入订单状态=={}",businessOrderDTO.getStatus());
+                        logger.info("状态3进入商品数量=={}",needPayOrderDTO.getProductNum());
+                        ProductDTO productDTO = productService.getBusinessProductInfo(needPayOrderDTO.getProductId());
+                        logger.info("状态3进入查出库中商品库存=={}",productDTO.getProductAmount());
+                        if (Integer.parseInt(needPayOrderDTO.getProductNum()) > Integer.parseInt(productDTO.getProductAmount())) {
+                            //todo log
+                            logger.info("商品数量大于商品库存订单号=={}",needPayOrderDTO.getOrderId());
+                            responseDTO.setErrorInfo("库存不足");
+                            responseDTO.setResult(StatusConstant.FAILURE);
+                            return responseDTO;
+                        }
                     }
+                    //todo log
+                    logger.info("状态3判断通过订单号=={}",needPayOrderDTO.getOrderId());
+                    businessOrderDTO.setStatus("0");
+                    businessOrderDTO.setUpdateDate(new Date());
+                    transactionService.updateBusinessOrder(businessOrderDTO);
                 }
-                //todo log
-                logger.info("状态3判断通过订单号=={}",needPayOrderDTO.getOrderId());
-                businessOrderDTO.setStatus("0");
-                businessOrderDTO.setUpdateDate(new Date());
-                transactionService.updateBusinessOrder(businessOrderDTO);
             }
         }catch (Throwable e)
         {

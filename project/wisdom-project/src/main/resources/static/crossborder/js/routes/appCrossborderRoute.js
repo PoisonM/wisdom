@@ -48,6 +48,7 @@ define(['appCrossborder'], function(app){
                                     [
                                         'js/controllers/goodsListCtrl.js',
                                         'js/css/goodsList.css',
+                                        'js/css/home.css',
                                     ],
                                     'js/views/goodsList.html');
                             }
@@ -67,12 +68,64 @@ define(['appCrossborder'], function(app){
                                     [
                                         'js/controllers/detailsCtrl.js',
                                         'js/css/details.css',
+                                        'js/css/home.css',
+                                        'js/libs/idangerous.swiper.min.js',
                                     ],
                                     'js/views/details.html');
                             }
                         }
                     })
 
+                    //购物车
+                    .state('shoppingCart', {
+                        url: '/shoppingCart',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'shoppingCartCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.shoppingCartCtrl',
+                                    [
+                                        'js/controllers/shoppingCartCtrl.js',
+                                        'js/css/shoppingCart.css',
+                                        'js/css/home.css',
+                                    ],
+                                    'js/views/shoppingCart.html');
+                            }
+                        }
+                    })
+                    //我的订单
+                    .state('orderList', {
+                        url: '/orderList',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'orderListCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.orderListCtrl',
+                                    [
+                                        'js/controllers/orderListCtrl.js',
+                                        'js/css/orderList.css',
+                                        'js/css/home.css',
+                                    ],
+                                    'js/views/orderList.html');
+                            }
+                        }
+                    })
+                    .state('orderSubmit', {
+                        url: '/orderSubmit',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'orderSubmitCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.orderSubmitCtrl',
+                                    [
+                                        'js/controllers/orderSubmitCtrl.js',
+                                        'js/css/orderSubmit.css',
+                                        'js/css/home.css',
+                                    ],
+                                    'js/views/orderSubmit.html');
+                            }
+                        }
+                    })
                 $urlRouterProvider.otherwise('goodsList')
             }])
 })

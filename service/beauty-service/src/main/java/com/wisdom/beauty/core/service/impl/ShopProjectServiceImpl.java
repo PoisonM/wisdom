@@ -320,6 +320,7 @@ public class ShopProjectServiceImpl implements ShopProjectService {
 		if(StringUtils.isNotBlank(shopProjectTypeDTO.getStatus())){
 			criteria.andStatusEqualTo(shopProjectTypeDTO.getStatus());
 		}
+
 		List<ShopProjectTypeDTO> list = shopProjectTypeMapper.selectByCriteria(shopProjectTypeCriteria);
 		return list;
 	}

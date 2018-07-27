@@ -244,25 +244,30 @@ public class BuyCartService {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public String seckillProductBuyNow(String fieldId,int num,String productSpec) {
+    public void seckillProductBuyNow(String fieldId,String productId,int num,String productSpec) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
-        logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),fieldId,num);
+        logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),productId,num);
             try {
                 String businessOrderId = CodeGenUtil.getOrderCodeNumber();
                 BusinessOrderDTO businessOrderDTO = new BusinessOrderDTO();
                 businessOrderDTO.setId(UUID.randomUUID().toString());
                 businessOrderDTO.setSysUserId(userInfoDTO.getId());
                 businessOrderDTO.setBusinessOrderId(businessOrderId);
-                businessOrderDTO.setType(productSpec);
                 businessOrderDTO.setStatus("0");
+                businessOrderDTO.setType("seckill");
                 businessOrderDTO.setCreateDate(new Date());
                 businessOrderDTO.setUpdateDate(new Date());
                 JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+businessOrderDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
-                return StatusConstant.SUCCESS;
+                OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
+                orderProductRelationDTO.setId(UUID.randomUUID().toString());
+                orderProductRelationDTO.setBusinessOrderId(businessOrderId);
+                orderProductRelationDTO.setBusinessProductId(productId);
+                orderProductRelationDTO.setProductNum(num);
+                orderProductRelationDTO.setProductSpec(productSpec);
+                transactionMapper.createOrderProductRelation(orderProductRelationDTO);
             }
             catch (Exception e){
                 logger.error("则直接增加订单异常,异常信息为{}"+e.getMessage(),e);
-                return  StatusConstant.FAILURE;
             }
     }
 }

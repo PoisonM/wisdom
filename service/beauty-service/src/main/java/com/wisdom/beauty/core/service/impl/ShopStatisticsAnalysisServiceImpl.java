@@ -205,7 +205,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		List<ExpenditureAndIncomeResponseDTO> incomeList = this.getIncomeList(pageParamVoDTO);
 		if (CollectionUtils.isEmpty(incomeList)) {
 			logger.info("incomeList结果为空");
-			return null;
+			incomeList=new ArrayList<>();
 		}
 		Map<String, ExpenditureAndIncomeResponseDTO> map = new HashMap<>(16);
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
@@ -227,7 +227,7 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponses = this.getExpenditureList(pageParamVoDTO);
 		if (CollectionUtils.isEmpty(expenditureAndIncomeResponses)) {
 			logger.info("list结果为空");
-			return null;
+			expenditureAndIncomeResponses=new ArrayList<>();
 		}
 		Map<String, ExpenditureAndIncomeResponseDTO> map2 = new HashMap<>(16);
 		List<ExpenditureAndIncomeResponseDTO> responsesList = new ArrayList<>();

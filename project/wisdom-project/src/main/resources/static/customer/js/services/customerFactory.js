@@ -16,6 +16,7 @@ var mine = '/beauty/mine/';
 var userIP = '/user/';
 var cardInfo = '/beauty/cardInfo/'
 var seckillProduct = '/business/seckillProduct'
+var seckillOrder = '/business/seckillOrder'
 
 define(['appCustomer'], function (app) {
     app
@@ -299,5 +300,12 @@ define(['appCustomer'], function (app) {
         .factory('SeckillList',['$resource',function ($resource){
             return $resource(seckillProduct+"/getSeckillProductList")
         }])
+        .factory('SeckillInfo',['$resource',function ($resource){
+            return $resource(seckillProduct+"/getseckillProductDetailById")
+        }])
+        .factory('CreateSeckillOrder',['$resource',function ($resource){
+            return $resource(seckillOrder+"/createSeckillOrder")
+        }])
+
 
 });

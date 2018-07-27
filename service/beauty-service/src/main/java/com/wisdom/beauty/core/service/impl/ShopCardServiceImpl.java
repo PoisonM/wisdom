@@ -2,9 +2,11 @@ package com.wisdom.beauty.core.service.impl;
 
 import com.aliyun.oss.ServiceException;
 import com.wisdom.beauty.api.dto.*;
+import com.wisdom.beauty.api.enums.CardTypeEnum;
 import com.wisdom.beauty.api.enums.GoodsTypeEnum;
 import com.wisdom.beauty.api.enums.ImageEnum;
 import com.wisdom.beauty.api.enums.RechargeCardTypeEnum;
+import com.wisdom.beauty.api.extDto.ExtShopProjectInfoDTO;
 import com.wisdom.beauty.api.extDto.ExtShopRechargeCardDTO;
 import com.wisdom.beauty.core.mapper.ShopProjectProductCardRelationMapper;
 import com.wisdom.beauty.core.mapper.ShopRechargeCardMapper;
@@ -12,7 +14,10 @@ import com.wisdom.beauty.core.mapper.ShopUserRechargeCardMapper;
 import com.wisdom.beauty.core.redis.MongoUtils;
 import com.wisdom.beauty.core.redis.RedisUtils;
 import com.wisdom.beauty.core.service.ShopCardService;
+import com.wisdom.beauty.core.service.ShopProductInfoService;
+import com.wisdom.beauty.core.service.ShopProjectService;
 import com.wisdom.beauty.util.UserUtils;
+import com.wisdom.common.constant.CommonCodeEnum;
 import com.wisdom.common.util.CommonUtils;
 import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.StringUtils;
@@ -25,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,6 +54,12 @@ public class ShopCardServiceImpl implements ShopCardService {
 
     @Autowired
     public RedisUtils redisUtils;
+
+    @Autowired
+    public ShopProjectService shopProjectService;
+
+    @Autowired
+    public ShopProductInfoService shopProductInfoService;
 
     @Autowired
     public ShopProjectProductCardRelationMapper shopProjectProductCardRelationMapper;
@@ -165,6 +177,15 @@ public class ShopCardServiceImpl implements ShopCardService {
             imageUrls = new ArrayList<>();
             imageUrls.add(ImageEnum.COMMON_CARD.getDesc());
             extShopRechargeCardDTO.setImageUrl(ImageEnum.COMMON_CARD.getDesc());
+        }
+        if(null == extShopRechargeCardDTO.getTimeDiscount()){
+            extShopRechargeCardDTO.setTimeDiscount(1f);
+        }
+        if(null == extShopRechargeCardDTO.getPeriodDiscount()){
+            extShopRechargeCardDTO.setPeriodDiscount(1f);
+        }
+        if(null == extShopRechargeCardDTO.getProductDiscount()){
+            extShopRechargeCardDTO.setProductDiscount(1f);
         }
         //保存图片信息
         mongoUtils.saveImageUrl(imageUrls, rechargeCardId);
@@ -313,16 +334,28 @@ public class ShopCardServiceImpl implements ShopCardService {
     private void useScope(ExtShopRechargeCardDTO extShopRechargeCardDTO) {
         //保存单次卡的适用范围
         List<ShopProjectProductCardRelationDTO> timesList = extShopRechargeCardDTO.getTimesList();
+        String sysShopId = extShopRechargeCardDTO.getSysShopId();
         if (CommonUtils.objectIsNotEmpty(timesList)) {
+            logger.info("单次卡传入数据为不空");
             for (ShopProjectProductCardRelationDTO relationDTO : timesList) {
                 relationDTO.setId(IdGen.uuid());
                 relationDTO.setShopRechargeCardId(extShopRechargeCardDTO.getId());
                 relationDTO.setShopGoodsTypeId(relationDTO.getShopGoodsTypeId());
                 relationDTO.setGoodsType(GoodsTypeEnum.TIME_CARD.getCode());
                 relationDTO.setCreateDate(new Date());
-                relationDTO.setDiscount(extShopRechargeCardDTO.getPeriodDiscount());
+                relationDTO.setDiscount(extShopRechargeCardDTO.getTimeDiscount());
                 shopProjectProductCardRelationMapper.insertSelective(relationDTO);
             }
+        }else{
+            logger.info("单次卡传入数据为空");
+            //默认适用范围为全部
+            ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+            extShopProjectInfoDTO.setSysShopId(sysShopId);
+            extShopProjectInfoDTO.setUseStyle(CardTypeEnum.TIME_CARD.getCode());
+            extShopProjectInfoDTO.setStatus(CommonCodeEnum.ADD.getCode());
+            List<ShopProjectInfoDTO> shopCourseProjectList = shopProjectService.getShopCourseProjectList(extShopProjectInfoDTO);
+            //生成适用范围
+            saveProjectTypeScope(extShopRechargeCardDTO, shopCourseProjectList);
         }
         //保存疗程卡的适用范围
         List<ShopProjectProductCardRelationDTO> periodList = extShopRechargeCardDTO.getPeriodList();
@@ -336,6 +369,16 @@ public class ShopCardServiceImpl implements ShopCardService {
                 relationDTO.setDiscount(extShopRechargeCardDTO.getPeriodDiscount());
                 shopProjectProductCardRelationMapper.insertSelective(relationDTO);
             }
+        }else{
+            logger.info("单次卡传入数据为空");
+            //默认适用范围为全部 ,查询店铺的所有二级类别
+            ExtShopProjectInfoDTO extShopProjectInfoDTO = new ExtShopProjectInfoDTO();
+            extShopProjectInfoDTO.setSysShopId(sysShopId);
+            extShopProjectInfoDTO.setUseStyle(CardTypeEnum.MONTH_CARD.getCode());
+            extShopProjectInfoDTO.setStatus(CommonCodeEnum.ADD.getCode());
+            List<ShopProjectInfoDTO> shopCourseProjectList = shopProjectService.getShopCourseProjectList(extShopProjectInfoDTO);
+            //生成适用范围
+            saveProjectTypeScope(extShopRechargeCardDTO, shopCourseProjectList);
         }
         //保存产品的适用范围
         List<ShopProjectProductCardRelationDTO> productList = extShopRechargeCardDTO.getProductList();
@@ -348,6 +391,52 @@ public class ShopCardServiceImpl implements ShopCardService {
                 relationDTO.setCreateDate(new Date());
                 relationDTO.setDiscount(extShopRechargeCardDTO.getPeriodDiscount());
                 shopProjectProductCardRelationMapper.insertSelective(relationDTO);
+            }
+        }else{
+            ShopProductInfoDTO shopProductInfo = new ShopProductInfoDTO();
+            shopProductInfo.setSysShopId(sysShopId);
+            List<ShopProductInfoDTO> productInfo = shopProductInfoService.getShopProductInfo(shopProductInfo);
+            if(CommonUtils.objectIsNotEmpty(productInfo)){
+                HashMap<String, String> timeProductTemp = new HashMap<>(16);
+                for(ShopProductInfoDTO dto:productInfo){
+                    //去重
+                    if(StringUtils.isBlank(timeProductTemp.get(dto.getProductTypeTwoId()))){
+                        ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
+                        relationDTO.setId(IdGen.uuid());
+                        relationDTO.setShopRechargeCardId(extShopRechargeCardDTO.getId());
+                        relationDTO.setShopGoodsTypeId(dto.getProductTypeTwoId());
+                        relationDTO.setGoodsType(GoodsTypeEnum.PRODUCT.getCode());
+                        relationDTO.setCreateDate(new Date());
+                        relationDTO.setDiscount(extShopRechargeCardDTO.getTimeDiscount());
+                        shopProjectProductCardRelationMapper.insertSelective(relationDTO);
+                    }
+                    timeProductTemp.put(dto.getProductTypeTwoId(),dto.getProductTypeTwoId());
+                }
+            }
+        }
+    }
+
+    /**
+     * 生成项目适用范围
+     * @param extShopRechargeCardDTO
+     * @param shopCourseProjectList
+     */
+    private void saveProjectTypeScope(ExtShopRechargeCardDTO extShopRechargeCardDTO, List<ShopProjectInfoDTO> shopCourseProjectList) {
+        if(CommonUtils.objectIsNotEmpty(shopCourseProjectList)){
+            HashMap<String, String> timeProjectTemp = new HashMap<>(16);
+            for(ShopProjectInfoDTO dto:shopCourseProjectList){
+                //去重
+                if(StringUtils.isBlank(timeProjectTemp.get(dto.getProjectTypeTwoId()))){
+                    ShopProjectProductCardRelationDTO relationDTO = new ShopProjectProductCardRelationDTO();
+                    relationDTO.setId(IdGen.uuid());
+                    relationDTO.setShopRechargeCardId(extShopRechargeCardDTO.getId());
+                    relationDTO.setShopGoodsTypeId(dto.getProjectTypeTwoId());
+                    relationDTO.setGoodsType(dto.getUseStyle());
+                    relationDTO.setCreateDate(new Date());
+                    relationDTO.setDiscount(extShopRechargeCardDTO.getTimeDiscount());
+                    shopProjectProductCardRelationMapper.insertSelective(relationDTO);
+                }
+                timeProjectTemp.put(dto.getProjectTypeTwoId(),dto.getProjectTypeTwoId());
             }
         }
     }

@@ -23,7 +23,7 @@ public interface SeckillProductMapper {
 	Page<SeckillProductDTO> queryAllProducts(Page<SeckillProductDTO> page);
 
 	//根据场次查询商品
-	SeckillProductDTO getSeckillProductInfo(@Param("productId") String productId);
+	SeckillProductDTO findSeckillProductInfoById(@Param("id") String id);
 
 	//获取活动列表
 	List<SeckillActivityDTO>  findSeckillActivityList(SeckillActivityDTO seckillActivityDTO);
