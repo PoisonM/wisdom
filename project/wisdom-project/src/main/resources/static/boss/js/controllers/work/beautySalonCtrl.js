@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
             $scope.param = {
                 startDate : BossUtil.getNowFormatDate(),
                 date: BossUtil.getNowFormatDate(),
+                beautyNone:''
             }
             $scope.param.date=$stateParams.date;
 
@@ -70,6 +71,9 @@ angular.module('controllers',[]).controller('beautySalonCtrl',
                         $scope.beautySalon = data.responseData;
                         delete $scope.beautySalon.startTime;
                         delete $scope.beautySalon.endTime;
+                    }else if(data.responseData==null&&data.errorInfo=='BEAUTYIFWB888'){
+                        $ionicLoading.hide()
+                        $scope.param.beautyNone='none'
                     }
 
                 })
