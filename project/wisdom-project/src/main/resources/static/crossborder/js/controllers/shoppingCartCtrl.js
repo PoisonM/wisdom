@@ -1,5 +1,5 @@
 angular.module('controllers',[]).controller('shoppingCartCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','oneLevelProject',
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,oneLevelProject) {
             console.log("shoppingCart")
 
