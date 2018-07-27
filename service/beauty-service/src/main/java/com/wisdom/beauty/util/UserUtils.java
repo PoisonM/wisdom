@@ -47,7 +47,9 @@ public class UserUtils {
         String userInfoStr = JedisUtils.get(token);
         UserInfoDTO userInfoDTO = (new Gson()).fromJson(userInfoStr, UserInfoDTO.class);
         try {
-            userInfoDTO.setNickname(java.net.URLDecoder.decode(userInfoDTO.getNickname(), "utf-8"));
+            if(StringUtils.isNotBlank(userInfoDTO.getNickname())){
+                userInfoDTO.setNickname(java.net.URLDecoder.decode(userInfoDTO.getNickname(), "utf-8"));
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
