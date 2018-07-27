@@ -10,7 +10,6 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                 background:"red",
                 padding: "5px 20px",
             };
-
             $scope.showFlag = function (type) {
                 $scope.model = type;
                 if(!type){
@@ -58,57 +57,56 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                         }
                         else
                         {
-                            // showToast("加载中");
 
+                            showToast("加载中");
+                            CreateSeckillOrder.save(
+                                {businessProductId:$scope.param.product.productId,
+                                productSpec:$scope.param.checkFlag,
+                                businessProductNum: $scope.param.productNum,
+                                type:$scope.param.product.productType,
+                                id:$scope.param.product.fieldId+"",
+                                },function (data) {
+                                if(data.result==Global.FAILURE)
+                                {
+                                    showToast("交易失败");
+                                    hideToast()
+                                }
+                                else
+                                {
+                                    //生成订单后再直接前往支付页面
+                                    var needPayOrderList = [];
+                                    var payOrder = {
+                                        orderId:data.responseData,
+                                        productFirstUrl:$scope.param.product.firstUrl,
+                                        productId:$scope.param.product.productId,
+                                        productName:$scope.param.product.productName,
+                                        productNum:$scope.param.productNum,
+                                        productPrice:$scope.param.product.price,
+                                        productSpec:$scope.param.checkFlag
+                                    };
+                                    needPayOrderList.push(payOrder);
+                                    //将needPayOrderList数据放入后台list中
+                                    PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+                                        if(data.result==Global.SUCCESS)
+                                        {
+                                            hideToast()
+                                            $scope.showFlag(false);
+                                            $scope.param.checkFlag = "";
+                                            $scope.param.productNum = 1;
+                                            window.location.href = "orderPay.do?productType=seckill&random="+Math.random();
+                                        }else if(data.result==Global.FAILURE){
+                                            alert("购买失败");
+                                            hideToast()
+                                            $scope.showFlag(false);
+                                        }
 
-
-
-
-
-                            CreateSeckillOrder.get(
-                                {   fieldId:$scope.param.product.fieldId+"",
-                                    productId:$scope.param.product.productId,
-                                    productSpec:$scope.param.checkFlag,
-                                    productNum:$scope.param.productNum
-                                },
-                                function (data) {
-                                    console.log(data)
-                                    if(data.result==Global.SUCCESS) {
-                                        var needPayOrderList = [];
-                                        var payOrder = {
-                                            orderId:data.responseData,
-                                            productFirstUrl:$scope.param.product.firstUrl,
-                                            productId:$scope.param.product.productId,
-                                            productName:$scope.param.product.productName,
-                                            productNum:$scope.param.productNum,
-                                            productPrice:$scope.param.product.price,
-                                            productSpec:$scope.param.checkFlag
-                                        };
-                                        needPayOrderList.push(payOrder);
-                                        //将needPayOrderList数据放入后台list中
-                                        PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
-                                            if(data.result==Global.SUCCESS)
-                                            {
-                                                hideToast()
-                                                $scope.showFlag(false);
-                                                $scope.param.checkFlag = "";
-                                                $scope.param.productNum = 1;
-                                                window.location.href = "orderPay.do?productType=seckill&random="+Math.random();
-                                            }else if(data.result==Global.FAILURE){
-                                                alert("购买失败");
-                                                hideToast()
-                                                $scope.showFlag(false);
-                                            }
-
-                                        })
-                                    }
-                            });
+                                    })
+                                }
+                            })
 
                         }
-                }else{
-                    $scope.model = true
+                        }
                 }
-            };
 
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;

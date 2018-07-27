@@ -244,9 +244,6 @@ public class WeixinUserController {
         return responseDTO;
     }
 
-
-
-
     @RequestMapping(value = "/mxShopTest", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO<String> mxShopTest(HttpServletRequest request,HttpServletResponse response,HttpSession session,@RequestParam String shopId) {

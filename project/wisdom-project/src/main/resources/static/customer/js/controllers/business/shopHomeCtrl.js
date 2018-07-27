@@ -213,6 +213,22 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
            $scope.Newlyweds=function () {
              $state.go("newlyweds")
            };
+           /*点击价格区跳转到价格页面*/
+           $scope.areaPage=function () {
+             $state.go("areaPage")
+           };
+           /*点击分销进入分销页面*/
+           $scope.distributionArea=function () {
+             $state.go("distributionArea")
+           };
+           /*点击拼团专区 砍价专区 进入到空页面*/
+           $scope.area=function () {
+             $state.go("area")
+           };
+           /*点击秒杀部门跳转到秒杀页面*/
+           $scope.seckillList=function () {
+             $state.go("seckillList")
+           };
                 /*点击首页浮层 取消让浮层隐藏*/
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;

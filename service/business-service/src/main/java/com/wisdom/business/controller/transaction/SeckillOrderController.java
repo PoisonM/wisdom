@@ -3,20 +3,19 @@ package com.wisdom.business.controller.transaction;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.SeckillProductService;
 import com.wisdom.business.service.transaction.BuyCartService;
+import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.JedisUtils;
 import com.wisdom.common.util.RedisLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,36 +28,49 @@ import java.util.List;
 @RequestMapping(value = "seckillOrder")
 public class SeckillOrderController {
 
+    /**
+     * 预约详情缓存时常，20分钟
+     */
+    private int productInfoCacheSeconds = 1200;
+
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private BuyCartService buyCartService;
     @Autowired
     private SeckillProductService seckillProductService;
+    @Autowired
+    private TransactionService transactionService;
 
 
     /**
      * 秒杀活动购买某个商品，创建订单
-     * @param fieldId
-     * @param productSpec
-     * @param productNum
+     * @param businessOrderDTO
      * output ResponseDTO<String>
      */
     @RequestMapping(value = "createSeckillOrder", method = {RequestMethod.POST, RequestMethod.GET})
     @LoginRequired
     public
     @ResponseBody
-    ResponseDTO<String> createSeckillOrder(@RequestParam String fieldId,@RequestParam String productId, @RequestParam String productSpec,@RequestParam int productNum) {
+    ResponseDTO<String> createSeckillOrder(@RequestBody BusinessOrderDTO businessOrderDTO) {
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
         long startTime = System.currentTimeMillis();
         logger.info("秒杀某个商品，创建订单==={}开始", startTime);
-        RedisLock productAmountLock = new RedisLock("seckillProduct" + productId);
+        RedisLock productAmountLock = new RedisLock("seckillProduct" + businessOrderDTO.getBusinessProductId());
         logger.info("秒杀商品生成订单加锁");
         try {
             productAmountLock.lock();
-            if (seckillProductService.getProductAmout(fieldId)>0) {
-                buyCartService.seckillProductBuyNow(fieldId,productId,productNum,productSpec);
+            if (seckillProductService.getProductAmout(businessOrderDTO.getId()) > 0) {
+                String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
+                if (businessOrderId.equals(StatusConstant.FAILURE)) {
+                    logger.info("总库存不足");
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    responseDTO.setErrorInfo("总库存不足");
+                } else {
+                JedisUtils.set("seckillproductOrder:"+businessOrderDTO.getId(),businessOrderId,productInfoCacheSeconds);
+                responseDTO.setResponseData(businessOrderId);
                 responseDTO.setResult(StatusConstant.SUCCESS);
+                }
             } else {
                 logger.info("库存不足");
                 responseDTO.setResult(StatusConstant.FAILURE);
