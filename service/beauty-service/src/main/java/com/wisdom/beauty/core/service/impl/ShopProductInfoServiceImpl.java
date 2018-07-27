@@ -402,6 +402,13 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 				} else {
 					logger.info("主键不为空，说明是修改记录={}", dto.getProductTypeName());
 					returnFlag = updateProductTypeInfo(dto);
+					//修改产品的二级名称
+					ShopProductInfoDTO shopProjectInfoDTO = new ShopProductInfoDTO();
+					shopProjectInfoDTO.setProductTypeTwoName(dto.getProductTypeName());
+					ShopProductInfoCriteria productInfoCriteria = new ShopProductInfoCriteria();
+					ShopProductInfoCriteria.Criteria c = productInfoCriteria.createCriteria();
+					c.andProductTypeTwoIdEqualTo(dto.getId());
+					shopProductInfoMapper.updateByCriteriaSelective(shopProjectInfoDTO,productInfoCriteria);
 				}
 			}
 		}
@@ -427,7 +434,7 @@ public class ShopProductInfoServiceImpl implements ShopProductInfoService {
 			//产品
 			ShopProductInfoDTO shopProjectInfoDTO = new ShopProductInfoDTO();
 			shopProjectInfoDTO.setStatus(status);
-
+			shopProjectInfoDTO.setProductTypeOneName(shopProductTypeDTOS.getProductTypeName());
 			ShopProductInfoCriteria productInfoCriteria = new ShopProductInfoCriteria();
 			ShopProductInfoCriteria.Criteria c = productInfoCriteria.createCriteria();
 			c.andProductTypeOneIdEqualTo(oneId);
