@@ -1,7 +1,19 @@
 angular.module('controllers',[]).controller('detailsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductDetail',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductDetail) {
             console.log("details")
+            $scope.params = {
+                goodsNum:"1"
+            }
+
+            GetBorderSpecialProductDetail.get({
+                productId:$stateParams.id
+            },function (data) {
+                if(data.result == Global.SUCCESS){
+                    $scope.goodDetails = data.responseData
+                }
+
+            })
 
 
             var viewSwiper = new Swiper('.view .swiper-container', {

@@ -2,26 +2,24 @@
 <div class="goodsList">
         <div class="class_list">
             <ul>
-                <li>所有产品</li>
-                <li>奥瑞拉</li>
-                <li>不莱梅</li>
-                <li>哦多亿</li>
-                <li>唯美度</li>
+                <li ng-click="checkBrand()" ng-class='{"check_brand":itemFlag == ""}'>所有产品</li>
+                <li ng-click="checkBrand(item)" ng-repeat="item in brandLiat" ng-class='{"check_brand":itemFlag == item}'>{{item}}</li>
             </ul>
         </div>
         <div class="goods_list">
             <ul>
-                <li ng-repeat="item in [1,2,3,4,5,6,7,8]">
+                <li ng-repeat="item in option.dataList" ng-click="goDetail(item.productId)">
                     <div class="img">
-                        <img src="//img12.360buyimg.com/jdcms/s170x170_jfs/t24298/114/238918244/153489/edd39849/5b2a0769Nf1a763be.jpg!q90!cc_170x170.webp" alt="">
+                        <img ng-src="{{item.firstUrl}}" alt="{{item.productName}}">
                     </div>
                     <div class="text">
                         <div class="price">
-                            <span>￥204</span>
-                            <i>韩国</i>
+                            <span>￥{{item.price}}</span>
+                            <i ng-if="item.type == 'special'">韩国</i>
+                            <i ng-if="item.type != 'special'">其他</i>
                         </div>
                         <div class="goods_name">
-                            <span>多特海伦精华修复液美白保湿150m多特海伦精华修复液美白保湿150m</span>
+                            <span>{{item.productName}}</span>
                         </div>
                         <div class="add_shop">
                             <i></i>

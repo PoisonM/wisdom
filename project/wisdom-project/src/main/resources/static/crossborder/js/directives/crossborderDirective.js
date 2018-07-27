@@ -922,7 +922,8 @@ define(['appCrossborder','jquery'], function (app,$) {
             };
         }])
         //home公共部分
-        .directive('homeTop', [function () {
+        .directive('homeTop', ['$rootScope','$state','$timeout',
+            function ($rootScope,$state,$timeout) {
             return {
                 restrict: 'EA',
                 template: '<div class="home"> <div class="shortcut"> ' +
@@ -937,14 +938,10 @@ define(['appCrossborder','jquery'], function (app,$) {
                 scope: {
                     params: '='
                 },
-                // scope: false,
                 link: function (scope, element, attrs) {
                     scope.searchGoods = function () {
-                        scope.params.method.get({
-                            params:scope.inportContent
-                        },function (res) {
-                            scope.params.dataList = res
-                        })
+                        $state.go('goodsList')
+                        scope.params.fn(scope.params.inportContent)
                     }
                 }
             };
