@@ -74,7 +74,7 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
-                    /*分区页面*/
+                    /*99 199页面*/
                     .state('areaPage', {
                         url: '/areaPage',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -87,6 +87,32 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                    /*分销页面*/
+                    .state('distributionArea', {
+                        url: '/distributionArea',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'distributionAreaCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.distributionAreaCtrl',
+                                    ['js/controllers/business/distributionAreaCtrl.js?ver='+ customerVersion],
+                                    'views/business/distributionArea.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    /*拼团 砍价专区 空页面*/
+                    .state('area', {
+                        url: '/area',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'areaCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.areaCtrl',
+                                    ['js/controllers/business/areaCtrl.js?ver='+ customerVersion],
+                                    'views/business/area.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                     .state('shareHome', {
                         url: '/shareHome',
                         templateProvider: function() { return lazyDeferred.promise; },
@@ -96,6 +122,19 @@ define(['appCustomer'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.shareHomeCtrl',
                                     ['js/controllers/business/shareHomeCtrl.js?ver='+ customerVersion],
                                     'views/business/shareHome.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    /*搜索页面*/
+                    .state('searchPage', {
+                        url: '/searchPage',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'searchPageCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.searchPageCtrl',
+                                    ['js/controllers/business/searchPageCtrl.js?ver='+ customerVersion],
+                                    'views/business/searchPage.html?ver=' + customerVersion);
                             }
                         }
                     })

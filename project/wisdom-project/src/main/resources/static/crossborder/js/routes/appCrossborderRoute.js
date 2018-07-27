@@ -59,7 +59,7 @@ define(['appCrossborder'], function(app){
 
                     //详情页
                     .state('details', {
-                        url: '/details',
+                        url: '/details/:id',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'detailsCtrl',
                         resolve: {

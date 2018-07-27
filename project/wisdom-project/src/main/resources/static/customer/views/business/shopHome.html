@@ -57,16 +57,16 @@
         }
 
     </style>
-    <!--顶部搜索-->
-    <div style="background: #ffffff;width: 100%;height: 56px;line-height: 56px;display: flex;justify-content: space-between">
-        <img src="images/Group.png" style="height: 40px;margin: 1.9% 2.1% 0.9% 2.7%">
-        <div style="height: 30px;margin: auto;position: relative;width:68%">
-            <i class="icon ion-ios-search placeholder-icon"  style="position: absolute;left: 6px;top: -15px;width: 14px;height: 14px"></i>
-            <input type="text" style="width:100%;background: #FBFBFB;border: 0 solid #CCCCCC;border-radius: 58px;padding-left:50px;" placeholder="补水五件套">
+    <ion-content overflow-scroll="true" style="bottom: 48px;">
+        <!--顶部搜索-->
+        <div style="background: #ffffff;width: 100%;height: 56px;line-height: 56px;display: flex;justify-content: space-between">
+            <img src="images/Group.png" style="height: 40px;margin: 1.9% 2.1% 0.9% 2.7%">
+            <div style="height: 30px;margin: auto;position: relative;width:68%">
+                <i class="icon ion-ios-search placeholder-icon"  style="position: absolute;left: 20px;top: -10px;font-size: 20px"></i>
+                <input type="text" style="width:100%;background: #FBFBFB;border: 0 solid #CCCCCC;border-radius: 58px;padding-left:50px;" placeholder="补水五件套">
+            </div>
+            <img src="images/Group2.png" style="height: 40px;margin: 1.9% 4% 0.9% 1.9%" ui-sref="buyCart">
         </div>
-        <img src="images/Group2.png" style="height: 40px;margin: 1.9% 4% 0.9% 1.9%" ui-sref="buyCart">
-    </div>
-    <ion-content overflow-scroll="true" style="bottom: 48px;margin-top: 56px">
         <!--轮播图部分-->
         <ion-slide-box auto-play="true" does-continue="true" slide-interval=4000 show-pager="false">
             <ion-slide ng-repeat="item in param.bannerList" ng-if="item.bannerType=='banner'">
@@ -82,39 +82,39 @@
     margin-left: -152px;">
         </div>
         <!--分区-->
-        <div style="background:url('images/background.png');background-size: 100% 100%">
-            <div class="row" style="font-family: PingFang-SC-Medium;font-size: 16px;color: #FFFFFF;letter-spacing: 0.38px;text-align: center;">
-                <div class="col col-33" style="padding: 0px">
-                    <img src="images/59.png" style="margin: 10px auto;">
-                    <p style="font-family: PingFang-SC-Medium;font-size: 13px;color: #FFFFFF;letter-spacing: 0.31px;line-height: 16px;margin-bottom: 10px">59专区</p>
-                </div>
-                <div class="col col-33" style="padding: 0px" >
-                    <img src="images/79.png" style="margin: 10px auto;">
-                    <p style="font-family: PingFang-SC-Medium;font-size: 13px;color: #FFFFFF;letter-spacing: 0.31px;line-height: 16px;margin-bottom: 10px">79专区</p>
-                </div>
-                <div class="col col-33" style="padding: 0px">
-                    <img src="images/99.png" style="margin: 10px auto;">
-                    <p style="font-family: PingFang-SC-Medium;font-size: 13px;color: #FFFFFF;letter-spacing: 0.31px;line-height: 16px;margin-bottom: 10px">99专区</p>
+        <div class="row row-wrap">
+            <div class="col col-50" style="position: relative">
+               <img src="images/69.png" style="height: 85px;" class="full-image" >
+                <div style="position: absolute;top: 26px;left: 16px">
+                    <p style="font-family: PingFangSC-Semibold;font-size: 18px;color: #FFFFFF;letter-spacing: 0.42px;line-height: 16px;">69元专区</p>
+                    <p style="font-family: PingFang-SC-Medium;font-size: 12px;color: #FFFFFF;letter-spacing: 0.38px;line-height: 12px;margin-top: 5px;margin-left: 2px">专治送礼困难户</p>
                 </div>
             </div>
-            <div class="row" style="font-family: PingFang-SC-Medium;font-size: 16px;color: #FFFFFF;letter-spacing: 0.38px;line-height: 16px;text-align: center;">
-                <div class="col col-33" style="padding: 0px">
-                    <img src="images/199.png" style="margin: 10px auto;">
-                    <p style="font-family: PingFang-SC-Medium;font-size: 13px;color: #FFFFFF;letter-spacing: 0.31px;line-height: 16px;">199专区</p>
+            <div class="col col-50" style="position: relative">
+                <img src="images/99.png" style="height: 85px;" class="full-image">
+                <div style="position: absolute;top: 26px;left: 16px">
+                    <p style="font-family: PingFangSC-Semibold;font-size: 18px;color: #FFFFFF;letter-spacing: 0.42px;line-height: 16px;">99元专区</p>
+                    <p style="font-family: PingFang-SC-Medium;font-size: 12px;color: #FFFFFF;letter-spacing: 0.38px;line-height: 12px;margin-top: 5px;margin-left: 2px">专治送礼困难户</p>
                 </div>
-                <div class="col col-33" style="padding: 0px">
-                    <img src="images/299.png" style="margin: 10px auto;">
-                    <p style="font-family: PingFang-SC-Medium;font-size: 13px;color: #FFFFFF;letter-spacing: 0.31px;line-height: 16px;">299专区</p>
+            </div>
+            <div class="col col-50" style="position: relative">
+                <img src="images/199.png" style="height: 85px;" class="full-image">
+                <div style="position: absolute;top: 26px;left: 16px">
+                    <p style="font-family: PingFangSC-Semibold;font-size: 18px;color: #FFFFFF;letter-spacing: 0.42px;line-height: 16px;">199元专区</p>
+                    <p style="font-family: PingFang-SC-Medium;font-size: 12px;color: #FFFFFF;letter-spacing: 0.38px;line-height: 12px;margin-top: 5px;margin-left: 2px">专治送礼困难户</p>
                 </div>
-                <div class="col col-33" style="padding: 0px">
-                    <img src="images/399.png" style="margin: 10px auto;">
-                    <p style="font-family: PingFang-SC-Medium;font-size: 13px;color: #FFFFFF;letter-spacing: 0.31px;line-height: 16px;">399专区</p>
+            </div>
+            <div class="col col-50" style="position: relative">
+                <img src="images/299.png" style="height: 85px;" class="full-image">
+                <div style="position: absolute;top: 26px;left: 16px">
+                    <p style="font-family: PingFangSC-Semibold;font-size: 18px;color: #FFFFFF;letter-spacing: 0.42px;line-height: 16px;">299元专区</p>
+                    <p style="font-family: PingFang-SC-Medium;font-size: 12px;color: #FFFFFF;letter-spacing: 0.38px;line-height: 12px;margin-top: 5px;margin-left: 2px">专治送礼困难户</p>
                 </div>
             </div>
         </div>
         <!--秒杀抢购部分-->
         <div style="width: 95%;margin-top: 20px;margin: auto;background: #ffffff;margin-bottom: 10px;padding: 0px;margin-top: 10px" class="row">
-           <div class="col col-50" style="border-right: 1px solid #F5F5F5;padding: 0px;position: relative">
+           <div class="col col-50" style="border-right: 1px solid #F5F5F5;padding: 0px;position: relative" ng-click="seckillList()">
                <p style="font-family: PingFang-SC-Medium;font-size: 14px;color: #4A4A4A;letter-spacing: 0.33px;line-height: 16px;margin: 8px"><img src="images/ding.png" style="display: inline-block"><span style="margin-left: 5px">秒杀专区</span></p>
                <p style="font-family: PingFang-SC-Regular;font-size: 11px;color: #9B9B9B;letter-spacing: 0.3px;line-height: 14px;margin: 8px">每日都有特价欢迎选购</p>
                <img src="images/banner/banner1.png" style="width: 101px;height: 119px;margin: 40px auto">
@@ -124,14 +124,14 @@
             <div class="col col-50" style="padding: 0px">
                 <div class="row row-wrap">
                     <!--分销专区-->
-                    <div class="col col-50" style="border-bottom: 1px solid #F5F5F5;border-right: 1px solid #F5F5F5;">
+                    <div class="col col-50" style="border-bottom: 1px solid #F5F5F5;border-right: 1px solid #F5F5F5;" ng-click="distributionArea()">
                         <p style="font-family: PingFang-SC-Medium;font-size: 14px;color: #F64469;letter-spacing: 0.33px;line-height: 16px;margin-bottom: 5px;">分销专区</p>
                         <!--<p style="font-family: PingFang-SC-Regular;font-size: 11px;color: #9B9B9B;letter-spacing: 0.3px;line-height: 14px;">每日都有特价</p>-->
                         <img src="images/banner/banner1.png" style="width: 61px;height: 55px;margin: 10px auto;">
                         <p style="font-family: PingFang-SC-Regular;font-size: 11px;color: #9B9B9B;letter-spacing: 0.3px;line-height: 14px;text-align: right">更多></p>
                     </div>
                     <!--拼团专区-->
-                    <div class="col col-50" style="border-bottom: 1px solid #F5F5F5">
+                    <div class="col col-50" style="border-bottom: 1px solid #F5F5F5" ng-click="area()">
                         <p style="font-family: PingFang-SC-Medium;font-size: 14px;color: #F64469;letter-spacing: 0.33px;line-height: 16px;margin-bottom: 5px;">拼团专区</p>
                        <!-- <p style="font-family: PingFang-SC-Regular;font-size: 11px;color: #9B9B9B;letter-spacing: 0.3px;line-height: 14px;">每日都有特价</p>-->
                         <img src="images/banner/banner1.png" style="width: 61px;height: 55px;margin: 10px auto;">
@@ -145,7 +145,7 @@
                         <p style="font-family: PingFang-SC-Regular;font-size: 11px;color: #9B9B9B;letter-spacing: 0.3px;line-height: 14px;text-align: right">更多></p>
                     </div>
                     <!--砍价专区-->
-                    <div class="col col-50">
+                    <div class="col col-50" ng-click="area()">
                         <p style="font-family: PingFang-SC-Medium;font-size: 14px;color: #F64469;letter-spacing: 0.33px;line-height: 16px;margin-bottom: 5px;">砍价专区</p>
                         <!--<p style="font-family: PingFang-SC-Regular;font-size: 11px;color: #9B9B9B;letter-spacing: 0.3px;line-height: 14px;">每日都有特价</p>-->
                         <img src="images/banner/banner1.png" style="width: 61px;height: 55px;margin: 10px auto;">
@@ -172,7 +172,7 @@
                 <p style="margin-top: 1px;font-size: 12px">分类</p>
             </li>
             <li style="text-align: center;width: 25%;height: 48px"  ng-class="{'footActive':param.checkType==2}" ng-click="checkBg(2)" class="footColor" ui-sref="shareHome">
-                <i class="icon ion-android-share-alt" style="font-size: 24px;display: inline-block;margin-top: 5px"></i>
+                <i class="icon ion-ios-redo-outline" style="font-size: 24px;display: inline-block;margin-top: 5px"></i>
                 <p style="margin-top: 1px;font-size: 12px">分享</p>
             </li>
             <li style="text-align: center;width: 25%;height: 48px"  ng-class="{'footActive':param.checkType==3}" ng-click="checkBg(3)" class="footColor" ui-sref="orderManagement({type:'all'})">
