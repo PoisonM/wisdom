@@ -14,6 +14,8 @@ import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderDTO;
 import com.wisdom.common.dto.transaction.NeedPayOrderListDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
+import com.wisdom.common.util.CodeGenUtil;
+import com.wisdom.common.util.IdGen;
 import com.wisdom.common.util.JedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +26,32 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
+import com.wisdom.business.interceptor.LoginRequired;
+import com.wisdom.business.service.transaction.TransactionService;
+import com.wisdom.business.service.transaction.UserOrderAddressService;
+import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.product.ProductDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
+import com.wisdom.common.dto.transaction.OrderAddressRelationDTO;
+import com.wisdom.common.util.UUIDUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * 跨境电商 订单相关的接口
  * 包含放入购物车、立即购买 功能
  * Created by wangbaowei on 2018/7/23.
  */
 
-
+@Controller
 @RequestMapping("crossBorder/order")
 public class OrderController {
     Logger logger = LoggerFactory.getLogger(OrderController.class);
@@ -43,6 +64,8 @@ public class OrderController {
     private ProductService productService;
     @Autowired
     private PayRecordService payRecordService;
+    @Autowired
+    private UserOrderAddressService userOrderAddressService;
 
     /**
      * 加入购物车
@@ -115,6 +138,82 @@ public class OrderController {
         ResponseDTO responseDTO = new ResponseDTO();
         String codeUrl = payRecordService.corssBorderPay(request);
         responseDTO.setResult(codeUrl);
+        return responseDTO;
+    }
+    /**
+     * 根据用户手机号和订单状态查询订单
+     * @param orderStatus all 代表所有订单,
+     * @return
+     */
+    @LoginRequired
+    @RequestMapping(value = "getBorderSpecialOrderListByStauts", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<List<BusinessOrderDTO>> getBorderSpecialOrderListByStauts(@RequestParam String orderStatus) {
+        long startTime = System.currentTimeMillis();
+        logger.info("根据手机号获取跨境订单列表==={}开始" , startTime);
+        ResponseDTO<List<BusinessOrderDTO>> responseDTO = new ResponseDTO<>();
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        List<BusinessOrderDTO> businessOrderDTOS = transactionService.getBusinessOrderListByUserIdAndStatus(userInfoDTO.getId(),orderStatus);
+        logger.info("根据手机号获取到的跨境订单个数===" + businessOrderDTOS.size());
+        responseDTO.setResponseData(businessOrderDTOS);
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("根据手机号获取跨境订单列表结束,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+    /**
+     * 创建跨境订单关联收货地址
+     * @param orderAddressRelationDTO
+     * @return
+     */
+    @LoginRequired
+    @RequestMapping(value = "createSpecialOrderAddressRelation", method = {RequestMethod.POST, RequestMethod.GET})
+    public
+    @ResponseBody
+    ResponseDTO<List<BusinessOrderDTO>> createSpecialOrderAddressRelation(@RequestBody OrderAddressRelationDTO orderAddressRelationDTO,@RequestBody NeedPayOrderListDTO needPayOrderList) {
+        long startTime = System.currentTimeMillis();
+        logger.info("创建跨境订单关联收货地址==={}开始" , startTime);
+        ResponseDTO<List<BusinessOrderDTO>> responseDTO = new ResponseDTO<>();
+        for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
+            //查询此订单是否已有地址,如果有则不进行新增
+            List<OrderAddressRelationDTO> orderAddressRelationDTOs = userOrderAddressService.getOrderAddressRelationByOrderId(needPayOrderDTO.getOrderId());
+            if(0 == orderAddressRelationDTOs.size()){
+                //缺少一个身份证字段,DTO,XML,
+                logger.info("增加跨境订单{}关联地址{}",needPayOrderDTO.getOrderId());
+                orderAddressRelationDTO.setId(UUIDUtil.getUUID());
+                orderAddressRelationDTO.setBusinessOrderId(needPayOrderDTO.getOrderId());
+                orderAddressRelationDTO.setAddressCreateDate(new Date());
+                orderAddressRelationDTO.setAddressUpdateDate(new Date());
+                userOrderAddressService.addOrderAddressRelation(orderAddressRelationDTO);
+            }else {
+                logger.info("修改跨境订单{}关联地址{}", needPayOrderDTO.getOrderId());
+                orderAddressRelationDTO.setBusinessOrderId(needPayOrderDTO.getOrderId());
+                orderAddressRelationDTO.setAddressUpdateDate(new Date());
+                userOrderAddressService.updateOrderAddressRelationByOrderId(orderAddressRelationDTO);
+            }
+        }
+        responseDTO.setResult(StatusConstant.SUCCESS);
+        logger.info("创建跨境订单关联收货地址,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+    /**
+     * 跨境订单详情
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "queryOrderDetailsById", method = {RequestMethod.POST, RequestMethod.GET})
+    @LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<BusinessOrderDTO> queryOrderDetailsById(@RequestParam String orderId) {
+        long startTime = System.currentTimeMillis();
+        logger.info("跨境订单=={}详情==={}开始" ,orderId,startTime);
+        ResponseDTO<BusinessOrderDTO> responseDTO = new ResponseDTO<>();
+        BusinessOrderDTO businessOrderDTO = transactionService.queryOrderDetailsById(orderId);
+        responseDTO.setResponseData(businessOrderDTO);
+        responseDTO.setErrorInfo(StatusConstant.SUCCESS);
+        logger.info("跨境订单详情,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;
     }
 }
