@@ -126,6 +126,22 @@ define(['appCrossborder'], function(app){
                             }
                         }
                     })
+                    .state('login', {
+                        url: '/login',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'loginCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.loginCtrl',
+                                    [
+                                        'js/controllers/loginCtrl.js',
+                                        'js/css/login.css',
+                                        'js/css/home.css',
+                                    ],
+                                    'js/views/login.html');
+                            }
+                        }
+                    })
                 $urlRouterProvider.otherwise('goodsList')
             }])
 })
