@@ -151,6 +151,7 @@ define(['appCrossborder'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.scanPayCtrl',
                                     [
                                         'js/controllers/scanPayCtrl.js',
+                                        'js/libs/qrcode/qrcode.min.js',
                                         'js/css/scanPay.css',
                                         'js/css/home.css',
                                     ],
