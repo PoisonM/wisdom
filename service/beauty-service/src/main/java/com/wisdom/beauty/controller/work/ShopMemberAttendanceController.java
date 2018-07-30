@@ -153,6 +153,7 @@ public class ShopMemberAttendanceController {
 		String endTime = DateUtils.getEndTime();
 		pageParamVoDTO.setStartTime(startTime);
 		pageParamVoDTO.setEndTime(endTime);
+
 		BigDecimal income = shopStatisticsAnalysisService.getPerformance(pageParamVoDTO);
 		BigDecimal expenditure = shopStatisticsAnalysisService.getExpenditure(pageParamVoDTO);
 		Map<String, Object> consumeNumberAndTimeMap = shopStatisticsAnalysisService

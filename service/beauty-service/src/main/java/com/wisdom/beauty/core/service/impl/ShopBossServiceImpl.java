@@ -50,7 +50,9 @@ public class ShopBossServiceImpl implements ShopBossService {
         if (StringUtils.isNotBlank(shopBossRelationDTO.getSysBossCode())) {
             criteria.andSysBossCodeEqualTo(shopBossRelationDTO.getSysBossCode());
         }
-
+        if(StringUtils.isNotBlank(shopBossRelationDTO.getSysShopId())){
+            criteria.andSysShopIdEqualTo(shopBossRelationDTO.getSysShopId());
+        }
         List<ShopBossRelationDTO> shopBossRelationDTOS = shopBossRelationMapper.selectByCriteria(shopBossRelationCriteria);
         return shopBossRelationDTOS;
     }

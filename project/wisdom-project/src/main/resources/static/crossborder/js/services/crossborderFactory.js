@@ -2,9 +2,6 @@
 
 var product ='/business/crossBorder/order/';
 
-
-// var product ='http://192.168.1.197/business/crossBorder/order/';
-
 define(['appCrossborder'], function (app) {
     app
         .factory('GetBorderSpecialProductList',['$resource',function ($resource){
@@ -17,33 +14,4 @@ define(['appCrossborder'], function (app) {
             return $resource(product+'getBorderSpecialProductDetail');
         }])
 
-        .factory('GetBorderSpecialProductOrderList',['$resource',function ($resource){
-            return $resource(product+'crossBordOrderList');
-        }])
-        .factory('AddBorderSpecialProduct2ShoppingCart',['$resource',function ($resource){
-            return $resource(product+'addProduct2ShoppingCart');
-        }])
-        .factory('CreateBusinessOrder',['$resource',function ($resource){
-            return $resource('/business/transaction/createBusinessOrder');
-        }])
-        .factory('PutNeedPayOrderListToRedis',['$resource',function ($resource){
-            return $resource('/business/transaction/putNeedPayOrderListToRedis');
-        }])
-
-        .factory('UpdateBusinessOrderStatus',['$resource',function ($resource){
-            return $resource('/business/transaction/UpdateBusinessOrderStatus');
-        }])
-
-        .factory('DeleteOrderFromBuyCart',['$resource',function ($resource){
-            return $resource('/business/transaction/deleteOrderFromBuyCart')
-        }])
-        .factory('GetUserValidateCode',['$resource',function ($resource){
-            return $resource('/user/getUserValidateCode')
-        }])
-        .factory('UserLogin',['$resource',function ($resource){
-            return $resource('/user/crossBorderLogin')
-        }])
-        .factory('PayOrder',['$resource',function ($resource){
-            return $resource('/business/crossBorder/order/payOrder')
-        }])
 });

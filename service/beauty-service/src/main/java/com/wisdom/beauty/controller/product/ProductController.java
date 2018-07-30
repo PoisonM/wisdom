@@ -468,11 +468,12 @@ public class ProductController {
      * */
     @RequestMapping(value = "/getProductInfo", method = RequestMethod.GET)
     @ResponseBody
-    ResponseDTO<Object> getProductInfo(@RequestParam String  productCode) {
+    ResponseDTO<Object> getProductInfo(@RequestParam String  productCode,@RequestParam String  shopStoreId) {
 
         String[] codeArray =productCode.split(",");
         ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
         shopProductInfoDTO.setProductCode(codeArray[1]);
+        shopProductInfoDTO.setSysShopId(shopStoreId);
         ResponseDTO<Object> responseDTO = new ResponseDTO<>();
         List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
         responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
