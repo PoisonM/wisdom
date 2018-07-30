@@ -142,6 +142,22 @@ define(['appCrossborder'], function(app){
                             }
                         }
                     })
+                    .state('scanPay', {
+                        url: '/scanPay',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'scanPayCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.scanPayCtrl',
+                                    [
+                                        'js/controllers/scanPayCtrl.js',
+                                        'js/css/scanPay.css',
+                                        'js/css/home.css',
+                                    ],
+                                    'js/views/scanPay.html');
+                            }
+                        }
+                    })
                 $urlRouterProvider.otherwise('goodsList')
             }])
 })

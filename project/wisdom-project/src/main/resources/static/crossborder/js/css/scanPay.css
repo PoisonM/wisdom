@@ -1,0 +1,30 @@
+.scanPay{
+    width: 1200px;
+    margin: 0 auto;
+    background: #F8F8F8;
+    overflow: hidden;
+}
+.scanPay p{
+    text-align: center;
+    width: 100%;
+    margin-bottom: 50px;
+}
+.scanPay p:nth-child(1){
+    font-size: 24px;
+    color: #666666;
+    letter-spacing: 0;
+    margin-top: 50px;
+}
+.scanPay p:nth-child(2){
+    font-size: 36px;
+    color: #FF3D3D;
+    letter-spacing: 0;
+}
+
+.scanPay img{
+    margin: 0 auto;
+    display: block;
+    width: 368px;
+    height: 368px;
+    border: 1px solid #ffffff;
+}
