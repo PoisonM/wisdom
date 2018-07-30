@@ -1,6 +1,8 @@
 
 
-var product ='/business/order/';
+var product ='/business/crossBorder/order/';
+
+
 // var product ='http://192.168.1.197/business/crossBorder/order/';
 
 define(['appCrossborder'], function (app) {
@@ -14,5 +16,21 @@ define(['appCrossborder'], function (app) {
         .factory('GetBorderSpecialProductDetail',['$resource',function ($resource){
             return $resource(product+'getBorderSpecialProductDetail');
         }])
+
+        .factory('GetBorderSpecialProductOrderList',['$resource',function ($resource){
+            return $resource(product+'crossBordOrderList');
+        }])
+        .factory('AddBorderSpecialProduct2ShoppingCart',['$resource',function ($resource){
+            return $resource(product+'addProduct2ShoppingCart');
+        }])
+        .factory('CreateBusinessOrder',['$resource',function ($resource){
+            return $resource('/business/transaction/createBusinessOrder');
+        }])
+        .factory('PutNeedPayOrderListToRedis',['$resource',function ($resource){
+            return $resource('/business/transaction/putNeedPayOrderListToRedis');
+        }])
+
+
+
 
 });

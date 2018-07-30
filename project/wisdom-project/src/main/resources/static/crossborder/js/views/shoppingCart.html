@@ -23,19 +23,19 @@
     </div>
     <div class="content">
         <div class="content_top">
-            <div ng-repeat="item in [1,2,3]" class="goods_box">
+            <div ng-repeat="item in cartList" class="goods_box">
                 <ul>
                     <li>
                         <span class="check"></span>
-                        <img src="//img13.360buyimg.com/n5/s54x54_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg" alt="">
+                        <img ng-src="{{item.businessProductFirstUrl}}" alt="{{item.businessProductName}}">
                     </li>
                     <li>
-                        商品名称商品名称商品名称商品名称商品名称多特海伦修复精华液150ml
+                        {{item.businessProductName}}
                     </li>
                     <li>
-                        <del>¥999.00</del>
-                        </br>
-                        <span>¥899.00</span>
+                        <!--<del>¥999.00</del>-->
+                        <!--</br>-->
+                        <span>¥{{item.businessProductPrice}}</span>
                     </li>
                     <li>
                         <span>-</span><input type="text"><span>+</span>

@@ -143,7 +143,7 @@ public class AccountController {
 
 		List<Integer> OrderStatusCountList = new ArrayList<>();
 		for (OrderStatus status : OrderStatus.values()) {
-			List<BusinessOrderDTO> businessOrderDTOList =  transactionService.getBusinessOrderListByUserIdAndStatus(userInfoDTO.getId(),status.getValue());
+			List<BusinessOrderDTO> businessOrderDTOList =  transactionService.getBusinessOrderListByUserIdAndStatus(userInfoDTO.getId(),status.getValue(),null);
 			OrderStatusCountList.add(businessOrderDTOList.size());
 		}
 		accountDTO.setOrderStatusCountList(OrderStatusCountList);

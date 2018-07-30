@@ -338,7 +338,7 @@ public class BusinessOrderController {
         ResponseDTO<List<BusinessOrderDTO>> responseDTO = new ResponseDTO<>();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         //若businessOrderId为""，则用户订单列表是获取所有根据status状态订单，如果不为空，则为指定ID的订单
-        List<BusinessOrderDTO> businessOrderDTOList =  transactionService.getBusinessOrderListByUserIdAndStatus(userInfoDTO.getId(),status);
+        List<BusinessOrderDTO> businessOrderDTOList =  transactionService.getBusinessOrderListByUserIdAndStatus(userInfoDTO.getId(),status,null);
         responseDTO.setResponseData(businessOrderDTOList);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("根据订单状态获取订单列表,耗时{}毫秒", (System.currentTimeMillis() - startTime));

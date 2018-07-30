@@ -120,16 +120,16 @@ public class TransactionService {
         transactionMapper.updateBusinessOrder(businessOrderDTO);
     }
 
-    public List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(String userId, String status) {
+    public List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(String userId, String status,String type) {
         logger.info("获取某个用户所有的订单=="+userId);
         List<BusinessOrderDTO> businessOrderDTOList = new ArrayList<>();
         if(status.equals("all"))
         {
-           businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,"");
+           businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,"",type);
         }
         else
         {
-            businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,status);
+            businessOrderDTOList=transactionMapper.getBusinessOrderListByUserIdAndStatus(userId,status,type);
         }
         return businessOrderDTOList;
     }
