@@ -7,9 +7,11 @@
                 <div class="col col-25" style="line-height: 40px;">
                     <span class="fs16">卡类别<span class="colff66">*</span></span>
                 </div>
-                <div class="col col-70 fs13" >
-                    <p style="margin-top:6px;"><span class="project1"   ng-class="{'activeCardType': settingAddsome.extShopProjectInfoDTO.cardType=='0'}"  ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='0'">次卡</span><span class="project1 m5"  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!=0">时效卡</span></p >
-                    <p ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'" class="row row-wrap" style="padding:0">
+                <div class="col col-70 fs13">
+                    <p style="margin-top:6px;"><span class="project1"   ng-class="{'activeCardType': settingAddsome.extShopProjectInfoDTO.cardType=='0'}"  ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='0'">次卡</span><span class="project1 m5"  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!=0&&settingAddsome.extShopProjectInfoDTO.cardType!=5">时效卡</span>
+                        <span class="project1 col col-30" ng-click="secondaryCard('5')" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='5'}">疗程卡</span>
+                    </p >
+                    <p ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!=5" class="row row-wrap" style="padding:0">
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('1',1)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='1'}">月卡</span>
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('2',3)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='2'}">季卡</span>
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('3',6)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='3'}">半年卡</span>
@@ -18,7 +20,7 @@
                 </div>
             </li>
             <!--有效期-->
-            <li class="item" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'">
+            <li class="item" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!=5">
                 <span class="fs16">有效期<span class="colff66">*</span></span><span class="fr">自购买日起至<input style="width: 27px;height: 24px;background: #e5e5e5;color: #333333;display: inline-block;margin-left: 10px;margin-right: 10px;text-align: center" ng-model="settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"  disabled="disabled"/>月有效</span></li>
             <li class="item"><span class="fs16">项目名称<span class="colff66">*</span></span><input type="text"  class="fr tr" placeholder="" ng-model="settingAddsome.extShopProjectInfoDTO.projectName" style="width:79%"></li>
             <li class="item"><span class="fs16">图片</span><span style="color: #3F3F3F;font-size: 16px;margin-left: 10px">(最多可上传6张)</span></li>
@@ -33,14 +35,11 @@
                     </li>
                     <li class="Htab-head-item ml10 bgfff" style="width:130px;position: relative;height:120px;display: inline-block;text-align: left" >
                         <div style="width:130px;position: relative;height:120px;display: inline-block">
-
                             <input type="file" style="opacity: 0;position: absolute;top: 0px;left: 0px;width: 105px;height: 105px;" id="uploadPic" onchange="angular.element(this).scope().img_upload(this.files)">
                             <img src="images/mine/addPhoto.png" style="width: 105px;height: 105px;" class="mt10">
                         </div>
-
                     </li>
                 </ul>
-
             </li>
 
             <li class="item"><span class="fs16">时长(分)<span class="colff66">*</span></span>
