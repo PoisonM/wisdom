@@ -1,6 +1,8 @@
 angular.module('controllers',[]).controller('goodsListCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductList','GetBorderSpecialProductBrandList',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductList,GetBorderSpecialProductBrandList) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductList'
+        ,'GetBorderSpecialProductBrandList','AddBorderSpecialProduct2ShoppingCart',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductList
+            ,GetBorderSpecialProductBrandList,AddBorderSpecialProduct2ShoppingCart) {
             console.log("goodsList")
             //获取品牌列表
             GetBorderSpecialProductBrandList.save({},function (data) {
@@ -37,8 +39,6 @@ angular.module('controllers',[]).controller('goodsListCtrl',
                 dataList:""
             }
 
-
-            
             $scope.checkBrand = function (brandName) {
                 $scope.itemFlag = brandName || ""
                 $scope.getGoodsList("",brandName)
@@ -61,5 +61,20 @@ angular.module('controllers',[]).controller('goodsListCtrl',
                     $scope.getGoodsList();
                 }
             };
+
+
+            //加入购物车
+            $scope.addShopCart = function (productId) {
+                AddBorderSpecialProduct2ShoppingCart.get({
+                    productId:productId,
+                    productNum: "1"
+                },function (data) {
+                    if(data.result==Global.FAILURE){
+                        alert("加入购物车失败");
+                    }else{
+                        alert("加入购物车成功");
+                    }
+                })
+            }
 
         }]);

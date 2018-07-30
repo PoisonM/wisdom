@@ -1,6 +1,8 @@
 angular.module('controllers',[]).controller('detailsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductDetail','AddBorderSpecialProduct2ShoppingCart','CreateBusinessOrder','PutNeedPayOrderListToRedis',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductDetail,AddBorderSpecialProduct2ShoppingCart,CreateBusinessOrder,PutNeedPayOrderListToRedis) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductDetail'
+        ,'AddBorderSpecialProduct2ShoppingCart','CreateBusinessOrder','PutNeedPayOrderListToRedis',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductDetail
+            ,AddBorderSpecialProduct2ShoppingCart,CreateBusinessOrder,PutNeedPayOrderListToRedis) {
             console.log("details")
             $scope.params = {
                 goodsNum:"1",

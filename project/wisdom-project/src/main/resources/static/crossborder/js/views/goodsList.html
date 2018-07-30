@@ -8,8 +8,8 @@
         </div>
         <div class="goods_list">
             <ul>
-                <li ng-repeat="item in option.dataList" ng-click="goDetail(item.productId)">
-                    <div class="img">
+                <li ng-repeat="item in option.dataList" >
+                    <div ng-click="goDetail(item.productId)" class="img">
                         <img ng-src="{{item.firstUrl}}" alt="{{item.productName}}">
                     </div>
                     <div class="text">
@@ -22,7 +22,7 @@
                             <span>{{item.productName}}</span>
                         </div>
                         <div class="add_shop">
-                            <i></i>
+                            <i ng-click="addShopCart(item.productId)"></i>
                         </div>
                     </div>
                 </li>

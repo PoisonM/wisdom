@@ -933,7 +933,7 @@ define(['appCrossborder','jquery'], function (app,$) {
                 '<div class="logo"> <img src="images/mall_img/logo.png" alt=""> </div> ' +
                 '<div class="search"> <div class="search_box"> <input ng-model="params.inportContent" type="text" placeholder="请搜索商品">' +
                 '<div ng-click="searchGoods()"><img src="images/mall_img/search.png" alt=""></div> </div> </div> <div class="settleup"> ' +
-                '<div> <i></i>购物车 </div> </div> </div></div>',
+                '<div ng-click="goShoppingCart()"> <i></i>购物车 </div> </div> </div></div>',
                 replace: true,
                 scope: {
                     params: '='
@@ -942,6 +942,9 @@ define(['appCrossborder','jquery'], function (app,$) {
                     scope.searchGoods = function () {
                         $state.go('goodsList')
                         scope.params.fn(scope.params.inportContent)
+                    }
+                    scope.goShoppingCart = function () {
+                        $state.go('shoppingCart')
                     }
                 }
             };

@@ -15,14 +15,15 @@
             </li>
             <li>
                 <label for="">手机号</label>
-                <input type="text">
+                <input ng-model="param.phone" type="text" placeholder="手机号">
 
             </li>
             <li>
                 <label for="">验证码</label>
-                <input type="text">
+                <input ng-model="param.code" type="text" placeholder="验证码">
+                <span ng-click="getCode()">{{param.timeContent}}</span>
             </li>
-            <li>
+            <li ng-click="login()">
                 登录
             </li>
         </ul>
