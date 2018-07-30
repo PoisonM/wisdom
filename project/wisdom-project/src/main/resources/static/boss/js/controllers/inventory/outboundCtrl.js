@@ -137,7 +137,8 @@ angular.module('controllers',[]).controller('outboundCtrl',
                             var result1 = JSON.stringify(res);
                             var result = res.resultStr;
                             GetProductInfo.get({
-                                productCode:result
+                                productCode:result,
+                                shopStoreId:$rootScope.shopInfo.shopStoreId
                             },function(data){
                                  if(data.result == "0x00001"){
                                      $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,productCode:result});
