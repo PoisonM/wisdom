@@ -70,3 +70,165 @@
     color: #333333;
     letter-spacing: 0;
 }
+
+.orderSubmit .goods_top{
+    width: 100%;
+    overflow: hidden;
+    border-bottom:1px solid #DDDDDD;
+    height: 46px;
+    line-height: 46px;
+}
+
+.orderSubmit .goods_top ul li{
+    float: left;
+    text-align: left;
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+}
+.orderSubmit .goods_top ul li:nth-child(1){
+    width: 560px;
+    text-align: center;
+}
+.orderSubmit .goods_top ul li:nth-child(2){
+    width: 340px;
+}
+
+
+.orderSubmit .goods_info{
+    width: 100%;
+    overflow: hidden;
+    border-bottom:1px solid #DDDDDD;
+    height: 128px;
+    line-height: 128px;
+}
+
+.orderSubmit .goods_info ul li{
+    float: left;
+    text-align: left;
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+}
+.orderSubmit .goods_info ul li:nth-child(1){
+    width: 560px;
+    text-align: center;
+    position: relative;
+    padding-left: 88px;
+}
+
+.orderSubmit .goods_info ul li:nth-child(1) img{
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    width: 88px;
+    height: 88px;
+    display: block;
+    border: 1px solid #dddddd;
+}
+
+.orderSubmit .goods_info ul li:nth-child(2){
+    width: 340px;
+}
+.orderSubmit .goods_bottom{
+    width: 100%;
+    overflow: hidden;
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+    text-align: right;
+    padding-right: 50px;
+    padding-top: 30px;
+    margin-bottom: 100px;
+}
+.orderSubmit .goods_bottom ul {
+    float: right;
+}
+.orderSubmit .goods_bottom ul li label{
+    width: 200px;
+    text-align: right;
+    display: inline-block;
+}
+.orderSubmit .goods_bottom ul li span{
+    width: 80px;
+    text-align: right;
+    display: inline-block;
+}
+
+.orderSubmit .goods_bottom ul li:nth-child(4) div{
+    width: 138px;
+    height: 42px;
+    line-height: 42px;
+    background: #FF3D3D;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 3px;
+    float: right;
+    margin-top: 20px;
+}
+.float_box{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background: rgba(51,51,51,0.12);
+}
+.float_box .authentication{
+    width: 510px;
+    height: 300px;
+    border: 1px solid #dddddd;
+    margin: 200px auto;
+    background-color: #fff;
+    border-radius: 3px;
+}
+.float_box .authentication>p{
+    font-family: MicrosoftYaHei-Bold;
+    font-size: 18px;
+    color: #333333;
+    letter-spacing: 0;
+    margin: 20px 0px;
+    text-align: center;
+}
+.float_box .authentication .user_info{
+    border-top: 1px solid #dddddd;
+    width: 100%;
+}
+.float_box .authentication .user_info p{
+    text-align: center;
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+    width: 100%;
+    margin: 10px 0px;
+    margin-bottom: 20px;
+}
+.float_box .authentication .user_info ul li{
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+    text-align: center;
+    height: 40px;
+}
+.float_box .authentication .user_info ul li input{
+    border: 1px solid #dddddd;
+}
+.float_box .authentication .user_info ul li:nth-child(1){
+
+}
+.float_box .authentication .user_info ul li:nth-child(2){
+
+}
+.float_box .authentication .user_info ul li:nth-child(3) div{
+    width: 138px;
+    height: 42px;
+    background-color:#FF3D3D;
+    color: #ffffff;
+    text-align: center;
+    line-height: 42px;
+    margin: 0 auto;
+    margin-top: 20px;
+}

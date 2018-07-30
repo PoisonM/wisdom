@@ -117,7 +117,7 @@ public class OrderController {
     @RequestMapping(value ="payOrder",method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO payOrder(@RequestBody HttpServletRequest request) {
+    ResponseDTO payOrder(HttpServletRequest request) {
         ResponseDTO responseDTO = new ResponseDTO();
         String codeUrl = payRecordService.corssBorderPay(request);
         responseDTO.setResult(codeUrl);

@@ -94,6 +94,11 @@ PADWeb.controller('consumptionListCtrl', function($scope, $state, $stateParams, 
                 filterStr: $scope.searchInfo.info,
                 status :$scope.status
             }, function(data) {
+                if(null == data.responseData){
+                    $scope.secondCategory = [];
+                    $scope.threeCategories = [];
+                    return
+                }
                 $scope.secondCategory = data.responseData.detailLevel;
                 var first = data.responseData.detailLevel[0];
                 var firstkey = '',
