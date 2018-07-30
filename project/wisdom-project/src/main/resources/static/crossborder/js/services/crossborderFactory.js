@@ -35,8 +35,15 @@ define(['appCrossborder'], function (app) {
         }])
 
         .factory('DeleteOrderFromBuyCart',['$resource',function ($resource){
-            return $resource(transaction + 'deleteOrderFromBuyCart')
+            return $resource('/business/transaction/deleteOrderFromBuyCart')
         }])
-
-
+        .factory('GetUserValidateCode',['$resource',function ($resource){
+            return $resource('/user/getUserValidateCode')
+        }])
+        .factory('UserLogin',['$resource',function ($resource){
+            return $resource('/user/crossBorderLogin')
+        }])
+        .factory('PayOrder',['$resource',function ($resource){
+            return $resource('/business/crossBorder/order/payOrder')
+        }])
 });
