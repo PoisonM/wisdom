@@ -30,7 +30,13 @@ define(['appCrossborder'], function (app) {
             return $resource('/business/transaction/putNeedPayOrderListToRedis');
         }])
 
+        .factory('UpdateBusinessOrderStatus',['$resource',function ($resource){
+            return $resource('/business/transaction/UpdateBusinessOrderStatus');
+        }])
 
+        .factory('DeleteOrderFromBuyCart',['$resource',function ($resource){
+            return $resource(transaction + 'deleteOrderFromBuyCart')
+        }])
 
 
 });
