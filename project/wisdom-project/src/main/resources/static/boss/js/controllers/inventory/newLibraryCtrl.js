@@ -29,7 +29,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                                 shopProcId:val.id,/*产品id*/
                                 shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
                                 stockNumber: "",
-                                productCode: $stateParams.productCode,
+                                productCode: val.productCode,
                                 productUrl : val.productUrl,
                                 productName: val.productName,
                                 productUnit: val.productUnit,
