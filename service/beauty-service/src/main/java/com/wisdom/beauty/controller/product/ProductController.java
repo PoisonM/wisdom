@@ -480,4 +480,25 @@ public class ProductController {
         return responseDTO;
     }
 
+    /**
+     * 获取产品详情给扫码
+     * @param productCode
+     *
+     * @return
+     * */
+    @RequestMapping(value = "/getProductInfoScan", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseDTO<Object> getProductInfoScan(@RequestParam String  productCode,@RequestParam String  shopStoreId) {
+
+        String[] codeArray =productCode.split(",");
+        ShopProductInfoDTO shopProductInfoDTO = new ShopProductInfoDTO();
+        shopProductInfoDTO.setProductCode(codeArray[1]);
+        shopProductInfoDTO.setSysShopId(shopStoreId);
+        ResponseDTO<Object> responseDTO = new ResponseDTO<>();
+        List<ShopProductInfoDTO>  shopProductInfos = shopProductInfoService.getShopProductInfo(shopProductInfoDTO);
+        responseDTO.setResult(shopProductInfos.size() > 0 ? StatusConstant.SUCCESS : StatusConstant.FAILURE);
+        responseDTO.setResponseData(shopProductInfos);
+        return responseDTO;
+    }
+
 }

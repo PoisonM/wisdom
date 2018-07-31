@@ -111,9 +111,16 @@ define(['appCustomer'], function (app) {
          .factory('GetTrainingBusinessOrder',['$resource',function ($resource){
              return $resource(transaction + 'getTrainingBusinessOrder')
          }])
+
         .factory('AddProduct2BuyCart',['$resource',function ($resource){
-            return $resource(transaction + 'addProduct2BuyCart')
+            return $resource('/business/transaction/addProduct2BuyCart')
         }])
+        .factory('MinusProduct2BuyCart',['$resource',function ($resource){
+            return $resource('/business/transaction/minusProduct2BuyCart')
+        }])
+
+
+
         .factory('MinusProduct2BuyCart',['$resource',function ($resource){
             return $resource(transaction + 'minusProduct2BuyCart')
         }])

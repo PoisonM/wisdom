@@ -1147,9 +1147,11 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
         for (var i = 0; i < $scope.param.newProductObject.newProjectData.length; i++) {
             $scope.param.ModifyAppointmentObject.newProjectDataFlag[i] = false;
         }
-        for (var i = 0; i < $scope.param.newProductObject.selfProductData.length; i++) {
-            for (var key in $scope.param.newProductObject.selfProductData[i]) {
-                $scope.param.ModifyAppointmentObject.selfProductDataFlag.push(false);
+        if($scope.param.newProductObject.selfProductData != null){
+            for (var i = 0; i < $scope.param.newProductObject.selfProductData.length; i++) {
+                for (var key in $scope.param.newProductObject.selfProductData[i]) {
+                    $scope.param.ModifyAppointmentObject.selfProductDataFlag.push(false);
+                }
             }
         }
     }

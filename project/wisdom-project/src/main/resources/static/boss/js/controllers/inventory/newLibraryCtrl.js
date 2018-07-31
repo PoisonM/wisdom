@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('newLibraryCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global','GetProductInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global,GetProductInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','BossUtil','$filter','Global','GetProductInfoScan',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,BossUtil,$filter,Global,GetProductInfoScan) {
             $rootScope.title = "新增入库";
             $scope.sum = $stateParams.sum;
             $scope.productDate ="";
@@ -15,8 +15,9 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
 
             if($stateParams.stockStyle=='1'){
                 $scope.sum = 1;
-                GetProductInfo.get({
-                    productCode:$stateParams.productCode
+                GetProductInfoScan.get({
+                    productCode:$stateParams.productCode,
+                    shopStoreId:$stateParams.shopStoreId
                 },function(data){
                     if(data.result == "0x00001"){
                         $scope.param.productInfoDate = data.responseData;
@@ -28,7 +29,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                                 shopProcId:val.id,/*产品id*/
                                 shopStoreId:$rootScope.shopInfo.shopStoreId,/*仓库id*/
                                 stockNumber: "",
-                                productCode: $stateParams.productCode,
+                                productCode: val.productCode,
                                 productUrl : val.productUrl,
                                 productName: val.productName,
                                 productUnit: val.productUnit,

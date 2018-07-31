@@ -271,7 +271,6 @@ public class UserInfoController {
      * @return
      */
     @RequestMapping(value = "/queryRealNameAuthentication", method = RequestMethod.GET)
-    @LoginRequired
     @ResponseBody
     RealNameInfoDTO queryRealNameAuthentication(@RequestParam(value = "cardNo") String cardNo,
                                                 @RequestParam(value = "name") String name,
