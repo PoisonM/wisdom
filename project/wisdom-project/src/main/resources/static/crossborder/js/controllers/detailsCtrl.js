@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('detailsCtrl',
 
             /**/
             $scope.addnum = function () {
-                if($scope.params.goodsNum >= $scope.goodDetails.productDetail.productAmount){
+                if($scope.params.goodsNum >= $scope.goodDetails.productAmount){
                     return
                 }
                 $scope.params.goodsNum++
@@ -37,8 +37,8 @@ angular.module('controllers',[]).controller('detailsCtrl',
                     $scope.params.goodsNum = 1
                     return
                 }
-                if($scope.params.goodsNum >= $scope.goodDetails.productDetail.productAmount){
-                    $scope.params.goodsNum = $scope.goodDetails.productDetail.productAmount
+                if($scope.params.goodsNum >= $scope.goodDetails.productAmount){
+                    $scope.params.goodsNum = $scope.goodDetails.productAmount
                     return
                 }
             }
@@ -113,10 +113,12 @@ angular.module('controllers',[]).controller('detailsCtrl',
                         $scope.checkFlag = $scope.goodDetails.productDetail.spec[0]
                     }
                     if($scope.params.goodsNum=="0"){
+                        $scope.authentication_flag = false
                         alert("请选择正确的数量");
                         return;
                     }
                     if($scope.params.goodsNum>$scope.goodDetails.productAmount){
+                        $scope.authentication_flag = false
                         alert("库存不足~");
                         return;
                     }

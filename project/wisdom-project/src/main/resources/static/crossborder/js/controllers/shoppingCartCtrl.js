@@ -140,6 +140,7 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                         }
                     })
                 }else {
+                    $scope.authentication_flag = false;
                     alert("请选择购买商品")
                 }
 
