@@ -38,13 +38,12 @@
                         <span>¥{{item.businessProductPrice}}</span>
                     </li>
                     <li>
-                        <span ng-click="reducenum(item)">-</span><input ng-blur = "verifyNum(item)" ng-model="item.businessProductNum" type="text"><span ng-click="addnum(item)">+</span>
+                        <span ng-click="reducenum(item)">-</span><input readonly ng-blur = "verifyNum(item)" ng-model="item.businessProductNum" type="text"><span ng-click="addnum(item)">+</span>
                     </li>
                     <li>
-                        <span>¥{{item.businessProductPrice}}</span>
+                        <span>¥{{item.xiaoji}}</span>
                     </li>
                     <li ng-click="delete(item)">
-
                         删除
                     </li>
                 </ul>
@@ -58,14 +57,14 @@
                 </li>
 
                 <li>
-                    已选择商品 <span id="goodsnum">{{params.listLen}}</span> 件
+                    已选择商品 <span>{{submitList.length}}</span> 件
                 </li>
 
                 <li>
-                    <i>总价</i>(不含运费)： <span>¥899.00 </span>
+                    <i>总价</i>(不含运费)： <span>{{price}}</span>
                 </li>
 
-                <li>
+                <li ng-click="goPay()">
                     去结算
                 </li>
             </ul>
