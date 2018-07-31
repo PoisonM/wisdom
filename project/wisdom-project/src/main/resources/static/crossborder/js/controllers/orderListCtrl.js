@@ -35,7 +35,7 @@ angular.module('controllers',[]).controller('orderListCtrl',
                 PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
                     if(data.result==Global.SUCCESS)
                     {
-                        //转到二维码页面
+                        $state.go('scanPay')
 
                     }else if(data.result==Global.FAILURE){
                         if(data.errorInfo=="failure"){

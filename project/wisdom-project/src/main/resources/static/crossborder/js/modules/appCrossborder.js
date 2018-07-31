@@ -16,6 +16,26 @@ define(['angular'], function (angular) {
                         }
 
                         return config;
+                    },
+
+                    requestError: function (err) {
+                        //return $q.reject(err);
+                        console.log(err)
+                    },
+                    response: function (res) {
+                        if(res.data.errorInfo=="0x00006"){
+                            alert("登录已经失效,请重新登录")
+                            window.location.href = window.location.href.split("#/")[0]+"#/login"
+                        }
+                        /*if(window.localStorage.logintoken == undefined){
+                            window.location.href = window.location.href.split("#/")[0]+"#/login"
+                        }*/
+
+                        return res;
+                    },
+                    responseError: function (err) {
+                        // return $q.reject(err);
+                        console.log(err)
                     }
                 }
             })

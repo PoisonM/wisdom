@@ -4,3 +4,12 @@
 .guide .title{padding-top:10px;}
 .guide .picAera{overflow-y: scroll;height:5.5rem;}
 .guide .footer{border-top: solid #ded4d4 1px;}
+.guide{
+    height: 100%;
+    overflow-y: scroll;
+}
+video{
+    display: block;
+    float: left;
+    width: 50%;
+}

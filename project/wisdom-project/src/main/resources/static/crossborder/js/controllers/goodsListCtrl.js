@@ -4,6 +4,7 @@ angular.module('controllers',[]).controller('goodsListCtrl',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductList
             ,GetBorderSpecialProductBrandList,AddBorderSpecialProduct2ShoppingCart) {
             console.log("goodsList")
+            $scope.authentication_flag = false
             //获取品牌列表
             GetBorderSpecialProductBrandList.save({},function (data) {
                 if(data.result == Global.SUCCESS){
@@ -64,11 +65,15 @@ angular.module('controllers',[]).controller('goodsListCtrl',
 
 
             //加入购物车
-            $scope.addShopCart = function (productId) {
+            //加入购物车
+            $scope.addShopCart = function (productId,productSpec) {
+                $scope.authentication_flag = true
                 AddBorderSpecialProduct2ShoppingCart.get({
                     productId:productId,
-                    productNum: "1"
+                    productNum: "1",
+                    productSpec:productSpec
                 },function (data) {
+                    $scope.authentication_flag = false
                     if(data.result==Global.FAILURE){
                         alert("加入购物车失败");
                     }else{
