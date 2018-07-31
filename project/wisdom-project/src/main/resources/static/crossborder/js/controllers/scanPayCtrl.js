@@ -7,8 +7,9 @@ angular.module('controllers', []).controller('scanPayCtrl',
                 height: 100
             });
             PayOrder.get(function (data) {
-                $scope.qrcodeUrl = data.result;
-                $scope.transactionId = data.responseData;
+                $scope.qrcodeUrl = data.responseData.codeUrl;
+                $scope.transactionId = data.responseData.transactionId;
+                $scope.payPrice = data.responseData.payPrice;
                 if (!$scope.qrcodeUrl) {
                     alert("二维码生成失败");
                     return;
