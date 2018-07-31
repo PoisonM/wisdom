@@ -240,7 +240,7 @@ public class OrderController {
         List<PayRecordDTO> list = payRecordService.queryUserInfoByTransactionId(transactionId);
         responseDTO.setResponseData("success");
         for(PayRecordDTO recordDTO : list){
-            if(recordDTO.getStatus() == "0"){
+            if("0".equals(recordDTO.getStatus())){
                 responseDTO.setResponseData("false");
                 break ;
             }
