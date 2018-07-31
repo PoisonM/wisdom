@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('putInStorageCtrl',
-    ['$scope', '$rootScope', '$stateParams', '$state', '$ionicLoading','GetShopProductLevelInfo','GetProductInfo',
-        function ($scope, $rootScope, $stateParams, $state, $ionicLoading,GetShopProductLevelInfo,GetProductInfo) {
+    ['$scope', '$rootScope', '$stateParams', '$state', '$ionicLoading','GetShopProductLevelInfo','GetProductInfoScan',
+        function ($scope, $rootScope, $stateParams, $state, $ionicLoading,GetShopProductLevelInfo,GetProductInfoScan) {
             $rootScope.title = "入库";
             $scope.sum = 0;
             $scope.param = {
@@ -138,7 +138,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                         success: function (res) {
                             var result1 = JSON.stringify(res);
                             var result = res.resultStr;
-                            GetProductInfo.get({
+                            GetProductInfoScan.get({
                                 productCode:result,
                                 shopStoreId:$rootScope.shopInfo.shopStoreId
                             },function(data){

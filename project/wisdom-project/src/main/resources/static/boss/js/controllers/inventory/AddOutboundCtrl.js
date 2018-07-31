@@ -1,6 +1,6 @@
 angular.module('controllers',[]).controller('AddOutboundCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','GetStockNumber','Global','GetProductInfo',
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,GetStockNumber,Global,GetProductInfo) {
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','AddStock','GetStockNumber','Global','GetProductInfoScan',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,AddStock,GetStockNumber,Global,GetProductInfoScan) {
 
             $rootScope.title = "新增出库";
             $scope.sum = $stateParams.sum;
@@ -23,7 +23,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
             }
             if($stateParams.stockStyle==3){
                     $scope.sum = 1;
-                    GetProductInfo.get({
+                    GetProductInfoScan.get({
                         productCode:$stateParams.productCode,
                         shopStoreId:$stateParams.shopStoreId
                     },function(data){
@@ -38,6 +38,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                                     shopStoreId:$stateParams.shopStoreId,/*仓库id*/
                                     stockNumber: "",
                                     productUrl : val.productUrl,
+                                    productCode: val.productCode,
                                     productName: val.productName,
                                     productUnit: val.productUnit,
                                     productSpec: val.productSpec,
@@ -63,6 +64,7 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                             shopProcId:val.id,/*产品id*/
                             shopStoreId:$stateParams.shopStoreId,/*仓库id*/
                             stockNumber: "",
+                            productCode: val.productCode,
                             productUrl : val.productUrl,
                             productName: val.productName,
                             productUnit: val.productUnit,
