@@ -7,30 +7,30 @@
                 <i>*</i>
                 <label for="">所在地区</label>
 
-                <input type="text">
+                <input type="text" ng-model="param.userAddressInfo.province">
             </li>
             <li>
                 <i>*</i>
                 <label for="">详细地址</label>
 
-                <input type="text">
+                <input type="text" ng-model="param.userAddressInfo.detailAddress">
             </li>
             <li>
                 <i>*</i>
                 <label for="">收货人</label>
-                <input type="text">
+                <input type="text" ng-model="param.userAddressInfo.userName">
             </li>
             <li>
                 <i>*</i>
                 <label for="">手机号</label>
-                <input type="text">
+                <input type="text" ng-model="param.userAddressInfo.userPhone">
             </li>
 
         </ul>
     </div>
     <div class="order_info">
         <p>确认订单信息</p>
-        <div class="goods_box">
+        <div class="goods_box" >
             <div class="content">
                 <div class="goods_top">
                     <ul>
@@ -39,17 +39,17 @@
                         <li>金额(元)</li>
                     </ul>
                 </div>
-                <div class="goods_info">
+                <div class="goods_info" ng-repeat="item in needPayList.needPayOrderList">
                     <ul>
                         <li>
-                            <img src="" alt="">
-                            多特海伦修复精华液150ml多特海伦修复精华液150ml
+                            <img ng-src="{{item.productFirstUrl}}" alt="{{item.productName}}">
+                         {{item.productName}}
                         </li>
                         <li>
-                            1
+                           {{item.productNum}}
                         </li>
                         <li>
-                            ¥899.00
+                            ¥{{item.productPrice}}
                         </li>
                     </ul>
                 </div>
@@ -68,7 +68,7 @@
                             <span>￥899.00</span>
                         </li>
                         <li>
-                            <div>提交订单</div>
+                            <div ng-click="showAuthentication()">提交订单</div>
                         </li>
                     </ul>
 
@@ -85,14 +85,14 @@
             <ul>
                 <li>
                     <label for="">订购人姓名：</label>
-                    <input type="text">
+                    <input type="text" ng-model="params.name">
                 </li>
                 <li>
                     <label for="">身份证号码：</label>
-                    <input type="text">
+                    <input type="text" ng-model="params.cardNo">
                 </li>
                 <li>
-                    <div>确定</div>
+                    <div ng-click="cheackUser()">确定</div>
                 </li>
             </ul>
         </div>

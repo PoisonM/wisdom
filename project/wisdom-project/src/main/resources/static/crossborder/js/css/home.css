@@ -22,6 +22,21 @@
 }
 .home .shortcut_box ul li:nth-child(2){
     float: right;
+    position: relative;
+}
+.home .shortcut_box ul li:nth-child(2) .kefu{
+    display: none;
+}
+.home .shortcut_box ul li:nth-child(2):hover .kefu{
+    display: block;
+    border: 1px solid #ddd;
+    border-top: none;
+    position: absolute;
+    top: 29px;
+    left: -22px;
+    width: 145px;
+    /* padding: 3px; */
+    padding: 0 3px;
 }
 .home .shortcut_box ul li a{
     font-size: 12px;

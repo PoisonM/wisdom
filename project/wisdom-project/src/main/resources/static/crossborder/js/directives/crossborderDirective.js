@@ -928,12 +928,12 @@ define(['appCrossborder','jquery'], function (app,$) {
                 restrict: 'EA',
                 template: '<div class="home"> <div class="shortcut"> ' +
                 '<div class="shortcut_box"> <ul> <li> <a href="">唯美度跨境购欢迎您~</a> ' +
-                '<a href="">登录</a> <a href="">首页</a> </li> <li> <a href="">我的订单</a> ' +
-                '<a href="">客户服务</a> </li> </ul> </div> </div> <div class="header"> ' +
+                '<a ng-click="goFn(\'login\')" href="">登录</a> <a ng-click="goFn(\'goodsList\')" href="">首页</a> </li> <li> <a ng-click="goFn(\'orderList\')" href="">我的订单</a> ' +
+                '<a href="">客户服务</a> <div class="kefu">客服电话：19817162521</div></li> </ul> </div> </div> <div class="header"> ' +
                 '<div class="logo"> <img src="images/mall_img/logo.png" alt=""> </div> ' +
                 '<div class="search"> <div class="search_box"> <input ng-model="params.inportContent" type="text" placeholder="请搜索商品">' +
                 '<div ng-click="searchGoods()"><img src="images/mall_img/search.png" alt=""></div> </div> </div> <div class="settleup"> ' +
-                '<div ng-click="goShoppingCart()"> <i></i>购物车 </div> </div> </div></div>',
+                '<div ng-click="goFn(\'shoppingCart\')"> <i></i>购物车 </div> </div> </div></div>',
                 replace: true,
                 scope: {
                     params: '='
@@ -943,8 +943,8 @@ define(['appCrossborder','jquery'], function (app,$) {
                         $state.go('goodsList')
                         scope.params.fn(scope.params.inportContent)
                     }
-                    scope.goShoppingCart = function () {
-                        $state.go('shoppingCart')
+                    scope.goFn = function (bar) {
+                        $state.go(bar)
                     }
                 }
             };

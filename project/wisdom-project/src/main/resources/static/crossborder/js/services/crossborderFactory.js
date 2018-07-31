@@ -8,8 +8,8 @@ var product ='http://192.168.1.130/business-service/crossBorder/order/';
 define(['appCrossborder'], function (app) {
 
     // var product ='/business/crossBorder/order/';
-    var product ='http://192.168.1.130:8081/business/crossBorder/order/';
-    var ip ='http://192.168.1.130:8081/';
+    var product ='http://192.168.1.129:8081/business/crossBorder/order/';
+    var ip ='http://192.168.1.129:8081/';
 
 
 // var product ='http://192.168.1.197/business/crossBorder/order/';
@@ -88,6 +88,9 @@ define(['appCrossborder'], function (app) {
             }])
             .factory('DeleteOrderFromBuyCart',['$resource',function ($resource){
                 return $resource(ip+'/business/transaction/deleteOrderFromBuyCart')
+            }])
+            .factory('PutNeedPayOrderListToRedis',['$resource',function ($resource){
+                return $resource(ip+'/business/transaction/putNeedPayOrderListToRedis');
             }])
     });
 
