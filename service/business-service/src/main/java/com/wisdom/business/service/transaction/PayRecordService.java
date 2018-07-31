@@ -318,6 +318,7 @@ public class PayRecordService {
                 }
                 resultMap.put("codeUrl",(String) payResultMap.get("code_url"));
                 resultMap.put("transactionId",transactionId);
+                resultMap.put("payPrice",payPrice+"");
                 return resultMap;
             }
         }catch (Exception e)  {

@@ -122,8 +122,7 @@ public class OrderController {
     ResponseDTO payOrder(HttpServletRequest request) {
         ResponseDTO responseDTO = new ResponseDTO();
         Map<String,String> resultMap = payRecordService.corssBorderPay(request);
-        responseDTO.setResult(resultMap.get("codeUrl"));
-        responseDTO.setResponseData(resultMap.get("transactionId"));
+        responseDTO.setResponseData(resultMap);
         return responseDTO;
     }
     /**
