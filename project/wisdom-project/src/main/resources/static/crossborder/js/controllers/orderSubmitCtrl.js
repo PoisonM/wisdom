@@ -8,11 +8,10 @@ angular.module('controllers',[]).controller('orderSubmitCtrl',
                 cardNo:"",
                 name:"",
                 userAddressInfo :{
-                    userName:"",
-                    userPhone:"",
-                    province:"",
-                    city:"",
-                    detailAddress:"",
+                    userNameAddress:"",
+                    userPhoneAddress:"",
+                    userDetailAddress:"",
+                    userCityAddress:"",
                     status:"0"
                 }
             }
@@ -31,27 +30,53 @@ angular.module('controllers',[]).controller('orderSubmitCtrl',
             })
 
             $scope.cheackUser = function (data) {
-                CheackRealName.get({
-                    cardNo:$scope.params.cardNo,
-                    name:$scope.params.name,
-                    orderIds:$scope.orderIds,
-                    specialShopId:"1"
-                },function (data) {
-                    if($scope.params.name==data.name&&data.result=='匹配')
-                    {
-                        $scope.authentication_flag = false;
-                        CreateSpecialOrderAddressRelation.get(
-                            {
-                                orderAddressRelationDTO:$scope.params.userAddressInfo,
-                                needPayOrderList:$scope.orderIds
-                            },function (data) {
-                            $state.go('scanPay')
-                        })
-
-                    }else{
-                        alert("跨境商品收货人的身份证号和姓名不匹配，请重新输入");
+                var loginttoken = window.localStorage.getItem("logintoken");
+                $.ajax({
+                    url:"/user/customer/queryRealNameAuthentication",// 跳转到 action
+                    beforeSend: function(request) {
+                        request.setRequestHeader("logintoken", loginttoken);
+                    },
+                    async:true,
+                    type:'get',
+                    data:{cardNo:$scope.params.cardNo,name:$scope.params.name,orderIds:$scope.orderIds,specialShopId:""},
+                    cache:false,
+                    success:function(data) {
+                        if($scope.params.name==data.name&&data.result=='匹配')
+                        {
+                            $scope.authentication_flag = false;
+                            CreateSpecialOrderAddressRelation.save($scope.params.userAddressInfo,function (data) {
+                                         $state.go('scanPay')
+                            })
+                        }
+                        else
+                        {
+                            alert("跨境商品收货人的身份证号和姓名不匹配，请重新输入");
+                        }
                     }
                 })
+
+
+                // CheackRealName.get({
+                //     cardNo:$scope.params.cardNo,
+                //     name:$scope.params.name,
+                //     orderIds:$scope.orderIds,
+                //     specialShopId:"1"
+                // },function (data) {
+                //     if($scope.params.name==data.name&&data.result=='匹配')
+                //     {
+                //         $scope.authentication_flag = false;
+                //         CreateSpecialOrderAddressRelation.get(
+                //             {
+                //                 orderAddressRelationDTO:$scope.params.userAddressInfo,
+                //                 needPayOrderList:$scope.orderIds
+                //             },function (data) {
+                //             $state.go('scanPay')
+                //         })
+                //
+                //     }else{
+                //         alert("跨境商品收货人的身份证号和姓名不匹配，请重新输入");
+                //     }
+                // })
             }
 
             $scope.showAuthentication = function () {
