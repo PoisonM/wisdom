@@ -59,7 +59,9 @@ angular.module('controllers', []).controller('loginCtrl',
                         window.localStorage.setItem("logintoken", data.responseData);
                         sessionStorage.removeItem("logintoken");
                         sessionStorage.setItem("logintoken", data.responseData);
-
+                        //存入手机号
+                        window.localStorage.removeItem("loginPhone");
+                        window.localStorage.setItem("loginPhone", $scope.param.phone);
                     }
                 })
             }

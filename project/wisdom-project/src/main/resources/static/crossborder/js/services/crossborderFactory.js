@@ -92,6 +92,15 @@ define(['appCrossborder'], function (app) {
             .factory('PutNeedPayOrderListToRedis',['$resource',function ($resource){
                 return $resource(ip+'/business/transaction/putNeedPayOrderListToRedis');
             }])
+            .factory('UpdateBusinessOrderStatus',['$resource',function ($resource){
+                return $resource(ip+'/business/transaction/UpdateBusinessOrderStatus');
+            }])
+            .factory('DeleteOrderFromBuyCart',['$resource',function ($resource){
+                return $resource(ip+'/business/transaction/deleteOrderFromBuyCart')
+            }])
+            .factory('CreateSpecialOrderAddressRelation',['$resource',function ($resource){
+                return $resource(ip+'/business/crossBorder/order/createSpecialOrderAddressRelation')
+            }])
     });
 
 

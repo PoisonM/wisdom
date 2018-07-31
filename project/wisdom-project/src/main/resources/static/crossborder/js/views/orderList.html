@@ -33,6 +33,10 @@
                 <li   ng-if="item.status == '1'">
                     <span>已付款</span>
                 </li>
+                <li>
+                    <span ng-if="item.status == '0'">去支付</span>
+                    <!--<span ng-if="item.status == '0'">去支付</span>-->
+                </li>
             </ul>
         </div>
     </div>
