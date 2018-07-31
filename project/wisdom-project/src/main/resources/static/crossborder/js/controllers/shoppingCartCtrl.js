@@ -3,6 +3,7 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
         ,'DeleteOrderFromBuyCart','AddProduct2BuyCart','MinusProduct2BuyCart','PutNeedPayOrderListToRedis',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductOrderList
             ,DeleteOrderFromBuyCart,AddProduct2BuyCart,MinusProduct2BuyCart,PutNeedPayOrderListToRedis) {
+            $scope.authentication_flag = false;
             $scope.params = {
                 checkAll:false,
                 listLen:"0"
@@ -137,10 +138,12 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             }
 
             $scope.goPay = function () {
+                $scope.authentication_flag = true;
                 if($scope.submitList!=undefined){
                     PutNeedPayOrderListToRedis.save({
                         needPayOrderList:$scope.submitList
                     },function (data) {
+                        $scope.authentication_flag = false
                         if(data.result==Global.SUCCESS){
                            $state.go("orderSubmit")
                         }

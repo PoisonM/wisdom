@@ -4,6 +4,8 @@ angular.module('controllers',[]).controller('detailsCtrl',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductDetail
             ,AddBorderSpecialProduct2ShoppingCart,CreateBusinessOrder,PutNeedPayOrderListToRedis) {
             console.log("details")
+
+            $scope.authentication_flag = false
             $scope.params = {
                 goodsNum:"1",
                 minNum:"1"
@@ -103,6 +105,7 @@ angular.module('controllers',[]).controller('detailsCtrl',
 
             $scope.addBuyCart = function(){
                 /*根据商品状态来判断商品是否为下架商品*/
+                $scope.authentication_flag = true
                 if($scope.goodDetails.status == "0"){
                     return;
                 }
@@ -118,6 +121,7 @@ angular.module('controllers',[]).controller('detailsCtrl',
                         return;
                     }
                         AddBorderSpecialProduct2ShoppingCart.get({productId:$stateParams.id,productNum: $scope.params.goodsNum, productSpec:$scope.checkFlag},function(data){
+                            $scope.authentication_flag = false
                             if(data.result==Global.FAILURE){
                                 alert("加入购物车失败");
                             }else{
@@ -129,6 +133,7 @@ angular.module('controllers',[]).controller('detailsCtrl',
 
             $scope.goPay = function() {
                 /*根据商品状态来判断商品是否为下架商品*/
+                $scope.authentication_flag = true
                 if ($scope.goodDetails.status == "0") {
                     return;
                 }
@@ -150,6 +155,7 @@ angular.module('controllers',[]).controller('detailsCtrl',
                             businessProductNum: $scope.params.goodsNum,
                             type: $scope.goodDetails.type
                         }, function (data) {
+                            $scope.authentication_flag = false
                             if (data.result == Global.FAILURE) {
                                 alert("交易失败");
                             } else {
