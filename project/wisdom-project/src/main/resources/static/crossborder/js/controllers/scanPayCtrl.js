@@ -1,6 +1,6 @@
 angular.module('controllers', []).controller('scanPayCtrl',
-    ['$scope', '$interval', '$rootScope', '$stateParams', '$state', 'Global', '$timeout', 'PayOrder',
-        function ($scope, $interval, $rootScope, $stateParams, $state, Global, $timeout, PayOrder) {
+    ['$scope', '$interval', '$rootScope', '$stateParams', '$state', 'Global', '$timeout', 'PayOrder','CheackOrderStatus',
+        function ($scope, $interval, $rootScope, $stateParams, $state, Global, $timeout, PayOrder,CheackOrderStatus) {
             console.log("scanPayCtrlCtrl")
             var qrcode = new QRCode(document.getElementById("qrcode"), {
                 width: 100,
@@ -8,10 +8,24 @@ angular.module('controllers', []).controller('scanPayCtrl',
             });
             PayOrder.get(function (data) {
                 $scope.qrcodeUrl = data.result;
+                $scope.transactionId = data.responseData;
                 if (!$scope.qrcodeUrl) {
                     alert("二维码生成失败");
                     return;
+                }else{
+                    qrcode.makeCode($scope.qrcodeUrl);
+                    if( $scope.transactionId  !=null){
+                        $scope.timer = setInterval(function () {
+                            //检测用户是否支付
+                            CheackOrderStatus.get({transactionId:$scope.transactionId },function (data) {
+                                if(data.responseData == "success"){
+                                    clearInterval($scope.timer)
+                                    alert("支付成功");
+                                    $state.go("orderList");
+                                }
+                            })
+                        },1000)
+                    }
                 }
-                qrcode.makeCode($scope.qrcodeUrl);
             })
         }]);
