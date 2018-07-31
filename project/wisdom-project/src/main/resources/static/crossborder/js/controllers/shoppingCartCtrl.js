@@ -76,10 +76,24 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
 
             //删除此订单
             $scope.delete=function(item2){
+
                 DeleteOrderFromBuyCart.get({orderId:item2.businessOrderId},function(data){
                     if(data.result==Global.SUCCESS){
                         alert("删除成功")
-                        $scope.getCartList()
+                        /*item2.checkFlag = false
+                        for(var i = 0; i < $scope.cartList.length; i++){
+                            if(!$scope.cartList[i].checkFlag){
+                                $scope.params.checkAllFlag = false;
+                            }else {
+                            }
+                        }
+
+                        $scope.allPrice()
+                        $scope.getCartList()*/
+                        location.reload()
+
+
+
                     }
                 })
             };
@@ -129,8 +143,9 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             }
 
             $scope.goPay = function () {
+                $scope.allPrice()
                 $scope.authentication_flag = true;
-                if($scope.submitList!=undefined){
+                if($scope.submitList!=undefined&&$scope.submitList.length!=0){
                     PutNeedPayOrderListToRedis.save({
                         needPayOrderList:$scope.submitList
                     },function (data) {
