@@ -168,12 +168,8 @@ angular.module('controllers',[]).controller('detailsCtrl',
                                 //将needPayOrderList数据放入后台list中
                                 PutNeedPayOrderListToRedis.save({needPayOrderList: needPayOrderList}, function (data) {
                                     if (data.result == Global.SUCCESS) {
-
-
-                                        $scope.params.goodsNum = 1;
-                                            // window.location.href = "orderPay.do?productType=" + $scope.goodDetails.type
-                                            //     + "&specialShopId=" + $rootScope.specialShopId
-                                            //     + "&random="+Math.random();
+                                        // $state.go('scanPay')
+                                        $state.go('orderSubmit')
                                     } else if (data.result == Global.FAILURE) {
                                         alert("购买失败");
                                     }
