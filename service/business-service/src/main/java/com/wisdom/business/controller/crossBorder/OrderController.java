@@ -9,6 +9,7 @@ import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.business.service.transaction.UserOrderAddressService;
 import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
+import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 跨境电商 订单相关的接口
@@ -119,8 +121,9 @@ public class OrderController {
     @ResponseBody
     ResponseDTO payOrder(HttpServletRequest request) {
         ResponseDTO responseDTO = new ResponseDTO();
-        String codeUrl = payRecordService.corssBorderPay(request);
-        responseDTO.setResult(codeUrl);
+        Map<String,String> resultMap = payRecordService.corssBorderPay(request);
+        responseDTO.setResult(resultMap.get("codeUrl"));
+        responseDTO.setResponseData(resultMap.get("transactionId"));
         return responseDTO;
     }
     /**
@@ -221,6 +224,28 @@ public class OrderController {
         responseDTO.setResponseData(businessOrderDTOList);
         responseDTO.setResult(StatusConstant.SUCCESS);
         logger.info("根据订单状态获取订单列表,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        return responseDTO;
+    }
+
+
+    /**
+     * 根据订单号查询订单是否支付完成
+     * @return list
+     */
+    @RequestMapping(value = "cheackOrderStatus" ,method= {RequestMethod.POST, RequestMethod.GET})
+    @LoginRequired
+    public
+    @ResponseBody
+    ResponseDTO<String> cheackOrderStatus(@RequestParam String transactionId) {
+        ResponseDTO<String> responseDTO = new ResponseDTO<>();
+        List<PayRecordDTO> list = payRecordService.queryUserInfoByTransactionId(transactionId);
+        responseDTO.setResponseData("success");
+        for(PayRecordDTO recordDTO : list){
+            if(recordDTO.getStatus() == "1"){
+                responseDTO.setResponseData("false");
+                break ;
+            }
+        }
         return responseDTO;
     }
 }
