@@ -154,24 +154,24 @@ public class OrderController {
     @RequestMapping(value = "createSpecialOrderAddressRelation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<List<BusinessOrderDTO>> createSpecialOrderAddressRelation(@RequestBody OrderAddressRelationDTO orderAddressRelationDTO,@RequestBody NeedPayOrderListDTO needPayOrderList) {
+    ResponseDTO<List<BusinessOrderDTO>> createSpecialOrderAddressRelation(@RequestParam OrderAddressRelationDTO orderAddressRelationDTO,@RequestParam List<String> needPayOrderList) {
         long startTime = System.currentTimeMillis();
         logger.info("创建跨境订单关联收货地址==={}开始" , startTime);
         ResponseDTO<List<BusinessOrderDTO>> responseDTO = new ResponseDTO<>();
-        for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
+        for (String orderId : needPayOrderList) {
             //查询此订单是否已有地址,如果有则不进行新增
-            List<OrderAddressRelationDTO> orderAddressRelationDTOs = userOrderAddressService.getOrderAddressRelationByOrderId(needPayOrderDTO.getOrderId());
+            List<OrderAddressRelationDTO> orderAddressRelationDTOs = userOrderAddressService.getOrderAddressRelationByOrderId(orderId);
             if(0 == orderAddressRelationDTOs.size()){
                 //缺少一个身份证字段,DTO,XML,
-                logger.info("增加跨境订单{}关联地址{}",needPayOrderDTO.getOrderId());
+                logger.info("增加跨境订单{}关联地址{}",orderId);
                 orderAddressRelationDTO.setId(UUIDUtil.getUUID());
-                orderAddressRelationDTO.setBusinessOrderId(needPayOrderDTO.getOrderId());
+                orderAddressRelationDTO.setBusinessOrderId(orderId);
                 orderAddressRelationDTO.setAddressCreateDate(new Date());
                 orderAddressRelationDTO.setAddressUpdateDate(new Date());
                 userOrderAddressService.addOrderAddressRelation(orderAddressRelationDTO);
             }else {
-                logger.info("修改跨境订单{}关联地址{}", needPayOrderDTO.getOrderId());
-                orderAddressRelationDTO.setBusinessOrderId(needPayOrderDTO.getOrderId());
+                logger.info("修改跨境订单{}关联地址{}", orderId);
+                orderAddressRelationDTO.setBusinessOrderId(orderId);
                 orderAddressRelationDTO.setAddressUpdateDate(new Date());
                 userOrderAddressService.updateOrderAddressRelationByOrderId(orderAddressRelationDTO);
             }
