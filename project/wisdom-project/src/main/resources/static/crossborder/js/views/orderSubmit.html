@@ -7,25 +7,24 @@
                 <i>*</i>
                 <label for="">所在地区</label>
 
-                <input type="text" ng-model="param.userAddressInfo.province">
+                <input type="text" ng-model="params.userAddressInfo.userCityAddress">
             </li>
             <li>
                 <i>*</i>
                 <label for="">详细地址</label>
 
-                <input type="text" ng-model="param.userAddressInfo.detailAddress">
+                <input type="text" ng-model="params.userAddressInfo.userDetailAddress">
             </li>
             <li>
                 <i>*</i>
                 <label for="">收货人</label>
-                <input type="text" ng-model="param.userAddressInfo.userName">
+                <input type="text" ng-model="params.userAddressInfo.userNameAddress">
             </li>
             <li>
                 <i>*</i>
                 <label for="">手机号</label>
-                <input type="text" ng-model="param.userAddressInfo.userPhone">
+                <input type="text" ng-model="params.userAddressInfo.userPhoneAddress">
             </li>
-
         </ul>
     </div>
     <div class="order_info">
@@ -43,10 +42,10 @@
                     <ul>
                         <li>
                             <img ng-src="{{item.productFirstUrl}}" alt="{{item.productName}}">
-                         {{item.productName}}
+                            {{item.productName}}
                         </li>
                         <li>
-                           {{item.productNum}}
+                            {{item.productNum}}
                         </li>
                         <li>
                             ¥{{item.productPrice}}
