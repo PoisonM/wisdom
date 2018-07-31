@@ -69,7 +69,8 @@ angular.module('controllers',[]).controller('goodsListCtrl',
                 $scope.authentication_flag = true
                 AddBorderSpecialProduct2ShoppingCart.get({
                     productId:productId,
-                    productNum: "1"
+                    productNum: "1",
+                    productSpec:""
                 },function (data) {
                     $scope.authentication_flag = false
                     if(data.result==Global.FAILURE){
