@@ -24,8 +24,13 @@ angular.module('controllers',[]).controller('projectBrandCtrl',
                     showDelay: 0
                 });
                 SearchShopProjectList.get({filterStr:'',useStyle:"2"},function (data) {
-                    $ionicLoading.hide();
-                    $scope.projectBrand = data.responseData.oneAndTwoLevelList
+                    if(data.result=='0x00001'&&data.responseData!=null){
+                        $ionicLoading.hide();
+                        $scope.projectBrand = data.responseData.oneAndTwoLevelList
+                    }else{
+                        $scope.projectBrand=[]
+                    }
+
                 })
             })
 

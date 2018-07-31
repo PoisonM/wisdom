@@ -3,7 +3,7 @@
         <div class="list col33">
             <li class="item" ng-click="selectionCategoryGO()"><span class="fs16">选择类别<span class="colff66">*</span></span><span class="fr tr">{{settingAddsome.extShopProjectInfoDTO.projectTypeOneName}}<i class="ion ion-ios-arrow-right ml10 fs17"></i></span></li>
             <li class="item" ng-click="projectSeries()"><span class="fs16">选择系列<span class="colff66">*</span></span><span class="fr">{{settingAddsome.extShopProjectInfoDTO.projectTypeTwoName}}<i class="ion ion-ios-arrow-right ml10 fs17"></i></span></li>
-            <li class="row bgfff item">
+            <li class="row bgfff item" style="padding-top:6px;padding-bottom:6px;">
                 <div class="col col-20" style="line-height: 49px;">
                     <span class="fs16">卡类别<span class="colff66">*</span></span>
                 </div>
@@ -13,7 +13,7 @@
                         <span class="project1 col col-30 mr10" ng-click="secondaryCard('-1')" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!=5}">时效卡</span>
                         <span class="project1 col col-30" ng-click="secondaryCard('5')" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='5'}">疗程卡</span>
                     </p >
-                    <div ng-show="settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!='5'" class="row row-wrap" style="padding:0">
+                    <div ng-show="settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!='5'" class="row row-wrap " style="padding:0;margin:0">
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('1',1)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='1'}" >月卡</span>
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('2',3)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='2'}">季卡</span>
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('3',6)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='3'}">半年卡</span>
@@ -23,7 +23,7 @@
             </li>
             <!--有效期-->
             <li class="item" ng-show="settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!='5'"><span class="fs16">有效期<span class="colff66">*</span></span><span class="fr">自购买日起至<input style="width: 27px;height: 24px;background: #e5e5e5;color: #333333;display: inline-block;margin-left: 10px;margin-right: 10px;text-align: center" ng-model="settingAddsome.extShopProjectInfoDTO.effectiveNumberMonth" disabled="disabled"/>月有效</span></li>
-            <li class="item"><span class="fs16">项目名称<span class="colff66">*</span></span><input type="text"  class="fr tr" placeholder="请输入项目名称" ng-model="settingAddsome.extShopProjectInfoDTO.projectName" style="width:78%;"></li>
+            <li class="item" style="padding-top:13px;padding-bottom: 13px"><span class="fs16 mt5" style="display:inline-block">项目名称<span class="colff66">*</span></span><input type="text"  class="fr tr" placeholder="请输入项目名称" ng-model="settingAddsome.extShopProjectInfoDTO.projectName" style="width:70%;"></li>
             <li class="item"><span class="fs16">图片</span><span style="color: #3F3F3F;font-size: 16px;margin-left: 10px">(最多可上传6张)</span></li>
             <li class="item" >
                 <ul style="" class="Htab-head">
