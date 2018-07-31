@@ -261,7 +261,8 @@ public class PayRecordService {
 
 
     @Transactional(rollbackFor = Exception.class)
-    public String corssBorderPay(HttpServletRequest request) {
+    public Map<String,String> corssBorderPay(HttpServletRequest request) {
+        Map<String,String> resultMap = new HashedMap();
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         logger.info("Service == 获取统一支付接口参数request={},mobile={},productType={}",request,userInfoDTO.getId());
         try{
@@ -315,12 +316,14 @@ public class PayRecordService {
                     payRecordDTO.setPayType("wx");
                     payRecordMapper.insertPayRecord(payRecordDTO);
                 }
-                return (String) payResultMap.get("code_url");
+                resultMap.put("codeUrl",(String) payResultMap.get("code_url"));
+                resultMap.put("transactionId",transactionId);
+                return resultMap;
             }
         }catch (Exception e)  {
             logger.error("获取统一支付接口参数异常,异常信息为{}"+e.getMessage(),e);
             e.printStackTrace();
         }
-        return "";
+        return resultMap;
     }
 }
