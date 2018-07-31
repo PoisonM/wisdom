@@ -88,18 +88,18 @@ angular.module('controllers',[]).controller('detailsCtrl',
                 }
             }
 
-            $scope.addShoppingCart  = function () {
-                AddBorderSpecialProduct2ShoppingCart.get(
-                    {
-                        productId:$stateParams.id,
-                        productNum:$scope.params.goodsNum
-                    },
-                    function (data) {
-                        console.log(data)
-                    }
-                );
-            }
-
+            // $scope.addShoppingCart  = function () {
+            //     AddBorderSpecialProduct2ShoppingCart.get(
+            //         {
+            //             productId:$stateParams.id,
+            //             productNum:$scope.params.goodsNum,
+            //             productSpec:$scope.goodDetails.productDetail.spec[0]
+            //         },
+            //         function (data) {
+            //             console.log(data)
+            //         }
+            //     );
+            // }
 
             $scope.addBuyCart = function(){
                 /*根据商品状态来判断商品是否为下架商品*/
@@ -117,7 +117,7 @@ angular.module('controllers',[]).controller('detailsCtrl',
                         alert("库存不足~");
                         return;
                     }
-                        AddBorderSpecialProduct2ShoppingCart.get({productId:$stateParams.id,productNum: $scope.params.goodsNum},function(data){
+                        AddBorderSpecialProduct2ShoppingCart.get({productId:$stateParams.id,productNum: $scope.params.goodsNum, productSpec:$scope.checkFlag},function(data){
                             if(data.result==Global.FAILURE){
                                 alert("加入购物车失败");
                             }else{
@@ -168,12 +168,8 @@ angular.module('controllers',[]).controller('detailsCtrl',
                                 //将needPayOrderList数据放入后台list中
                                 PutNeedPayOrderListToRedis.save({needPayOrderList: needPayOrderList}, function (data) {
                                     if (data.result == Global.SUCCESS) {
-
-
-                                        $scope.params.goodsNum = 1;
-                                            // window.location.href = "orderPay.do?productType=" + $scope.goodDetails.type
-                                            //     + "&specialShopId=" + $rootScope.specialShopId
-                                            //     + "&random="+Math.random();
+                                        // $state.go('scanPay')
+                                        $state.go('orderSubmit')
                                     } else if (data.result == Global.FAILURE) {
                                         alert("购买失败");
                                     }

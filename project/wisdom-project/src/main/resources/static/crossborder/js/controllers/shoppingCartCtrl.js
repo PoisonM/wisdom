@@ -1,8 +1,8 @@
 angular.module('controllers',[]).controller('shoppingCartCtrl',
     ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductOrderList'
-        ,'DeleteOrderFromBuyCart','AddProduct2BuyCart','MinusProduct2BuyCart',
+        ,'DeleteOrderFromBuyCart','AddProduct2BuyCart','MinusProduct2BuyCart','PutNeedPayOrderListToRedis',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductOrderList
-            ,DeleteOrderFromBuyCart,AddProduct2BuyCart,MinusProduct2BuyCart) {
+            ,DeleteOrderFromBuyCart,AddProduct2BuyCart,MinusProduct2BuyCart,PutNeedPayOrderListToRedis) {
             $scope.params = {
                 checkAll:false,
                 listLen:"0"
@@ -14,6 +14,7 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                         $scope.cartList = data.responseData;
                         for(var i = 0; i < $scope.cartList.length; i++){
                             $scope.cartList[i].checkFlag = false;
+                            $scope.cartList[i].xiaoji = $scope.cartList[i].businessProductPrice*$scope.cartList[i].businessProductNum
                         }
                     }else{
                         alert("获取信息失败")
@@ -27,7 +28,7 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             $scope.addnum = function (item) {
                 item.businessProductNum++
                 // item.businessProductId,item.businessProductNum
-
+                item.xiaoji = item.businessProductPrice*item.businessProductNum
                 if($scope.addCartFlag){
                     $scope.addCartFlag = false
                     AddProduct2BuyCart.get({
@@ -47,25 +48,31 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
 
             }
             $scope.reducenum = function (item) {
-                item.businessProductNum--
-                if($scope.addCartFlag){
-                    $scope.addCartFlag = false
-                    MinusProduct2BuyCart.get({
-                        productId:item.businessProductId,
-                        // productNum:goodsNum
-                        productSpec:item.productSpec
-                    },function (data) {
-                        $scope.addCartFlag = true
-                        $scope.getCartList()
-                        if(data.result==Global.FAILURE){
-                            alert("加入购物车失败");
-                        }else{
-                            // alert("");
-                        }
-                    })
+
+                if(item.businessProductNum <= 1){
+                    return false
+                }else {
+                    item.businessProductNum--
+                    if($scope.addCartFlag){
+                        $scope.addCartFlag = false
+                        MinusProduct2BuyCart.get({
+                            productId:item.businessProductId,
+                            // productNum:goodsNum
+                            productSpec:item.productSpec
+                        },function (data) {
+                            $scope.addCartFlag = true
+                            $scope.getCartList()
+                            if(data.result==Global.FAILURE){
+                                alert("加入购物车失败");
+                            }else{
+                                // alert("");
+                            }
+                        })
+                    }
                 }
+
             }
-            $scope.verifyNum = function (id,goodsNum) {
+            /*$scope.verifyNum = function (id,goodsNum) {
                 if($scope.addCartFlag){
                     $scope.addCartFlag = false
                     AddBorderSpecialProduct2ShoppingCart.get({
@@ -81,14 +88,15 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                         }
                     })
                 }
-            }
+            }*/
 
             // updateBusinessOrderStatus
             //删除此订单
             $scope.delete=function(item2){
-                DeleteOrderFromBuyCart.get({orderId:item2.orderId},function(data){
+                DeleteOrderFromBuyCart.get({orderId:item2.businessOrderId},function(data){
                     if(data.result==Global.SUCCESS){
-                        
+                        alert("删除成功")
+                        $scope.getCartList()
                     }
                 })
             };
@@ -99,6 +107,21 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                 for(var i = 0; i < $scope.cartList.length; i++){
                     $scope.cartList[i].checkFlag = $scope.params.checkAllFlag
                 }
+                $scope.allPrice()
+            }
+
+
+            $scope.allPrice = function () {
+                $scope.submitList = [];
+                $scope.price = new Number()
+                for(var i = 0; i < $scope.cartList.length; i++){
+                    if($scope.cartList[i].checkFlag){
+                        $scope.submitList.push($scope.cartList[i])
+                        $scope.price += parseInt($scope.cartList[i].businessProductPrice*$scope.cartList[i].businessProductNum)
+                    }
+                }
+                console.log($scope.submitList)
+                console.log($scope.price)
             }
 
             $scope.checkOne = function (item) {
@@ -110,13 +133,22 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                     }else {
                     }
                 }
-                setTimeout(function () {
-                    $scope.$apply();
-                    $("#goodsnum").html($(".check").length)
-                },1000)
-
+                $scope.allPrice()
             }
 
+            $scope.goPay = function () {
+                if($scope.submitList!=undefined){
+                    PutNeedPayOrderListToRedis.save({
+                        needPayOrderList:$scope.submitList
+                    },function (data) {
+                        if(data.result==Global.SUCCESS){
+                           $state.go("orderSubmit")
+                        }
+                    })
+                }else {
+                    alert("请选择购买商品")
+                }
 
+            }
 
         }]);

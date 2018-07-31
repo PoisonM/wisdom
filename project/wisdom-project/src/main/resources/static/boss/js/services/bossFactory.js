@@ -554,10 +554,16 @@ define(['appBoss'], function (app) {
         }])
 
 
-        //获取产品详细信息根据扫描编码
+        //获取产品详细信息根据扫描编码getProductInfoScan
         .factory('GetProductInfo',['$resource',function ($resource){
             return $resource(productInfo + "getProductInfo")
         }])
+
+         //获取产品详细信息根据扫描编码
+        .factory('GetProductInfoScan',['$resource',function ($resource){
+            return $resource(productInfo + "getProductInfoScan")
+        }])
+
 
         //产品领取记录详情
         .factory('getProductDrawRecordDetail',['$resource',function ($resource){

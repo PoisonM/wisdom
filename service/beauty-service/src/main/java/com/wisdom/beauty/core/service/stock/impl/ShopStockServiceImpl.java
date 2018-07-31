@@ -560,7 +560,7 @@ public class ShopStockServiceImpl implements ShopStockService {
 			}
 
 			if(sysBossDTO!=null){
-				shopStockNumberDTO.setSysBossCode(sysBossDTO.getId());
+				shopStockNumberDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 			}
 			shopStockNumberDTO.setShopProcId(addShopStockRequest.getShopProcId());
 			shopStockNumberDTO.setShopStoreId(addShopStockRequest.getShopStoreId());

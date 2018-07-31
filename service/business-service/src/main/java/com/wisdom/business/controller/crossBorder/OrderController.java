@@ -154,11 +154,15 @@ public class OrderController {
     @RequestMapping(value = "createSpecialOrderAddressRelation", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<List<BusinessOrderDTO>> createSpecialOrderAddressRelation(@RequestBody OrderAddressRelationDTO orderAddressRelationDTO,@RequestBody NeedPayOrderListDTO needPayOrderList) {
+    ResponseDTO<List<BusinessOrderDTO>> createSpecialOrderAddressRelation(@RequestBody OrderAddressRelationDTO orderAddressRelationDTO) {
+
         long startTime = System.currentTimeMillis();
         logger.info("创建跨境订单关联收货地址==={}开始" , startTime);
         ResponseDTO<List<BusinessOrderDTO>> responseDTO = new ResponseDTO<>();
-        for (NeedPayOrderDTO needPayOrderDTO : needPayOrderList.getNeedPayOrderList()) {
+        UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
+        String value = JedisUtils.get(userInfoDTO.getId()+"needPay");
+        NeedPayOrderListDTO needPayOrderListDTO = (new Gson()).fromJson(value, NeedPayOrderListDTO.class);
+        for (NeedPayOrderDTO needPayOrderDTO : needPayOrderListDTO.getNeedPayOrderList()) {
             //查询此订单是否已有地址,如果有则不进行新增
             List<OrderAddressRelationDTO> orderAddressRelationDTOs = userOrderAddressService.getOrderAddressRelationByOrderId(needPayOrderDTO.getOrderId());
             if(0 == orderAddressRelationDTOs.size()){
