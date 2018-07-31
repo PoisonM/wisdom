@@ -89,7 +89,7 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                                 }
 
                             }else{
-                                alert("请使用老板帐号登录")
+                                alert("请使用正确的帐号登录")
                             }
 
                         }
