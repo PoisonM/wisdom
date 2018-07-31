@@ -137,6 +137,8 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                         $scope.authentication_flag = false
                         if(data.result==Global.SUCCESS){
                            $state.go("orderSubmit")
+                        }else {
+                            alert(data.errorInfo)
                         }
                     })
                 }else {
