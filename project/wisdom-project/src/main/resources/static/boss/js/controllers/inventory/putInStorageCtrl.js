@@ -139,7 +139,8 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                             var result1 = JSON.stringify(res);
                             var result = res.resultStr;
                             GetProductInfo.get({
-                                productCode:result
+                                productCode:result,
+                                shopStoreId:$rootScope.shopInfo.shopStoreId
                             },function(data){
                                  if(data.result == "0x00001"){
                                         $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name,productCode:result});

@@ -1,8 +1,8 @@
 <ion-view class="bg">
     <ion-content>
         <div ng-repeat="item in shopList " ng-if="item.type=='0'">
-            <div class="tc" style="margin-top:40px;">
-                <img ng-src="{{item.shopImageUrl}}" style="width:60%;height: 125px;margin: auto">
+            <div class="tc" style="margin-top:40px;margin:40px auto;height:125px;background: url('{{item.shopImageUrl}}');background-repeat: no-repeat;background-position: center center;background-size: contain;width:60%;">
+               <!-- <img ng-src="{{item.shopImageUrl}}" style="width:60%;height: 125px;margin: auto">-->
             </div>
             <!--门店信息-->
             <div style="width: 345px;margin:25px auto;border-radius: 5px;padding-bottom: 10px; " class="mt20 bgfff">
