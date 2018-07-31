@@ -27,6 +27,10 @@ define(['angular'], function (angular) {
                             alert("登录已经失效,请重新登录")
                             window.location.href = window.location.href.split("#/")[0]+"#/login"
                         }
+                        /*if(window.localStorage.logintoken == undefined){
+                            window.location.href = window.location.href.split("#/")[0]+"#/login"
+                        }*/
+
                         return res;
                     },
                     responseError: function (err) {
