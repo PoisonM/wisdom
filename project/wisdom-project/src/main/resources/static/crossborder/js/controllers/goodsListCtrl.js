@@ -65,12 +65,13 @@ angular.module('controllers',[]).controller('goodsListCtrl',
 
 
             //加入购物车
-            $scope.addShopCart = function (productId) {
+            //加入购物车
+            $scope.addShopCart = function (productId,productSpec) {
                 $scope.authentication_flag = true
                 AddBorderSpecialProduct2ShoppingCart.get({
                     productId:productId,
                     productNum: "1",
-                    productSpec:""
+                    productSpec:productSpec
                 },function (data) {
                     $scope.authentication_flag = false
                     if(data.result==Global.FAILURE){
