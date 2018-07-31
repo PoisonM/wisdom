@@ -67,8 +67,19 @@
     color: #666666;
     letter-spacing: 0;
     margin-bottom: 50px;
+    position: relative;
 }
-
+.login .login_content ul li:nth-child(3) span{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    font-family: MicrosoftYaHei;
+    font-size: 20px;
+    color: #999999;
+    letter-spacing: 0;
+    text-align: center;
+    cursor: pointer;
+}
 .login .login_content ul li:nth-child(3) label{
     width: 80px;
 }

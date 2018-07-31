@@ -159,6 +159,7 @@ define(['appCrossborder'], function(app){
                             }
                         }
                     })
+
                 $urlRouterProvider.otherwise('goodsList')
             }])
 })

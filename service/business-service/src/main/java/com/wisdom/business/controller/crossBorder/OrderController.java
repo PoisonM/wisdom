@@ -60,11 +60,11 @@ public class OrderController {
     @RequestMapping(value = "addProduct2ShoppingCart", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO addProduct2ShoppingCart(@RequestParam String productId, @RequestParam int productNum) {
+    ResponseDTO addProduct2ShoppingCart(@RequestParam String productId, @RequestParam String productSpec,@RequestParam int productNum) {
         ResponseDTO responseDTO = new ResponseDTO<>();
         long startTime = System.currentTimeMillis();
         logger.info("将货品加入用户的购物车==={}开始",startTime);
-        String result = buyCartService.addCrossBorderProduct(productId,productNum);
+        String result = buyCartService.addCrossBorderProduct(productId,productNum,productSpec);
         responseDTO.setResult(result);
         logger.info("将货品加入用户的购物车,耗时{}毫秒",(System.currentTimeMillis() - startTime));
         return responseDTO;

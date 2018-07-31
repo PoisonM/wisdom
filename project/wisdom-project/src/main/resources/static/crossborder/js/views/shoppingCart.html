@@ -5,7 +5,7 @@
     <div class="header">
         <ul>
             <li>
-                <span class="check"></span>
+                <span ng-click="checkAll()" ng-class="{'checkAll':params.checkAllFlag == true}"></span>
                 全选
             </li>
             <li>
@@ -26,7 +26,7 @@
             <div ng-repeat="item in cartList" class="goods_box">
                 <ul>
                     <li>
-                        <span class="check"></span>
+                        <span ng-click="checkOne(item)" ng-class="{'check':item.checkFlag}"></span>
                         <img ng-src="{{item.businessProductFirstUrl}}" alt="{{item.businessProductName}}">
                     </li>
                     <li>
@@ -38,10 +38,10 @@
                         <span>¥{{item.businessProductPrice}}</span>
                     </li>
                     <li>
-                        <span>-</span><input type="text"><span>+</span>
+                        <span ng-click="reducenum(item)">-</span><input ng-blur = "verifyNum(item)" ng-model="item.businessProductNum" type="text"><span ng-click="addnum(item)">+</span>
                     </li>
                     <li>
-                        <span>¥899.00</span>
+                        <span>¥{{item.businessProductPrice}}</span>
                     </li>
                     <li ng-click="delete(item)">
 
@@ -53,12 +53,12 @@
         <div class="content_bottom">
             <ul>
                 <li>
-                    <span class="check"></span>
-                    全选
+                    <!--<span class="check"></span>
+                    全选-->
                 </li>
 
                 <li>
-                    已选择商品 <span>1</span> 件
+                    已选择商品 <span id="goodsnum">{{params.listLen}}</span> 件
                 </li>
 
                 <li>
