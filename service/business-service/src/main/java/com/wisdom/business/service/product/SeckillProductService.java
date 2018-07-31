@@ -67,7 +67,9 @@ public class SeckillProductService {
             }else{
                 productDTO.setStatus(0);
             }
-
+            if(null != productDTO.getEndTime()){
+                productDTO.setCountdown((productDTO.getEndTime().getTime() - new Date().getTime())/1000);
+            }
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
@@ -98,6 +100,9 @@ public class SeckillProductService {
         int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
         seckillproductDTO.setProductAmount(productAmount);
         seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
+        if(null != seckillproductDTO.getEndTime()){
+            seckillproductDTO.setCountdown((seckillproductDTO.getEndTime().getTime() - new Date().getTime())/1000);
+        }
         return seckillproductDTO;
     }
 

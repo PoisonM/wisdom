@@ -50,4 +50,6 @@ public interface ProductMapper {
 	void addOfflineProduct(ProductDTO productDTO);
 
     List<ProductDTO> findSpecialOfflineProductList(PageParamDTO pageParamDTO);
+
+    List<String> getBorderSpecialProductBrandList();
 }

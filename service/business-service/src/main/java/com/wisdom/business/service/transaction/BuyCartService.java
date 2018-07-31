@@ -194,7 +194,7 @@ public class BuyCartService {
      *
      * */
     @Transactional(rollbackFor = Exception.class)
-    public String addCrossBorderProduct(String productId,int num) {
+    public String addCrossBorderProduct(String productId,int num,String productSpec) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),productId,num);
         OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,"special",userInfoDTO.getId());
@@ -216,7 +216,7 @@ public class BuyCartService {
                 orderProductRelationDTO.setBusinessOrderId(businessOrderId);
                 orderProductRelationDTO.setBusinessProductId(productId);
                 orderProductRelationDTO.setProductNum(num);
-                orderProductRelationDTO.setProductSpec("special");
+                orderProductRelationDTO.setProductSpec(productSpec);
                 transactionMapper.createOrderProductRelation(orderProductRelationDTO);
                 return StatusConstant.SUCCESS;
             }
@@ -257,7 +257,7 @@ public class BuyCartService {
                 businessOrderDTO.setType("seckill");
                 businessOrderDTO.setCreateDate(new Date());
                 businessOrderDTO.setUpdateDate(new Date());
-                JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+businessOrderDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
+                JedisUtils.setObject("seckillproductOrder:"+fieldId+":"+userInfoDTO.getId(),businessOrderDTO,productInfoCacheSeconds);
                 OrderProductRelationDTO orderProductRelationDTO = new OrderProductRelationDTO();
                 orderProductRelationDTO.setId(UUID.randomUUID().toString());
                 orderProductRelationDTO.setBusinessOrderId(businessOrderId);

@@ -9,29 +9,29 @@
         </ul>
     </div>
     <div class="content">
-        <p>订单号：1982968687</p>
-        <div ng-repeat="item in [1,2,4]" class="goods_box">
+        <div ng-repeat="item in orderList" class="goods_box" ng-if="item.status != 3&&item.status != 6">
             <ul>
+                <!--<li>订单号：{{item.businessOrderId}}</li>-->
                 <li>
-                    <span class="check"></span>
-                    <img src="//img13.360buyimg.com/n5/s54x54_jfs/t10675/253/1344769770/66891/92d54ca4/59df2e7fN86c99a27.jpg" alt="">
+                    <!--<span class="check"></span>-->
+                    <img ng-src="{{item.businessProductFirstUrl}}" alt="{{item.businessProductName}}">
                 </li>
                 <li>
-                    商品名称商品名称商品名称商品名称商品名称多特海伦修复精华液150ml
+                    {{item.businessProductName}}
                 </li>
                 <li>
-                    <del>¥999.00</del>
-                    <br>
-                    <span>¥899.00</span>
+                    <!--<del>¥999.00</del>-->
+                    <!--<br>-->
+                    <span>¥{{item.businessProductPrice}}</span>
                 </li>
                 <li>
-                    <span>-</span><input type="text"><span>+</span>
+                   {{item.businessProductNum}}
                 </li>
-                <li>
+                <li  ng-if="item.status == '0'">
                     <span>待支付</span>
                 </li>
-                <li>
-                    <span>去结算</span>
+                <li   ng-if="item.status == '1'">
+                    <span>已付款</span>
                 </li>
             </ul>
         </div>

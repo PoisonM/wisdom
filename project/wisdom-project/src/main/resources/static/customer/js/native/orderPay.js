@@ -275,7 +275,7 @@ var orderPayInit = function(){
 
 $('#payButton').attr('disabled',"true");//添加disabled属性
 var confirmPay = function(){
-    if(receiveOrderAddressId==""&&(productType=='offline'||productType=='special'))
+    if(receiveOrderAddressId==""&&(productType=='offline'||productType=='special'||productType=='seckill'))
     {
         alert("请先选择收货地址");
     }
@@ -347,11 +347,29 @@ var confirmPay = function(){
                 }
             });
         }
-        else if(productType=='offline'||productType=='special')
+        else if(productType=='offline'||productType=='special'||productType=='seckill')
         {
             if(productType=='special')
             {
                 $("#specialProductInfo").show();
+            }else if(productType=='seckill'){
+                //检测是否过期
+                $.ajax({
+                    url:"/business/seckillOrder/cheackSeckillOrder?orderID="+orderIds,// 跳转到 action
+                    beforeSend: function(request) {
+                        request.setRequestHeader("logintoken", loginttoken);
+                    },
+                    async:true,
+                    type:'get',
+                    data:'',
+                    cache:false,
+                    success:function(data) {
+                        if(data.result=="0x00001"){
+                            processPay();
+                        }else{
+                            alert("订单已失效!");
+                        }
+                    }})
             }
             else
             {

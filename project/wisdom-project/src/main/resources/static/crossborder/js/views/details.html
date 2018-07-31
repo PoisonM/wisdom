@@ -1,4 +1,4 @@
-<home-top></home-top>
+<home-top params="option"></home-top>
 <div class="details">
     <div class="details_top">
         <div class="details_img">
@@ -8,12 +8,12 @@
                         <a class="arrow-left" href="#"></a>
                         <a class="arrow-right" href="#"></a>
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
+                            <div ng-repeat="item in goodDetails.productDetail.listPic" class="swiper-slide">
                                 <a>
-                                    <img src="images/details_img/b1.jpg" style="display: block;width: 100%;height: 100%" alt="">
+                                    <img ng-src="{{item}}" style="display: block;width: 100%;height: 100%" alt="">
                                 </a>
                             </div>
-                            <div class="swiper-slide">
+                            <!--<div class="swiper-slide">
                                 <a>
                                     <img src="images/details_img/b2.jpg"style="display: block;width: 100%;height: 100%" alt="">
                                 </a>
@@ -37,7 +37,7 @@
                                 <a>
                                     <img src="images/details_img/b6.jpg"style="display: block;width: 100%;height: 100%" alt="">
                                 </a>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -46,10 +46,10 @@
                     <a class="arrow-right" href="#"></a>
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide active-nav">
-                                <img src="images/details_img/s1.jpg" alt="" style="display: block;width: 100%;height: 100%">
+                            <div ng-repeat="item in goodDetails.productDetail.listPic" class="swiper-slide active-nav">
+                                <img ng-src="{{item}}" alt="" style="display: block;width: 100%;height: 100%">
                             </div>
-                            <div class="swiper-slide">
+                            <!--<div class="swiper-slide">
                                 <img src="images/details_img/s2.jpg" alt="" style="display: block;width: 100%;height: 100%">
                             </div>
                             <div class="swiper-slide">
@@ -63,7 +63,7 @@
                             </div>
                             <div class="swiper-slide slide6">
                                 <img src="images/details_img/s6.jpg" alt="" style="display: block;width: 100%;height: 100%">
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -71,33 +71,33 @@
         </div>
         <div class="details_text">
             <div class="goods_name">
-                <p>Apple iPhone X (A1865) 64GB 深空灰色 移动联通电信4G手机</p>
-                <span>多特海伦是一款专为过敏体质的朋友设计， 不含任何化学物质，纯天然过敏肌肤可用</span>
+                <p>{{goodDetails.productName}}</p>
+                <span>{{goodDetails.description}}</span>
             </div>
 
             <div class="price">
-                售价<span>￥698.00</span>
+                售价<span>￥{{goodDetails.price}}</span>
             </div>
 
             <div class="tax">
-                税费：<span>预估￥11.9，实际税费请以提交订单为准</span>
+                税费：<span>预估￥0，实际税费请以提交订单为准</span>
             </div>
             <div class="freight">
-                运费：<span>￥18</span>
+                运费：<span>￥0</span>
             </div>
             <div class="num">
-                数量：<span>-</span><input type="text"><span>+</span>
+                数量：<span ng-click="reducenum()">-</span><input type="text" ng-blur = "verifyNum()" ng-model="params.goodsNum"><span ng-click="addnum()">+</span>
             </div>
             <div class="pay">
                 <ul>
-                    <li>立即购买</li>
-                    <li>加入购物车</li>
+                    <li ng-click="goPay()">立即购买</li>
+                    <li ng-click="addBuyCart()">加入购物车</li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="details_bootom">
-        <img src="https://img10.360buyimg.com/imgzone/jfs/t18493/37/635247604/42841/b751e11f/5a9cfa70Nd0637367.jpg" alt="">
+        <img ng-repeat="item in goodDetails.productDetail.detailPic" ng-src="{{item}}" alt="">
     </div>
 
 </div>

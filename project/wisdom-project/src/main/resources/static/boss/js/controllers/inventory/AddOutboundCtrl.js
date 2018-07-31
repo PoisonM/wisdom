@@ -24,7 +24,8 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
             if($stateParams.stockStyle==3){
                     $scope.sum = 1;
                     GetProductInfo.get({
-                        productCode:$stateParams.productCode
+                        productCode:$stateParams.productCode,
+                        shopStoreId:$stateParams.shopStoreId
                     },function(data){
                         if(data.result == "0x00001"){
                             $scope.param.productInfoDate = data.responseData;

@@ -40,7 +40,7 @@ public interface TransactionMapper {
 
     void updateBusinessOrder(BusinessOrderDTO businessOrderDTO);
 
-    List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(@Param("userId") String userId, @Param("status") String status);
+    List<BusinessOrderDTO> getBusinessOrderListByUserIdAndStatus(@Param("userId") String userId, @Param("status") String status, @Param("type") String type);
 
     List<BusinessOrderDTO> getTrainingBusinessOrder(BusinessOrderDTO businessOrderDTO);
 

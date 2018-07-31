@@ -35,6 +35,11 @@
     background-size: 100%;
     border: none;
 }
+.shoppingCart .header ul li:nth-child(1) .checkAll{
+    background: url("../../images/mall_img/correct.png") no-repeat;
+    background-size: 100%;
+    border: none;
+}
 
 .shoppingCart .header ul li:nth-child(2){
     width: 290px;

@@ -31,18 +31,70 @@
     <div class="order_info">
         <p>确认订单信息</p>
         <div class="goods_box">
-            <div class="header">
-                <ul>
-                    <li>
-                        商品信息
-                    </li>
-                </ul>
-            </div>
             <div class="content">
-                <ul>
+                <div class="goods_top">
+                    <ul>
+                        <li>商品信息</li>
+                        <li>数量</li>
+                        <li>金额(元)</li>
+                    </ul>
+                </div>
+                <div class="goods_info">
+                    <ul>
+                        <li>
+                            <img src="" alt="">
+                            多特海伦修复精华液150ml多特海伦修复精华液150ml
+                        </li>
+                        <li>
+                            1
+                        </li>
+                        <li>
+                            ¥899.00
+                        </li>
+                    </ul>
+                </div>
+                <div class="goods_bottom">
+                    <ul>
+                        <li>
+                            <label for="">商品应付总计：</label>
+                            <span>￥899.00</span>
+                        </li>
+                        <li>
+                            <label for="">运费：</label>
+                            <span>￥0.00</span>
+                        </li>
+                        <li>
+                            <label for="">应付金额：</label>
+                            <span>￥899.00</span>
+                        </li>
+                        <li>
+                            <div>提交订单</div>
+                        </li>
+                    </ul>
 
-                </ul>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+<div ng-if="authentication_flag" class="float_box">
+    <div class="authentication">
+        <p>实名认证</p>
+        <div class="user_info">
+            <p>友情提示:根据海关要求，订购人实名信息需与支付账号实名信息一致！</p>
+            <ul>
+                <li>
+                    <label for="">订购人姓名：</label>
+                    <input type="text">
+                </li>
+                <li>
+                    <label for="">身份证号码：</label>
+                    <input type="text">
+                </li>
+                <li>
+                    <div>确定</div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

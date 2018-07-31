@@ -1,4 +1,4 @@
-angular.module('controllers',[]).controller('seckillInfoCtrl',
+var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
     ['$scope','$rootScope','$stateParams','$state','$ionicPopup',
         '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis',
         function ($scope,$rootScope,$stateParams,$state,$ionicPopup,
@@ -10,7 +10,6 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                 background:"red",
                 padding: "5px 20px",
             };
-
             $scope.showFlag = function (type) {
                 $scope.model = type;
                 if(!type){
@@ -58,57 +57,56 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
                         }
                         else
                         {
-                            // showToast("加载中");
 
+                            showToast("加载中");
+                            CreateSeckillOrder.save(
+                                {businessProductId:$scope.param.product.productId,
+                                productSpec:$scope.param.checkFlag,
+                                businessProductNum: $scope.param.productNum,
+                                type:$scope.param.product.productType,
+                                id:$scope.param.product.fieldId+"",
+                                },function (data) {
+                                if(data.result==Global.FAILURE)
+                                {
+                                    showToast("交易失败");
+                                    hideToast()
+                                }
+                                else
+                                {
+                                    //生成订单后再直接前往支付页面
+                                    var needPayOrderList = [];
+                                    var payOrder = {
+                                        orderId:data.responseData,
+                                        productFirstUrl:$scope.param.product.firstUrl,
+                                        productId:$scope.param.product.productId,
+                                        productName:$scope.param.product.productName,
+                                        productNum:$scope.param.productNum,
+                                        productPrice:$scope.param.product.price,
+                                        productSpec:$scope.param.checkFlag
+                                    };
+                                    needPayOrderList.push(payOrder);
+                                    //将needPayOrderList数据放入后台list中
+                                    PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
+                                        if(data.result==Global.SUCCESS)
+                                        {
+                                            hideToast()
+                                            $scope.showFlag(false);
+                                            $scope.param.checkFlag = "";
+                                            $scope.param.productNum = 1;
+                                            window.location.href = "orderPay.do?productType=seckill&random="+Math.random();
+                                        }else if(data.result==Global.FAILURE){
+                                            alert("购买失败");
+                                            hideToast()
+                                            $scope.showFlag(false);
+                                        }
 
-
-
-
-
-                            CreateSeckillOrder.get(
-                                {   fieldId:$scope.param.product.fieldId+"",
-                                    productId:$scope.param.product.productId,
-                                    productSpec:$scope.param.checkFlag,
-                                    productNum:$scope.param.productNum
-                                },
-                                function (data) {
-                                    console.log(data)
-                                    if(data.result==Global.SUCCESS) {
-                                        var needPayOrderList = [];
-                                        var payOrder = {
-                                            orderId:data.responseData,
-                                            productFirstUrl:$scope.param.product.firstUrl,
-                                            productId:$scope.param.product.productId,
-                                            productName:$scope.param.product.productName,
-                                            productNum:$scope.param.productNum,
-                                            productPrice:$scope.param.product.price,
-                                            productSpec:$scope.param.checkFlag
-                                        };
-                                        needPayOrderList.push(payOrder);
-                                        //将needPayOrderList数据放入后台list中
-                                        PutNeedPayOrderListToRedis.save({needPayOrderList:needPayOrderList},function(data){
-                                            if(data.result==Global.SUCCESS)
-                                            {
-                                                hideToast()
-                                                $scope.showFlag(false);
-                                                $scope.param.checkFlag = "";
-                                                $scope.param.productNum = 1;
-                                                window.location.href = "orderPay.do?productType=seckill&random="+Math.random();
-                                            }else if(data.result==Global.FAILURE){
-                                                alert("购买失败");
-                                                hideToast()
-                                                $scope.showFlag(false);
-                                            }
-
-                                        })
-                                    }
-                            });
+                                    })
+                                }
+                            })
 
                         }
-                }else{
-                    $scope.model = true
+                        }
                 }
-            };
 
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;
@@ -196,3 +194,48 @@ angular.module('controllers',[]).controller('seckillInfoCtrl',
 
         }])
 
+
+seckillInfo.directive('timerBtn', function() { // 倒计时按钮
+    return {
+        restrict: 'A',
+        replace: true,
+        scope: {
+            startTime: '=startTime',
+            getData: '&getData'
+        },
+        template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'距离活动结束:\' +showTime : \'\'" ng-click="getData()"></span>',
+        controller: function($scope, $interval) {
+            var formatTime = function(sys_second) {
+                if (sys_second > 0) {
+                    sys_second -= 1;
+                    var day = Math.floor((sys_second / 3600) / 24);
+                    if (day < 0) {
+                        day = 0;
+                    }
+                    var hour = Math.floor((sys_second / 3600) % 24);
+                    if (hour < 0) {
+                        hour = 0;
+                    }
+                    var minute = Math.floor((sys_second / 60) % 60);
+                    if (minute < 0) {
+                        minute = 0;
+                    }
+                    var second = Math.floor(sys_second % 60);
+                    if (second < 0) {
+                        second = 0;
+                    }
+                    return day + "天 " + (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
+                }
+            }
+
+            var timer = $interval(function() {
+                $scope.startTime -= 1;
+                $scope.showTime = formatTime($scope.startTime);
+                if($scope.startTime < 1) {
+                    $interval.cancel(timer);
+                };
+            }, 1000);
+
+        }
+    };
+});

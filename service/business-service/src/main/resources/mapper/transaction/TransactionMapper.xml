@@ -224,6 +224,9 @@
         <if test="status== ''or status==null">
             and bor.status!='del'
         </if>
+        <if test="type != ''or type!=null">
+            and bor.type = #{type}
+        </if>
         AND
         opr.business_product_id=bpr.product_id
         ORDER BY

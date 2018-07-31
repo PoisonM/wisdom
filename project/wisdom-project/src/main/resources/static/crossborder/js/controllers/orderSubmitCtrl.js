@@ -1,12 +1,6 @@
 angular.module('controllers',[]).controller('orderSubmitCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','oneLevelProject',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,oneLevelProject) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout) {
             console.log("orderSubmitCtrl")
-
-            $scope.option = {
-                inportContent:"goodsList",
-                method:oneLevelProject,
-                dataList:""
-            }
-
+            $scope.authentication_flag = false//弹窗
         }]);

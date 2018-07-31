@@ -723,7 +723,9 @@ public class ShopStatisticsAnalysisServiceImpl implements ShopStatisticsAnalysis
 		if (null != userConsumeRequestDTO && StringUtils.isNotBlank(userConsumeRequestDTO.getSysBossCode())) {
 			shopBossRelationDTO.setSysBossCode(userConsumeRequestDTO.getSysBossCode());
 		}
-
+        if(StringUtils.isNotBlank(userConsumeRequestDTO.getSysShopId())){
+			shopBossRelationDTO.setSysShopId(userConsumeRequestDTO.getSysShopId());
+		}
 		List<ShopBossRelationDTO> shopBossRelationList = shopBossService.shopBossRelationList(shopBossRelationDTO);
 		if (CollectionUtils.isEmpty(shopBossRelationList)) {
 			return null;

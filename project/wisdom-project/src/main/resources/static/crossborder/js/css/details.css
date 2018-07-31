@@ -89,6 +89,12 @@
     font-size: 14px;
     color: #666666;
     letter-spacing: 0;
+    /*多次点击选中蓝色处理*/
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
 }
 .details .details_text .num span{
     display: inline-block;
@@ -97,7 +103,8 @@
     line-height: 28px;
     text-align: center;
     border: 1px solid #cccccc;
-    vertical-align:middle
+    vertical-align:middle;
+    cursor: pointer;
 }
 
 .details .details_text .num input{
@@ -337,6 +344,8 @@ sizes, pagination, etc.
 
     /*width: 100%;
     height: 100%;*/
+    width: 100%;
+    height: 100%;
 }
 .details .swiper-slide-active {
     /* Specific active slide styling: */

@@ -1,7 +1,46 @@
 angular.module('controllers',[]).controller('detailsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','GetBorderSpecialProductDetail'
+        ,'AddBorderSpecialProduct2ShoppingCart','CreateBusinessOrder','PutNeedPayOrderListToRedis',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductDetail
+            ,AddBorderSpecialProduct2ShoppingCart,CreateBusinessOrder,PutNeedPayOrderListToRedis) {
             console.log("details")
+            $scope.params = {
+                goodsNum:"1",
+                minNum:"1"
+            }
+
+            GetBorderSpecialProductDetail.get({
+                productId:$stateParams.id
+            },function (data) {
+                if(data.result == Global.SUCCESS){
+                    $scope.goodDetails = data.responseData
+                }
+            })
+
+            /**/
+            $scope.addnum = function () {
+                if($scope.params.goodsNum >= $scope.goodDetails.productDetail.productAmount){
+                    return
+                }
+                $scope.params.goodsNum++
+            }
+            $scope.reducenum = function () {
+                if($scope.params.goodsNum <= 1){
+                    return
+                }
+                $scope.params.goodsNum--
+            }
+            $scope.verifyNum = function () {
+                if($scope.params.goodsNum <= 1){
+                    $scope.params.goodsNum = 1
+                    return
+                }
+                if($scope.params.goodsNum >= $scope.goodDetails.productDetail.productAmount){
+                    $scope.params.goodsNum = $scope.goodDetails.productDetail.productAmount
+                    return
+                }
+            }
+
 
 
             var viewSwiper = new Swiper('.view .swiper-container', {
@@ -48,4 +87,103 @@ angular.module('controllers',[]).controller('detailsCtrl',
                     }
                 }
             }
-        }]);
+
+            $scope.addShoppingCart  = function () {
+                AddBorderSpecialProduct2ShoppingCart.get(
+                    {
+                        productId:$stateParams.id,
+                        productNum:$scope.params.goodsNum
+                    },
+                    function (data) {
+                        console.log(data)
+                    }
+                );
+            }
+
+
+            $scope.addBuyCart = function(){
+                /*根据商品状态来判断商品是否为下架商品*/
+                if($scope.goodDetails.status == "0"){
+                    return;
+                }
+                    if($scope.goodDetails.productDetail.spec.length == 1){
+                        $scope.checkFlag = $scope.goodDetails.productDetail.spec[0]
+                    }
+                    if($scope.params.goodsNum=="0"){
+                        alert("请选择正确的数量");
+                        return;
+                    }
+                    if($scope.params.goodsNum>$scope.goodDetails.productAmount){
+                        alert("库存不足~");
+                        return;
+                    }
+                        AddBorderSpecialProduct2ShoppingCart.get({productId:$stateParams.id,productNum: $scope.params.goodsNum},function(data){
+                            if(data.result==Global.FAILURE){
+                                alert("加入购物车失败");
+                            }else{
+                                alert("加入购物车成功");
+                            }
+                        })
+
+            };
+
+            $scope.goPay = function() {
+                /*根据商品状态来判断商品是否为下架商品*/
+                if ($scope.goodDetails.status == "0") {
+                    return;
+                }
+
+                    /*根据用户的等级的商品来判断*/
+                    if ($scope.params.goodsNum == "0") {
+                        alert("请选择正确的数量");
+                        return
+                    }
+                    /*根据商品数量跟库存的对比，数量大于库存及库存不足，结束这一步*/
+                    if ($scope.params.goodsNum > $scope.goodDetails.productAmount) {
+                        alert("库存不足~");
+                        return;
+                    } else {
+                        //先将此商品生成订单
+                        CreateBusinessOrder.save({
+                            businessProductId: $scope.goodDetails.productId,
+                            productSpec: $scope.goodDetails.productDetail.spec[0],
+                            businessProductNum: $scope.params.goodsNum,
+                            type: $scope.goodDetails.type
+                        }, function (data) {
+                            if (data.result == Global.FAILURE) {
+                                alert("交易失败");
+                            } else {
+                                //生成订单后再直接前往支付页面
+                                var needPayOrderList = [];
+                                var payOrder = {
+                                    orderId: data.responseData,
+                                    productFirstUrl: $scope.goodDetails.firstUrl,
+                                    productId: $scope.goodDetails.productId,
+                                    productName: $scope.goodDetails.productName,
+                                    productNum: $scope.params.goodsNum,
+                                    productPrice: $scope.goodDetails.price,
+                                    productSpec:  $scope.goodDetails.productDetail.spec[0]
+                                };
+                                needPayOrderList.push(payOrder);
+                                //将needPayOrderList数据放入后台list中
+                                PutNeedPayOrderListToRedis.save({needPayOrderList: needPayOrderList}, function (data) {
+                                    if (data.result == Global.SUCCESS) {
+
+
+                                        $scope.params.goodsNum = 1;
+                                            // window.location.href = "orderPay.do?productType=" + $scope.goodDetails.type
+                                            //     + "&specialShopId=" + $rootScope.specialShopId
+                                            //     + "&random="+Math.random();
+                                    } else if (data.result == Global.FAILURE) {
+                                        alert("购买失败");
+                                    }
+
+                                })
+                            }
+                        })
+                    }
+
+            }
+
+        }
+    ]);

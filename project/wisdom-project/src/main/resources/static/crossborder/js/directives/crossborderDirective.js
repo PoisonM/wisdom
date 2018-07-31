@@ -922,7 +922,8 @@ define(['appCrossborder','jquery'], function (app,$) {
             };
         }])
         //home公共部分
-        .directive('homeTop', [function () {
+        .directive('homeTop', ['$rootScope','$state','$timeout',
+            function ($rootScope,$state,$timeout) {
             return {
                 restrict: 'EA',
                 template: '<div class="home"> <div class="shortcut"> ' +
@@ -932,19 +933,18 @@ define(['appCrossborder','jquery'], function (app,$) {
                 '<div class="logo"> <img src="images/mall_img/logo.png" alt=""> </div> ' +
                 '<div class="search"> <div class="search_box"> <input ng-model="params.inportContent" type="text" placeholder="请搜索商品">' +
                 '<div ng-click="searchGoods()"><img src="images/mall_img/search.png" alt=""></div> </div> </div> <div class="settleup"> ' +
-                '<div> <i></i>购物车 </div> </div> </div></div>',
+                '<div ng-click="goShoppingCart()"> <i></i>购物车 </div> </div> </div></div>',
                 replace: true,
                 scope: {
                     params: '='
                 },
-                // scope: false,
                 link: function (scope, element, attrs) {
                     scope.searchGoods = function () {
-                        scope.params.method.get({
-                            params:scope.inportContent
-                        },function (res) {
-                            scope.params.dataList = res
-                        })
+                        $state.go('goodsList')
+                        scope.params.fn(scope.params.inportContent)
+                    }
+                    scope.goShoppingCart = function () {
+                        $state.go('shoppingCart')
                     }
                 }
             };

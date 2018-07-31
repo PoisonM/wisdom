@@ -104,6 +104,18 @@ public class SeckillProductDTO<T> implements Serializable {
     @JSONField(name = "productDetail")
     private T productDetail;
 
+    /**
+     * 产品类型
+     */
+    @JSONField(name = "productType")
+    private String productType;
+
+    /**
+     * 产品类型
+     */
+    @JSONField(name = "countdown")
+    private long countdown;
+
     public int getId() {
         return id;
     }
@@ -230,5 +242,21 @@ public class SeckillProductDTO<T> implements Serializable {
 
     public void setProductDetail(T productDetail) {
         this.productDetail = productDetail;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public long getCountdown() {
+        return countdown;
+    }
+
+    public void setCountdown(long countdown) {
+        this.countdown = countdown;
     }
 }

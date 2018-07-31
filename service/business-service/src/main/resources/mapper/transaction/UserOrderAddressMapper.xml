@@ -19,6 +19,7 @@
         <result column="user_order_address_id" property="userOrderAddressId" jdbcType="VARCHAR" />
         <result column="user_name_address" property="userNameAddress" jdbcType="VARCHAR" />
         <result column="user_phone_address" property="userPhoneAddress" jdbcType="VARCHAR" />
+        <result column="user_identifyNumber_address" property="userIdentifyNumberAddress" jdbcType="VARCHAR" />
         <result column="user_province_address" property="userProvinceAddress" jdbcType="VARCHAR" />
         <result column="user_city_address" property="userCityAddress" jdbcType="VARCHAR" />
         <result column="user_detail_address" property="userDetailAddress" jdbcType="VARCHAR" />
@@ -93,6 +94,7 @@
         user_order_address_id,
         user_name_address,
         user_phone_address,
+        user_identifyNumber_address,
         user_province_address,
         user_city_address,
         user_detail_address,
@@ -105,6 +107,7 @@
         #{userOrderAddressId},
         #{userNameAddress},
         #{userPhoneAddress},
+        #{userIdentifyNumberAddress},
         #{userProvinceAddress},
         #{userCityAddress},
         #{userDetailAddress},
@@ -124,6 +127,7 @@
         user_order_address_id=#{userOrderAddressId},
         user_name_address=#{userNameAddress},
         user_phone_address=#{userPhoneAddress},
+        user_identifyNumber_address=#{userIdentifyNumberAddress},
         user_province_address=#{userProvinceAddress},
         user_city_address=#{userCityAddress},
         user_detail_address=#{userDetailAddress},

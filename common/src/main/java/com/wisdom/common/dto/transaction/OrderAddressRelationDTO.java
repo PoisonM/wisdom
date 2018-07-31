@@ -34,6 +34,12 @@ public class OrderAddressRelationDTO {
      */
     @JSONField(name = "userPhoneAddress")
     private String userPhoneAddress;
+
+    /**
+     * 跨境身份证验证
+     */
+    @JSONField(name = "userIdentifyNumberAddress")
+    private String userIdentifyNumberAddress;
     /**
      * 收货地址省份
      */
@@ -138,6 +144,14 @@ public class OrderAddressRelationDTO {
 
     public void setUserCityAddress(String userCityAddress) {
         this.userCityAddress = userCityAddress;
+    }
+
+    public String getUserIdentifyNumberAddress() {
+        return userIdentifyNumberAddress;
+    }
+
+    public void setUserIdentifyNumberAddress(String userIdentifyNumberAddress) {
+        this.userIdentifyNumberAddress = userIdentifyNumberAddress;
     }
 
     @Override

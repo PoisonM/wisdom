@@ -110,7 +110,7 @@ public class PayRecordService {
             {
                 prePayInfoMap.put("notify_url",ConfigConstant.SPECIAL_PRODUCT_BUY_NOTIFY_URL);
             }
-            else if(productType.equals("trainingProduct"))
+            else if(productType.equals("trainingProduct") || productType.equals("seckill"))
             {
                 prePayInfoMap.put("notify_url",ConfigConstant.TRAINING_PRODUCT_BUY_NOTIFY_URL);
             }

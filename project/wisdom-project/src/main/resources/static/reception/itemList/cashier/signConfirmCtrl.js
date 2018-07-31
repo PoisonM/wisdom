@@ -5,7 +5,9 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
     /*-------------------------------------------定义头部/左边信息--------------------------------*/
     $scope.$parent.param.top_bottomSelect = "shouyin";
     $scope.$parent.param.headerPrice.title = "签字确认";
-    $scope.$parent.param.headerPrice.saveContent = ""
+    $scope.$parent.param.headerPrice.saveContent = "保存"
+
+
     $scope.flagFn = function (bool) {
         //头
         $scope.$parent.mainSwitch.headerReservationAllFlag = !bool;
@@ -75,8 +77,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
             }
         })
     }
-
-    $scope.clickOk = function() {
+    $scope.$parent.priceListSaveFn = function () {
         ImageBase64UploadToOSS.save({ imageStr: $("#signConfirmRight").jSignature("getData") }, function(data) {
             if($state.params.transactionId != ''){
                 RechargeCardSignConfirm.get({
@@ -108,6 +109,7 @@ PADWeb.controller('signConfirmCtrl', function($scope, $stateParams
 
         })
     }
+    
 
 
     $scope.$parent.priceListBlackFn = function () {
