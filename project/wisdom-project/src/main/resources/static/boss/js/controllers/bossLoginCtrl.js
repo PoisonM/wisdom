@@ -76,9 +76,7 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                                 window.localStorage.removeItem("beautyClerkLoginToken");
                                 window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
                             }
-                            if(data.responseData.beautyBossLoginToken==Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken==Global.TOKEN_ERROR){
-                                alert("登录未成功，请重新登录")
-                            }else{
+                            if(data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR){
                                 if($stateParams.redirectUrl=='')
                                 {
                                     window.location.href = "";
@@ -89,6 +87,9 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                                     alert("登录成功");
                                     window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
                                 }
+
+                            }else{
+                                alert("请使用老板帐号登录")
                             }
 
                         }
