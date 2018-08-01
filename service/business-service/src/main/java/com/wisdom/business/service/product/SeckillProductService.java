@@ -97,20 +97,25 @@ public class SeckillProductService {
         SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
         if(null == seckillproductDTO){
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
-            seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
-            Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
-            OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-            if(seckillproductDTO!=null)
-            {
-                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-                seckillproductDTO.setProductDetail(offlineProductDTO);
+            if(null != seckillproductDTO){
+                seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
+                Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
+                OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+                if(seckillproductDTO!=null)
+                {
+                    offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+                    seckillproductDTO.setProductDetail(offlineProductDTO);
+                }
+                JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
+            }else{
+                return null;
             }
-            JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
         }
         //这里有个弊端带付款后更新缓存信息
         int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
         seckillproductDTO.setProductAmount(productAmount);
         seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
+        seckillproductDTO.setCountdown(-1);
         if(null != seckillproductDTO.getFieldEndTime()){
             Calendar endCalendar = Calendar.getInstance();
             endCalendar.setTime(new Date());

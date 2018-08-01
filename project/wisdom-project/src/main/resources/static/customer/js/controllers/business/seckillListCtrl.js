@@ -12,8 +12,10 @@ var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
                     console.log(  $scope.seckillList )
                 })
 
-                $scope.seckillInfo = function (id) {
-                    $state.go("seckillInfo",{id:id});
+                $scope.seckillInfo = function (item) {
+                    if(item.status == 0){
+                        $state.go("seckillInfo",{id:item.id});
+                    }
                 }
             });
         }]);

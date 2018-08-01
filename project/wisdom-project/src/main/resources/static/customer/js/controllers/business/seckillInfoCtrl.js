@@ -3,7 +3,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
         '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis',
         function ($scope,$rootScope,$stateParams,$state,$ionicPopup,
                   $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global,PutNeedPayOrderListToRedis) {
-
+            $scope.authentication_flag = false;
             $rootScope.title = "秒杀详情";
             $scope.model=false;
             $scope.myObj = {
@@ -15,6 +15,9 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                 if(!type){
                     $scope.param.checkFlag=""
                 }
+            };
+            $scope.kefu = function () {
+                $scope.authentication_flag = !$scope.authentication_flag;
             };
 
             $scope.confirmProductSpec = function(spec) {
@@ -57,7 +60,6 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                         }
                         else
                         {
-
                             showToast("加载中");
                             CreateSeckillOrder.save(
                                 {businessProductId:$scope.param.product.productId,
@@ -175,6 +177,11 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
                 SeckillInfo.get({activtyId:$stateParams.id+""},function (data){
                     $ionicLoading.hide();
+                    if(null == data.countdown || data.countdown <=0){
+                        alert("本活动还没有开始");
+                        $state.go("seckillList");
+                        return
+                    }
                     $scope.param.product = data;
                     $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
                     if($scope.param.product.productNum <= 0){

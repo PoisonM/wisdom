@@ -46,7 +46,7 @@
             <div class="list">
                 <div class="item" style="background: #Fc4B4B;height: 60px;position: relative;padding: 0px">
                     <p style="margin-left: 10px;margin-top: 15px">
-                        <span class="subdued" style="font-family: PingFangSC-Regular;font-size: 36px;color: #FFFFFF;letter-spacing: 0; "><span style="font-size: 20px;display: inline-block;">￥</span>{{param.product.price}}</span><span style="color: #ffffff;font-size: 12px;margin-left: 10px">零售价<del>￥{{param.product.favorablePrice}}</del></span>
+                        <span class="subdued" style="font-family: PingFangSC-Regular;font-size: 36px;color: #FFFFFF;letter-spacing: 0; "><span style="font-size: 20px;display: inline-block;">￥</span>{{param.product.favorablePrice}}</span><span style="color: #ffffff;font-size: 12px;margin-left: 10px">零售价<del>￥{{param.product.price}}</del></span>
                     </p>
                     <div style="position: absolute;top: 11px;
     right: 10px;">
@@ -81,7 +81,7 @@
     </ion-content>
     <!--商品已下架-->
     <div class="tabs " style="padding-top: 0px">
-        <a class="tab-item-button"  ng-click="loginCart()" >
+        <a class="tab-item-button"  ng-click="kefu()" >
             <img src="images/offlineProductDetail/kefu.png" alt="" style="width: 0.45rem;height: 0.46rem;text-align: center;margin:auto;margin-top: 0.1rem;">
             <p style="font-size:0.22rem;color:#666666;margin-top: -0.3rem">联系客服</p>
             </i>
@@ -128,6 +128,10 @@ line-height: 22px;margin-left: -0.1rem;">购买数量：</span>
         <ul style="list-style: none;width: 100%;height: 1rem;display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center;margin-top: 26.5px">
             <li style="background: red;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="goPay()" id="goPay">立即抢购</li>
         </ul>
+    </div>
+
+    <div ng-if="authentication_flag" style="background-color: rgba(141, 141, 141, 0.35);background-blend-mode: darken;position:absolute; top:50%;left:50%; width:500px; height:500px; margin-top:-250px; margin-left:-250px;">
+        <img ng-src="">
     </div>
 
 </ion-view>
