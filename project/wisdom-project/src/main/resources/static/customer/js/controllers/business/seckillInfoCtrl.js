@@ -17,7 +17,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                 }
             };
             $scope.kefu = function () {
-                $scope.authentication_flag = !$scope.authentication_flag;
+                $state.go("contactCustomer");
             };
 
             $scope.confirmProductSpec = function(spec) {
