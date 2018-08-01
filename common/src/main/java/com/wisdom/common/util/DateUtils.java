@@ -399,6 +399,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			format = new SimpleDateFormat("yyyyMMddHHmmssS");
 		} else if ("hour".equals(flag)) {
 			format = new SimpleDateFormat("HH");
+		}else if ("hms".equals(flag)) {
+			format = new SimpleDateFormat("HH:mm:ss");
 		}
         String dateStr = null;
     	dateStr = format.format(date);
@@ -687,4 +689,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         date = cl.getTime();
         return sdf.format(date);
     }
+
+	/***
+	 * 比较时分秒大小
+	 *
+	 * @param  comTime
+	 * @param nowTime
+	 * @return 2014-10
+	 */
+	public static boolean compTime(Date comTime,Date nowTime) {
+		//判断场次时间
+		Calendar beginCalendar = Calendar.getInstance();
+		beginCalendar.setTime(nowTime);
+		Calendar endCalendar = Calendar.getInstance();
+		endCalendar.setTime(nowTime);
+		endCalendar.set(Calendar.HOUR_OF_DAY, comTime.getHours());//时
+		endCalendar.set(Calendar.MINUTE, comTime.getMinutes());//分
+		endCalendar.set(Calendar.SECOND, comTime.getSeconds());//秒
+		return endCalendar.compareTo(beginCalendar)>-1;
+	}
 }
