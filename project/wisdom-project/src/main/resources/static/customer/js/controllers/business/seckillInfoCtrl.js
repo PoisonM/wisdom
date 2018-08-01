@@ -210,7 +210,7 @@ seckillInfo.directive('timerBtn', function() { // 倒计时按钮
             startTime: '=startTime',
             getData: '&getData'
         },
-        template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'距离活动结束:\' +showTime : \'\'" ng-click="getData()"></span>',
+        template: '<p class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'距离活动结束:\' +showTime : \'\'" ng-click="getData()"></p>',
         controller: function($scope, $interval) {
             var formatTime = function(sys_second) {
                 if (sys_second > 0) {
