@@ -112,7 +112,12 @@ public class SeckillProductService {
         seckillproductDTO.setProductAmount(productAmount);
         seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
         if(null != seckillproductDTO.getFieldEndTime()){
-            seckillproductDTO.setCountdown((seckillproductDTO.getFieldEndTime().getTime() - new Date().getTime())/1000);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(new Date());
+            endCalendar.set(Calendar.HOUR_OF_DAY, seckillproductDTO.getFieldEndTime().getHours());//时
+            endCalendar.set(Calendar.MINUTE, seckillproductDTO.getFieldEndTime().getMinutes());//分
+            endCalendar.set(Calendar.SECOND, seckillproductDTO.getFieldEndTime().getSeconds());//秒
+            seckillproductDTO.setCountdown((endCalendar.getTime().getTime() - new Date().getTime())/1000);
         }
         return seckillproductDTO;
     }
