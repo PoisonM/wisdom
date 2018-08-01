@@ -65,19 +65,22 @@ public class SeckillProductService {
             }else if(productDTO.getActivityStartTime().getTime()>=nowTime.getTime()){
                 productDTO.setStatus(1);
             }else{
-                if(DateUtils.compTime(nowTime,productDTO.getFieldStartTime()) && DateUtils.compTime(productDTO.getFieldEndTime(),nowTime)){
-                    productDTO.setStatus(0);
-                    if(null != productDTO.getFieldEndTime()){
-                        Calendar endCalendar = Calendar.getInstance();
-                        endCalendar.setTime(nowTime);
-                        endCalendar.set(Calendar.HOUR_OF_DAY, productDTO.getFieldEndTime().getHours());//时
-                        endCalendar.set(Calendar.MINUTE, productDTO.getFieldEndTime().getMinutes());//分
-                        endCalendar.set(Calendar.SECOND, productDTO.getFieldEndTime().getSeconds());//秒
-                        String a = DateUtils.formatDateTime(endCalendar.getTime());
-                        productDTO.setCountdown((endCalendar.getTime().getTime() - new Date().getTime())/1000);
+                if(null != productDTO.getFieldStartTime()){
+                    if(DateUtils.compTime(nowTime,productDTO.getFieldStartTime()) && DateUtils.compTime(productDTO.getFieldEndTime(),nowTime)){
+                        productDTO.setStatus(0);
+                        if(null != productDTO.getFieldEndTime()){
+                            Calendar endCalendar = Calendar.getInstance();
+                            endCalendar.setTime(nowTime);
+                            endCalendar.set(Calendar.HOUR_OF_DAY, productDTO.getFieldEndTime().getHours());//时
+                            endCalendar.set(Calendar.MINUTE, productDTO.getFieldEndTime().getMinutes());//分
+                            endCalendar.set(Calendar.SECOND, productDTO.getFieldEndTime().getSeconds());//秒
+                            productDTO.setCountdown((endCalendar.getTime().getTime() - new Date().getTime())/1000);
+                        }
+                    }else {
+                        productDTO.setStatus(1);
                     }
                 }else {
-                    productDTO.setStatus(1);
+                    productDTO.setStatus(2);
                 }
             }
 
