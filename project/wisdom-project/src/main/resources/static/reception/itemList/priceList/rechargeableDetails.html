@@ -31,7 +31,12 @@
                     <span ng-if="param.rechargeDetail.productDiscount==1">无折扣</span>
                     <span ng-if="param.rechargeDetail.productDiscount !=1">{{param.rechargeDetail.productDiscount*10}}折</span>
                 </p>
-                <p class="mt94 fs32 c99 mb50" style="height: 60px">功能介绍：{{param.rechargeDetail.introduce}}</p>
+                <p class="mt94 fs32 c99 mb50" style="height: 60px">
+                    <!--功能介绍：{{param.rechargeDetail.introduce}}-->
+                    功能介绍：
+                    <br>
+                    <textarea  readonly="readonly" style="width: 100%; border: none;resize:none;color: #999" cols="30" rows="10" ng-model="param.rechargeDetail.introduce"></textarea>
+                </p>
             </div>
         </div>
     </div>
