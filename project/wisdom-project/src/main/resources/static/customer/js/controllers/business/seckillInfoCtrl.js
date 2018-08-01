@@ -112,25 +112,23 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productNum ||$scope.param.productNum>=$scope.param.product.stockNum){
+                if($scope.param.productNum>$scope.param.product.productNum ||$scope.param.productNum>$scope.param.product.stockNum){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
-                    $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
-                }else{
-                    $("#goPay").css("background","red");
+                    $("#goPay").attr('disabled','disabled').addClass("grey");
                 }
             };
 
             $scope.minusProductNum = function(){
                 if($scope.param.productNum>1){
                     $scope.param.productNum= $scope.param.productNum-1;
-                }else{
-                    $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }
-                if($scope.param.productNum<=$scope.param.product.productNum){
+                if($scope.param.productNum<=$scope.param.product.productNum ||$scope.param.productNum <= $scope.param.product.stockNum){
                     $("#goPay").css("background","red");
+                    $('#goPay').removeAttr("disabled");
                 }else{
                     $("#goPay").css("background","grey");
+                    $("#goPay").attr('disabled','disabled').addClass("grey");
                 }
             };
 
