@@ -54,7 +54,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                             alert("请选择正确的数量");
                             return
                         }
-                        if($scope.param.productNum>$scope.param.product.productAmount){
+                        if($scope.param.productNum>$scope.param.product.stockNum){
                             alert("库存不足~");
                             return;
                         }
@@ -112,7 +112,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productNum){
+                if($scope.param.productNum>$scope.param.product.productNum ||$scope.param.productNum>=$scope.param.product.stockNum){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
                     $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");

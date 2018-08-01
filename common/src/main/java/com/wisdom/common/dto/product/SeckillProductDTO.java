@@ -66,16 +66,16 @@ public class SeckillProductDTO<T> implements Serializable {
 
 
     /**
-     * 产品库存
+     * 售出数量
      */
     @JSONField(name = "productAmount")
     private int productAmount;
 
     /**
-     * 产品销量teacherName
+     * 产品库存
      */
     @JSONField(name = "sellNum")
-    private int sellNum;
+    private int stockNum;
 
     /**
      * 产品总量
@@ -200,12 +200,12 @@ public class SeckillProductDTO<T> implements Serializable {
         this.productAmount = productAmount;
     }
 
-    public int getSellNum() {
-        return sellNum;
+    public int getStockNum() {
+        return stockNum;
     }
 
-    public void setSellNum(int sellNum) {
-        this.sellNum = sellNum;
+    public void setStockNum(int stockNum) {
+        this.stockNum = stockNum;
     }
 
     public int getActivityNum() {

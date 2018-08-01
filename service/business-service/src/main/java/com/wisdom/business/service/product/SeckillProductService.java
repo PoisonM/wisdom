@@ -56,9 +56,8 @@ public class SeckillProductService {
         Page<SeckillProductDTO> resultPage = seckillProductMapper.queryAllProducts(page);
         Date nowTime = new Date();
         for (SeckillProductDTO productDTO : resultPage.getList()){
-            int productAmount = productDTO.getProductAmount();
 //            0马上抢 1即将开始 2活动已结束 3已抢光
-            if(productAmount<=0){
+            if(productDTO.getProductAmount()>=productDTO.getActivityNum()){
                 productDTO.setStatus(3);
             }else if(nowTime.getTime() >= productDTO.getActivityEndTime().getTime()){
                 productDTO.setStatus(2);
@@ -101,7 +100,6 @@ public class SeckillProductService {
         if(null == seckillproductDTO){
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
             if(null != seckillproductDTO){
-                seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
                 Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
                 OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
                 if(seckillproductDTO!=null)
@@ -115,9 +113,7 @@ public class SeckillProductService {
             }
         }
         //这里有个弊端带付款后更新缓存信息
-        int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
-        seckillproductDTO.setProductAmount(productAmount);
-        seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
+        seckillproductDTO.setStockNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
         seckillproductDTO.setCountdown(-1);
         if(null != seckillproductDTO.getFieldEndTime()){
             Calendar endCalendar = Calendar.getInstance();
