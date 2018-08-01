@@ -47,7 +47,7 @@ seckill.directive('timerBtn', function() { // 倒计时按钮
                     if (second < 0) {
                         second = 0;
                     }
-                    return day + "天 " + (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
+                    return  (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
                 }
             }
 

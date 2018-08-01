@@ -60,16 +60,27 @@ public class SeckillProductService {
 //            0马上抢 1即将开始 2活动已结束 3已抢光
             if(productAmount<=0){
                 productDTO.setStatus(3);
-            }else if(nowTime.getTime() >= productDTO.getEndTime().getTime()){
+            }else if(nowTime.getTime() >= productDTO.getActivityEndTime().getTime()){
                 productDTO.setStatus(2);
-            }else if(productDTO.getStartTime().getTime()>=nowTime.getTime()){
+            }else if(productDTO.getActivityStartTime().getTime()>=nowTime.getTime()){
                 productDTO.setStatus(1);
             }else{
-                productDTO.setStatus(0);
+                if(DateUtils.compTime(nowTime,productDTO.getFieldStartTime()) && DateUtils.compTime(productDTO.getFieldEndTime(),nowTime)){
+                    productDTO.setStatus(0);
+                    if(null != productDTO.getFieldEndTime()){
+                        Calendar endCalendar = Calendar.getInstance();
+                        endCalendar.setTime(nowTime);
+                        endCalendar.set(Calendar.HOUR_OF_DAY, productDTO.getFieldEndTime().getHours());//时
+                        endCalendar.set(Calendar.MINUTE, productDTO.getFieldEndTime().getMinutes());//分
+                        endCalendar.set(Calendar.SECOND, productDTO.getFieldEndTime().getSeconds());//秒
+                        String a = DateUtils.formatDateTime(endCalendar.getTime());
+                        productDTO.setCountdown((endCalendar.getTime().getTime() - new Date().getTime())/1000);
+                    }
+                }else {
+                    productDTO.setStatus(1);
+                }
             }
-            if(null != productDTO.getEndTime()){
-                productDTO.setCountdown((productDTO.getEndTime().getTime() - new Date().getTime())/1000);
-            }
+
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
@@ -100,8 +111,8 @@ public class SeckillProductService {
         int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
         seckillproductDTO.setProductAmount(productAmount);
         seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
-        if(null != seckillproductDTO.getEndTime()){
-            seckillproductDTO.setCountdown((seckillproductDTO.getEndTime().getTime() - new Date().getTime())/1000);
+        if(null != seckillproductDTO.getFieldEndTime()){
+            seckillproductDTO.setCountdown((seckillproductDTO.getFieldEndTime().getTime() - new Date().getTime())/1000);
         }
         return seckillproductDTO;
     }
@@ -111,9 +122,9 @@ public class SeckillProductService {
      * 秒杀 查询缓存中的库存量
      * */
     public int getProductAmout(String fieldId){
-        Set orderSet = JedisUtils.vagueSearch("seckillproductOrder:" + fieldId);
-        int ordeNum = null == orderSet? 0:orderSet.size();
+        String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId);
         String productAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
+        int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
         if (StringUtils.isNotNull(productAmountStr) && Integer.parseInt(productAmountStr)-ordeNum>0) {
             return Integer.parseInt(productAmountStr)-ordeNum;
         }

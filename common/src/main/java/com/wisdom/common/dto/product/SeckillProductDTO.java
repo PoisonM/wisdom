@@ -90,16 +90,28 @@ public class SeckillProductDTO<T> implements Serializable {
     private int productNum;
 
     /**
+     * 场次开始时间
+     */
+    @JSONField(name = "fieldStartTime")
+    private Date fieldStartTime;
+
+    /**
+     * 场次结束时间
+     */
+    @JSONField(name = "fieldEndTime")
+    private Date fieldEndTime;
+
+    /**
      * 活动开始时间
      */
-    @JSONField(name = "startTime")
-    private Date startTime;
+    @JSONField(name = "activityStartTime")
+    private Date activityStartTime;
 
     /**
      * 活动结束时间
      */
-    @JSONField(name = "endTime")
-    private Date endTime;
+    @JSONField(name = "activityEndTime")
+    private Date activityEndTime;
 
     @JSONField(name = "productDetail")
     private T productDetail;
@@ -220,22 +232,6 @@ public class SeckillProductDTO<T> implements Serializable {
         this.fieldId = fieldId;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
     public T getProductDetail() {
         return productDetail;
     }
@@ -258,5 +254,37 @@ public class SeckillProductDTO<T> implements Serializable {
 
     public void setCountdown(long countdown) {
         this.countdown = countdown;
+    }
+
+    public Date getFieldStartTime() {
+        return fieldStartTime;
+    }
+
+    public void setFieldStartTime(Date fieldStartTime) {
+        this.fieldStartTime = fieldStartTime;
+    }
+
+    public Date getFieldEndTime() {
+        return fieldEndTime;
+    }
+
+    public void setFieldEndTime(Date fieldEndTime) {
+        this.fieldEndTime = fieldEndTime;
+    }
+
+    public Date getActivityStartTime() {
+        return activityStartTime;
+    }
+
+    public void setActivityStartTime(Date activityStartTime) {
+        this.activityStartTime = activityStartTime;
+    }
+
+    public Date getActivityEndTime() {
+        return activityEndTime;
+    }
+
+    public void setActivityEndTime(Date activityEndTime) {
+        this.activityEndTime = activityEndTime;
     }
 }
