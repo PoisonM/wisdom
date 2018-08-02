@@ -944,7 +944,17 @@ define(['appCrossborder','jquery'], function (app,$) {
                         scope.params.fn(scope.params.inportContent)
                     }
                     scope.goFn = function (bar) {
-                        $state.go(bar)
+                        if(bar == 'login'){
+                            if(window.localStorage.loginPhone!=undefined){
+                                return false
+                            }else {
+                                $state.go(bar)
+                            }
+                        }else {
+                            $state.go(bar)
+                        }
+
+
                     }
                     if(window.localStorage.loginPhone!=undefined){
                         scope.userPhone = window.localStorage.loginPhone
