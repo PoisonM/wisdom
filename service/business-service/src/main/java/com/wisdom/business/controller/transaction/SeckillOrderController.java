@@ -62,7 +62,7 @@ public class SeckillOrderController {
                     responseDTO.setResult(StatusConstant.FAILURE);
                     responseDTO.setErrorInfo("总库存不足");
                 } else {
-                JedisUtils.set("seckillproductOrder:"+businessOrderId,businessOrderId,productInfoCacheSeconds);
+                JedisUtils.set("seckillproductOrder:"+businessOrderId,businessOrderDTO.getId(),productInfoCacheSeconds);
                 String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + businessOrderDTO.getId());
                 int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
                 JedisUtils.set("seckillproductOrderNum:"+businessOrderDTO.getId(),businessOrderDTO.getBusinessProductNum()+ordeNum+"",productInfoCacheSeconds);
