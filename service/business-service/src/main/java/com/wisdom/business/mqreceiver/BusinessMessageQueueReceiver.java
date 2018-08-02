@@ -1,14 +1,12 @@
 package com.wisdom.business.mqreceiver;
 
-import com.aliyun.opensearch.util.URLEncoder;
-import com.aliyuncs.exceptions.ClientException;
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.netflix.discovery.util.StringUtil;
+import com.aliyuncs.exceptions.ClientException;
 import com.wisdom.business.client.UserServiceClient;
 import com.wisdom.business.mqsender.BusinessMessageQueueSender;
+import com.wisdom.business.service.product.SeckillProductService;
 import com.wisdom.business.service.transaction.PayFunction;
 import com.wisdom.business.service.transaction.PayRecordService;
-import com.wisdom.business.service.transaction.TransactionService;
 import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
@@ -51,6 +49,8 @@ public class BusinessMessageQueueReceiver {
 
     @Autowired
     private BusinessMessageQueueSender businessMessageQueueSender;
+    @Autowired
+    private SeckillProductService seckillProductService;
 
     private static Gson gson = new Gson();
 
@@ -305,4 +305,12 @@ public class BusinessMessageQueueReceiver {
 
         logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
     }
+
+    @RabbitListener(queues = "sendHandleSpecialProduct")
+    @RabbitHandler
+    public void sendHandleSpecialProduct(String orderId) {
+        logger.info("Receiver  : " + orderId);
+        seckillProductService.handlePayNotify(orderId);
+    }
+
 }

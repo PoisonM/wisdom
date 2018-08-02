@@ -230,7 +230,7 @@ public class PayController {
                 PayRecordDTO payRecordDTO = new PayRecordDTO();
                 payRecordDTO.setOutTradeNo((String) map.get("out_trade_no"));
                 payRecordDTO.setStatus("0");
-                payCoreService.handleProductPayNotifyInfo(payRecordDTO,"special");
+                payCoreService.handleProductPayNotifyInfo(payRecordDTO,"crossBorder");
             }
             return  XMLUtil.setXML("SUCCESS", "");
         } catch (Exception e) {

@@ -33,8 +33,6 @@ public class SeckillOrderController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private BuyCartService buyCartService;
-    @Autowired
     private SeckillProductService seckillProductService;
     @Autowired
     private TransactionService transactionService;

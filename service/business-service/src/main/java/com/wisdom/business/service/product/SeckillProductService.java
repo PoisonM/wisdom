@@ -1,13 +1,18 @@
 package com.wisdom.business.service.product;
 
 import com.wisdom.business.mapper.product.SeckillProductMapper;
+import com.wisdom.business.mapper.transaction.TransactionMapper;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillActivityFieldDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
+import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.persistence.Page;
-import com.wisdom.common.util.*;
+import com.wisdom.common.util.DateUtils;
+import com.wisdom.common.util.FrontUtils;
+import com.wisdom.common.util.JedisUtils;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +23,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * 微商城秒杀服务层
@@ -40,6 +48,8 @@ public class SeckillProductService {
     private SeckillProductMapper seckillProductMapper;
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private TransactionMapper transactionMapper;
 
     /**
      * 查询所有商品
@@ -294,5 +304,35 @@ public class SeckillProductService {
         seckillActivityDTO.setSessionList(seckillActivityFieldList);
 
         return seckillActivityDTO;
+    }
+
+    /**
+     * 获取场次详情
+     * @param id
+     * */
+    public SeckillActivityFieldDTO findSecKillActivityFieldById(Integer id){
+        return seckillProductMapper.findSecKillActivityFieldById(id);
+    };
+
+    /**
+     * 支付完成后处理更新缓存等问题
+     * */
+    public void handlePayNotify(String orderId){
+        String fieldId = JedisUtils.get("seckillproductOrder:"+orderId);
+        if(StringUtils.isNotNull(fieldId)){
+            JedisUtils.del("seckillproductOrder:"+orderId);
+            String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId);
+            int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
+            BusinessOrderDTO businessOrderDTO = transactionMapper.getBusinessOrderByOrderId(orderId);
+            int stockNum = ordeNum-businessOrderDTO.getBusinessProductNum();
+            JedisUtils.set("seckillproductOrderNum:"+businessOrderDTO.getId(),(stockNum<0?0:stockNum)+"",productInfoCacheSeconds);
+            SeckillProductDTO seckillProductDTO = seckillProductMapper.findSeckillProductInfoById(fieldId);
+            int saleNum = seckillProductDTO.getProductAmount()+ordeNum;
+            SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
+            seckillActivityFieldDTO.setId(Integer.parseInt(fieldId));
+            seckillActivityFieldDTO.setProductAmount(saleNum);
+            seckillActivityFieldDTO.setUpdateTime(new Date());
+            seckillProductMapper.updateSeckillActivityFieldById(seckillActivityFieldDTO);
+        }
     }
 }
