@@ -55,17 +55,17 @@ public class SeckillOrderController {
         logger.info("秒杀商品生成订单加锁");
         try {
             productAmountLock.lock();
-            if (seckillProductService.getProductAmout(businessOrderDTO.getId()) > 0) {
+            if (seckillProductService.getProductAmout(businessOrderDTO.getFieldId()) > 0) {
                 String businessOrderId = transactionService.createBusinessOrder(businessOrderDTO);
                 if (businessOrderId.equals(StatusConstant.FAILURE)) {
                     logger.info("总库存不足");
                     responseDTO.setResult(StatusConstant.FAILURE);
                     responseDTO.setErrorInfo("总库存不足");
                 } else {
-                JedisUtils.set("seckillproductOrder:"+businessOrderId,businessOrderDTO.getId(),productInfoCacheSeconds);
-                String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + businessOrderDTO.getId());
+                JedisUtils.set("seckillproductOrder:"+businessOrderId,businessOrderDTO.getFieldId(),productInfoCacheSeconds);
+                String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + businessOrderDTO.getFieldId());
                 int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
-                JedisUtils.set("seckillproductOrderNum:"+businessOrderDTO.getId(),businessOrderDTO.getBusinessProductNum()+ordeNum+"",productInfoCacheSeconds);
+                JedisUtils.set("seckillproductOrderNum:"+businessOrderDTO.getFieldId(),businessOrderDTO.getBusinessProductNum()+ordeNum+"",productInfoCacheSeconds);
                 responseDTO.setResponseData(businessOrderId);
                 responseDTO.setResult(StatusConstant.SUCCESS);
                 }

@@ -66,7 +66,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                                 productSpec:$scope.param.checkFlag,
                                 businessProductNum: $scope.param.productNum,
                                 type:$scope.param.product.productType,
-                                id:$scope.param.product.fieldId+"",
+                                fieldId:$scope.param.product.fieldId+"",
                                 },function (data) {
                                 if(data.result==Global.FAILURE)
                                 {
