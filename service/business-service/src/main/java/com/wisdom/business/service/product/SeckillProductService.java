@@ -327,7 +327,7 @@ public class SeckillProductService {
             OrderProductRelationDTO orderProduct = transactionMapper.getOrderProductByOrderId(orderId);
             int stockNum = ordeNum-orderProduct.getProductNum();
             JedisUtils.set("seckillproductOrderNum:"+fieldId,(stockNum<0?0:stockNum)+"",productInfoCacheSeconds);
-            SeckillProductDTO seckillProductDTO = seckillProductMapper.findSeckillProductInfoById(fieldId);
+            SeckillActivityFieldDTO seckillProductDTO = seckillProductMapper.findSecKillActivityFieldById(Integer.parseInt(fieldId));
             int saleNum = seckillProductDTO.getProductAmount()+ordeNum;
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setId(Integer.parseInt(fieldId));
