@@ -129,7 +129,7 @@
 		<where>
 			sa.is_enable = 1
 			<if test="id!=null and id!=''">
-			and	sa.id = #{id}
+			and	ncs.id = #{id}
 			</if>
 		</where>
 	</select>
