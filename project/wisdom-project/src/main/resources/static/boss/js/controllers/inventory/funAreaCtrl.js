@@ -4,13 +4,16 @@ angular.module('controllers',[]).controller('funAreaCtrl',
             $rootScope.title = "汉方美业";
 
             $scope.putInStorageGo = function(){
-                $state.go('putInStorage',{name:$stateParams.name})
+                var timstamp = (new Date).valueOf();
+                $state.go('putInStorage',{name:$stateParams.name,dateTime:timstamp})
             }
             $scope.outboundGo = function(){
-                $state.go('outbound',{name:$stateParams.name})
+                var timstamp = (new Date).valueOf();
+                $state.go('outbound',{name:$stateParams.name,dateTime:timstamp})
             }
             $scope.inventoryDetailsGo = function(){
-                $state.go('inventoryDetails',{shopStoreId:$rootScope.shopInfo.shopStoreId})
+                var timstamp = (new Date).valueOf();
+                $state.go('inventoryDetails',{shopStoreId:$rootScope.shopInfo.shopStoreId,dateTime:timstamp})
             }
             /*盘点*/
             $scope.inventoryGo = function(){
@@ -23,7 +26,8 @@ angular.module('controllers',[]).controller('funAreaCtrl',
 
             /*库管设置*/
             $scope.libraryTubeSettingGo = function(){
-                $state.go('libraryTubeSetting',{shopStoreId:$rootScope.shopInfo.shopStoreId})
+                var timstamp = (new Date).valueOf();
+                $state.go('libraryTubeSetting',{shopStoreId:$rootScope.shopInfo.shopStoreId,dateTime:timstamp})
             }
 
 

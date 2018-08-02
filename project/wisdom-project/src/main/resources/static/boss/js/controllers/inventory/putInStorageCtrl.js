@@ -129,6 +129,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
              });
 
             $scope.selType = function (type) {
+                var timstamp = (new Date).valueOf();
                 $scope.param.selType = type;
                 if(type=='1'){
                     //扫码入库
@@ -143,7 +144,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                                 shopStoreId:$rootScope.shopInfo.shopStoreId
                             },function(data){
                                  if(data.result == "0x00001"){
-                                        $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name,productCode:result});
+                                        $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name,productCode:result,dateTime:timstamp});
                                  }else{
                                     alert("未找到该商品,请先添加该商品！");
                                  }
@@ -206,7 +207,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
             };
 
             $scope.newLibraryGo = function(){
-
+                var timstamp = (new Date).valueOf();
                 if($scope.param.selType=="0"){
                     if($scope.sum>0){
                         console.log($rootScope.shopInfo.entryShopProductList);
@@ -214,7 +215,7 @@ angular.module('controllers', []).controller('putInStorageCtrl',
                             alert("请先选择产品");
                             return;
                         }
-                        $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name})
+                        $state.go("newLibrary",{stockStyle:$scope.param.selType,shopStoreId:$rootScope.shopInfo.shopStoreId,sum:$scope.sum,name:$stateParams.name,dateTime:timstamp})
                     }else{
                         alert("请先选择产品");
                         return;

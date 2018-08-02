@@ -110,7 +110,8 @@ angular.module('controllers',[]).controller('inventoryDetailsCtrl',
             }
 
             $scope.productInventoryDetailsGo = function(shopProductId){
-                $state.go('productInventoryDetails',{shopProductId:shopProductId})
+                var timstamp = (new Date).valueOf();
+                $state.go('productInventoryDetails',{shopProductId:shopProductId,dateTime:timstamp})
             }
 
             $scope.chooseProductList = function(productTypeTwoId,productTypeTwoName){

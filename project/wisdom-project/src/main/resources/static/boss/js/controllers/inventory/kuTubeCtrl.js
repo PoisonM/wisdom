@@ -81,7 +81,8 @@ angular.module('controllers',[]).controller('kuTubeCtrl',
             }
 
             $scope.save = function () {
-                  $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),shopStoreId:$stateParams.id})
+                  var timstamp = (new Date).valueOf();
+                  $state.go('libraryTubeSetting',{ids:$scope.param.ids.join(','),names:$scope.param.names.join(','),shopStoreId:$stateParams.id,dateTime:timstamp})
             }
 
         }])

@@ -41,7 +41,8 @@ angular.module('controllers',[]).controller('productPutInStorageMoreCtrl',
                 }
             };
             $scope.newLibraryGo = function(){
-                $state.go("newLibrary",{stockStyle:$stateParams.stockStyle})
+                var timstamp = (new Date).valueOf();
+                $state.go("newLibrary",{stockStyle:$stateParams.stockStyle,dateTime:timstamp})
             }
 
         }]);

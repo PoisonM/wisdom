@@ -148,6 +148,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             }
 
             $scope.successfulInventoryGo=function(){
+                var timstamp = (new Date).valueOf();
                 if($scope.sum>0){
                     if($scope.flag){
                         $scope.flag=false;
@@ -169,7 +170,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
 
                 }else{
                      alert("入库商品列表不能为空！");
-                     $state.go('putInStorage',{name:$stateParams.name});
+                     $state.go('putInStorage',{name:$stateParams.name,dateTime:timstamp});
                 }
 
             }
