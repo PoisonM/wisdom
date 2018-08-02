@@ -10,7 +10,7 @@
             <ul>
                 <li ng-repeat="item in option.dataList" >
                     <div ng-click="goDetail(item.productId)" class="img">
-                        <img ng-src="{{item.firstUrl}}" alt="{{item.productName}}">
+                        <img ng-src="{{item.firstUrl}}?x-oss-process=image/resize,h_800" alt="{{item.productName}}">
                     </div>
                     <div class="text">
                         <div class="price">

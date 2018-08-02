@@ -27,6 +27,10 @@ angular.module('controllers',[]).controller('goodsListCtrl',
                         $scope.paginationConf.totalItems = data.responseData.totalCount//总条数
                         // $scope.paginationConf.currentPage = data.responseData.pageNo//当前
 
+
+                        for(var i = 0; i < data.responseData.responseData.length; i++){
+                            data.responseData.responseData[i].firstUrl = data.responseData.responseData[i].firstUrl.split("?")[0]
+                        }
                         $scope.option.dataList = data.responseData.responseData
                     }else {
                         alert(data.responseData)

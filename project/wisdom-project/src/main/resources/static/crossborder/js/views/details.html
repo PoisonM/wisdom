@@ -10,7 +10,7 @@
                         <div class="swiper-wrapper">
                             <div ng-repeat="item in goodDetails.productDetail.listPic" class="swiper-slide">
                                 <a>
-                                    <img ng-src="{{item}}" style="display: block;width: 100%;height: 100%" alt="">
+                                    <img ng-src="{{item}}?x-oss-process=image/resize,h_3600" style="display: block;width: 100%;height: 100%" alt="">
                                 </a>
                             </div>
                             <!--<div class="swiper-slide">
@@ -47,7 +47,7 @@
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
                             <div ng-repeat="item in goodDetails.productDetail.listPic" class="swiper-slide active-nav">
-                                <img ng-src="{{item}}" alt="" style="display: block;width: 100%;height: 100%">
+                                <img ng-src="{{item}}?x-oss-process=image/resize,h_3600" alt="" style="display: block;width: 100%;height: 100%">
                             </div>
                             <!--<div class="swiper-slide">
                                 <img src="images/details_img/s2.jpg" alt="" style="display: block;width: 100%;height: 100%">
