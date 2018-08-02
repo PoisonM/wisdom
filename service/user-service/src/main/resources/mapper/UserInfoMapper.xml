@@ -77,9 +77,6 @@
         <if test="delFlag != null and delFlag !=''">
             and del_flag=#{delFlag}
         </if>
-        <if test="userOpenid != null and userOpenid !=''">
-            and user_openid=#{delFlag}
-        </if>
     </select>
 
     <!-- 更新用户 -->
