@@ -14,7 +14,7 @@ public class ConfigConstant {
 
 	public static final String TRAINING_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("TRAINING_PRODUCT_BUY_NOTIFY_URL");
 
-	public static final String SECKILL_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("TRAINING_PRODUCT_BUY_NOTIFY_URL");
+	public static final String SECKILL_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("SECKILL_PRODUCT_BUY_NOTIFY_URL");
 
 	public static final String SPECIAL_PRODUCT_BUY_NOTIFY_URL = Global.getConfig("SPECIAL_PRODUCT_BUY_NOTIFY_URL");
 
