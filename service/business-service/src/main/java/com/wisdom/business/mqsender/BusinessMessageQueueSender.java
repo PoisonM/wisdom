@@ -63,7 +63,7 @@ public class BusinessMessageQueueSender {
         for(PayRecordDTO payRecordDTO : payRecordDTOList){
             String orderId = payRecordDTO.getOrderId();
             if(StringUtils.isNotNull(orderId)){
-                this.rabbitTemplate.convertAndSend("sendHandleSpecialProduct", orderId);
+                this.rabbitTemplate.convertAndSend("HandleSeckillProduct", orderId);
             }
         }
     }

@@ -306,9 +306,9 @@ public class BusinessMessageQueueReceiver {
         logger.info("处理用户消费特殊商品后的等级提升=="+userInfoDTO.getMobile());
     }
 
-    @RabbitListener(queues = "sendHandleSpecialProduct")
+    @RabbitListener(queues = "HandleSeckillProduct")
     @RabbitHandler
-    public void sendHandleSpecialProduct(String orderId) {
+    public void seckillProduct(String orderId)  throws UnsupportedEncodingException {
         logger.info("Receiver  : " + orderId);
         seckillProductService.handlePayNotify(orderId);
     }
