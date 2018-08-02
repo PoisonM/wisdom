@@ -83,7 +83,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                                         productId:$scope.param.product.productId,
                                         productName:$scope.param.product.productName,
                                         productNum:$scope.param.productNum,
-                                        productPrice:$scope.param.product.price,
+                                        productPrice:$scope.param.product.favorablePrice,
                                         productSpec:$scope.param.checkFlag
                                     };
                                     needPayOrderList.push(payOrder);
