@@ -55,20 +55,33 @@ public class SeckillProductService {
         Page<SeckillProductDTO> resultPage = seckillProductMapper.queryAllProducts(page);
         Date nowTime = new Date();
         for (SeckillProductDTO productDTO : resultPage.getList()){
-            int productAmount = productDTO.getProductAmount();
 //            0马上抢 1即将开始 2活动已结束 3已抢光
-            if(productAmount<=0){
+            if(productDTO.getProductAmount()>=productDTO.getActivityNum()){
                 productDTO.setStatus(3);
-            }else if(nowTime.getTime() >= productDTO.getEndTime().getTime()){
+            }else if(nowTime.getTime() >= productDTO.getActivityEndTime().getTime()){
                 productDTO.setStatus(2);
-            }else if(productDTO.getStartTime().getTime()>=nowTime.getTime()){
+            }else if(productDTO.getActivityStartTime().getTime()>=nowTime.getTime()){
                 productDTO.setStatus(1);
             }else{
-                productDTO.setStatus(0);
+                if(null != productDTO.getFieldStartTime()){
+                    if(DateUtils.compTime(nowTime,productDTO.getFieldStartTime()) && DateUtils.compTime(productDTO.getFieldEndTime(),nowTime)){
+                        productDTO.setStatus(0);
+                        if(null != productDTO.getFieldEndTime()){
+                            Calendar endCalendar = Calendar.getInstance();
+                            endCalendar.setTime(nowTime);
+                            endCalendar.set(Calendar.HOUR_OF_DAY, productDTO.getFieldEndTime().getHours());//时
+                            endCalendar.set(Calendar.MINUTE, productDTO.getFieldEndTime().getMinutes());//分
+                            endCalendar.set(Calendar.SECOND, productDTO.getFieldEndTime().getSeconds());//秒
+                            productDTO.setCountdown((endCalendar.getTime().getTime() - new Date().getTime())/1000);
+                        }
+                    }else {
+                        productDTO.setStatus(1);
+                    }
+                }else {
+                    productDTO.setStatus(2);
+                }
             }
-            if(null != productDTO.getEndTime()){
-                productDTO.setCountdown((productDTO.getEndTime().getTime() - new Date().getTime())/1000);
-            }
+
         }
         pageResult.setTotalCount((int)resultPage.getCount());
         pageResult.setResponseData(resultPage.getList());
@@ -85,22 +98,29 @@ public class SeckillProductService {
         SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
         if(null == seckillproductDTO){
             seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
-            seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
-            Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
-            OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
-            if(seckillproductDTO!=null)
-            {
-                offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-                seckillproductDTO.setProductDetail(offlineProductDTO);
+            if(null != seckillproductDTO){
+                Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
+                OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
+                if(seckillproductDTO!=null)
+                {
+                    offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
+                    seckillproductDTO.setProductDetail(offlineProductDTO);
+                }
+                JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
+            }else{
+                return null;
             }
-            JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
         }
         //这里有个弊端带付款后更新缓存信息
-        int productAmount = getProductAmout(seckillproductDTO.getFieldId()+"");
-        seckillproductDTO.setProductAmount(productAmount);
-        seckillproductDTO.setSellNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
-        if(null != seckillproductDTO.getEndTime()){
-            seckillproductDTO.setCountdown((seckillproductDTO.getEndTime().getTime() - new Date().getTime())/1000);
+        seckillproductDTO.setStockNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
+        seckillproductDTO.setCountdown(-1);
+        if(null != seckillproductDTO.getFieldEndTime()){
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(new Date());
+            endCalendar.set(Calendar.HOUR_OF_DAY, seckillproductDTO.getFieldEndTime().getHours());//时
+            endCalendar.set(Calendar.MINUTE, seckillproductDTO.getFieldEndTime().getMinutes());//分
+            endCalendar.set(Calendar.SECOND, seckillproductDTO.getFieldEndTime().getSeconds());//秒
+            seckillproductDTO.setCountdown((endCalendar.getTime().getTime() - new Date().getTime())/1000);
         }
         return seckillproductDTO;
     }
@@ -110,9 +130,9 @@ public class SeckillProductService {
      * 秒杀 查询缓存中的库存量
      * */
     public int getProductAmout(String fieldId){
-        Set orderSet = JedisUtils.vagueSearch("seckillproductOrder:" + fieldId);
-        int ordeNum = null == orderSet? 0:orderSet.size();
+        String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId);
         String productAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
+        int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
         if (StringUtils.isNotNull(productAmountStr) && Integer.parseInt(productAmountStr)-ordeNum>0) {
             return Integer.parseInt(productAmountStr)-ordeNum;
         }

@@ -3,6 +3,7 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
         ,'DeleteOrderFromBuyCart','AddProduct2BuyCart','MinusProduct2BuyCart','PutNeedPayOrderListToRedis',
         function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,GetBorderSpecialProductOrderList
             ,DeleteOrderFromBuyCart,AddProduct2BuyCart,MinusProduct2BuyCart,PutNeedPayOrderListToRedis) {
+            $scope.authentication_flag = false;
             $scope.params = {
                 checkAll:false,
                 listLen:"0"
@@ -26,9 +27,9 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             $scope.addCartFlag = true
             /**/
             $scope.addnum = function (item) {
-                item.businessProductNum++
+                // item.businessProductNum++
                 // item.businessProductId,item.businessProductNum
-                item.xiaoji = item.businessProductPrice*item.businessProductNum
+
                 if($scope.addCartFlag){
                     $scope.addCartFlag = false
                     AddProduct2BuyCart.get({
@@ -37,7 +38,10 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                         productSpec:item.productSpec
                     },function (data) {
                         $scope.addCartFlag = true
-                        $scope.getCartList()
+                        // $scope.getCartList()
+                        item.businessProductNum++
+                        item.xiaoji = item.businessProductPrice*item.businessProductNum
+                        $scope.allPrice()
                         if(data.result==Global.FAILURE){
                             alert("加入购物车失败");
                         }else{
@@ -48,11 +52,10 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
 
             }
             $scope.reducenum = function (item) {
-
                 if(item.businessProductNum <= 1){
                     return false
                 }else {
-                    item.businessProductNum--
+                    // item.businessProductNum--
                     if($scope.addCartFlag){
                         $scope.addCartFlag = false
                         MinusProduct2BuyCart.get({
@@ -61,7 +64,10 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                             productSpec:item.productSpec
                         },function (data) {
                             $scope.addCartFlag = true
-                            $scope.getCartList()
+                            // $scope.getCartList()
+                            item.businessProductNum--
+                            item.xiaoji = item.businessProductPrice*item.businessProductNum
+                            $scope.allPrice()
                             if(data.result==Global.FAILURE){
                                 alert("加入购物车失败");
                             }else{
@@ -72,31 +78,24 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                 }
 
             }
-            /*$scope.verifyNum = function (id,goodsNum) {
-                if($scope.addCartFlag){
-                    $scope.addCartFlag = false
-                    AddBorderSpecialProduct2ShoppingCart.get({
-                        productId:id,
-                        productNum:goodsNum
-                    },function (data) {
-                        $scope.addCartFlag = true
-                        $scope.getCartList()
-                        if(data.result==Global.FAILURE){
-                            alert("加入购物车失败");
-                        }else{
-                            alert("");
-                        }
-                    })
-                }
-            }*/
 
-            // updateBusinessOrderStatus
             //删除此订单
             $scope.delete=function(item2){
                 DeleteOrderFromBuyCart.get({orderId:item2.businessOrderId},function(data){
                     if(data.result==Global.SUCCESS){
                         alert("删除成功")
+                        item2.checkFlag = false
+                        for(var i = 0; i < $scope.cartList.length; i++){
+                            if(!$scope.cartList[i].checkFlag){
+                                $scope.params.checkAllFlag = false;
+                            }else {
+                            }
+                        }
+                        $scope.allPrice()
                         $scope.getCartList()
+                        // location.reload()
+                        $scope.submitList = [];
+                        $scope.price = new Number()
                     }
                 })
             };
@@ -116,7 +115,16 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                 $scope.price = new Number()
                 for(var i = 0; i < $scope.cartList.length; i++){
                     if($scope.cartList[i].checkFlag){
-                        $scope.submitList.push($scope.cartList[i])
+                        var payOrder = {
+                            orderId: $scope.cartList[i].businessOrderId,
+                            productFirstUrl: $scope.cartList[i].businessProductFirstUrl,
+                            productId: $scope.cartList[i].businessProductId,
+                            productName: $scope.cartList[i].businessProductName,
+                            productNum: $scope.cartList[i].businessProductNum,
+                            productPrice: $scope.cartList[i].businessProductPrice,
+                            productSpec:  $scope.cartList[i].productSpec
+                        };
+                        $scope.submitList.push(payOrder)
                         $scope.price += parseInt($scope.cartList[i].businessProductPrice*$scope.cartList[i].businessProductNum)
                     }
                 }
@@ -137,15 +145,21 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             }
 
             $scope.goPay = function () {
-                if($scope.submitList!=undefined){
+                $scope.allPrice()
+                $scope.authentication_flag = true;
+                if($scope.submitList!=undefined&&$scope.submitList.length!=0){
                     PutNeedPayOrderListToRedis.save({
                         needPayOrderList:$scope.submitList
                     },function (data) {
+                        $scope.authentication_flag = false
                         if(data.result==Global.SUCCESS){
                            $state.go("orderSubmit")
+                        }else {
+                            alert(data.errorInfo)
                         }
                     })
                 }else {
+                    $scope.authentication_flag = false;
                     alert("请选择购买商品")
                 }
 

@@ -12,8 +12,10 @@ var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
                     console.log(  $scope.seckillList )
                 })
 
-                $scope.seckillInfo = function (id) {
-                    $state.go("seckillInfo",{id:id});
+                $scope.seckillInfo = function (item) {
+                    if(item.status == 0){
+                        $state.go("seckillInfo",{id:item.id});
+                    }
                 }
             });
         }]);
@@ -47,7 +49,7 @@ seckill.directive('timerBtn', function() { // 倒计时按钮
                     if (second < 0) {
                         second = 0;
                     }
-                    return day + "天 " + (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
+                    return  (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
                 }
             }
 

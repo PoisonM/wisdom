@@ -32,7 +32,12 @@
                         </li>
                     </ul>
                 </div>
-                <p class="mt30 fs32 c66 mb50" style="height: 60px">套卡说明：{{param.cardDetail.detail}}</p>
+                <p class="mt30 fs32 c66 mb50" style="height: 60px">
+                    <!--套卡说明：{{param.cardDetail.detail}}-->
+                    功能介绍：
+                    <br>
+                    <textarea  readonly="readonly" style="width: 100%; border: none;resize:none;color: #999" cols="30" rows="10" ng-model="param.cardDetail.detail"></textarea>
+                </p>
             </div>
         </div>
     </div>

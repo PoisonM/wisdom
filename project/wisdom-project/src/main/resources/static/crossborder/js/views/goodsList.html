@@ -22,7 +22,7 @@
                             <span>{{item.productName}}</span>
                         </div>
                         <div class="add_shop">
-                            <i ng-click="addShopCart(item.productId)"></i>
+                            <i ng-click="addShopCart(item.productId,item.productDetail.spec[0])"></i>
                         </div>
                     </div>
                 </li>
@@ -30,4 +30,8 @@
         </div>
         <tm-pagination conf="paginationConf"></tm-pagination>
 
+</div>
+
+<div ng-if="authentication_flag" class="float_box">
+    <img src="images/loading.gif" alt="" class="authentication_img">
 </div>

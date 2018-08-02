@@ -59,7 +59,7 @@ public class ShopMemberAttendanceController {
 		userConsumeRequest.setSysShopId(sysShopId);
 
 		SysBossDTO sysBossDTO = UserUtils.getBossInfo();
-		userConsumeRequest.setSysBossCode(sysBossDTO.getId());
+		userConsumeRequest.setSysBossCode(sysBossDTO.getSysBossCode());
 		pageParamVoDTO.setRequestData(userConsumeRequest);
 		List<ExpenditureAndIncomeResponseDTO> list = shopStatisticsAnalysisService
 				.getExpenditureAndIncomeList(pageParamVoDTO);
@@ -197,7 +197,7 @@ public class ShopMemberAttendanceController {
 		}
 		PageParamVoDTO<UserConsumeRequestDTO> pageParamVoDTO = new PageParamVoDTO();
 		UserConsumeRequestDTO userConsumeRequestDTO = new UserConsumeRequestDTO();
-		userConsumeRequestDTO.setSysBossCode(sysBossDTO.getId());
+		userConsumeRequestDTO.setSysBossCode(sysBossDTO.getSysBossCode());
 		userConsumeRequestDTO.setSysShopId(sysShopId);
 		pageParamVoDTO.setRequestData(userConsumeRequestDTO);
 		pageParamVoDTO.setPaging(true);

@@ -51,13 +51,7 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                 {
 
                     BossUserLogin.save({userPhone:$scope.param.userPhone,code:$scope.param.validateCode},function(data){
-                        console.log(data);
-                        if(data.result==Global.FAILURE)
-                        {
-                            alert(data.errorInfo);
-                        }
-                        else
-                        {
+                        if(data.result=='0x00001'){
 
                             if(data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)
                             {
@@ -76,9 +70,7 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                                 window.localStorage.removeItem("beautyClerkLoginToken");
                                 window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
                             }
-                            if(data.responseData.beautyBossLoginToken==Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken==Global.TOKEN_ERROR){
-                                alert("登录未成功，请重新登录")
-                            }else{
+                            if((data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)||(data.responseData.beautyClerkLoginToken!=Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)){
                                 if($stateParams.redirectUrl=='')
                                 {
                                     window.location.href = "";
@@ -89,9 +81,14 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                                     alert("登录成功");
                                     window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
                                 }
-                            }
 
+                            }else{
+                                alert("请使用正确的帐号登录")
+                            }
+                        }else{
+                            alert(data.errorInfo);
                         }
+
                     })
                 }
             }

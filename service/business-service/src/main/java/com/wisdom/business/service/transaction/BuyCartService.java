@@ -197,7 +197,7 @@ public class BuyCartService {
     public String addCrossBorderProduct(String productId,int num,String productSpec) {
         UserInfoDTO userInfoDTO = UserUtils.getUserInfoFromRedis();
         logger.info("用户=={}将货品id=={}数量=={}",userInfoDTO.getId(),productId,num);
-        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,"special",userInfoDTO.getId());
+        OrderProductRelationDTO orderProductRelationUnPaid = transactionMapper.getOrderProductUnPaidInBuyCart(productId,productSpec,userInfoDTO.getId());
         if(ObjectUtils.isNullOrEmpty(orderProductRelationUnPaid)){
             try {
                 String businessOrderId = CodeGenUtil.getOrderCodeNumber();

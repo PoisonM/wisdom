@@ -80,7 +80,7 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
          /*搜索*/
           $scope.search=function () {
               FindArchives.get({sysShopId:$scope.param.sysShopId,pageSize:$scope.param.pageSize,pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
-                  if(data.result == "0x00001"){
+                  if(data.result == "0x00001"&&data.responseData!=null){
                       $scope.fileList = [];
                       $ionicScrollDelegate.$getByHandle('dashboard').scrollTop(false);
                       $scope.info = data.responseData.info;

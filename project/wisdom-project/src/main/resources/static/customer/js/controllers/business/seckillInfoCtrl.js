@@ -3,7 +3,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
         '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis',
         function ($scope,$rootScope,$stateParams,$state,$ionicPopup,
                   $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global,PutNeedPayOrderListToRedis) {
-
+            $scope.authentication_flag = false;
             $rootScope.title = "秒杀详情";
             $scope.model=false;
             $scope.myObj = {
@@ -15,6 +15,9 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                 if(!type){
                     $scope.param.checkFlag=""
                 }
+            };
+            $scope.kefu = function () {
+                $state.go("contactCustomer");
             };
 
             $scope.confirmProductSpec = function(spec) {
@@ -51,13 +54,12 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                             alert("请选择正确的数量");
                             return
                         }
-                        if($scope.param.productNum>$scope.param.product.productAmount){
+                        if($scope.param.productNum>$scope.param.product.stockNum){
                             alert("库存不足~");
                             return;
                         }
                         else
                         {
-
                             showToast("加载中");
                             CreateSeckillOrder.save(
                                 {businessProductId:$scope.param.product.productId,
@@ -110,25 +112,23 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productNum){
+                if($scope.param.productNum>$scope.param.product.productNum ||$scope.param.productNum>$scope.param.product.stockNum){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
-                    $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
-                }else{
-                    $("#goPay").css("background","red");
+                    $("#goPay").attr('disabled','disabled').addClass("grey");
                 }
             };
 
             $scope.minusProductNum = function(){
                 if($scope.param.productNum>1){
                     $scope.param.productNum= $scope.param.productNum-1;
-                }else{
-                    $(".ion-ios-minus-outline").attr('disabled','disabled').addClass("grey");
                 }
-                if($scope.param.productNum<=$scope.param.product.productNum){
+                if($scope.param.productNum<=$scope.param.product.productNum ||$scope.param.productNum <= $scope.param.product.stockNum){
                     $("#goPay").css("background","red");
+                    $('#goPay').removeAttr("disabled");
                 }else{
                     $("#goPay").css("background","grey");
+                    $("#goPay").attr('disabled','disabled').addClass("grey");
                 }
             };
 
@@ -175,6 +175,11 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
                 SeckillInfo.get({activtyId:$stateParams.id+""},function (data){
                     $ionicLoading.hide();
+                    if(null == data.countdown || data.countdown <=0){
+                        alert("本活动还没有开始");
+                        $state.go("seckillList");
+                        return
+                    }
                     $scope.param.product = data;
                     $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
                     if($scope.param.product.productNum <= 0){
@@ -203,7 +208,7 @@ seckillInfo.directive('timerBtn', function() { // 倒计时按钮
             startTime: '=startTime',
             getData: '&getData'
         },
-        template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'距离活动结束:\' +showTime : \'\'" ng-click="getData()"></span>',
+        template: '<p class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'距离活动结束:\' +showTime : \'\'" ng-click="getData()"></p>',
         controller: function($scope, $interval) {
             var formatTime = function(sys_second) {
                 if (sys_second > 0) {
@@ -224,7 +229,7 @@ seckillInfo.directive('timerBtn', function() { // 倒计时按钮
                     if (second < 0) {
                         second = 0;
                     }
-                    return day + "天 " + (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
+                    return (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
                 }
             }
 

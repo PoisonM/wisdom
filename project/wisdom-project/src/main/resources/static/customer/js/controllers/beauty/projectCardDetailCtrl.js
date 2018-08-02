@@ -15,17 +15,20 @@ angular.module('controllers',[]).controller('projectCardDetailCtrl',
                 $scope.param = {
                     pageSize: 5000,
                     projectCardConsumes: [],
-                    projectCardDetailData: "true"
+                    picFlag:false/*空白页面的显示*/
                 };
 
                 GetProjectCardConsumeByFlowId.get({flowId: $stateParams.projectId, consumeType: "1"}, function (data) {
-                    $ionicLoading.hide();
-                    if (data.result == Global.SUCCESS) {
-                        if (data.responseData != null) {
-                            $scope.param.projectCardConsumes = data.responseData;
-                        } else {
-                            $scope.param.projectCardDetailData = "false";
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $ionicLoading.hide();
+                        $scope.param.projectCardConsumes = data.responseData;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
                         }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.picFlag=true;
                     }
                 })
             })                
