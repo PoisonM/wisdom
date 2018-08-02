@@ -1452,7 +1452,7 @@ define(['appBoss'], function(app){
                     })
                     /*successfulInventory成功入库*/
                     .state('successfulInventory', {
-                        url: '/successfulInventory/:id,:type',
+                        url: '/successfulInventory/:id,:type/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'successfulInventoryCtrl',
                         resolve: {
@@ -1570,7 +1570,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('funArea', {
-                        url: '/funArea/:name',
+                        url: '/funArea/:name/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'funAreaCtrl',
                         resolve: {
@@ -1734,7 +1734,7 @@ define(['appBoss'], function(app){
                     })
                 /*entryDetails 入库单详情*/
                     .state('entryDetails', {
-                        url: '/entryDetails/:id',
+                        url: '/entryDetails/:id/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'entryDetailsCtrl',
                         resolve: {
@@ -1958,7 +1958,7 @@ define(['appBoss'], function(app){
                     })
                 /*chooseWarehouse 选择仓库*/
                     .state('chooseWarehouse', {
-                        url: '/chooseWarehouse',
+                        url: '/chooseWarehouse/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'chooseWarehouseCtrl',
                         resolve: {

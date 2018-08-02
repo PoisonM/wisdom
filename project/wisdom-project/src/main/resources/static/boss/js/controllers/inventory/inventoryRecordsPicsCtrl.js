@@ -114,6 +114,7 @@ angular.module('controllers',[]).controller('inventoryRecordsPicsCtrl',
             $scope.getInfo()
 
             $scope.entryDetailsGo=function(entryId){
-                $state.go('entryDetails',{id:entryId})
+                var timstamp = (new Date).valueOf();
+                $state.go('entryDetails',{id:entryId,dateTime:timstamp})
             }
         }])

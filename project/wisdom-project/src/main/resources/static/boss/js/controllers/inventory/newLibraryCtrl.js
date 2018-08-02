@@ -163,7 +163,9 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                         $scope.param.shopStock.productDateString = $scope.param.shopStock.productDate;
                         AddStock.save($scope.param.shopStock,function(data){
                             if(data.result==Global.SUCCESS){
-                                $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
+                                $rootScope.shopInfo.entryShopProductList=[];
+                                var timstamp = (new Date).valueOf();
+                                $state.go("successfulInventory",{id:data.responseData,type:'inbound',dateTime:timstamp})
                             }
                         })
                     }
