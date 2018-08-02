@@ -51,7 +51,6 @@ public class BusinessLoginController {
         if (!StringUtils.isNotNull(openid)) {
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setMobile(loginDTO.getUserPhone());
-            userInfoDTO.setUserOpenid(openid);
             List<UserInfoDTO> userInfoList = userInfoService.getUserInfo(userInfoDTO);
             if (userInfoList != null && userInfoList.size() > 0) {
                 if (userInfoList.size() == 1) {
