@@ -1,6 +1,5 @@
 package com.wisdom.business.controller.product;
 
-import com.mongodb.Mongo;
 import com.wisdom.business.interceptor.LoginRequired;
 import com.wisdom.business.service.product.ProductService;
 import com.wisdom.business.service.product.TrainingProductService;
@@ -8,10 +7,8 @@ import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.ProductDTO;
-import com.wisdom.common.dto.product.TrainingProductDTO;
 import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
 import com.wisdom.common.dto.system.ExportProductExcelDTO;
-import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.util.CodeGenUtil;
 import com.wisdom.common.util.CommonUtils;
@@ -164,6 +161,34 @@ public class ProductController {
 		responseDTO.setResponseData(productDTO);
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		logger.info("根据id查询商品,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
+
+	/**
+	 * 根据id查询商品
+	 * @param productId  商品id
+	 * @return
+	 */
+	@RequestMapping(value = "findProductDetail", method = {RequestMethod.POST, RequestMethod.GET})
+	@LoginRequired
+	public
+	@ResponseBody
+	ResponseDTO<List<ProductDTO>> findProductDetail(@RequestParam String productId) {
+		long startTime = System.currentTimeMillis();
+		logger.info("根据id查询商品==={}开始" , startTime);
+		ResponseDTO<List<ProductDTO>> responseDTO = new ResponseDTO<>();
+		logger.info("根据id查询商品==={}" , productId);
+		ProductDTO productDTO = productService.findProductDetail(productId);
+		if(productDTO !=null){
+			List<ProductDTO> productDTOList = new ArrayList<ProductDTO>();
+			productDTOList.add(productDTO);
+			responseDTO.setResponseData(productDTOList);
+			responseDTO.setResult(StatusConstant.SUCCESS);
+			logger.info("根据id查询商品,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		}else{
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}
+
 		return responseDTO;
 	}
 
@@ -386,5 +411,7 @@ public class ProductController {
 		logger.info("getSpecialShopInfo,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 		return responseDTO;
 	}
+
+
 }
 

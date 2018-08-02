@@ -40,6 +40,7 @@ public class TimerServiceApplication {
 
 		weixinServiceClient.updateBeautyWeixinToken();
 
+
 	}
 
 }

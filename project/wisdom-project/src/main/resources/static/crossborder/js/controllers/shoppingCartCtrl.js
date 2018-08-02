@@ -9,7 +9,7 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             }
             /**/
             $scope.getCartList = function () {
-                GetBorderSpecialProductOrderList.get({status:"all"},function (data) {
+                GetBorderSpecialProductOrderList.get({status:"3"},function (data) {
                     if(data.result == Global.SUCCESS){
                         $scope.cartList = data.responseData;
                         for(var i = 0; i < $scope.cartList.length; i++){

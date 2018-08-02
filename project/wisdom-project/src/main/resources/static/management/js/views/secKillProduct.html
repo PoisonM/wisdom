@@ -1,0 +1,111 @@
+<div>
+ <nav-bar index1="6" index2="62"></nav-bar>
+ <div class="main_content">
+     <enjoy-menu></enjoy-menu>
+     <div class="content_box">
+         <div class="mum" ng-show="mum">
+             <div class="m-load2">
+                 <div class="line">
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                     <div></div>
+                 </div>
+                 <div class="circlebg"></div>
+             </div>
+         </div>
+         <div>
+             <span style="margin-top:18px;font-family:Aria;font-size:20px; width:139px;height:35px;line-height:20px;text-align:center;display:block;">活动管理</span>
+             <hr style="margin-top:1px;background-color:#c0bebe;height:2px;"/>
+         </div>
+         <div style="margin-left:50px;width:350px;height:135px; border:1px solid #000;">
+             <div class="list" style="float:left;background:hite;margin-top:-90px;">
+                     <div style="margin-top:115px;float:left;margin-left:19px;width:80px;height:80px; border:1px solid #000;margin-top: 120px;">
+                         <span style="margin-top:27px;font-family:Aria;font-size:45px; width:79px;line-height:20px;text-align:center;display:block;">
+                             秒
+                         </span>
+                     </div>
+                     <div style ="float:left;width:70px;margin-left:15px;margin-top:120px;">
+                         <p style="margin-left:10px;font-size:16px;font-family:PingFang-SC;margin-left:2%;margin-top:10px;color:#4a4a4a;">限时秒杀</p>
+                         <p style="font-size:12px;font-family: PingFang-SC-Regular;margin-left:2%;margin-top:6px;color:#4A4A4A;"></p>
+                         <p></p>
+                         <p style="font-size:14px;font-family:PingFang-SC;margin-left:2%;margin-top:6px;color:#FF4040;">引流&促销</p>
+                         <br>
+                     </div>
+             </div>
+             <div style="margin-left:104px;" >
+                 <button style="margin-left:30px;margin-top:50px;font-family: 微软雅黑;color: #3e0e0e;font-size: 13px;background: #807ced;padding: 10px 20px 10px 20px;text-decoration: none;text-decoration: 26px;margin-left: 45px;"ng-click="addSecKillActivity()">立即创建</button>
+             </div>
+         </div>
+         <hr style="margin-top:18px;background-color:#c0bebe;height:8px;"/>
+         <div>
+             <span style="margin-top:18px;font-family:Aria;font-size:20px; width:139px;height:35px;line-height:20px;text-align:center;display:block;">活动列表</span>
+             <hr style="margin-top:10px;background-color:#c0bebe;height:1px;"/>
+         </div>
+         <div class="product_content_right"style="margin-top:-45px;">
+            <div class="rightCenter">
+                <div class="product_eara">
+                    <div class="product_name" style="width:85%">
+                        <div class="product_nameEara" style="float:left;margin-top: 27px;margin-right: 50px;width:35%">
+                            <label class="bold">活动编号:</label>
+                            <input type="text" id="activityNo" style="width:50%" class="product_search" ng-model="activityNo">
+                        </div>
+                        <div style="float:left;margin-top: 27px;margin-right: 50px;width:50%">
+                            <span class="bold agencyTime">时间：</span>
+                            <input class="time MStart date" id="startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp;--&nbsp;<input class="time MEnd date" id="endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+                        </div>
+                        <div  style="margin-top: 90px;width:32%">
+                            <label style="font-weight:600;">活动状态:</label>
+                            <select class="checkStatus selectWidth" id="activityStatus" style="width:155px;border:1px solid;height:30px;color:#7f818a;">
+                                <option value=""> 全部状态</option>
+                                <option value="0">待开始</option>
+                                <option value="1">进行中</option>
+                                <option value="2">已结束</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="product_searchEara">
+                        <input type="button" value="搜索" class="search_btn top_1" ng-click="searchBalance()">
+                    </div>
+                </div>
+                <div class="table_lis">
+                    <table class="table text-center ">
+                        <thead>
+                            <tr id="product_lis_title">
+                                <th class="text-center">活动编号</th>
+                                <th class="text-center">活动名称</th>
+                                <th class="text-center">活动状态</th>
+                                <th class="text-center">活动数量</th>
+                                <th class="text-center" colspan="2">活动时间</th>
+                                <th class="text-center" colspan="3">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in seckillActivityDataList">
+                                <td>{{item.activityNo}}</td>
+                                <td>{{item.activityName}}</td>
+                                <td>
+                                    <span>{{item.activityStatus}}</span>
+                                    <span>{{item.activityDays}}</span>
+                                </td>
+                                <td>{{item.activityNum}}/场次</td>
+                                <td colspan="2">{{item.startTimeString}}&nbsp;--&nbsp;{{item.endTimeString}}</td>
+                                <td colspan="3">
+                                    <a ng-click="details(item.id);$event.stopPropagation()" class="orderBtn" >活动详情</a>
+                                    &nbsp;
+                                    <a ng-click="changeStatus(item.id,item.isEnable);$event.stopPropagation()" ng-if="item.isEnable=='1'" class="orderBtn" >撤销活动</a>
+                                    <a ng-click="changeStatus(item.id,item.isEnable);$event.stopPropagation()" ng-if="item.isEnable=='0'" class="orderBtn" >启用活动</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div page-tool></div>
+                </div>
+            </div>
+        </div>
+     </div>
+ </div>
+</div>

@@ -98,8 +98,7 @@ public class TimerMessageQueueReceiver {
         userBusinessTypeDTO.setSysUserId(incomeRecord.getSysUserId());
         userBusinessTypeDTO.setStatus("2");
         List<UserBusinessTypeDTO> userBusinessTypeDTOS = businessServiceClient.getUserBusinessType(userBusinessTypeDTO);
-        if(userBusinessTypeDTOS.size()>0)
-        {
+        if(userBusinessTypeDTOS.size()>0){
             logger.info("incomeRecord记录中的这个用户={}的门店处于冻结状态" ,incomeRecord.getSysUserId());
         }
         else

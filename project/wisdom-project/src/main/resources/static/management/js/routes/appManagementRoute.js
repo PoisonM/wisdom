@@ -348,6 +348,32 @@ define(['appManagement'], function(app){
                           }
                       })
 
+                      .state('addSeckillProduct', {
+                            url: '/addSeckillProduct',
+                            templateProvider: function() { return lazyDeferred.promise; },
+                            controller: 'addSeckillProductCtrl',
+                            resolve: {
+                                load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                    loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.addSeckillProductCtrl',
+                                        ['js/controllers/addSeckillProductCtrl.js?ver=' + managementVersion],
+                                        'js/views/addSeckillProduct.html?ver=' + managementVersion);
+                                }
+                            }
+                        })
+
+                        .state('seckillProductDetail', {
+                             url: '/seckillProductDetail/:id',
+                             templateProvider: function() { return lazyDeferred.promise; },
+                             controller: 'seckillProductDetailCtrl',
+                             resolve: {
+                                  load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                      loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.seckillProductDetailCtrl',
+                                          ['js/controllers/seckillProductDetailCtrl.js?ver=' + managementVersion],
+                                          'js/views/seckillProductDetail.html?ver=' + managementVersion);
+                                  }
+                             }
+                          })
+
                     .state('homeImageUpload', {
                         url: '/homePageEditor/:bannerId',
                         templateProvider: function() { return lazyDeferred.promise; },

@@ -4,6 +4,7 @@ import com.wisdom.business.mapper.product.SeckillProductMapper;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
+import com.wisdom.common.dto.product.SeckillActivityFieldDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.*;
@@ -16,10 +17,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 微商城秒杀服务层
@@ -126,33 +125,147 @@ public class SeckillProductService {
      * */
     public PageParamVoDTO<List<SeckillActivityDTO>> findSeckillActivitylist(SeckillActivityDTO seckillActivityDTO){
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+
         PageParamVoDTO<List<SeckillActivityDTO>> page = new PageParamVoDTO();
+
+        Date activityDate = new Date();
+        seckillActivityDTO.setActivityStatusTimeString(sdf.format(activityDate));
+        if(seckillActivityDTO.getStartTime()!=null){
+            seckillActivityDTO.setStartTimeString(sdf.format(seckillActivityDTO.getStartTime()));
+        }
+        if(seckillActivityDTO.getEndTime()!=null){
+            seckillActivityDTO.setEndTimeString(sdf.format(seckillActivityDTO.getEndTime()));
+        }
         List<SeckillActivityDTO> seckillActivityList = seckillProductMapper.findSeckillActivityList(seckillActivityDTO);
         Date now = new Date();
+
         for(SeckillActivityDTO seckillActivity : seckillActivityList){
-            if(now.getTime()>= seckillActivity.getStartTime().getTime()){
-                if(now.getTime()<=seckillActivity.getEndTime().getTime()){
-                    seckillActivity.setActivityStatus("进行中");
-                }else if(now.getTime()>seckillActivity.getEndTime().getTime()){
-                    seckillActivity.setActivityStatus("已结束");
+
+            seckillActivity.setStartTimeString(sdf1.format(seckillActivity.getStartTime()));
+            seckillActivity.setEndTimeString(sdf1.format(seckillActivity.getEndTime()));
+
+            //判断活动状态是否为启用
+            if(seckillActivity.getIsEnable()!=0){
+
+                //根据时间判断活动状态
+                if(now.getTime()>= seckillActivity.getStartTime().getTime()){
+                    if(now.getTime()<=seckillActivity.getEndTime().getTime()){
+
+                        seckillActivity.setActivityStatus("进行中");
+                    }else if(now.getTime()>seckillActivity.getEndTime().getTime()){
+                        seckillActivity.setActivityStatus("已结束");
+                    }
+                }else{
+                    seckillActivity.setActivityStatus("未开始");
+                    Calendar beginCalendar = Calendar.getInstance();
+                    beginCalendar.set(seckillActivity.getStartTime().getYear(),seckillActivity.getStartTime().getMonth(),seckillActivity.getStartTime().getDate(),seckillActivity.getStartTime().getHours(),seckillActivity.getStartTime().getMinutes(),seckillActivity.getStartTime().getSeconds());		//设定时间为2017年3月2日20:20:20
+                    Calendar endCalendar = Calendar.getInstance();
+                    endCalendar.set(now.getYear(),now.getMonth(),now.getDay(),now.getHours(),now.getMinutes(),now.getSeconds());		//设定时间为2017年3月3日10:10:10
+                    long beginTime = beginCalendar.getTime().getTime();
+                    long endTime = endCalendar.getTime().getTime();
+                    long betweenDays = (long)((endTime - beginTime) / (1000 * 60 * 60 *24));
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("距离活动").append(betweenDays).append("天");
+                    seckillActivity.setActivityDays(sb.toString());
                 }
             }else{
-                seckillActivity.setActivityStatus("未开始");
-                Calendar beginCalendar = Calendar.getInstance();
-                beginCalendar.set(seckillActivity.getStartTime().getYear(),seckillActivity.getStartTime().getMonth(),seckillActivity.getStartTime().getDate(),seckillActivity.getStartTime().getHours(),seckillActivity.getStartTime().getMinutes(),seckillActivity.getStartTime().getSeconds());		//设定时间为2017年3月2日20:20:20
-                Calendar endCalendar = Calendar.getInstance();
-                endCalendar.set(now.getYear(),now.getMonth(),now.getDay(),now.getHours(),now.getMinutes(),now.getSeconds());		//设定时间为2017年3月3日10:10:10
-                long beginTime = beginCalendar.getTime().getTime();
-                long endTime = endCalendar.getTime().getTime();
-                long betweenDays = (long)((endTime - beginTime) / (1000 * 60 * 60 *24));
-                seckillActivity.setActivityDays(betweenDays);
+                seckillActivity.setActivityStatus("已结束");
             }
+
         }
+
         int count = seckillProductMapper.findSeckillActivityCount(seckillActivityDTO);
-        page.setRequestData(seckillActivityList);
+
+        page.setResponseData(seckillActivityList);
         page.setTotalCount(count);
-        page.setPageNo(seckillActivityDTO.getPageNo());
+        page.setPageNo(seckillActivityDTO.getPageNo()+1);
         page.setPageSize(seckillActivityDTO.getPageSize());
         return page;
+    }
+
+    /**
+     * 修改活动状态
+     *
+     * */
+    public String changeSeckillActivityStatus(Integer id ,Integer isEnable){
+        try{
+            seckillProductMapper.changeSecKillProductStatus(id,isEnable);
+            return "success";
+        }catch (Exception e){
+            logger.info("秒杀活动Id:{}状态，改变失败",id);
+            return "failure";
+        }
+    }
+
+    /**
+     * 新增秒杀活动
+     *
+     *
+     * */
+    @Transactional(rollbackFor = Exception.class)
+    public String  addSeckillActivity(SeckillActivityDTO seckillActivityDTO) throws Exception{
+
+        SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        StringBuilder sbStart = new StringBuilder();
+        sbStart.append(seckillActivityDTO.getStartTimeString()).append("00:00:00");
+        StringBuilder sbEnd = new StringBuilder();
+        sbEnd.append(seckillActivityDTO.getEndTimeString()).append("23:59:59");
+
+        seckillActivityDTO.setStartTimeString(sbStart.toString());
+        seckillActivityDTO.setEndTimeString(sbEnd.toString());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        seckillActivityDTO.setCreateTime(new Date());
+        seckillActivityDTO.setActivityNo(UUID.randomUUID().toString());
+        int activityId = seckillProductMapper.addSeckillActivity(seckillActivityDTO);
+
+        for(SeckillActivityFieldDTO seckillActivityField : seckillActivityDTO.getSessionList()){
+            SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
+            seckillActivityFieldDTO.setActivityId(seckillActivityDTO.getId());
+            seckillActivityFieldDTO.setCreateTime(new Date());
+            long msc = 36000;
+            try {
+                seckillActivityFieldDTO.setStartTime(sdf.parse(seckillActivityField.getStartTimeString()));
+                seckillActivityFieldDTO.setEndTime(sdf.parse(seckillActivityField.getEndTimeString()));
+                msc = (sdfEnd.parse(sbStart.toString()).getTime()-(new Date()).getTime())/1000;
+            }catch (Exception e){
+
+            }
+            int ms = (int)Integer.parseInt(String.valueOf(msc));
+            seckillActivityFieldDTO.setProductAmount(seckillActivityDTO.getActivityNum());
+            seckillProductMapper.addSeckillActivityField(seckillActivityFieldDTO);
+            JedisUtils.set(String.valueOf(seckillActivityFieldDTO.getId()),String.valueOf(seckillActivityFieldDTO.getProductAmount()),ms);
+        }
+
+        return "success";
+    }
+
+    /**
+     * 获取秒杀活动详情
+     *
+     * */
+    public SeckillActivityDTO getSecKillActivity(Integer id){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm:ss");
+        SeckillActivityDTO seckillActivityDTO = new SeckillActivityDTO();
+        seckillActivityDTO = seckillProductMapper.getSecKillActivity(id);
+
+        seckillActivityDTO.setStartTimeString(sdf.format(seckillActivityDTO.getStartTime()));
+        seckillActivityDTO.setEndTimeString(sdf.format(seckillActivityDTO.getEndTime()));
+
+        List<SeckillActivityFieldDTO> seckillActivityFieldList = seckillProductMapper.findSecKillActivityField(seckillActivityDTO.getId());
+        for(SeckillActivityFieldDTO seckillActivityField:seckillActivityFieldList){
+
+            seckillActivityField.setStartTimeString(sdfH.format(seckillActivityField.getStartTime()));
+            seckillActivityField.setEndTimeString(sdfH.format(seckillActivityField.getEndTime()));
+
+        }
+
+        seckillActivityDTO.setSessionList(seckillActivityFieldList);
+
+        return seckillActivityDTO;
     }
 }

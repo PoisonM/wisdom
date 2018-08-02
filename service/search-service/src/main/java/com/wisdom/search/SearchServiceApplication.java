@@ -14,7 +14,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 @EnableFeignClients
 @MapperScan(basePackages = {"com.wisdom.search.mapper"})
-public class SearchServiceApplication {
+class SearchServiceApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext app = SpringApplication.run(SearchServiceApplication.class, args);

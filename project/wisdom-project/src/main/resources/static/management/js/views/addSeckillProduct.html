@@ -1,0 +1,93 @@
+
+  <div>
+    <nav-bar index1="4" index2="42"></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+         <div class="content_box">
+             <div>
+                 <button style="margin-left:-11px;margin-top:20px;font-family: 微软雅黑;color: #3e0e0e;font-size: 12px;background: #f2857d;padding: 10px 20px 10px 20px;text-decoration: none;text-decoration: 26px;margin-left: 20px;" ng-click="backList()">返回列表</button>
+                 <hr style="margin-top:10px;background-color:#c0bebe;height:2px;"/>
+             </div>
+             <div class="product_content_right">
+                 <div class="rightCenter">
+                     <div class="uploading_product_name">
+                         <label for="activityName">
+                             活动名称:
+                         </label>
+                         <input type="text" style="width:32%;" id="activityName" class="product_search activityName"  ng-model="seckillActivityDTO.activityName">
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="startTime">
+                             活动时间:
+                         </label>
+                         <input class="time MStart date"  style="width:32%;" id="startTime" ng-model="seckillActivityDTO.startTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});" >&nbsp;--&nbsp;<input class="time MEnd date" id="endTime" ng-model="seckillActivityDTO.endTime" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});">
+                     </div>
+                     <div class="uploading_product_name">
+                         <label>
+                             场次设置:
+                         </label>
+                         <div id="sec_kill_session_div">
+                             <div class="uploading_product_name sec_kill_session" ng-repeat="secKillSession in secKillSessions">
+                                 <div style="float:left;margin-left: 55px;">
+                                     <label style="width:65px;">
+                                        第{{$index+1}}场:
+                                    </label>
+                                     <input class="time MStart date startTime" style="width:120px;"  onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:true});" >&nbsp;&#45;&#45;&nbsp;<input class="time MEnd date endTime" style="width:120px;"  onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:true});">
+                                 </div>
+                                 <img ng-src="images/del.png" ng-click="deleteSession($index)" style="float:left;min-width:20px;min-height:20px;float:left;border-radius:4px;margin-left:430px;margin-top:-29px;">
+                             </div>
+                         </div>
+                         <div style="margin-top:80px;">
+                             <img ng-src="images/add.png" ng-click="addSession($index)" style="width:85px;height:55px;border-radius:4px;margin-left: 225px;">
+                         </div>
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="productNum">
+                             限量设置:
+                         </label>
+                         <input type="text"  style="width:32%;" id="productNum" class="product_search productNum" ng-model="seckillActivityDTO.productNum">
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="productId">
+                             商品编码:
+                         </label>
+                         <input type="text"  style="width:32%;"  id="productId" class="product_search productId" ng-model="seckillActivityDTO.productId">
+                         <button style="margin-left:-11px;margin-top:20px;font-family: 微软雅黑;color: #3e0e0e;font-size: 10px;background: #acb0e1;padding: 8px 10px 8px 10px;text-decoration: none;text-decoration: 26px;margin-left: 20px;" ng-click="getProductDetail()">获取商品详情</button>
+                     </div>
+                     <div id="productDetail">
+                         <div class="list" ng-repeat="item in SeckillActivityDTO.productDTOList" style="margin-left:13px;width:600px;height:190px; border:1px solid #000;margin-top: 30px;">
+                                <div style="margin-top:-63px;float:left;margin-left:20px;width:120px;height:120px; border:1px solid #000;margin-top: 26px;">
+                                    <img ng-src="{{item.firstUrl}}" style="margin:auto;border-radius:4px;width: 115px;height: 115px;">
+                                </div>
+                                <div style="float: left;width: 300px;margin-top: 15px;">
+                                     <p style="font-size:12px;font-family:PingFang-SC;margin-left:8%;margin-top:10px;color:#4a4a4a;">商品名称：{{item.productName}}</p>
+                                     <p></p>
+                                     <p style="font-size:12px;font-family:PingFang-SC;margin-left:8%;margin-top:29px;color:#635B5B;">活动价格：<input type="text" id="favorablePrice" style="width:130px;height: 25px;"/></p>
+                                     <br>
+                                     <p style="margin-left:8%;font-size:12px;font-family:PingFang-SC-Bold;color:#5F5D5C;">活动数量：<input type="text" id="activityNum" style="width:130px;height: 25px;"/>&nbsp;/场次</p>
+                                </div>
+                                <div style="float: left;margin-top: 60px;">
+                                    <button style="margin-left:-11px;margin-top:20px;font-family: 微软雅黑;color: #3e0e0e;font-size: 12px;background: #acb0e1;padding: 8px 10px 8px 10px;text-decoration: none;text-decoration: 26px;margin-left: 20px;" ng-click="delProduct()">删除商品</button>
+                                </div>
+                         </div>
+                     </div>
+                     <div class="uploading_product_name">
+                         <label for="isEnable">是否发布:</label>
+                         <select id="isEnable"  style="width:32%;" ng-model="seckillActivityDTO.isEnable" class="selectWidth">
+                             <option selected="selected" value="">请选择</option>
+                             <option value="1">是</option>
+                             <option value="0">否</option>
+                         </select>
+                     </div>
+                     <div id="particulars_viewPic"></div>
+                     <div class="save saveOperation">
+                         <button style="margin-left:-11px;margin-top:20px;font-family: 微软雅黑;color: #3e0e0e;font-size: 18px;background: #acb0e1;padding: 5px 25px 5px 25px;text-decoration: none;text-decoration: 26px;margin-left: 20px;" ng-click="submit()">保存</button>
+                         <p style="color:red;text-align: center;margin-top:20px;" ng-show="mess">请检查信息</p>
+                     </div>
+                 </div>
+             </div>
+             <div class="product_content_left">
+             </div>
+         </div>
+     </div>
+  </div>
