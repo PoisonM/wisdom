@@ -155,4 +155,14 @@ public class ProductService {
     public List<String> getBorderSpecialProductBrandList() {
         return productMapper.getBorderSpecialProductBrandList();
     }
+
+    /**
+     * 根据产品id获取产品详情
+     *
+     * */
+    public ProductDTO findProductDetail(String id){
+
+        ProductDTO productDTO = productMapper.findProductById(id);
+        return productDTO;
+    }
 }

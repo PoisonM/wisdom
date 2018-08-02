@@ -18,7 +18,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
                 selectProductTypeOneId:'',
                 selectProductList:'',
             };
-             $scope.$on('$ionicView.enter', function() {
+            $scope.$on('$ionicView.enter', function() {
                      $rootScope.shopInfo.entryShopProductList = [];
                      $scope.sum = 0;
                      $scope.param.ids = [];

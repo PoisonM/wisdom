@@ -3,14 +3,15 @@ package com.wisdom.common.dto.product;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.Date;
+import java.util.List;
 
-public class SeckillActivityDTO<T> {
+public class SeckillActivityDTO{
 
     /**
      * 活动id
      */
     @JSONField(name = "id")
-    private String id;
+    private Integer id;
 
     /**
      * 活动编码
@@ -37,10 +38,18 @@ public class SeckillActivityDTO<T> {
     private Date startTime;
 
     /**
+     * 活动开始时间
+     */
+    private String startTimeString;
+
+    /**
      * 活动结束时间
      */
     @JSONField(name = "endTime")
     private Date endTime;
+
+
+    private String endTimeString;
 
     /**
      * 优惠价格
@@ -94,22 +103,22 @@ public class SeckillActivityDTO<T> {
     /**
      * 距离活动天数
      * */
-    private long activityDays;
+    private String  activityDays;
 
 
     private int pageNo;
 
+
     private int pageSize;
 
+    private Date activityStatusTime;
+
+    private String  activityStatusTimeString;
+
+    private List<SeckillActivityFieldDTO> sessionList;
 
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getActivityNo() {
         return activityNo;
@@ -232,11 +241,60 @@ public class SeckillActivityDTO<T> {
     }
 
 
-    public long getActivityDays() {
+    public String getStartTimeString() {
+        return startTimeString;
+    }
+
+    public void setStartTimeString(String startTimeString) {
+        this.startTimeString = startTimeString;
+    }
+
+    public String getEndTimeString() {
+        return endTimeString;
+    }
+
+    public void setEndTimeString(String endTimeString) {
+        this.endTimeString = endTimeString;
+    }
+
+    public Date getActivityStatusTime() {
+        return activityStatusTime;
+    }
+
+    public void setActivityStatusTime(Date activityStatusTime) {
+        this.activityStatusTime = activityStatusTime;
+    }
+
+    public String getActivityStatusTimeString() {
+        return activityStatusTimeString;
+    }
+
+    public void setActivityStatusTimeString(String activityStatusTimeString) {
+        this.activityStatusTimeString = activityStatusTimeString;
+    }
+
+    public String getActivityDays() {
         return activityDays;
     }
 
-    public void setActivityDays(long activityDays) {
+    public void setActivityDays(String activityDays) {
         this.activityDays = activityDays;
+    }
+
+
+    public List<SeckillActivityFieldDTO> getSessionList() {
+        return sessionList;
+    }
+
+    public void setSessionList(List<SeckillActivityFieldDTO> sessionList) {
+        this.sessionList = sessionList;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

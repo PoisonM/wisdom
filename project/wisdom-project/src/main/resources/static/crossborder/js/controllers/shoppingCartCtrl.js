@@ -27,9 +27,9 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             $scope.addCartFlag = true
             /**/
             $scope.addnum = function (item) {
-                item.businessProductNum++
+                // item.businessProductNum++
                 // item.businessProductId,item.businessProductNum
-                item.xiaoji = item.businessProductPrice*item.businessProductNum
+
                 if($scope.addCartFlag){
                     $scope.addCartFlag = false
                     AddProduct2BuyCart.get({
@@ -38,7 +38,10 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                         productSpec:item.productSpec
                     },function (data) {
                         $scope.addCartFlag = true
-                        $scope.getCartList()
+                        // $scope.getCartList()
+                        item.businessProductNum++
+                        item.xiaoji = item.businessProductPrice*item.businessProductNum
+                        $scope.allPrice()
                         if(data.result==Global.FAILURE){
                             alert("加入购物车失败");
                         }else{
@@ -49,11 +52,10 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
 
             }
             $scope.reducenum = function (item) {
-
                 if(item.businessProductNum <= 1){
                     return false
                 }else {
-                    item.businessProductNum--
+                    // item.businessProductNum--
                     if($scope.addCartFlag){
                         $scope.addCartFlag = false
                         MinusProduct2BuyCart.get({
@@ -62,7 +64,10 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                             productSpec:item.productSpec
                         },function (data) {
                             $scope.addCartFlag = true
-                            $scope.getCartList()
+                            // $scope.getCartList()
+                            item.businessProductNum--
+                            item.xiaoji = item.businessProductPrice*item.businessProductNum
+                            $scope.allPrice()
                             if(data.result==Global.FAILURE){
                                 alert("加入购物车失败");
                             }else{
@@ -79,7 +84,18 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
                 DeleteOrderFromBuyCart.get({orderId:item2.businessOrderId},function(data){
                     if(data.result==Global.SUCCESS){
                         alert("删除成功")
+                        item2.checkFlag = false
+                        for(var i = 0; i < $scope.cartList.length; i++){
+                            if(!$scope.cartList[i].checkFlag){
+                                $scope.params.checkAllFlag = false;
+                            }else {
+                            }
+                        }
+                        $scope.allPrice()
                         $scope.getCartList()
+                        // location.reload()
+                        $scope.submitList = [];
+                        $scope.price = new Number()
                     }
                 })
             };
@@ -129,8 +145,9 @@ angular.module('controllers',[]).controller('shoppingCartCtrl',
             }
 
             $scope.goPay = function () {
+                $scope.allPrice()
                 $scope.authentication_flag = true;
-                if($scope.submitList!=undefined){
+                if($scope.submitList!=undefined&&$scope.submitList.length!=0){
                     PutNeedPayOrderListToRedis.save({
                         needPayOrderList:$scope.submitList
                     },function (data) {

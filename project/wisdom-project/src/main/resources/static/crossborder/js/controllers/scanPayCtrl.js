@@ -15,10 +15,11 @@ angular.module('controllers', []).controller('scanPayCtrl',
                     return;
                 }else{
                     qrcode.makeCode($scope.qrcodeUrl);
-                    if( $scope.transactionId  !=null){
+                    if( $scope.transactionId  !=null && $scope.transactionId  !=''){
                         $scope.timer = setInterval(function () {
                             //检测用户是否支付
                             CheackOrderStatus.get({transactionId:$scope.transactionId },function (data) {
+                                console.log(data)
                                 if(data.responseData == "success"){
                                     clearInterval($scope.timer)
                                     alert("支付成功");

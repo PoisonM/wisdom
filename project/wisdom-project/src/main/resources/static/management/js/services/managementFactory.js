@@ -81,6 +81,9 @@ define(['appManagement'], function (app) {
         .factory('AddTrainingProduct',['$resource',function ($resource){
             return $resource(product + 'addTrainingProduct');
         }])
+        .factory('FindProductDetail',['$resource',function ($resource){
+            return $resource(product + 'findProductDetail');
+        }])
 
         /*输入定单号*/
         .factory('InsertOrderCopRelation',['$resource',function ($resource){
@@ -234,4 +237,20 @@ define(['appManagement'], function (app) {
         .factory('FindSeckillActivityList',['$resource',function ($resource){
             return $resource(secKill + 'findSeckillActivityList');
         }])
+
+         //获取活动列表
+        .factory('ChangeSecKillActivityStatus',['$resource',function ($resource){
+            return $resource(secKill + 'changeSecKillActivityStatus');
+        }])
+
+        //新增活动列表
+        .factory('AddSecKillActivity',['$resource',function ($resource){
+            return $resource(secKill + 'addSecKillActivity');
+        }])
+
+        //获取秒杀活动详情
+        .factory('GetSecKillActivityDetail',['$resource',function ($resource){
+            return $resource(secKill + 'getSecKillActivityDetail');
+        }])
+
 });

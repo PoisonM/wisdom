@@ -59,7 +59,7 @@ angular.module('controllers',[]).controller('goodsListCtrl',
                 pagesLength: 10,//页码长度
                 perPageOptions: [10, 20, 30, 40, 50],
                 onChange: function () {
-                    $scope.getGoodsList();
+                    $scope.getGoodsList($rootScope.option.inportContent);
                 }
             };
 

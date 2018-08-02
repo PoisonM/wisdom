@@ -14,9 +14,11 @@
 		<result column="product_amount" property="productAmount" jdbcType="INTEGER" />
 		<result column="activity_num" property="activityNum" jdbcType="INTEGER" />
 		<result column="product_num" property="productNum" jdbcType="INTEGER" />
-		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
-		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-		<result column="type" property="productType" jdbcType="TIMESTAMP" />
+		<result column="start_time" property="fieldStartTime" jdbcType="TIME" />
+		<result column="end_time" property="fieldEndTime" jdbcType="TIME" />
+		<result column="type" property="productType" jdbcType="VARCHAR" />
+		<result column="activityStartTime" property="activityStartTime" jdbcType="TIMESTAMP" />
+		<result column="activityEndTime" property="activityEndTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
 
@@ -25,7 +27,7 @@
 			resultType="com.wisdom.common.persistence.Page">
 		SELECT
 		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount,bp.type
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount,bp.type,sa.start_time activityStartTime,sa.end_time activityEndTime
 		from seckill_activity sa
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
@@ -34,6 +36,7 @@
 		) ncs
 		on sa.id = ncs.activity_id
 		LEFT JOIN business_product bp on sa.product_id = bp.product_id
+		where sa.is_enable = 1
 		order by ncs.create_time desc
 	</select>
 
@@ -57,20 +60,30 @@
 			<if test="activityNo!=null and activityNo!=''">
 				sa.activity_no LIKE concat('%',concat(#{activityNo},'%'))
 			</if>
-			<if test="startTime !=null and startTime!=''">
-				AND sa.start_time >= startTime
+			<if test="startTimeString !=null and startTimeString!=''">
+				AND sa.start_time &gt;= #{startTimeString}
 			</if>
-			<if test="endTime !=null and endTime!=''">
-				AND sa.end_time &lt;= endTime
+			<if test="endTimeString !=null and endTimeString!=''">
+				AND sa.end_time &lt;= #{endTimeString}
+			</if>
+			<if test='activityStatus == "0"'>
+				AND sa.start_time &gt; #{activityStatusTimeString}
+			</if>
+			<if test='activityStatus == "1"'>
+				AND sa.end_time &gt;= #{activityStatusTimeString}
+				AND sa.start_time &lt;= #{activityStatusTimeString}
+			</if>
+			<if test='activityStatus == "2"'>
+				AND sa.end_time &lt;= #{activityStatusTimeString}
 			</if>
 		</where>
-		ORDER BY sa.create_time
+		ORDER BY sa.create_time desc
 		limit #{pageNo},#{pageSize}
 	</select>
 
 	<!--查询活动列表-->
 	<select id="findSeckillActivityCount" parameterType="com.wisdom.common.dto.product.SeckillActivityDTO"
-			resultType="com.wisdom.common.dto.product.SeckillActivityDTO">
+			resultType="java.lang.Integer">
 		SELECT
 		 count(1)
 		FROM
@@ -79,11 +92,21 @@
 			<if test="activityNo!=null and activityNo!=''">
 				sa.activity_no LIKE concat('%',concat(#{activityNo},'%'))
 			</if>
-			<if test="startTime !=null and startTime!=''">
-				AND sa.start_time >= startTime
+			<if test="startTimeString !=null and startTimeString!=''">
+				AND sa.start_time &gt;= #{startTimeString}
 			</if>
-			<if test="endTime !=null and endTime!=''">
-				AND sa.end_time &lt;= endTime
+			<if test="endTimeString !=null and endTimeString!=''">
+				AND sa.end_time &lt;= #{endTimeString}
+			</if>
+			<if test='activityStatus == "0"'>
+				AND sa.start_time &gt; #{activityStatusTimeString}
+			</if>
+			<if test='activityStatus == "1"'>
+				AND sa.end_time &gt;= #{activityStatusTimeString}
+				AND sa.start_time &lt;= #{activityStatusTimeString}
+			</if>
+			<if test='activityStatus == "2"'>
+				AND sa.end_time &lt;= #{activityStatusTimeString}
 			</if>
 		</where>
 		ORDER BY sa.create_time
@@ -93,7 +116,7 @@
 	<select id="findSeckillProductInfoById" resultMap="SeckillProductResultMap">
 		SELECT
 		sa.id,ncs.id fieldId,sa.product_id,bp.`name`,bp.first_url,bp.price,sa.favorable_Price,
-		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount,bp.type
+		sa.product_num,ncs.start_time,ncs.end_time,sa.activity_num,bp.description,ncs.product_amount,bp.type,sa.start_time activityStartTime,sa.end_time activityEndTime
 		from seckill_activity sa
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
@@ -101,12 +124,174 @@
 		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
 		) ncs
 		on sa.id = ncs.activity_id
+
 		LEFT JOIN business_product bp on sa.product_id = bp.product_id
 		<where>
+			sa.is_enable = 1
 			<if test="id!=null and id!=''">
-				sa.id = #{id}
+			and	sa.id = #{id}
 			</if>
 		</where>
+	</select>
+
+	<!-- 修改秒杀活动状态 -->
+	<update id="changeSecKillProductStatus">
+		UPDATE
+			seckill_activity sa
+		SET
+			sa.is_enable = #{isEnable}
+		WHERE
+		 id = #{id}
+	</update>
+
+	<!--新增秒杀活动-->
+	<insert id="addSeckillActivity" parameterType="com.wisdom.common.dto.product.SeckillActivityDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			seckill_activity
+		  ( activity_no,
+			activity_name,
+		    product_id,
+		    start_time,
+		    end_time,
+		    favorable_price,
+		    create_time,
+		    update_time,
+		    activity_num,
+		    product_num,
+		    is_enable,
+		    create_by )
+		VALUES
+		  (
+			#{activityNo},
+			#{activityName},
+			#{productId},
+			#{startTime},
+			#{endTime},
+			#{favorablePrice},
+			#{createTime},
+			#{updateTime},
+			#{activityNum},
+			#{productNum},
+			#{isEnable},
+			#{createBy}
+		)
+	</insert>
+
+	<!--新增活动场次-->
+	<insert id="addSeckillActivityField" parameterType="com.wisdom.common.dto.product.SeckillActivityFieldDTO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			seckill_activity_field
+		(
+			activity_id,
+		  	start_time,
+		  	end_time,
+		  	product_amount,
+		  	create_time
+		)
+		VALUES
+		(
+			#{activityId},
+			#{startTime},
+			#{endTime},
+			#{productAmount},
+			#{createTime}
+		)
+
+	</insert>
+
+	<!--编辑秒杀活动 -->
+	<update id="updateSeckillActivity">
+		UPDATE seckill_activity
+		SET
+		<if test="activityNo != ''and activityNo != null">
+			activity_no=#{activityNo}
+		</if>
+		<if test="activityName != ''and activityName != null">
+			,activity_name=#{activityName}
+		</if>
+		<if test="productId != ''and productId != null">
+			,product_id=#{productId}
+		</if>
+		<if test="startTime != ''and startTime != null">
+			,start_time=#{startTime}
+		</if>
+		<if test="endTime != ''and endTime != null">
+			,end_time=#{endTime}
+		</if>
+		<if test="favorablePrice != ''and favorablePrice != null">
+			,favorable_price=#{favorablePrice}
+		</if>
+		<if test="createTime != ''and createTime != null">
+			,create_time=#{createTime}
+		</if>
+		<if test="updateTime != ''and updateTime != null">
+			,update_time=#{updateTime}
+		</if>
+		<if test="activityNum != ''and activityNum != null">
+			,activity_num=#{activityNum}
+		</if>
+		<if test="productNum != ''and productNum != null">
+			,product_num=#{productNum}
+		</if>
+		<if test="isEnable != ''and isEnable != null">
+			,is_enable=#{isEnable}
+		</if>
+		<if test="createBy != ''and createBy != null">
+			,create_by=#{createBy}
+		</if>
+		WHERE
+			id = #{id}
+	</update>
+
+	<!--编辑秒杀活动场次 -->
+	<update id="updateSeckillActivityField">
+		UPDATE seckill_activity
+		SET
+		<if test="activityNo != ''and activityNo != null">
+			activity_id=#{activityId}
+		</if>
+		<if test="startTime != ''and startTime != null">
+			,start_time=#{startTime}
+		</if>
+		<if test="endTime != ''and endTime != null">
+			,end_time=#{endTime}
+		</if>
+		<if test="createTime != ''and createTime != null">
+			,create_time=#{createTime}
+		</if>
+		<if test="updateTime != ''and updateTime != null">
+			,update_time=#{updateTime}
+		</if>
+		<if test="createBy != ''and createBy != null">
+			,product_amount=#{productAmount}
+		</if>
+		WHERE
+			id = #{id}
+	</update>
+
+	<!--获取秒杀活动详情-->
+	<select id="getSecKillActivity" parameterType="java.lang.Integer" resultType="com.wisdom.common.dto.product.SeckillActivityDTO">
+		SELECT
+			*
+		FROM
+			seckill_activity sa
+		WHERE
+			sa.id = #{id}
+	</select>
+
+	<!--获取秒杀活动场次详情-->
+	<select id="findSecKillActivityField" parameterType="java.lang.Integer" resultType="com.wisdom.common.dto.product.SeckillActivityFieldDTO">
+		SELECT
+			saf.id,
+			saf.start_time,
+			saf.product_amount,
+			saf.end_time,
+			saf.create_time,
+			saf.activity_id
+		FROM
+			seckill_activity_field saf
+		WHERE
+			saf.activity_id = #{activityId}
 	</select>
 
 </mapper>

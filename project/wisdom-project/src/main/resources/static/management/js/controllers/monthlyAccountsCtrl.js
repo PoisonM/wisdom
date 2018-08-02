@@ -254,9 +254,7 @@ angular.module('controllers',[]).controller('monthlyAccountsCtrl',
                             $scope.param.pageFrom = ($scope.pageNo-1)*$scope.pageSize+1;
                             $scope.param.pageTo = ($scope.pageNo-1)*$scope.pageSize+$scope.pageSize;
                             $scope.mum = false;
-                            /*  $scope.MAccount = "";
-                             startTime.value='';
-                             endTime.value='';*/
+
 
                         }
                     })

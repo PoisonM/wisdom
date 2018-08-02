@@ -19,7 +19,6 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
             }
         }, 100)
     }
-    setTimeout(function(){$scope.tableThead()},2000);
     $scope.compileDateFn = function () {
         if(new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月" == $scope.param.nowdate){
             $scope.param.compileDateFlag = false
@@ -41,7 +40,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
                 $scope.tempUser = data.responseData.responseList
             }
         })
-        $scope.tableThead();
+        // $scope.tableThead();
     }
 
     $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
@@ -57,7 +56,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
         $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
         $scope.compileDateFn()
-        setTimeout(function(){$scope.tableThead()},2000);
+        // setTimeout(function(){$scope.tableThead()},2000);
     }
     $scope.addMonth = function () {
         $scope.dataYear = parseInt($scope.param.nowdate.split("年")[0])
@@ -70,7 +69,7 @@ PADWeb.controller("arrangeWorkListCtrl", function($scope, $state, $stateParams,G
         }
         $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
         $scope.compileDateFn()
-        setTimeout(function(){$scope.tableThead()},2000);
+        // setTimeout(function(){$scope.tableThead()},2000);
     }
 
 

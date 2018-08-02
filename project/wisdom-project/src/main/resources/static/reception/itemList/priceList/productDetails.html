@@ -19,7 +19,12 @@
                 <p class="mt50 fs32"><span class="c99 ">规格</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c33">{{productInformation.productSpec}}{{productInformation.productSpecUnit}}</span></p>
                 <p class="mt50 fs32"><span class="c99">适用部位：{{productInformation.productPosition}}</span></p>
                 <p class="mt50 fs32 c99">功效：{{productInformation.productFunction}}</p>
-                <p class="mt80 fs32 c99 mb50">功能介绍：{{productInformation.introduce}}</p>
+                <p class="mt80 fs32 c99 mb50">
+                    <!--功能介绍：{{productInformation.introduce}}-->
+                    功能介绍：
+                    <br>
+                    <textarea  readonly="readonly" style="width: 100%; border: none;resize:none;color: #999" cols="30" rows="10" ng-model="productInformation.introduce"></textarea>
+                </p>
             </div>
         </div>
     </div>

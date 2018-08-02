@@ -46,12 +46,12 @@
             <div class="list">
                 <div class="item" style="background: #Fc4B4B;height: 60px;position: relative;padding: 0px">
                     <p style="margin-left: 10px;margin-top: 15px">
-                        <span class="subdued" style="font-family: PingFangSC-Regular;font-size: 36px;color: #FFFFFF;letter-spacing: 0; "><span style="font-size: 20px;display: inline-block;">￥</span>{{param.product.price}}</span><span style="color: #ffffff;font-size: 12px;margin-left: 10px">零售价<del>￥{{param.product.favorablePrice}}</del></span>
+                        <span class="subdued" style="font-family: PingFangSC-Regular;font-size: 36px;color: #FFFFFF;letter-spacing: 0; "><span style="font-size: 20px;display: inline-block;">￥</span>{{param.product.favorablePrice}}</span><span style="color: #ffffff;font-size: 12px;margin-left: 10px">零售价<del>￥{{param.product.price}}</del></span>
                     </p>
                     <div style="position: absolute;top: 11px;
     right: 10px;">
-                        <p style="font-size: 12px;color: #FFFFFF;letter-spacing: 0.25px;line-height: 12px;"  get-data="getData()" timer-btn start-time="param.product.countdown"></p>
-                        <p style="color: #ffffff;font-size: 12px;margin-top: 5px;margin-left: 160px;">售出{{param.product.sellNum}}件</p>
+                        <p style="font-size: 12px;color: #FFFFFF;letter-spacing: 0.25px;line-height: 12px;margin-top: 5px;margin-left: 160px;"  get-data="getData()" timer-btn start-time="param.product.countdown"></p>
+                        <p style="color: #ffffff;font-size: 12px;margin-top: 5px;margin-left: 83%;">售出{{param.product.productAmount}}件</p>
                     </div>
                 </div>
                  <div class="item item-body" >
@@ -81,7 +81,7 @@
     </ion-content>
     <!--商品已下架-->
     <div class="tabs " style="padding-top: 0px">
-        <a class="tab-item-button"  ng-click="loginCart()" >
+        <a class="tab-item-button"  ng-click="kefu()" >
             <img src="images/offlineProductDetail/kefu.png" alt="" style="width: 0.45rem;height: 0.46rem;text-align: center;margin:auto;margin-top: 0.1rem;">
             <p style="font-size:0.22rem;color:#666666;margin-top: -0.3rem">联系客服</p>
             </i>
@@ -108,7 +108,7 @@
             <div style="z-index: 13000;float: left;margin-left: 0.3rem;margin-top: 0.3rem">
                 <p style="color: #ff4a59;font-size: 0.32rem;font-weight: 600">￥{{param.product.price}}</p>
                 <p style="color: #666666;font-size: 0.3rem;margin-top: 0.2rem">请选择型号</p>
-                <p style="margin-top: 0.2rem;font-size: 14px;color: #333333">剩余库存 :<span style="margin-left: 5px;color: #4A4A4A;font-size: 14px">{{param.product.productAmount}}</span></p>
+                <p style="margin-top: 0.2rem;font-size: 14px;color: #333333">剩余库存 :<span style="margin-left: 5px;color: #4A4A4A;font-size: 14px">{{param.product.stockNum}}</span></p>
             </div>
         </div>
         <!--型号-->
@@ -126,8 +126,7 @@ line-height: 22px;margin-left: -0.1rem;">购买数量：</span>
         </div>
         <!--点击加入购物车-->
         <ul style="list-style: none;width: 100%;height: 1rem;display: flex;flex-wrap: wrap;justify-content: space-around;text-align: center;margin-top: 26.5px">
-            <li style="background: red;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="goPay()" id="goPay">立即抢购</li>
+            <button style="background: red;color:white;font-size:0.36rem;width: 50%;height: 1rem;line-height: 1rem" ng-click="goPay()" id="goPay">立即抢购</button>
         </ul>
     </div>
-
 </ion-view>

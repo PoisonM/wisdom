@@ -3,11 +3,9 @@
  */
 package com.wisdom.business.mapper.product;
 
-import com.wisdom.common.dto.account.PageParamVoDTO;
-import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
+import com.wisdom.common.dto.product.SeckillActivityFieldDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
-import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.persistence.annotation.MyBatisDao;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +28,20 @@ public interface SeckillProductMapper {
 
 	//获取活动列表总数
 	int findSeckillActivityCount(SeckillActivityDTO seckillActivityDTO);
+
+	//更改活动状态
+	void changeSecKillProductStatus(@Param("id") Integer id,@Param("isEnable") Integer isEnable);
+
+	//新增秒杀活动
+	int addSeckillActivity(SeckillActivityDTO seckillActivityDTO);
+
+	//新增活动场次
+	void  addSeckillActivityField(SeckillActivityFieldDTO seckillActivityFieldDTO);
+
+	//获取秒杀活动详情
+	SeckillActivityDTO getSecKillActivity(@Param("id") Integer id);
+
+	//获取秒杀活动场次详情
+	List<SeckillActivityFieldDTO>  findSecKillActivityField(@Param("activityId") Integer activityId);
+
 }
