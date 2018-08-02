@@ -32,7 +32,7 @@
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
 		where  ( now() &gt;= start_time and  end_time &gt;= now()) or start_time &gt;= now()
-		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
+		ORDER BY start_time ASC limit 999999) d GROUP BY activity_id ORDER BY start_time DESC
 		) ncs
 		on sa.id = ncs.activity_id
 		LEFT JOIN business_product bp on sa.product_id = bp.product_id
@@ -121,7 +121,7 @@
 		left join
 		(SELECT * FROM (select * from seckill_activity_field
 		where  ( now() &gt;= start_time and  end_time &gt;= now()) or start_time &gt;= now()
-		ORDER BY start_time DESC) d GROUP BY activity_id ORDER BY start_time DESC
+		ORDER BY start_time ASC limit 999999) d GROUP BY activity_id ORDER BY start_time DESC
 		) ncs
 		on sa.id = ncs.activity_id
 

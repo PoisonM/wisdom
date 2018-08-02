@@ -15,7 +15,10 @@ angular.module('controllers',[]).controller('detailsCtrl',
                 productId:$stateParams.id
             },function (data) {
                 if(data.result == Global.SUCCESS){
-                    $scope.goodDetails = data.responseData
+                    for(var i = 0; i < data.responseData.productDetail.listPic.length; i++){
+                        data.responseData.productDetail.listPic[i] = data.responseData.productDetail.listPic[i].split("?")[0]
+                    }
+                    $scope.goodDetails = data.responseData;
                 }
             })
 
