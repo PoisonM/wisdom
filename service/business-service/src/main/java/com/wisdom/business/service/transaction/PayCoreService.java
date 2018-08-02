@@ -72,7 +72,7 @@ public class PayCoreService {
                 //开启一个线程，进行即时返现和提升处理
                 Runnable processInstancePayThread = new ProcessInstancePayThread(instanceReturnMoneySignalDTO);
                 threadExecutorSingle.execute(processInstancePayThread);
-            }else if(notifyType.equals("special")){
+            }else if(notifyType.equals("seckill")){
                 businessMessageQueueSender.sendHandleSpecialProduct(payRecordDTOList);
             }
 

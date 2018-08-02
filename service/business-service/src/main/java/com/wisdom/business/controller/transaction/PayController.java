@@ -201,10 +201,10 @@ public class PayController {
      * 接收支付成后微信notify_url参数中传来的参数
      * 支付完成 后服务器故障 事物无法回滚
      * */
-    @RequestMapping(value = "getCrossBorderProductPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "getSeckillProductPayNotifyInfo", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    String getCrossBorderProductPayNotifyInfo(HttpServletRequest request) {
+    String getSeckillProductPayNotifyInfo(HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         logger.info("接收TrainingProductPay支付成后微信notify_url参数中传来的参数==={}开始",startTime);
 
@@ -230,7 +230,7 @@ public class PayController {
                 PayRecordDTO payRecordDTO = new PayRecordDTO();
                 payRecordDTO.setOutTradeNo((String) map.get("out_trade_no"));
                 payRecordDTO.setStatus("0");
-                payCoreService.handleProductPayNotifyInfo(payRecordDTO,"crossBorder");
+                payCoreService.handleProductPayNotifyInfo(payRecordDTO,"seckill");
             }
             return  XMLUtil.setXML("SUCCESS", "");
         } catch (Exception e) {
