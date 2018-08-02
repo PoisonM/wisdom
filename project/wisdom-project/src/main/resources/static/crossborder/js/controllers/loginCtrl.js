@@ -42,7 +42,7 @@ angular.module('controllers', []).controller('loginCtrl',
                     return
                 }
                 if($scope.param.code == ""){
-                    alert("请输入验证码")
+                    alert("请输入密码")
                     return
                 }
                 UserLogin.save({
