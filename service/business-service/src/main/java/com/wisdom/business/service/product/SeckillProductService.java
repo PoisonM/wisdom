@@ -259,6 +259,9 @@ public class SeckillProductService {
             seckillActivityFieldDTO.setProductAmount(0);
             seckillProductMapper.addSeckillActivityField(seckillActivityFieldDTO);
             JedisUtils.set(String.valueOf(seckillActivityFieldDTO.getId()),String.valueOf(seckillActivityDTO.getActivityNum()),ms);
+
+            logger.info("key值={}",seckillActivityFieldDTO.getId());
+            logger.info("缓存值={}",JedisUtils.get(String.valueOf(seckillActivityFieldDTO.getId())));
         }
 
         return "success";
