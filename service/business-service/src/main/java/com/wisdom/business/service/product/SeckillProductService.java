@@ -227,11 +227,13 @@ public class SeckillProductService {
     @Transactional(rollbackFor = Exception.class)
     public String  addSeckillActivity(SeckillActivityDTO seckillActivityDTO) throws Exception{
 
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         StringBuilder sbStart = new StringBuilder();
-        sbStart.append(seckillActivityDTO.getStartTimeString()).append("00:00:00");
+        sbStart.append(sdf1.format(seckillActivityDTO.getStartTime())).append("00:00:00");
         StringBuilder sbEnd = new StringBuilder();
-        sbEnd.append(seckillActivityDTO.getEndTimeString()).append("23:59:59");
+        sbEnd.append(sdf1.format(seckillActivityDTO.getEndTime())).append("23:59:59");
 
         seckillActivityDTO.setStartTimeString(sbStart.toString());
         seckillActivityDTO.setEndTimeString(sbEnd.toString());
