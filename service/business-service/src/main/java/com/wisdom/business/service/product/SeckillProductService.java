@@ -258,10 +258,12 @@ public class SeckillProductService {
             int ms = (int)Integer.parseInt(String.valueOf(msc));
             seckillActivityFieldDTO.setProductAmount(0);
             seckillProductMapper.addSeckillActivityField(seckillActivityFieldDTO);
-            JedisUtils.set(String.valueOf(seckillActivityFieldDTO.getId()),String.valueOf(seckillActivityDTO.getActivityNum()),ms);
+            StringBuilder sb = new StringBuilder();
+            sb.append("seckillproductAmount:").append(String.valueOf(seckillActivityFieldDTO.getId()));
+            JedisUtils.set(sb.toString(),String.valueOf(seckillActivityDTO.getActivityNum()),ms);
 
-            logger.info("key值={}",seckillActivityFieldDTO.getId());
-            logger.info("缓存值={}",JedisUtils.get(String.valueOf(seckillActivityFieldDTO.getId())));
+            logger.info("key值={}",sb.toString());
+            logger.info("缓存值={}",sb.toString());
         }
 
         return "success";
