@@ -231,12 +231,12 @@ public class SeckillProductService {
         SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         StringBuilder sbStart = new StringBuilder();
-        sbStart.append(sdf1.format(seckillActivityDTO.getStartTime())).append("00:00:00");
+        sbStart.append(sdf1.format(seckillActivityDTO.getStartTime())).append(" ").append("00:00:00");
         StringBuilder sbEnd = new StringBuilder();
-        sbEnd.append(sdf1.format(seckillActivityDTO.getEndTime())).append("23:59:59");
+        sbEnd.append(sdf1.format(seckillActivityDTO.getEndTime())).append(" ").append("23:59:59");
 
-        seckillActivityDTO.setStartTimeString(sbStart.toString());
-        seckillActivityDTO.setEndTimeString(sbEnd.toString());
+        seckillActivityDTO.setStartTime(sdfEnd.parse(sbStart.toString()));
+        seckillActivityDTO.setEndTime(sdfEnd.parse(sbEnd.toString()));
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         seckillActivityDTO.setCreateTime(new Date());

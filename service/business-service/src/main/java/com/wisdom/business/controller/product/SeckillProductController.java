@@ -154,6 +154,7 @@ public class SeckillProductController {
             String result = seckillProductService.addSeckillActivity(seckillActivityDTO);
             responseDTO.setResponseData(result);
         }catch (java.lang.Exception e){
+            logger.info(e.getMessage());
             responseDTO.setResponseData("failure");
         }
         logger.info("更新秒杀活动状态,耗时{}毫秒", (System.currentTimeMillis() - startTime));
