@@ -9,7 +9,12 @@ angular.module('controllers',[]).controller('selectionCategoryCtrl',
           
             /*调取选择分类的接口*/
             OneLevelProject.get(function (data) {
-                $scope.selectionCategory=data.responseData;
+                if(data.result=='0x00001'&&data.responseData!=null){
+                    $scope.selectionCategory=data.responseData;
+                }else{
+                    $scope.selectionCategory=[]
+                }
+
             });
             $scope.selectType=function (projectTypeOneId,name) {
                 $rootScope.settingAddsome.extShopProjectInfoDTO.projectTypeOneName = name

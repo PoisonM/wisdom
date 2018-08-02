@@ -7,6 +7,8 @@ angular.module('controllers',[]).controller('selBrandCtrl',
             },function(data){
                 if(data.result==Global.SUCCESS&&data.responseData!=null){
                      $scope.selBrand = data.responseData
+                }else{
+                    $scope.selBrand=[]
                 }
             })
             $scope.selBand = function(name,oneId){

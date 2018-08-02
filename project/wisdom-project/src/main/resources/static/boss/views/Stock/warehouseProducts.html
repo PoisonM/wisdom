@@ -18,7 +18,7 @@
     </div>
     <ion-content ng-click="all()" style="margin-top:45px;" delegate-handle="dashboard">
 
-        <div style="position: relative;height:100%;padding-top:10px;" ng-class="{'hidden':param.flag==true}">
+        <div style="position: relative;height:100%;padding-top:10px;" ng-class="{'hidden':param.flag==true}" ng-if="warehouseProducts.detailProductList.length>=1">
           <!-- <p  ng-if="param.levelTwoName!=''" class="mt10 ml10">
                {{param.levelOneName}}  .  {{param.levelTwoName}}
            </p>-->
@@ -53,6 +53,9 @@
 
                 </ul>
             </div>
+        </div>
+        <div style="width:100%;height:100%;" ng-if="warehouseProducts.detailProductList.length<=0">
+            <void-picother></void-picother>
         </div>
 
     </ion-content>

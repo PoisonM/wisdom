@@ -20,23 +20,28 @@ angular.module('controllers',[]).controller('projectListCtrl',
                 });
                 SearchShopProjectList.get({filterStr:"",useStyle:"2"},function (data) {
                     $ionicLoading.hide();
-                    $scope.projectList=data.responseData.detailProject;
-                    /*循环遍历项目里面所以商品*/
-                    for(var  i=0;i< $scope.projectList.length;i++){
-                        if($scope.projectList[i].cardType=="0"){
-                            $scope.projectList[i].cardType='次卡';
-                        }else if($scope.projectList[i].cardType=="1"){
-                            $scope.projectList[i].cardType='月卡';
-                        }else if($scope.projectList[i].cardType=="2"){
-                            $scope.projectList[i].cardType='季卡';
-                        }else if($scope.projectList[i].cardType=="3"){
-                            $scope.projectList[i].cardType='半年卡';
-                        }else if($scope.projectList[i].cardType=="4"){
-                            $scope.projectList[i].cardType='年卡';
-                        }else if($scope.projectList[i].cardType=="5"){
-                            $scope.projectList[i].cardType='疗程卡';
+                    if(data.result=='0x00001'&&data.responseData!=null){
+                        $scope.projectList=data.responseData.detailProject;
+                        /*循环遍历项目里面所以商品*/
+                        for(var  i=0;i< $scope.projectList.length;i++){
+                            if($scope.projectList[i].cardType=="0"){
+                                $scope.projectList[i].cardType='次卡';
+                            }else if($scope.projectList[i].cardType=="1"){
+                                $scope.projectList[i].cardType='月卡';
+                            }else if($scope.projectList[i].cardType=="2"){
+                                $scope.projectList[i].cardType='季卡';
+                            }else if($scope.projectList[i].cardType=="3"){
+                                $scope.projectList[i].cardType='半年卡';
+                            }else if($scope.projectList[i].cardType=="4"){
+                                $scope.projectList[i].cardType='年卡';
+                            }else if($scope.projectList[i].cardType=="5"){
+                                $scope.projectList[i].cardType='疗程卡';
+                            }
                         }
+                    }else {
+                        $scope.projectList=[]
                     }
+
                 });
             })
 

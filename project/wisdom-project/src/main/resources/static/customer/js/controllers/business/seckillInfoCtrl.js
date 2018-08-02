@@ -112,7 +112,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
             $scope.addProductNum = function(){
                 $scope.param.productNum=$scope.param.productNum+1;
-                if($scope.param.productNum>$scope.param.product.productNum ||$scope.param.productNum>$scope.param.product.stockNum){
+                if($scope.param.productNum>$scope.param.product.productNum || $scope.param.productNum>$scope.param.product.stockNum){
                     $("#Car").css("background","grey");
                     $("#goPay").css("background","grey");
                     $("#goPay").attr('disabled','disabled').addClass("grey");
@@ -123,7 +123,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                 if($scope.param.productNum>1){
                     $scope.param.productNum= $scope.param.productNum-1;
                 }
-                if($scope.param.productNum<=$scope.param.product.productNum ||$scope.param.productNum <= $scope.param.product.stockNum){
+                if($scope.param.productNum<=$scope.param.product.productNum && $scope.param.productNum <= $scope.param.product.stockNum){
                     $("#goPay").css("background","red");
                     $('#goPay').removeAttr("disabled");
                 }else{
