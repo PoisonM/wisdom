@@ -20,7 +20,8 @@ angular.module('controllers',[]).controller('rechargeListCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide();
                         $scope.rechargeList = data.responseData
-
+                    }else{
+                        $scope.rechargeList=[]
                     }
 
                 })

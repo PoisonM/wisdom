@@ -70,18 +70,17 @@ angular.module('controllers',[]).controller('bossLoginCtrl',
                                 window.localStorage.removeItem("beautyClerkLoginToken");
                                 window.localStorage.setItem("beautyClerkLoginToken",data.responseData.beautyClerkLoginToken);
                             }
-                            if((data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)||(data.responseData.beautyClerkLoginToken!=Global.TOKEN_ERROR&&data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)){
-                                if($stateParams.redirectUrl=='')
-                                {
-                                    window.location.href = "";
+                            if((data.responseData.beautyUserLoginToken!=Global.TOKEN_ERROR)){
+                                if(data.responseData.beautyBossLoginToken!=Global.TOKEN_ERROR){
+                                    /* window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");*/
+                                    window.location.href = "#/workHome";
                                     alert("登录成功")
+                                }else if (data.responseData.beautyClerkLoginToken!=Global.TOKEN_ERROR) {
+                                    window.location.href = "#/employeeIndex";
+                                    alert("登录成功")
+                                }else{
+                                    alert("请使用正确的帐号登录")
                                 }
-                                else
-                                {
-                                    alert("登录成功");
-                                    window.location.href = "#/" + $stateParams.redirectUrl.replace("&","/");
-                                }
-
                             }else{
                                 alert("请使用正确的帐号登录")
                             }

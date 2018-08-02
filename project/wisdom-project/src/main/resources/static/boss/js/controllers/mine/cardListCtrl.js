@@ -21,6 +21,8 @@ angular.module('controllers',[]).controller('cardListCtrl',
                     if(data.result==Global.SUCCESS&&data.responseData!=null){
                         $ionicLoading.hide();
                         $scope.cardList = data.responseData
+                    }else{
+                        $scope.cardList=[]
                     }
                 })
             })

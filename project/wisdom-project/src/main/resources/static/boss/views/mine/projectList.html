@@ -1,6 +1,6 @@
 <ion-view class="bg">
     <ion-content>
-       <div class="list" ng-repeat="item in projectList">
+       <div class="list" ng-repeat="item in projectList" ng-if="projectList.length>=1">
            <li class="item p10">{{item.projectName}}</li>
             <ion-item  class="row"  ng-click="modifyProjectGo(item.id)">
                 <div class="col col-20 mr10" style="line-height: 49px;">
@@ -16,6 +16,9 @@
                     <i class=" ion ion-ios-arrow-right fr" style="margin-top: 40px"></i>
                 </div>
             </ion-item>
+        </div>
+        <div style="width:100%;height:100%;" ng-if="projectList.length<=0">
+            <void-picother></void-picother>
         </div>
     </ion-content>
 </ion-view>

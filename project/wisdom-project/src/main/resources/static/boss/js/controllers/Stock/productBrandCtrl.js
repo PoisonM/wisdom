@@ -22,9 +22,13 @@ angular.module('controllers',[]).controller('productBrandCtrl',
                     maxWidth: 200,
                     showDelay: 0
                 });
-                SearchShopProductList.get({filterStr:''},function (date) {
+                SearchShopProductList.get({filterStr:''},function (data) {
                     $ionicLoading.hide();
-                    $scope.productBrand = date.responseData.oneAndTwoLevelList
+                    if(data.result=='0x00001'&&data.responseData!=null){
+                        $scope.productBrand = data.responseData.oneAndTwoLevelList
+                    }else{
+                        $scope.productBrand=[]
+                    }
                 })
             })
 

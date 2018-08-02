@@ -8,8 +8,10 @@
                     <span class="fs16">卡类别<span class="colff66">*</span></span>
                 </div>
                 <div class="col col-70 fs13">
-                    <p style="margin-top:6px;"><span class="project1"   ng-class="{'activeCardType': settingAddsome.extShopProjectInfoDTO.cardType=='0'}"  ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='0'">次卡</span><span class="project1 m5"  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!=0&&settingAddsome.extShopProjectInfoDTO.cardType!=5">时效卡</span>
-                        <span class="project1 col col-30" ng-click="secondaryCard('5')" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='5'}">疗程卡</span>
+                    <p style="margin-top:6px;">
+                        <span class="project1"   ng-class="{'activeCardType': settingAddsome.extShopProjectInfoDTO.cardType=='0'}"  ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='0'">次卡</span>
+                        <span class="project1 m5"  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType!='0'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType!=0&&settingAddsome.extShopProjectInfoDTO.cardType!=5">时效卡</span>
+                        <span class="project1 "  ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='5'}" ng-if="settingAddsome.extShopProjectInfoDTO.cardType=='5'">疗程卡</span>
                     </p >
                     <p ng-if="settingAddsome.extShopProjectInfoDTO.cardType!='0'&&settingAddsome.extShopProjectInfoDTO.cardType!=5" class="row row-wrap" style="padding:0;margin:0">
                         <span class="project1 col col-30 mr5 mt5"  ng-click="secondaryCard('1',1)" ng-class="{'activeCardType':settingAddsome.extShopProjectInfoDTO.cardType=='1'}">月卡</span>

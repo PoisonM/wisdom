@@ -1,6 +1,6 @@
 <ion-view class="bg">
     <ion-content>
-        <div class="list" ng-repeat="item in cardList" ui-sref="editorCard({id:item.id})">
+        <div class="list" ng-repeat="item in cardList" ui-sref="editorCard({id:item.id})" ng-if="cardList.length>=1">
             <ion-item  class="row" >
                 <div class="" style="line-height: 49px;width:82px;margin-right:5px;">
                     <p style="height:64px;width:82px;margin-top:10px;">
@@ -20,6 +20,9 @@
             </ion-item>
             <p class="item fs12" style="color: #999999" ng-if="item.expirationDate != 0">有效期：{{item.effectiveDate}} 至 {{item.expirationDate}}</p>
             <p class="item fs12" style="color: #999999" ng-if="item.expirationDate == 0">有效期：长期有效</p>
+        </div>
+        <div style="width:100%;height:100%;" ng-if="cardList.length<=0">
+            <void-picother></void-picother>
         </div>
     </ion-content>
 </ion-view>
