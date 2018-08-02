@@ -129,7 +129,7 @@
 		<where>
 			sa.is_enable = 1
 			<if test="id!=null and id!=''">
-			and	sa.id = #{id}
+			and	ncs.id = #{id}
 			</if>
 		</where>
 	</select>
@@ -244,6 +244,20 @@
 	</update>
 
 	<!--编辑秒杀活动场次 -->
+	<update id="updateSeckillActivityFieldById">
+		UPDATE seckill_activity_field
+		SET
+		<if test="updateTime != ''and updateTime != null">
+			,update_time=#{updateTime}
+		</if>
+		<if test="productAmount != ''and productAmount != null">
+			,product_amount=#{productAmount}
+		</if>
+		WHERE
+			id = #{id}
+	</update>
+
+	<!--编辑秒杀活动场次 -->
 	<update id="updateSeckillActivityField">
 		UPDATE seckill_activity
 		SET
@@ -266,7 +280,7 @@
 			,product_amount=#{productAmount}
 		</if>
 		WHERE
-			id = #{id}
+		id = #{id}
 	</update>
 
 	<!--获取秒杀活动详情-->
@@ -294,4 +308,18 @@
 			saf.activity_id = #{activityId}
 	</select>
 
+	<!--获取秒杀活动场次详情-->
+	<select id="findSecKillActivityFieldById" parameterType="java.lang.Integer" resultType="com.wisdom.common.dto.product.SeckillActivityFieldDTO">
+		SELECT
+			saf.id,
+			saf.start_time,
+			saf.product_amount,
+			saf.end_time,
+			saf.create_time,
+			saf.activity_id
+		FROM
+			seckill_activity_field saf
+		WHERE
+			saf.id = #{id}
+	</select>
 </mapper>

@@ -1,34 +1,21 @@
 package com.wisdom.business.service.transaction;
 
 import com.wisdom.business.client.UserServiceClient;
-import com.wisdom.business.mapper.level.UserTypeMapper;
-import com.wisdom.business.mapper.transaction.PromotionTransactionRelationMapper;
 import com.wisdom.business.mqsender.BusinessMessageQueueSender;
-import com.wisdom.business.service.account.AccountService;
-import com.wisdom.business.service.account.IncomeService;
-import com.wisdom.common.constant.ConfigConstant;
-import com.wisdom.common.dto.account.AccountDTO;
-import com.wisdom.common.dto.account.IncomeRecordDTO;
 import com.wisdom.common.dto.account.PayRecordDTO;
-import com.wisdom.common.dto.system.UserBusinessTypeDTO;
+import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.dto.transaction.*;
-import com.wisdom.common.util.*;
+import com.wisdom.common.util.RedisLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static com.wisdom.common.constant.ConfigConstant.RECOMMEND_PROMOTE_A1_REWARD;
 
 /**
  * Created by sunxiao on 2017/6/26.
@@ -85,6 +72,8 @@ public class PayCoreService {
                 //开启一个线程，进行即时返现和提升处理
                 Runnable processInstancePayThread = new ProcessInstancePayThread(instanceReturnMoneySignalDTO);
                 threadExecutorSingle.execute(processInstancePayThread);
+            }else if(notifyType.equals("seckill")){
+                businessMessageQueueSender.sendHandleSpecialProduct(payRecordDTOList);
             }
 
         } catch (Exception e) {

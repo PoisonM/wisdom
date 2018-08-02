@@ -44,4 +44,9 @@ public interface SeckillProductMapper {
 	//获取秒杀活动场次详情
 	List<SeckillActivityFieldDTO>  findSecKillActivityField(@Param("activityId") Integer activityId);
 
+
+	SeckillActivityFieldDTO findSecKillActivityFieldById(@Param("id") Integer id);
+
+	void updateSeckillActivityFieldById(SeckillActivityFieldDTO seckillActivityFieldDTO);
+
 }

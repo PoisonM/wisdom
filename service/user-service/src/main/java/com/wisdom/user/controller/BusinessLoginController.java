@@ -3,11 +3,10 @@
  */
 package com.wisdom.user.controller;
 
-import com.wisdom.common.constant.ConfigConstant;
 import com.wisdom.common.constant.StatusConstant;
-import com.wisdom.common.dto.system.*;
+import com.wisdom.common.dto.system.LoginDTO;
+import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.util.CookieUtils;
 import com.wisdom.common.util.SMSUtil;
 import com.wisdom.common.util.StringUtils;
 import com.wisdom.common.util.WeixinUtil;
@@ -43,20 +42,20 @@ public class BusinessLoginController {
                                   HttpServletRequest request,
                                   HttpSession session) throws Exception {
         long startTime = System.currentTimeMillis();
-        logger.info("userLogin,方法开始==={}" ,startTime);
+        logger.info("userLogin,方法开始==={}", startTime);
         ResponseDTO<String> result = new ResponseDTO<>();
 
         //获取用户的基本信息 todo 需要完成注释部分的代码
-        String openid = WeixinUtil.getUserOpenId(session,request);
-        logger.info("userLogin,openId==={}",openid);
+        String openid = WeixinUtil.getUserOpenId(session, request);
+        logger.info("userLogin,openId==={}", openid);
         if (!StringUtils.isNotNull(openid)) {
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setMobile(loginDTO.getUserPhone());
             List<UserInfoDTO> userInfoList = userInfoService.getUserInfo(userInfoDTO);
-            if(userInfoList!=null&&userInfoList.size()>0){
-                if(userInfoList.size()==1){
+            if (userInfoList != null && userInfoList.size() > 0) {
+                if (userInfoList.size() == 1) {
                     openid = userInfoList.get(0).getUserOpenid();
-                }else{
+                } else {
                     logger.info("userLogin,方法返回结果该手机号绑定多个微信号，请联系客服人员，解绑多余微信号");
                     result.setResult(StatusConstant.FAILURE);
                     result.setErrorInfo("该手机号绑定多个微信号，请联系客服人员，解绑多余微信号。");
@@ -64,52 +63,46 @@ public class BusinessLoginController {
                 }
             }
         }
-        if(openid==null||openid.equals(""))
-        {
+        if (openid == null || openid.equals("")) {
             logger.info("userLogin,方法返回结果,没有openid，请在微信公众号中注册登录");
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("没有openid，请在微信公众号中注册登录");
             return result;
         }
-        String loginResult ="";
-        try{
-            loginResult = businessLoginService.businessUserLogin(loginDTO, request.getRemoteAddr().toString(),openid);
-            logger.info("userLogin,loginResult={}",loginResult);
-        }catch(Exception e){
-            logger.info("userLogin,异常,异常信息为{}"+e.getMessage(),e);
+        String loginResult = "";
+        try {
+            loginResult = businessLoginService.businessUserLogin(loginDTO, request.getRemoteAddr().toString(), openid);
+            logger.info("userLogin,loginResult={}", loginResult);
+        } catch (Exception e) {
+            logger.info("userLogin,异常,异常信息为{}" + e.getMessage(), e);
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("您输入的手机号与该微信登录平台手机号不符！");
             return result;
         }
-        if(loginResult.equals("phoneNotUse")){
+        if (loginResult.equals("phoneNotUse")) {
             logger.info("userLogin,方法返回结果,您输入的手机号以被其他用户的微信绑定过美享平台！");
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("您输入的手机号以被其他用户的微信绑定过美享平台！");
             return result;
         }
-        if(loginResult.equals("phoneIsError")){
+        if (loginResult.equals("phoneIsError")) {
             logger.info("userLogin,方法返回结果,您输入的手机号与该微信登录平台手机号不符！");
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("您输入的手机号与该微信登录平台手机号不符！");
             return result;
         }
 
-        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR))
-        {
+        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR)) {
             logger.info("userLogin,方法返回结果,验证码输入不正确！");
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("验证码输入不正确");
             return result;
-        }
-        else if (loginResult.equals(StatusConstant.WEIXIN_ATTENTION_ERROR))
-        {
+        } else if (loginResult.equals(StatusConstant.WEIXIN_ATTENTION_ERROR)) {
             logger.info("userLogin,方法返回结果,请在关注公众号后，再绑定登录！");
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("请在关注公众号后，再绑定登录");
             return result;
-        }
-        else
-        {
+        } else {
             logger.info("userLogin,方法返回结果,调用成功");
             result.setResult(StatusConstant.SUCCESS);
             result.setErrorInfo("调用成功");
@@ -124,16 +117,16 @@ public class BusinessLoginController {
     @ResponseBody
     ResponseDTO<String> userLoginOut(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         long startTime = System.currentTimeMillis();
-        logger.info("userLoginOut,方法开始==={}" ,startTime);
+        logger.info("userLoginOut,方法开始==={}", startTime);
         String logintoken = request.getHeader("logintoken");
-        if(logintoken==null||logintoken.equals("")){
+        if (logintoken == null || logintoken.equals("")) {
             logintoken = request.getSession().getAttribute("token").toString();
         }
-        String status = businessLoginService.businessUserLoginOut(logintoken,request,response,session);
+        String status = businessLoginService.businessUserLoginOut(logintoken, request, response, session);
         ResponseDTO<String> result = new ResponseDTO<>();
         result.setResult(StatusConstant.SUCCESS);
         result.setErrorInfo(status.equals(StatusConstant.LOGIN_OUT) ? "退出登录" : "保持在线");
-        logger.info( "userLoginOut方法"+ "耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        logger.info("userLoginOut方法" + "耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return result;
     }
 
@@ -144,21 +137,18 @@ public class BusinessLoginController {
                                      HttpServletRequest request,
                                      HttpSession session) throws Exception {
         long startTime = System.currentTimeMillis();
-        logger.info("managerLogin,方法开始==={}" ,startTime);
+        logger.info("managerLogin,方法开始==={}", startTime);
         ResponseDTO<String> result = new ResponseDTO<>();
 
-        String loginResult = businessLoginService.managerLogin(loginDTO.getUserPhone(),loginDTO.getCode());
+        String loginResult = businessLoginService.managerLogin(loginDTO.getUserPhone(), loginDTO.getCode());
 
-        if (loginResult.equals(StatusConstant.FAILURE))
-        {
-            logger.info( "managerLogin方法返回结果,用户登录失败,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        if (loginResult.equals(StatusConstant.FAILURE)) {
+            logger.info("managerLogin方法返回结果,用户登录失败,耗时{}毫秒", (System.currentTimeMillis() - startTime));
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("用户登录失败");
             return result;
-        }
-        else
-        {
-            logger.info( "managerLogin方法返回结果,用户登录成功,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        } else {
+            logger.info("managerLogin方法返回结果,用户登录成功,耗时{}毫秒", (System.currentTimeMillis() - startTime));
             result.setResult(StatusConstant.SUCCESS);
             result.setErrorInfo("用户登录成功");
             result.setResponseData(loginResult);
@@ -172,19 +162,19 @@ public class BusinessLoginController {
     @RequestMapping(value = "crossBorderLogin", method = {RequestMethod.POST, RequestMethod.GET})
     public
     @ResponseBody
-    ResponseDTO<String> crossBorderLogin(@RequestBody LoginDTO loginDTO,HttpServletRequest request,
-                                         HttpServletResponse response,HttpSession session) throws Exception {
+    ResponseDTO<String> crossBorderLogin(@RequestBody LoginDTO loginDTO, HttpServletRequest request,
+                                         HttpServletResponse response, HttpSession session) throws Exception {
         long startTime = System.currentTimeMillis();
-        logger.info("crossBorderLogin,方法开始==={}" ,startTime);
+        logger.info("crossBorderLogin,方法开始==={}", startTime);
         ResponseDTO<String> result = new ResponseDTO<>();
-        String loginResult = businessLoginService.crossBorderLogin(loginDTO,request.getRemoteAddr().toString());
-        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR)){
-            logger.info( "crossBorderLogin方法返回结果,用户登录失败,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        String loginResult = businessLoginService.crossBorderLogin(loginDTO, request.getRemoteAddr().toString());
+        if (loginResult.equals(StatusConstant.VALIDATECODE_ERROR)) {
+            logger.info("crossBorderLogin方法返回结果,用户登录失败,耗时{}毫秒", (System.currentTimeMillis() - startTime));
             result.setResult(StatusConstant.FAILURE);
             result.setErrorInfo("用户登录失败");
             return result;
-        }else{
-            logger.info( "crossBorderLogin方法返回结果,用户登录成功,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        } else {
+            logger.info("crossBorderLogin方法返回结果,用户登录成功,耗时{}毫秒", (System.currentTimeMillis() - startTime));
             result.setResult(StatusConstant.SUCCESS);
             result.setErrorInfo("用户登录成功");
             result.setResponseData(loginResult);
@@ -200,19 +190,16 @@ public class BusinessLoginController {
     @ResponseBody
     ResponseDTO getUserValidateCode(@RequestParam String mobile) {
         long startTime = System.currentTimeMillis();
-        logger.info("发送验证码参数mobile={},方法开始==={}",mobile ,startTime);
+        logger.info("发送验证码参数mobile={},方法开始==={}", mobile, startTime);
         ResponseDTO result = new ResponseDTO<>();
-        try
-        {
+        try {
             SMSUtil.sendUserValidateCode(mobile);
             result.setResult(StatusConstant.SUCCESS);
-        }
-        catch (Exception e)
-        {
-            logger.info("发送验证码参数异常,异常信息为==={}"+e.getMessage(),e);
+        } catch (Exception e) {
+            logger.info("发送验证码参数异常,异常信息为==={}" + e.getMessage(), e);
             result.setResult(StatusConstant.FAILURE);
         }
-        logger.info( "发送验证码方法,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        logger.info("发送验证码方法,耗时{}毫秒", (System.currentTimeMillis() - startTime));
         return result;
     }
 
