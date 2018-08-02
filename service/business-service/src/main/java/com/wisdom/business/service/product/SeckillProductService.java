@@ -45,6 +45,9 @@ public class SeckillProductService {
      */
     private int productInfoCacheSeconds = 12000;
 
+    private int productAmountCacheSeconds = 86400000;
+
+
     @Autowired
     private SeckillProductMapper seckillProductMapper;
     @Autowired
@@ -101,14 +104,14 @@ public class SeckillProductService {
 
     /**
      * 获取某个活动的基本信息
-     * @param activtyId
+     * @param fieldId
      * @return
      */
-    public SeckillProductDTO getseckillProductDetailById(String activtyId) {
-        logger.info("service -- 根据活动id={}查询商品信息 getseckillProductDetailById,方法执行",activtyId);
-        SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+activtyId);
+    public SeckillProductDTO getseckillProductDetailById(String fieldId) {
+        logger.info("service -- 根据活动id={}查询商品信息 getseckillProductDetailById,方法执行",fieldId);
+        SeckillProductDTO<OfflineProductDTO> seckillproductDTO = (SeckillProductDTO<OfflineProductDTO>) JedisUtils.getObject("seckillProductInfo:"+fieldId);
         if(null == seckillproductDTO){
-            seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(activtyId);
+            seckillproductDTO  = seckillProductMapper.findSeckillProductInfoById(fieldId);
             if(null != seckillproductDTO){
                 Query query = new Query().addCriteria(Criteria.where("productId").is(seckillproductDTO.getProductId()));
                 OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
@@ -117,13 +120,14 @@ public class SeckillProductService {
                     offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
                     seckillproductDTO.setProductDetail(offlineProductDTO);
                 }
-                JedisUtils.setObject("seckillProductInfo:"+activtyId,seckillproductDTO,productInfoCacheSeconds);
+                int validityTime = (int)(seckillproductDTO.getActivityEndTime().getTime()-seckillproductDTO.getActivityStartTime().getTime());
+                JedisUtils.setObject("seckillProductInfo:"+fieldId,seckillproductDTO,validityTime/1000);
             }else{
                 return null;
             }
         }
         //这里有个弊端带付款后更新缓存信息
-        seckillproductDTO.setStockNum(seckillproductDTO.getActivityNum()-seckillproductDTO.getProductAmount());
+        seckillproductDTO.setStockNum( getProductAmout(fieldId));
         seckillproductDTO.setCountdown(-1);
         if(null != seckillproductDTO.getFieldEndTime()){
             Calendar endCalendar = Calendar.getInstance();
@@ -327,12 +331,17 @@ public class SeckillProductService {
             OrderProductRelationDTO orderProduct = transactionMapper.getOrderProductByOrderId(orderId);
             int stockNum = ordeNum-orderProduct.getProductNum();
             JedisUtils.set("seckillproductOrderNum:"+fieldId,(stockNum<0?0:stockNum)+"",productInfoCacheSeconds);
-            SeckillActivityFieldDTO seckillProductDTO = seckillProductMapper.findSecKillActivityFieldById(Integer.parseInt(fieldId));
+            SeckillProductDTO seckillProductDTO = seckillProductMapper.findSeckillProductInfoById(fieldId);
             int saleNum = seckillProductDTO.getProductAmount()+ordeNum;
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setId(Integer.parseInt(fieldId));
             seckillActivityFieldDTO.setProductAmount(saleNum);
             seckillActivityFieldDTO.setUpdateTime(new Date());
+
+            String proAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
+            int proAmount = StringUtils.isNotNull(proAmountStr)?Integer.parseInt(proAmountStr):0;
+            int validityTime = (int)(seckillProductDTO.getActivityEndTime().getTime()-new Date().getTime());
+            JedisUtils.set("seckillproductAmount:" + fieldId,(proAmount-orderProduct.getProductNum())+"",validityTime/1000);
             seckillProductMapper.updateSeckillActivityFieldById(seckillActivityFieldDTO);
         }
     }
