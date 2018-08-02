@@ -12,7 +12,6 @@ import com.wisdom.common.persistence.annotation.MyBatisDao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +28,8 @@ public interface TransactionMapper {
     OrderProductRelationDTO getOrderProductUnPaidInBuyCart(@Param("productId") String productId,
                                                            @Param("productSpec") String productSpec,
                                                            @Param("userId") String userId);
+
+    OrderProductRelationDTO getOrderProductByOrderId(@Param("orderId") String orderId);
 
     void updateOrderProductRelation(OrderProductRelationDTO orderProductRelationDTO);
 
