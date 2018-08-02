@@ -254,9 +254,9 @@ public class SeckillProductService {
 
             }
             int ms = (int)Integer.parseInt(String.valueOf(msc));
-            seckillActivityFieldDTO.setProductAmount(seckillActivityDTO.getActivityNum());
+            seckillActivityFieldDTO.setProductAmount(0);
             seckillProductMapper.addSeckillActivityField(seckillActivityFieldDTO);
-            JedisUtils.set(String.valueOf(seckillActivityFieldDTO.getId()),String.valueOf(seckillActivityFieldDTO.getProductAmount()),ms);
+            JedisUtils.set(String.valueOf(seckillActivityFieldDTO.getId()),String.valueOf(seckillActivityDTO.getActivityNum()),ms);
         }
 
         return "success";
