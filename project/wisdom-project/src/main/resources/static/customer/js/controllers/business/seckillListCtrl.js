@@ -14,7 +14,7 @@ var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
 
                 $scope.seckillInfo = function (item) {
                     if(item.status == 0){
-                        $state.go("seckillInfo",{id:item.id});
+                        $state.go("seckillInfo",{id:item.fieldId});
                     }
                 }
             });
