@@ -247,7 +247,7 @@ public class SeckillProductService {
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setActivityId(seckillActivityDTO.getId());
             seckillActivityFieldDTO.setCreateTime(new Date());
-            long msc = 36000;
+            long msc = 2592000;
             try {
                 seckillActivityFieldDTO.setStartTime(sdf.parse(seckillActivityField.getStartTimeString()));
                 seckillActivityFieldDTO.setEndTime(sdf.parse(seckillActivityField.getEndTimeString()));
