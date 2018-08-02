@@ -77,7 +77,7 @@
 				AND sa.end_time &lt;= #{activityStatusTimeString}
 			</if>
 		</where>
-		ORDER BY sa.create_time
+		ORDER BY sa.create_time desc
 		limit #{pageNo},#{pageSize}
 	</select>
 
@@ -165,8 +165,8 @@
 			#{activityNo},
 			#{activityName},
 			#{productId},
-			#{startTimeString},
-			#{endTimeString},
+			#{startTime},
+			#{endTime},
 			#{favorablePrice},
 			#{createTime},
 			#{updateTime},
