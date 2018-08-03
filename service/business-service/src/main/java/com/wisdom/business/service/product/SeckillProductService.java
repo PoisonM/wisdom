@@ -146,6 +146,7 @@ public class SeckillProductService {
         int orderNumrds = 0;
         Set<String> ordeNumStr = JedisUtils.vagueSearch("seckillproductOrderNum:" + fieldId+":");
         for(String orderNum : ordeNumStr){
+            orderNum = JedisUtils.get(orderNum);
             if(StringUtils.isNotNull(orderNum)){
                 orderNumrds += Integer.parseInt(orderNum);
             }
