@@ -259,7 +259,10 @@ public class SeckillProductService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         seckillActivityDTO.setCreateTime(new Date());
-        seckillActivityDTO.setActivityNo(UUID.randomUUID().toString());
+        StringBuilder activityNo = new StringBuilder();
+        Date activityNoDate = new Date();
+        activityNo.append(sdf1.format(activityNoDate)).append(activityNoDate.getTime()/1000);
+        seckillActivityDTO.setActivityNo(activityNo.toString());
         int activityId = seckillProductMapper.addSeckillActivity(seckillActivityDTO);
 
         for(SeckillActivityFieldDTO seckillActivityField : seckillActivityDTO.getSessionList()){
