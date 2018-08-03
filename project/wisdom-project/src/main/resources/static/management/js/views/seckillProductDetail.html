@@ -34,7 +34,8 @@
                                     </label>
                                      <input class="time MStart date startTime" style="width:120px;"  value="{{secKillSession.startTimeString}}" onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:true});" >&nbsp;&#45;&#45;&nbsp;<input class="time MEnd date endTime" style="width:120px;"  value="{{secKillSession.endTimeString}}" onclick="WdatePicker({dateFmt:'HH:mm:ss',isShowClear:true});">
                                  </div>
-                                 <!--<img ng-src="images/del.png" ng-click="deleteSession($index)" style="float:left;min-width:20px;min-height:20px;float:left;border-radius:4px;margin-left:430px;margin-top:-29px;">-->
+                                 <span style="margin-left:10px;font-size: medium;">{{secKillSession.activitySessionStatus}}</span>
+
                              </div>
                          </div>
                          <div style="margin-top:200px;">

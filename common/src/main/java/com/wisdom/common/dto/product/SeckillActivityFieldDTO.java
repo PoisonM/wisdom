@@ -57,6 +57,13 @@ public class SeckillActivityFieldDTO {
     @JSONField(name = "updateTime")
     private Date updateTime;
 
+    /**
+     * 活动场次状态
+     *
+     *
+     * */
+    private String activitySessionStatus;
+
 
     public Date getStartTime() {
         return startTime;
@@ -128,5 +135,13 @@ public class SeckillActivityFieldDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getActivitySessionStatus() {
+        return activitySessionStatus;
+    }
+
+    public void setActivitySessionStatus(String activitySessionStatus) {
+        this.activitySessionStatus = activitySessionStatus;
     }
 }

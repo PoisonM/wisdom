@@ -298,6 +298,7 @@ public class SeckillProductService {
     public SeckillActivityDTO getSecKillActivity(Integer id){
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdfH = new SimpleDateFormat("HH:mm:ss");
         SeckillActivityDTO seckillActivityDTO = new SeckillActivityDTO();
         seckillActivityDTO = seckillProductMapper.getSecKillActivity(id);
@@ -305,16 +306,50 @@ public class SeckillProductService {
         seckillActivityDTO.setStartTimeString(sdf.format(seckillActivityDTO.getStartTime()));
         seckillActivityDTO.setEndTimeString(sdf.format(seckillActivityDTO.getEndTime()));
 
+        Date nowDate = new Date();
         List<SeckillActivityFieldDTO> seckillActivityFieldList = seckillProductMapper.findSecKillActivityField(seckillActivityDTO.getId());
         for(SeckillActivityFieldDTO seckillActivityField:seckillActivityFieldList){
 
             seckillActivityField.setStartTimeString(sdfH.format(seckillActivityField.getStartTime()));
             seckillActivityField.setEndTimeString(sdfH.format(seckillActivityField.getEndTime()));
 
+
+            if(seckillActivityDTO.getStartTime().getTime()>nowDate.getTime()){
+
+                seckillActivityField.setActivitySessionStatus("未开始");
+            }else if(nowDate.getTime()>seckillActivityDTO.getEndTime().getTime()){
+
+                seckillActivityField.setActivitySessionStatus("已结束");
+            }else{
+
+                StringBuilder sbStartTime = new StringBuilder();
+                sbStartTime.append(sdf.format(nowDate)).append(" ").append(seckillActivityField.getStartTimeString());
+
+                StringBuilder sbEndTime = new StringBuilder();
+                sbEndTime.append(sdf.format(nowDate)).append(" ").append(seckillActivityField.getEndTimeString());
+
+                try {
+                    if (nowDate.getTime() < sdfNow.parse(sbStartTime.toString()).getTime()){
+
+                        seckillActivityField.setActivitySessionStatus("未开始");
+                    }else if(nowDate.getTime() > sdfNow.parse(sbEndTime.toString()).getTime()){
+
+                        seckillActivityField.setActivitySessionStatus("已结束");
+                    }else{
+
+                        seckillActivityField.setActivitySessionStatus("进行中");
+                    }
+                }catch (Exception e){
+
+                    logger.info("异常信息：{}",e.getMessage());
+                    seckillActivityField.setActivitySessionStatus("状态异常");
+                }finally {
+                    continue;
+                }
+            }
         }
 
         seckillActivityDTO.setSessionList(seckillActivityFieldList);
-
         return seckillActivityDTO;
     }
 
