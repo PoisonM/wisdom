@@ -9,6 +9,7 @@ var user = '/user/';
 var customer = '/user/customer/';
 
 var file = '/system/file/';
+var file2 = '/system-service/file/';
 
 var banner = '/system/banner/';
 
@@ -17,6 +18,7 @@ define(['appManagement'], function (app) {
         .factory('UserLoginOut',['$resource',function ($resource){
             return $resource(user + 'loginOut');
         }])
+
         /*管理员登录*/
         .factory('ManagerLogin',['$resource',function ($resource){
             return $resource(user + 'managerLogin');
@@ -25,6 +27,9 @@ define(['appManagement'], function (app) {
         /*上传图片*/
         .factory('ImageUploadToOSS',['$resource',function ($resource){
             return $resource(file + 'imageUploadToOSS');
+        }])
+        .factory('imageBase64UploadToOSS',['$resource',function ($resource){
+            return $resource(file2 + 'imageBase64UploadToOSS');
         }])
 
         /*代理详情*/
@@ -84,6 +89,29 @@ define(['appManagement'], function (app) {
         .factory('FindProductDetail',['$resource',function ($resource){
             return $resource(product + 'findProductDetail');
         }])
+        /*-------------------*/
+        .factory('getOneProductClassList',['$resource',function ($resource){
+            return $resource(product + 'getOneProductClassList');
+        }])
+        .factory('getTwoProductClassList',['$resource',function ($resource){
+            return $resource(product + 'getTwoProductClassList');
+        }])
+        .factory('addOneProductClass',['$resource',function ($resource){
+            return $resource(product + 'addOneProductClass');
+        }])
+        .factory('addTwoProductClass',['$resource',function ($resource){
+            return $resource(product + 'addTwoProductClass');
+        }])
+        .factory('upOrDownProductClass',['$resource',function ($resource){
+            return $resource(product + 'upOrDownProductClass');
+        }])
+        .factory('delProductClassById',['$resource',function ($resource){
+            return $resource(product + 'delProductClassById');
+        }])
+        .factory('updateProductClass',['$resource',function ($resource){
+            return $resource(product + 'updateProductClass');
+        }])
+
 
         /*输入定单号*/
         .factory('InsertOrderCopRelation',['$resource',function ($resource){

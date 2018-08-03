@@ -286,6 +286,18 @@ define(['appManagement'], function(app){
                             }
                         }
                     })
+                    .state('productClass', {
+                        url: '/productClass',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'productClassCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.productClassCtrl',
+                                    ['js/controllers/productClassCtrl.js?ver=' + managementVersion],
+                                    'js/views/productClass.html?ver=' + managementVersion);
+                            }
+                        }
+                    })
                     .state('uploadingParticulars', {
                         url: '/uploadingParticulars/:productId/:createDate/:status/:productsName/:page',
                         templateProvider: function() { return lazyDeferred.promise; },

@@ -4,6 +4,7 @@
 package com.wisdom.business.mapper.product;
 
 import com.wisdom.common.dto.account.PageParamVoDTO;
+import com.wisdom.common.dto.product.ProductClassDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.dto.system.PageParamDTO;
 import com.wisdom.common.persistence.Page;
@@ -52,4 +53,14 @@ public interface ProductMapper {
     List<ProductDTO> findSpecialOfflineProductList(PageParamDTO pageParamDTO);
 
     List<String> getBorderSpecialProductBrandList();
+
+    List<ProductClassDTO> getOneProductClassList();
+
+	List<ProductClassDTO> getTwoProductClassList(@Param("productClassId") String productClassId);
+
+    void addProductClass(ProductClassDTO productClassDTO);
+
+    void updateProductClass(ProductClassDTO productClassDTO);
+
+	List<ProductClassDTO> getProductClassList(ProductClassDTO productClassDTO);
 }

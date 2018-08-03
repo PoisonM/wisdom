@@ -57,7 +57,7 @@ public class OfflineProductService {
         return productDTO;
     }
 
-    public List<ProductDTO> findOfflineProductList(PageParamDTO pageParamDTO) {
+    public List<ProductDTO> findOfflineProductList(PageParamDTO<ProductDTO> pageParamDTO) {
         List<ProductDTO> productDTOList = productMapper.findOfflineProductList(pageParamDTO);
         for (ProductDTO productDTO : productDTOList){
             String sellNum = payRecordService.getSellNumByProductId(productDTO.getProductId());
@@ -68,6 +68,7 @@ public class OfflineProductService {
                 //sellNum真是销量乘一个基数
                 int sell = Integer.parseInt(sellNum) * 8;
                 offlineProductDTO.setProductSalesVolume(sell+"");
+                productDTO.setSellNum(sell+"");
             }
             productDTO.setProductDetail(offlineProductDTO);
         }
