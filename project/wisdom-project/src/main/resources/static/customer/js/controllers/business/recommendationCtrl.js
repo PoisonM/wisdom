@@ -1,10 +1,9 @@
 /**
- * Created by Administrator on 2018/7/26.
+ * Created by Administrator on 2018/8/2.
  */
-angular.module('controllers',[]).controller('distributionAreaCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading) {
-
+angular.module('controllers',[]).controller('recommendationCtrl',
+    ['$scope','$rootScope','$stateParams','$state','$ionicLoading','GetOfflineProductList','Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetOfflineProductList,Global) {
             $scope.getInfo=function () {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -26,9 +25,17 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
                     }
                 };
                 GetOfflineProductList.save($scope.PageParamDTO,function(data){
-                    $ionicLoading.hide();
-                    console.log(data);
-                    $scope.param.productList=data.responseData;
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $ionicLoading.hide();
+                        $scope.param.productList=data.responseData;
+                        if(data.responseData.length<=0){
+                            $scope.param.picFlag=true;
+                        }
+                    }else {
+                        $ionicLoading.hide();
+                        $scope.param.picFlag=true;
+                    }
                 });
             };
             $scope.$on('$ionicView.enter', function() {
@@ -36,7 +43,8 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
                     Horizontal:true,
                     productList:{},
                     orderBy:"",
-                    orderType:""
+                    orderType:"",
+                    picFlag:false/*空白页面的显示*/
                 };
                 $scope.getInfo();
             });
@@ -46,20 +54,20 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
             };
             /*点击 input框进入到搜索页面*/
             $scope.search=function () {
-              $state.go("searchPage")
+                $state.go("searchPage")
             };
-               $scope.flag=true;
-            $scope.checkType=function (orderType)   {
+            $scope.flag=true;
+            $scope.checkType=function (orderType) {
                 $scope.param.orderType=orderType;
                 /*点击价格首次点击上升序 再次点击价格降序*/
                 if($scope.param.orderType=="price"){
-                  if($scope.flag==true){
-                      $scope.param.orderBy="asc";
-                      $scope.flag=false;
-                  }else {
-                      $scope.param.orderBy="desc";
-                      $scope.flag=true;
-                  }
+                    if($scope.flag==true){
+                        $scope.param.orderBy="asc";
+                        $scope.flag=false;
+                    }else {
+                        $scope.param.orderBy="desc";
+                        $scope.flag=true;
+                    }
                 }
                 $scope.getInfo()
             }

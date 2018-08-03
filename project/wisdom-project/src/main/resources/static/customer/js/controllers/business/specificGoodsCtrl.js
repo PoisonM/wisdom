@@ -1,10 +1,9 @@
 /**
- * Created by Administrator on 2018/7/26.
+ * Created by Administrator on 2018/8/2.
  */
-angular.module('controllers',[]).controller('distributionAreaCtrl',
+angular.module('controllers',[]).controller('specificGoodsCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading',
         function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading) {
-
             $scope.getInfo=function () {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -22,7 +21,7 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
                     orderBy:$scope.param.orderBy,
                     orderType:$scope.param.orderType,
                     requestData:{
-                        productPrefecture:""
+                        secondType:$scope.param.secondType
                     }
                 };
                 GetOfflineProductList.save($scope.PageParamDTO,function(data){
@@ -36,7 +35,8 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
                     Horizontal:true,
                     productList:{},
                     orderBy:"",
-                    orderType:""
+                    orderType:"",
+                    secondType:$stateParams.id
                 };
                 $scope.getInfo();
             });
@@ -46,20 +46,20 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
             };
             /*点击 input框进入到搜索页面*/
             $scope.search=function () {
-              $state.go("searchPage")
+                $state.go("searchPage")
             };
-               $scope.flag=true;
-            $scope.checkType=function (orderType)   {
+            $scope.flag=true;
+            $scope.checkType=function (orderType) {
                 $scope.param.orderType=orderType;
                 /*点击价格首次点击上升序 再次点击价格降序*/
                 if($scope.param.orderType=="price"){
-                  if($scope.flag==true){
-                      $scope.param.orderBy="asc";
-                      $scope.flag=false;
-                  }else {
-                      $scope.param.orderBy="desc";
-                      $scope.flag=true;
-                  }
+                    if($scope.flag==true){
+                        $scope.param.orderBy="asc";
+                        $scope.flag=false;
+                    }else {
+                        $scope.param.orderBy="desc";
+                        $scope.flag=true;
+                    }
                 }
                 $scope.getInfo()
             }
