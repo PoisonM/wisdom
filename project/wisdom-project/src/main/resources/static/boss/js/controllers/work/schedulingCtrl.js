@@ -36,16 +36,19 @@ angular.module('controllers',[]).controller('schedulingCtrl',
 
                     }
                 })
-                var tiemInt = setInterval(function () {
-                    if($("#tbTest1 thead tr td").length != 0){
-                        var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
-                        clearTimeout(tiemInt)
-                    }
-                },100)
+
             };
+
             $scope.$on('$ionicView.enter', function() {
                 $scope.queryScheduleList($scope.param.nowdate.replace("年","-").replace("月","-1"))
+
             })
+            var tiemInt = setInterval(function () {
+                if($("#tbTest1 thead tr td").length != 0){
+                    var ofix1 = new oFixedTable('ofix1', document.getElementById('tbTest1'), {rows: 1, cols: 1});
+                    clearTimeout(tiemInt)
+                }
+            },100)
 
             $scope.compileDateFn = function () {
                 if(new Date().getFullYear()+"年"+parseInt(new Date().getMonth()+1)+"月" == $scope.param.nowdate){
