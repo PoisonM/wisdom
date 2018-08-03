@@ -215,6 +215,7 @@ img {display: inline-block}
  display: none;
 }*/
 .boss .item{padding:16px 25px 16px 16px;}
+.h span{display: inline-block;height:34px;line-height: 34px;}
 
 
 

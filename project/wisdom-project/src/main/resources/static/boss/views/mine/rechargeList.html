@@ -2,7 +2,7 @@
     <ion-content>
         <div class="list" ng-if="rechargeList.length>=2">
             <ion-item  class="row " ng-repeat="item in rechargeList" ng-click="editedRechargeGo(item.id)" ng-if="item.rechargeCardType !='0'">
-                <div class="col col-25" style="line-height: 49px;background: url('{{item.imageUrl}}');background-size: contain;background-position: center center;background-repeat: no-repeat" >
+                <div class="col col-25" style="height:65px;background: url('{{item.imageUrl}}');background-size: contain;background-position: center center;background-repeat: no-repeat;margin-top:8px;" >
                 </div>
                 <div class="col col-75 ml10 mr10" >
                     <p class="fs15" style="color: #333333!important;"><span>{{item.name}}</span></p >
