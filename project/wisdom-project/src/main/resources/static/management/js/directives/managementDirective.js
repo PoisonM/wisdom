@@ -579,8 +579,8 @@ define(['appManagement','jquery'], function (app,$) {
                     '</div>' +
                     '</li>' +
                     '<li >' +
-                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==7}" ng-click=showOrHide(6)><img ng-src="{{index1==6?\'images/btFinancialPre.png\':\'images/btFinancialNor.png\'}}">活动管理</a></p>' +
-                    '<div class="administration_content" ng-show="index1==6">' +
+                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==7}" ng-click=showOrHide(7)><img ng-src="{{index1==7?\'images/btFinancialPre.png\':\'images/btFinancialNor.png\'}}">活动管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==7">' +
                         '<p><a ui-sref="secKillProduct" ng-class="{\'activeNavbarSide\':index2==71}">活动管理</a></p>' +
                     '</li>' +
 
