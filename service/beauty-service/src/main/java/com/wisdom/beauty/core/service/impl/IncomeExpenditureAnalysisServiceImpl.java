@@ -150,15 +150,22 @@ public class IncomeExpenditureAnalysisServiceImpl implements IncomeExpenditureAn
 		// 循环美容院shopBossRelationDTOList
 		List<ExpenditureAndIncomeResponseDTO> expenditureAndIncomeResponses = new ArrayList<>();
 		ExpenditureAndIncomeResponseDTO expenditureAndIncomeResponseDTO = null;
+		//map  key存放店id，去重使用的
+		Map<String, String> repeatMap = new HashMap<>();
 		for (ShopBossRelationDTO shopBossRelation : shopBossRelationDTOList) {
-			expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
-			if (cashAmountMap != null && cashAmountMap.get(shopBossRelation.getSysShopId()) != null) {
-				expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
-				expenditureAndIncomeResponseDTO.setAllEarnings(payTypeAmountMap.get(shopBossRelation.getSysShopId()));
+			if(repeatMap.containsKey(shopBossRelation.getSysShopId())){
+                   continue;
+			}else {
+				repeatMap.put(shopBossRelation.getSysShopId(), shopBossRelation.getSysShopId());
+				expenditureAndIncomeResponseDTO = new ExpenditureAndIncomeResponseDTO();
+				if (cashAmountMap != null && cashAmountMap.get(shopBossRelation.getSysShopId()) != null) {
+					expenditureAndIncomeResponseDTO.setCashEarnings(cashAmountMap.get(shopBossRelation.getSysShopId()));
+					expenditureAndIncomeResponseDTO.setAllEarnings(payTypeAmountMap.get(shopBossRelation.getSysShopId()));
+				}
+				expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());
+				expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
+				expenditureAndIncomeResponses.add(expenditureAndIncomeResponseDTO);
 			}
-			expenditureAndIncomeResponseDTO.setSysShopName(shopBossRelation.getSysShopName());
-			expenditureAndIncomeResponseDTO.setSysShopId(shopBossRelation.getSysShopId());
-			expenditureAndIncomeResponses.add(expenditureAndIncomeResponseDTO);
 		}
 		return expenditureAndIncomeResponses;
 	}
