@@ -504,21 +504,27 @@ public class AppointmentController {
 		//缓存全部店的预约信息
 		ArrayList<Object> arrayList = new ArrayList<>();
 		//查询店铺下的预约信息
+		//map  key存放店id，去重使用的
+		Map<String, String> repeatMap = new HashMap<>();
 		for (ShopBossRelationDTO bossRelationDTO : shopBossRelationDTOS) {
-			//hash缓存单个店的预约信息
-			HashMap<Object, Object> hashMap = new HashMap<>(16);
-			ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
-			extShopAppointServiceDTO.setSysBossCode(bossRelationDTO.getSysBossCode());
-			extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysShopId());
-			extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
-			extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
-			extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
-			Integer numberByCriteria = appointmentService.getShopClerkAppointNumberByCriteria(extShopAppointServiceDTO);
-			hashMap.put("bossRelationDTO", bossRelationDTO);
-			hashMap.put("appointmentNum", numberByCriteria);
-			arrayList.add(hashMap);
+			if (repeatMap.containsKey(bossRelationDTO.getSysShopId())) {
+				continue;
+			} else {
+				repeatMap.put(bossRelationDTO.getSysShopId(), bossRelationDTO.getSysShopId());
+				//hash缓存单个店的预约信息
+				HashMap<Object, Object> hashMap = new HashMap<>(16);
+				ExtShopAppointServiceDTO extShopAppointServiceDTO = new ExtShopAppointServiceDTO();
+				extShopAppointServiceDTO.setSysBossCode(bossRelationDTO.getSysBossCode());
+				extShopAppointServiceDTO.setSysShopId(bossRelationDTO.getSysShopId());
+				extShopAppointServiceDTO.setSearchStartTime(DateUtils.StrToDate(searchDate + " 00:00:00", "datetime"));
+				extShopAppointServiceDTO.setSearchEndTime(DateUtils.StrToDate(searchDate + " 23:59:59", "datetime"));
+				extShopAppointServiceDTO.setStatus(AppointStatusEnum.APPOINT.getCode());
+				Integer numberByCriteria = appointmentService.getShopClerkAppointNumberByCriteria(extShopAppointServiceDTO);
+				hashMap.put("bossRelationDTO", bossRelationDTO);
+				hashMap.put("appointmentNum", numberByCriteria);
+				arrayList.add(hashMap);
+			}
 		}
-
 		responseDTO.setResult(StatusConstant.SUCCESS);
 		responseDTO.setResponseData(arrayList);
 		return responseDTO;
