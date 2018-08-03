@@ -247,8 +247,8 @@
 	<update id="updateSeckillActivityFieldById">
 		UPDATE seckill_activity_field
 		SET
-		<if test="updateTime != ''and updateTime != null">
-			,update_time=#{updateTime}
+		<if test="updateTime != null">
+			,update_time=#{updateTime,jdbcType=TIMESTAMP}
 		</if>
 		<if test="productAmount != ''and productAmount != null">
 			,product_amount=#{productAmount}
