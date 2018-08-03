@@ -63,7 +63,7 @@ define(['appCustomer'], function(app){
                     })
                     /*新人专享页面*/
                     .state('newlyweds', {
-                        url: '/newlyweds',
+                        url: '/newlyweds/:productPrefecture',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newlywedsCtrl',
                         resolve: {
@@ -74,9 +74,9 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
-                    /*99 199页面*/
+                    /*特价专区 框架商品页面*/
                     .state('areaPage', {
-                        url: '/areaPage',
+                        url: '/areaPage/:productPrefecture',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'areaPageCtrl',
                         resolve: {
@@ -100,6 +100,32 @@ define(['appCustomer'], function(app){
                             }
                         }
                     })
+                        /*点击二级类目的具体产品*/
+                    .state('specificGoods', {
+                        url: '/specificGoods/:id',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'specificGoodsCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.specificGoodsCtrl',
+                                    ['js/controllers/business/specificGoodsCtrl.js?ver='+ customerVersion],
+                                    'views/business/specificGoods.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                        /*好货推荐*/
+                    .state('recommendation', {
+                        url: '/recommendation/:productPrefecture',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'recommendationCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.recommendationCtrl',
+                                    ['js/controllers/business/recommendationCtrl.js?ver='+ customerVersion],
+                                    'views/business/recommendation.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
                     /*拼团 砍价专区 空页面*/
                     .state('area', {
                         url: '/area',
@@ -110,6 +136,32 @@ define(['appCustomer'], function(app){
                                 loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.areaCtrl',
                                     ['js/controllers/business/areaCtrl.js?ver='+ customerVersion],
                                     'views/business/area.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    /*分类页面*/
+                    .state('classification', {
+                        url: '/classification',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'classificationCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.classificationCtrl',
+                                    ['js/controllers/business/classificationCtrl.js?ver='+ customerVersion],
+                                    'views/business/classification.html?ver=' + customerVersion);
+                            }
+                        }
+                    })
+                    /*联系客服页面*/
+                    .state('contactCustomer', {
+                        url: '/contactCustomer',
+                        templateProvider: function() { return lazyDeferred.promise; },
+                        controller: 'contactCustomerCtrl',
+                        resolve: {
+                            load: function($templateCache, $ocLazyLoad, $q, $http) {
+                                loadFunction($templateCache, $ocLazyLoad, $q, $http,'app.contactCustomerCtrl',
+                                    ['js/controllers/business/contactCustomerCtrl.js?ver='+ customerVersion],
+                                    'views/business/contactCustomer.html?ver=' + customerVersion);
                             }
                         }
                     })

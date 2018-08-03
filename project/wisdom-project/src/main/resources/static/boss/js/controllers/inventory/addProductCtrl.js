@@ -87,11 +87,22 @@ angular.module('controllers',[]).controller('addProductCtrl',
                              if(data.result == "0x00001"){
                                 $scope.setFlag = true;
                                 $rootScope.settingAddsome.product.productName=data.responseData.productName;
-                                $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
-                                $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
-                                $rootScope.settingAddsome.product.productUnit = data.responseData.productSpecUnit;
-                                $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
-                                $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
+                                if(data.responseData.productSpec!=null){
+                                    $rootScope.settingAddsome.product.productSpec=data.responseData.productSpec;
+                                }
+                                if(data.responseData.marketPrice !=null){
+                                    $rootScope.settingAddsome.product.marketPrice = data.responseData.marketPrice;
+                                }
+                                if(data.responseData.productSpecUnit !=null){
+                                     $rootScope.settingAddsome.product.productUnit = data.responseData.productSpecUnit;
+                                }
+                                if(data.responseData.effectDate！=null){
+                                    $rootScope.settingAddsome.product.effectDate = data.responseData.effectDate;
+                                }
+                                if(data.responseData.productCode!=null){
+                                    $rootScope.settingAddsome.product.productCode = data.responseData.productCode;
+                                }
+
                              }else{
                                 alert("该二维码或条形码无效!");
                              }

@@ -1,6 +1,6 @@
 
 <ion-view>
-    <ion-content class="partialFiles mb45 bgf6" scroll="true">
+    <ion-content class="partialFiles mb45 bgf6 h" scroll="true">
         <div >
             <ion-list>
                 <ion-item class="pd15 h50 sb">
@@ -29,7 +29,7 @@
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">产品名称<span class="colff66">*</span></p>
                     <p class="fs14 col999">
-                        <input type="text" class="textL" ng-model="settingAddsome.product.productName" placeholder="请输入名称">
+                        <input type="text" class="textL mt5" ng-model="settingAddsome.product.productName" placeholder="请输入名称">
                     </p>
                 </ion-item>
             </ion-list>
@@ -103,9 +103,7 @@
                     <div style="display: flex;flex-flow: wrap;">
                         <span style="display: inline-block;padding: 0 7px;border-radius:4px;border:solid 1px #FF6666;height:20px;line-height: 20px;color: #FF6666;margin-bottom: 10px;margin-right:10px; "class="fs14" ng-repeat="ceshiItem in (settingAddsome.product.productFunction.split(';'))" ng-hide="settingAddsome.product.productFunction==''">{{ceshiItem}}</span>
                     </div>
-
                 </ion-item>
-
                 <ion-item class="pd15 h50 sb">
                     <p class="fs16 col333">二维码/条形码<span class="colff66">    </span></p>
                     <p class="fs14 col999">

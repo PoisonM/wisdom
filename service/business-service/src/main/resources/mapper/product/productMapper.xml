@@ -56,6 +56,9 @@
 		<if test="requestData.price != null and requestData.price != ''">
 			AND p.price = ${requestData.price}
 		</if>
+		<if test="requestData.secondType != null and requestData.secondType != ''">
+			AND p.second_type = #{requestData.secondType}
+		</if>
 		<if test="requestData.brand != null and requestData.brand != ''">
 			AND p.brand = #{requestData.brand}
 		</if>
@@ -71,24 +74,6 @@
 		business_product
 		where
 		type='special' AND  status = '1'
-		<if test="requestData.productName != null and requestData.productName != ''">
-			AND p.name LIKE "%${requestData.productName}%"
-		</if>
-		<if test="requestData.productId != null and requestData.productId != ''">
-			AND p.product_id = #{requestData.productId}
-		</if>
-		<if test="requestData.price != null and requestData.price != ''">
-			AND p.price = ${requestData.price}
-		</if>
-		<if test="requestData.type != null and requestData.type != ''">
-			AND p.type = #{requestData.type}
-		</if>
-		<if test="requestData.brand != null and requestData.brand != ''">
-			AND p.brand LIKE "%${requestData.brand}%"
-		</if>
-		<if test="requestData.status != null and requestData.status != ''">
-			AND p.status = #{requestData.status}
-		</if>
 		ORDER BY
 		create_date DESC
 		limit #{pageNo},#{pageSize}
@@ -209,10 +194,7 @@
 	<!--编辑商品 -->
 	<update id="updateProductByParameters">
 		UPDATE business_product
-		SET
-		<if test="productId != ''and productId != null">
-			product_id=#{productId}
-		</if>
+		SET product_id=#{productId}
 		<if test="productName != ''and productName != null">
 			,name=#{productName}
 		</if>
@@ -298,4 +280,110 @@
 		from
 		business_product
 	</select>
+	<!--获取商品一级类目-->
+	<select id="getOneProductClassList" resultType="com.wisdom.common.dto.product.ProductClassDTO">
+		select
+		*
+		from
+		product_class_relation
+		WHERE status ="1" AND rank ="1"
+	</select>
+	<!--获取商品二级类目-->
+	<select id="getTwoProductClassList" resultType="com.wisdom.common.dto.product.ProductClassDTO">
+		select
+		*
+		from
+		product_class_relation
+		WHERE status ="1"
+			AND parent_id = #{productClassId}
+	</select>
+	<!--条件查询分类-->
+	<select id="getProductClassList" resultType="com.wisdom.common.dto.product.ProductClassDTO">
+		SELECT
+		*
+		FROM product_class_relation p
+		WHERE 1=1
+		<if test="id != null and id != ''">
+			AND p.id = #{id}
+		</if>
+		<if test="productClassId != null and productClassId != ''">
+			AND p.product_class_id = #{productClassId}
+		</if>
+		<if test="productClassName != null and productClassName != ''">
+			AND p.product_class_name LIKE "%${productClassName}%"
+		</if>
+		<if test="parentId != null and parentId != ''">
+			AND p.parent_id = #{parentId}
+		</if>
+		<if test="url != null and url != ''">
+			AND p.url = #{url}
+		</if>
+		<if test="createDate != null and createDate != ''">
+			AND p.create_date  = #{createDate}
+		</if>
+		<if test="rank != null and rank != ''">
+			AND p.rank = #{rank}
+		</if>
+		<if test="sort != null and sort != ''">
+			AND p.sort  = #{sort}
+		</if>
+		<if test="status != null and status != ''">
+			AND p.status = #{status}
+		</if>
+	</select>
+	<!--新增分类-->
+	<insert id="addProductClass">
+		INSERT INTO product_class_relation(
+		id,
+		product_class_id,
+		product_class_name,
+		parent_id,
+		url,
+		create_date,
+		rank,
+		sort,
+		status
+		) VALUES (
+		#{id},
+		#{productClassId},
+		#{productClassName},
+		#{parentId},
+		#{url},
+		#{createDate},
+		#{rank},
+		#{sort},
+		#{status}
+		)
+	</insert>
+	<!--编辑商品 -->
+	<update id="updateProductClass">
+		UPDATE product_class_relation
+		SET id = #{id}
+		<if test="productClassId != ''and productClassId != null">
+			,product_class_id=#{productClassId}
+		</if>
+		<if test="productClassName != ''and productClassName != null">
+			,product_class_name=#{productClassName}
+		</if>
+		<if test="parentId != ''and parentId != null">
+			,parent_id=#{parentId}
+		</if>
+		<if test="url != ''and url != null">
+			,url=#{url}
+		</if>
+		<if test="createDate != ''and createDate != null">
+			,create_date=#{createDate}
+		</if>
+		<if test="rank != ''and rank != null">
+			,rank=#{rank}
+		</if>
+		<if test="sort != ''and sort != null">
+			,sort=#{sort}
+		</if>
+		<if test="status != ''and status != null">
+			,status=#{status}
+		</if>
+		WHERE
+		id = #{id}
+	</update>
 </mapper>

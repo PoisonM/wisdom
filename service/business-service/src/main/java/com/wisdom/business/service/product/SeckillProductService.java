@@ -146,6 +146,7 @@ public class SeckillProductService {
         int orderNumrds = 0;
         Set<String> ordeNumStr = JedisUtils.vagueSearch("seckillproductOrderNum:" + fieldId+":");
         for(String orderNum : ordeNumStr){
+            orderNum = JedisUtils.get(orderNum);
             if(StringUtils.isNotNull(orderNum)){
                 orderNumrds += Integer.parseInt(orderNum);
             }
@@ -258,7 +259,10 @@ public class SeckillProductService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         seckillActivityDTO.setCreateTime(new Date());
-        seckillActivityDTO.setActivityNo(UUID.randomUUID().toString());
+        StringBuilder activityNo = new StringBuilder();
+        Date activityNoDate = new Date();
+        activityNo.append(sdf1.format(activityNoDate)).append(activityNoDate.getTime()/1000);
+        seckillActivityDTO.setActivityNo(activityNo.toString());
         int activityId = seckillProductMapper.addSeckillActivity(seckillActivityDTO);
 
         for(SeckillActivityFieldDTO seckillActivityField : seckillActivityDTO.getSessionList()){
@@ -329,6 +333,7 @@ public class SeckillProductService {
         String fieldId = JedisUtils.get("seckillproductOrder:"+orderId);
         if(StringUtils.isNotNull(fieldId)){
             JedisUtils.del("seckillproductOrder:"+orderId);
+            JedisUtils.del("seckillProductInfo:"+orderId);
             String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId+":"+orderId);
             int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
             JedisUtils.del("seckillproductOrderNum:" + fieldId+":"+orderId);

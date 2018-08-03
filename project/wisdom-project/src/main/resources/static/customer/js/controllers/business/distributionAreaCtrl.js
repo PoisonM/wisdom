@@ -44,8 +44,12 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
             $scope.enterDetails=function(item){
                 $state.go("offlineProductDetail",{productId:item})
             };
+            /*点击 input框进入到搜索页面*/
+            $scope.search=function () {
+              $state.go("searchPage")
+            };
                $scope.flag=true;
-            $scope.checkType=function (orderType) {
+            $scope.checkType=function (orderType)   {
                 $scope.param.orderType=orderType;
                 /*点击价格首次点击上升序 再次点击价格降序*/
                 if($scope.param.orderType=="price"){

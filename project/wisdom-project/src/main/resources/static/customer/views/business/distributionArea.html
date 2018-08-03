@@ -11,7 +11,7 @@
             <ion-item class="item-input" style="background: border-box;padding: 10px;background: #ffffff">
                 <span class="item-input-wrapper" style="height:30px;border-radius: 58px" >
                         <i class="icon ion-ios-search placeholder-icon" ></i>
-                        <input id="search" type="search" placeholder="补水五件套">
+                        <input id="search" type="search" placeholder="补水五件套" ng-click="search()">
                  </span>
             </ion-item>
         </ion-list>
@@ -61,7 +61,6 @@
                     <p style="font-size: 12px;margin-top: 6px;margin-bottom: 30px;margin-left: 15px"><span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;">零售价<del>¥{{item.productDetail.productMarketPrice}}</del></span><span style="font-family: PingFangSC-Regular;font-size: 12px;color: #9B9B9B;margin-left: 26px">销量{{item.productDetail.productSalesVolume}}</span></p>
                 </div>
             </div>
-
         </div>
     </ion-content>
 </ionic-view>

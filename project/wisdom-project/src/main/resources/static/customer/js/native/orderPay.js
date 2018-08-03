@@ -430,7 +430,7 @@ var processPay = function(){
                                 success: function (res) {
                                     if(res.errMsg == "chooseWXPay:ok" ) {
                                         //支付成功后， 跳转到支付成功页
-                                        if(productType=='offline'||productType=='special')
+                                        if(productType=='offline'||productType=='special'||productType=='seckill')
                                         {
                                             window.location.href = "#/paySuccess";
                                         }else if(productType=='trainingProduct')
