@@ -1,7 +1,7 @@
 var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
-    ['$scope','$rootScope','$stateParams','$state','$ionicPopup',
+    ['$scope','$location','$rootScope','$stateParams','$state','$ionicPopup',
         '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis',
-        function ($scope,$rootScope,$stateParams,$state,$ionicPopup,
+        function ($scope,$location,$rootScope,$stateParams,$state,$ionicPopup,
                   $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global,PutNeedPayOrderListToRedis) {
             $scope.authentication_flag = false;
             $rootScope.title = "秒杀详情";
@@ -150,7 +150,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                     if(data.responseData=="failure"){
                         showToast("请先登录账号");
                         hideToast();
-                        $state.go("login");
+                        $state.go("login",{redirectUrl:$location.url()})
                     }
                 })
             };

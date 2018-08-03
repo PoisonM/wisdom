@@ -277,7 +277,11 @@ angular.module('controllers',[]).controller('offlineProductDetailCtrl',
                 GetProductNumFromBuyCart.get(function(data){
                     $scope.param.productUnPaidNum = data.responseData;
                 });
-            })
+                /*点击联系客服跳转到相应页面*/
+                $scope.contactCustomer=function () {
+                    $state.go("contactCustomer")
+                }
+            });
 
-        }])
+        }]);
 

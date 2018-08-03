@@ -22,15 +22,12 @@ angular.module('controllers',[]).controller('partialFilesCtrl',
                 FindArchives.get({pageSize:$scope.param.pageSize,
                     pageNo:$scope.param.pageNo,queryField:$scope.param.queryField},function (data) {
                     BossUtil.checkResponseData(data,'partialFiles');
-                    if(data.result == "0x00001"){
+                    $ionicLoading.hide();
+                    if(data.result == "0x00001"&&data.responseData != null){
                         $scope.fileList = [];
-                        $ionicLoading.hide();
-                        if (data.responseData == null) {
-                            $scope.info=[]
-                        }else{
-                            $scope.info = data.responseData.info;
-                        }
-
+                        $scope.info = data.responseData.info;
+                    }else{
+                        $scope.info=[]
                     }
                 });
             })
