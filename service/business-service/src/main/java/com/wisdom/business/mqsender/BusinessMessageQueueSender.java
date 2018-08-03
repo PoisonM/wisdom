@@ -1,35 +1,18 @@
 package com.wisdom.business.mqsender;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
-import com.wisdom.business.client.UserServiceClient;
-import com.wisdom.business.mapper.account.AccountMapper;
-import com.wisdom.business.service.transaction.PayCoreService;
-import com.wisdom.common.dto.account.AccountDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopBusinessOrderDTO;
-import com.wisdom.common.dto.specialShop.SpecialShopInfoDTO;
-import com.wisdom.common.dto.system.PageParamDTO;
+import com.wisdom.common.dto.account.PayRecordDTO;
 import com.wisdom.common.dto.transaction.BusinessOrderDTO;
 import com.wisdom.common.dto.transaction.InstanceReturnMoneySignalDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
-import com.wisdom.common.persistence.Page;
-import com.wisdom.common.util.FrontUtils;
-import com.wisdom.common.util.SMSUtil;
-import com.wisdom.common.util.WeixinTemplateMessageUtil;
+import com.wisdom.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,9 +23,6 @@ public class BusinessMessageQueueSender {
 
     @Autowired
     private AmqpTemplate rabbitTemplate;
-
-    @Autowired
-    private UserServiceClient userServiceClient;
 
     private static Gson gson = new Gson();
 
@@ -78,6 +58,13 @@ public class BusinessMessageQueueSender {
         this.rabbitTemplate.convertAndSend("handleUserLevelPromotion", sendHandleUserLevelPromotionMessage);
     }
 
-
-
+    public void sendHandleSpecialProduct( List<PayRecordDTO> payRecordDTOList) {
+        logger.info("秒杀商品支付后更新库存以及缓存信息====");
+        for(PayRecordDTO payRecordDTO : payRecordDTOList){
+            String orderId = payRecordDTO.getOrderId();
+            if(StringUtils.isNotNull(orderId)){
+                this.rabbitTemplate.convertAndSend("HandleSeckillProduct", orderId);
+            }
+        }
+    }
 }

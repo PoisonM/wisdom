@@ -148,6 +148,7 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
             }
 
             $scope.successfulInventoryGo=function(){
+                var timstamp = (new Date).valueOf();
                 if($scope.sum>0){
                     if($scope.flag){
                         $scope.flag=false;
@@ -162,14 +163,16 @@ angular.module('controllers',[]).controller('newLibraryCtrl',
                         $scope.param.shopStock.productDateString = $scope.param.shopStock.productDate;
                         AddStock.save($scope.param.shopStock,function(data){
                             if(data.result==Global.SUCCESS){
-                                $state.go("successfulInventory",{id:data.responseData,type:'inbound'})
+                                $rootScope.shopInfo.entryShopProductList=[];
+                                var timstamp = (new Date).valueOf();
+                                $state.go("successfulInventory",{id:data.responseData,type:'inbound',dateTime:timstamp})
                             }
                         })
                     }
 
                 }else{
                      alert("入库商品列表不能为空！");
-                     $state.go('putInStorage',{name:$stateParams.name});
+                     $state.go('putInStorage',{name:$stateParams.name,dateTime:timstamp});
                 }
 
             }

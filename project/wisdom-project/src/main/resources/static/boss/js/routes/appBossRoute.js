@@ -975,9 +975,9 @@ define(['appBoss'], function(app){
                             }
                         }
                     })
-                /*产品库存详情*/
+                    /*产品库存详情*/
                     .state('productInventoryDetails', {
-                        url: '/productInventoryDetails/:shopProductId',
+                        url: '/productInventoryDetails/:shopProductId/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'productInventoryDetailsCtrl',
                         resolve: {
@@ -1452,7 +1452,7 @@ define(['appBoss'], function(app){
                     })
                     /*successfulInventory成功入库*/
                     .state('successfulInventory', {
-                        url: '/successfulInventory/:id,:type',
+                        url: '/successfulInventory/:id,:type/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'successfulInventoryCtrl',
                         resolve: {
@@ -1465,7 +1465,7 @@ define(['appBoss'], function(app){
                     })
                     /*outbound 出库*/
                     .state('outbound', {
-                        url: '/outbound/:name',
+                        url: '/outbound/:name/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'outboundCtrl',
                         resolve: {
@@ -1570,7 +1570,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('funArea', {
-                        url: '/funArea/:name',
+                        url: '/funArea/:name/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'funAreaCtrl',
                         resolve: {
@@ -1595,7 +1595,7 @@ define(['appBoss'], function(app){
                     })
                     /* inventoryDetails库存详情*/
                     .state('inventoryDetails', {
-                        url: '/inventoryDetails/:shopStoreId',
+                        url: '/inventoryDetails/:shopStoreId/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'inventoryDetailsCtrl',
                         resolve: {
@@ -1619,7 +1619,7 @@ define(['appBoss'], function(app){
                         }
                     })
                     .state('libraryTubeSetting', {
-                        url: '/libraryTubeSetting/:ids/:names/:id/:sysShopId/:shopStoreId',
+                        url: '/libraryTubeSetting/:ids/:names/:id/:sysShopId/:shopStoreId/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'libraryTubeSettingCtrl',
                         resolve: {
@@ -1721,7 +1721,7 @@ define(['appBoss'], function(app){
                     })
                     /*putInStorage 入库*/
                     .state('putInStorage', {
-                        url: '/putInStorage/:name',
+                        url: '/putInStorage/:name/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'putInStorageCtrl',
                         resolve: {
@@ -1734,7 +1734,7 @@ define(['appBoss'], function(app){
                     })
                 /*entryDetails 入库单详情*/
                     .state('entryDetails', {
-                        url: '/entryDetails/:id',
+                        url: '/entryDetails/:id/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'entryDetailsCtrl',
                         resolve: {
@@ -1918,7 +1918,7 @@ define(['appBoss'], function(app){
                     })
                 /*AddOutbound 新增出库*/
                     .state('AddOutbound', {
-                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum/:ids/:names/:productCode',
+                        url: '/AddOutbound/:shopStoreId/:stockStyle/:stockType/:name/:sum/:ids/:names/:productCode/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'AddOutboundCtrl',
                         resolve: {
@@ -1931,7 +1931,7 @@ define(['appBoss'], function(app){
                     })
                 /* newLibrary  新增入库*/
                     .state('newLibrary', {
-                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name/:productCode',
+                        url: '/newLibrary/:stockStyle/:shopStoreId/:sum/:name/:productCode/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'newLibraryCtrl',
                         resolve: {
@@ -1958,7 +1958,7 @@ define(['appBoss'], function(app){
                     })
                 /*chooseWarehouse 选择仓库*/
                     .state('chooseWarehouse', {
-                        url: '/chooseWarehouse',
+                        url: '/chooseWarehouse/:dateTime',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'chooseWarehouseCtrl',
                         resolve: {

@@ -11,7 +11,8 @@ angular.module('controllers',[]).controller('chooseWarehouseCtrl',
 
             $scope.funAreaGo = function(shopStoreId,name){
                 $rootScope.shopInfo.shopStoreId = shopStoreId;
-                $state.go("funArea",{name:name});
+                var timstamp = (new Date).valueOf();
+                $state.go("funArea",{name:name,dateTime:timstamp});
             }
 
             $scope.close = function(){

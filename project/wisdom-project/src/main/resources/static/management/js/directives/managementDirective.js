@@ -547,6 +547,7 @@ define(['appManagement','jquery'], function (app,$) {
                     '<p><a ui-sref="home" ng-class="{\'activeNavbarSide\':index2==21}">查询</a></p>' +
                     '<p><a ui-sref="uploading" ng-class="{\'activeNavbarSide\':index2==22}">商品管理-上传</a></p>' +
                     '<p><a ui-sref="homePageEditor" ng-class="{\'activeNavbarSide\':index2==23}">商城首页编辑</a></p>' +
+                    '<p><a ui-sref="productClass" ng-class="{\'activeNavbarSide\':index2==24}">分类管理</a></p>' +
                     '</div>' +
                     '</li>' +
 
@@ -579,8 +580,8 @@ define(['appManagement','jquery'], function (app,$) {
                     '</div>' +
                     '</li>' +
                     '<li >' +
-                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==7}" ng-click=showOrHide(6)><img ng-src="{{index1==6?\'images/btFinancialPre.png\':\'images/btFinancialNor.png\'}}">活动管理</a></p>' +
-                    '<div class="administration_content" ng-show="index1==6">' +
+                    '<p class="stairMenu"><a ng-class="{\'activeNavbarSide\':index1==7}" ng-click=showOrHide(7)><img ng-src="{{index1==7?\'images/btFinancialPre.png\':\'images/btFinancialNor.png\'}}">活动管理</a></p>' +
+                    '<div class="administration_content" ng-show="index1==7">' +
                         '<p><a ui-sref="secKillProduct" ng-class="{\'activeNavbarSide\':index2==71}">活动管理</a></p>' +
                     '</li>' +
 

@@ -8,7 +8,8 @@ angular.module('controllers',[]).controller('inventoryCtrl',
             }
             /*更多*/
             $scope.AddOutboundGo = function(){
-                $state.go('AddOutbound')
+                var timstamp = (new Date).valueOf();
+                $state.go('AddOutbound',{dateTime:timstamp})
             }
             /*盘点记录*/
             $scope.inventoryRecordsGo = function(){

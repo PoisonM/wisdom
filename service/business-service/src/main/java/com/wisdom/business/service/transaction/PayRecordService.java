@@ -110,9 +110,12 @@ public class PayRecordService {
             {
                 prePayInfoMap.put("notify_url",ConfigConstant.SPECIAL_PRODUCT_BUY_NOTIFY_URL);
             }
-            else if(productType.equals("trainingProduct") || productType.equals("seckill"))
+            else if(productType.equals("trainingProduct"))
             {
                 prePayInfoMap.put("notify_url",ConfigConstant.TRAINING_PRODUCT_BUY_NOTIFY_URL);
+            }else if(productType.equals("seckill"))
+            {
+                prePayInfoMap.put("notify_url",ConfigConstant.SECKILL_PRODUCT_BUY_NOTIFY_URL);
             }
 
             prePayInfoMap.put("trade_type","JSAPI");
@@ -290,7 +293,7 @@ public class PayRecordService {
 
             prePayInfoMap.put("total_fee",(int)(payPrice*100)+"");//todo 后续将total_fee塞入payPrice,测试后用得是1分钱
             prePayInfoMap.put("spbill_create_ip",request.getRemoteAddr());
-            prePayInfoMap.put("notify_url",ConfigConstant.CROSS_BORDER_PRODUCT_BUY_NOTIFY_URL);
+            prePayInfoMap.put("notify_url",ConfigConstant.SPECIAL_PRODUCT_BUY_NOTIFY_URL);
             prePayInfoMap.put("trade_type","NATIVE");
             //将上述参数进行签名
             String sign = JsApiTicketUtil.createSign("UTF-8", prePayInfoMap);

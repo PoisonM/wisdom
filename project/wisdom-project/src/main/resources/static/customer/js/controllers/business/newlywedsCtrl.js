@@ -7,7 +7,8 @@ angular.module('controllers',[]).controller('newlywedsCtrl',
 
             $rootScope.title = "新人专享";
             $scope.param={
-                productList:{}
+                productList:{},
+                productPrefecture:$stateParams.productPrefecture
             };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -24,7 +25,7 @@ angular.module('controllers',[]).controller('newlywedsCtrl',
                 pageNo:0,
                 pageSize:100,
                 requestData:{
-                    productPrefecture:1
+                    productPrefecture: $scope.param.productPrefecture
                 }
             };
             GetOfflineProductList.save($scope.PageParamDTO,function(data){

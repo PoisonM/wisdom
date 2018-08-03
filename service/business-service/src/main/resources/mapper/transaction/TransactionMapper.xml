@@ -136,6 +136,12 @@
         opr.business_product_id=#{productId} and bo.sys_user_id=#{userId} and opr.product_spec=#{productSpec}
     </select>
 
+    <select id="getOrderProductByOrderId"
+            resultMap="OrderProductRelationResultMap" >
+        SELECT opr.* FROM order_product_relation opr
+        WHERE opr.business_order_id=#{orderId}
+    </select>
+
     <!-- 更新用户 -->
     <update id="updateOrderProductRelation">
         UPDATE order_product_relation SET
@@ -224,7 +230,7 @@
         <if test="status== ''or status==null">
             and bor.status!='del'
         </if>
-        <if test="type != ''or type!=null">
+        <if test="type!= '' and type!=null">
             and bor.type = #{type}
         </if>
         AND

@@ -4,6 +4,7 @@ import com.wisdom.business.mapper.product.ProductMapper;
 import com.wisdom.business.service.transaction.PayRecordService;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.OfflineProductDTO;
+import com.wisdom.common.dto.product.ProductClassDTO;
 import com.wisdom.common.dto.product.ProductDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.DateUtils;
@@ -164,5 +165,29 @@ public class ProductService {
 
         ProductDTO productDTO = productMapper.findProductById(id);
         return productDTO;
+    }
+
+    /**
+     * 获取商品一级类目
+     * @return
+     */
+    public List<ProductClassDTO> getOneProductClassList() {
+        return productMapper.getOneProductClassList();
+    }
+
+    public List<ProductClassDTO> getTwoProductClassList(String productClassId) {
+        return productMapper.getTwoProductClassList(productClassId);
+    }
+
+    public void addProductClass(ProductClassDTO productClassDTO) {
+        productMapper.addProductClass(productClassDTO);
+    }
+
+    public void updateProductClass(ProductClassDTO productClassDTO) {
+        productMapper.updateProductClass(productClassDTO);
+    }
+
+    public List<ProductClassDTO> getProductClassList(ProductClassDTO productClassDTO) {
+        return productMapper.getProductClassList(productClassDTO);
     }
 }

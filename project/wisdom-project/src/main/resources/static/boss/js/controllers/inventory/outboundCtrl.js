@@ -128,6 +128,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
             $scope.selType = function (type) {
                 $scope.param.selType = type;
+                var timstamp = (new Date).valueOf();
                  if(type=='3'){
                     //扫码出库
                     wx.scanQRCode({
@@ -141,7 +142,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
                                 shopStoreId:$rootScope.shopInfo.shopStoreId
                             },function(data){
                                  if(data.result == "0x00001"){
-                                     $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,productCode:result});
+                                     $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,productCode:result,dateTime:timstamp});
                                  }else{
                                     alert("未找到该商品,请先添加该商品！");
                                  }
@@ -200,6 +201,7 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
            /*出库记录*/
             $scope.outboundRecordsGo = function(){
+
                 $state.go("outboundRecords",{shopStoreId:$rootScope.shopInfo.shopStoreId,name:$stateParams.name})
             }
 
@@ -245,13 +247,14 @@ angular.module('controllers',[]).controller('outboundCtrl',
 
             /*下一步*/
             $scope.AddOutboundGo = function(){
+                var timstamp = (new Date).valueOf();
                 if($scope.param.selType=="2"){
                     if($scope.sum>0){
                         if($rootScope.shopInfo.entryShopProductList.length<=0){
                             alert("请选择产品");
                             return
                         }
-                        $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,sum:$scope.sum})
+                        $state.go("AddOutbound",{shopStoreId:$rootScope.shopInfo.shopStoreId,stockStyle:$scope.param.selType,name:$stateParams.name,sum:$scope.sum,dateTime:timstamp})
                     }else{
                         alert("请选择产品");
                         return

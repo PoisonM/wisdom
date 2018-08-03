@@ -151,6 +151,10 @@ public class BusinessOrderDTO implements Serializable{
     @JSONField(name = "waybillNumber")
     private String waybillNumber;
 
+    //运单号
+    @JSONField(name = "fieldId")
+    private String fieldId;
+
     public String getId() {
         return id;
     }
@@ -423,5 +427,13 @@ public class BusinessOrderDTO implements Serializable{
 
     public void setProductPrefecture(String productPrefecture) {
         this.productPrefecture = productPrefecture;
+    }
+
+    public String getFieldId() {
+        return fieldId;
+    }
+
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 }

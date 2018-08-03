@@ -54,7 +54,8 @@ angular.module('controllers',[]).controller('libraryTubeSettingCtrl',
                 SetStorekeeper.save(setStorekeeperRequestDTO,function (data) {
                     if(data.result=="0x00001"){
                         alert("更新成功");
-                        $state.go("chooseWarehouse");
+                        var timstamp = (new Date).valueOf();
+                        $state.go("chooseWarehouse",{dateTime:timstamp});
 
                     }else{
                         alert("更新失败");

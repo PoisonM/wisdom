@@ -5,7 +5,7 @@ var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
             $scope.$on('$ionicView.enter', function(){
                 $scope.PageParamVoDTO ={
                     pageNo:$scope.pageNo,
-                    pageSize:$scope.pageSize,
+                    pageSize:100,
                 };
                 SeckillList.save($scope.PageParamVoDTO,function (data) {
                     $scope.seckillList = data.responseData.responseData;
@@ -14,7 +14,7 @@ var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
 
                 $scope.seckillInfo = function (item) {
                     if(item.status == 0){
-                        $state.go("seckillInfo",{id:item.id});
+                        $state.go("seckillInfo",{id:item.fieldId});
                     }
                 }
             });

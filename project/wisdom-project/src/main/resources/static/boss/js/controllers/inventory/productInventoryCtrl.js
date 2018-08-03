@@ -3,7 +3,8 @@ angular.module('controllers',[]).controller('productInventoryCtrl',
         function ($scope,$rootScope,$stateParams,$state,$ionicLoading) {
             $rootScope.title = "选择更多产品出库";
             $scope.AddOutboundGo = function(){
-                $state.go('AddOutbound',{stockStyle:$stateParams.stockStyle});
+                var timstamp = (new Date).valueOf();
+                $state.go('AddOutbound',{stockStyle:$stateParams.stockStyle,dateTime:timstamp});
             }
 
         }])

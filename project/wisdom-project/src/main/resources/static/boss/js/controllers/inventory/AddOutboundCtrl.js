@@ -138,9 +138,10 @@ angular.module('controllers',[]).controller('AddOutboundCtrl',
                             }
                         })
                     }else{
+                        var timstamp = (new Date).valueOf();
                         $scope.flag = true;
                         alert("请选择出库商品！");
-                        $state.go('outbound',{name:$stateParams.name})
+                        $state.go('outbound',{name:$stateParams.name,dateTime:timstamp})
                     }
                 }
 

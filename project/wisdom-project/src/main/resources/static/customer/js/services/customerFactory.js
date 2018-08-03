@@ -78,7 +78,14 @@ define(['appCustomer'], function (app) {
         .factory('AddInvoiceInfo',['$resource',function ($resource){
             return $resource( product+ 'addInvoiceInfo')
         }])
-
+        /*获取一级类目*/
+        .factory('GetOneProductClassList',['$resource',function ($resource){
+            return $resource( product+ 'getOneProductClassList')
+        }])
+        /*获取二级类目*/
+        .factory('GetTwoProductClassList',['$resource',function ($resource){
+            return $resource( product+ 'getTwoProductClassList')
+        }])
         .factory('GetAttentionTeacherStatus',['$resource',function ($resource){
             return $resource( transaction+ 'getAttentionTeacherStatus')
         }])
