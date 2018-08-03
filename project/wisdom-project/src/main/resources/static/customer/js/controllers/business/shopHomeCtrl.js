@@ -80,8 +80,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                $state.go("searchPage")
            };
            /*点击好货推荐跳转到相应页面*/
-           $scope.recommendation=function () {
-             $state.go("recommendation")
+           $scope.recommendation=function (productPrefecture) {
+             $state.go("recommendation",{productPrefecture:productPrefecture})
            };
                 /*点击首页浮层 取消让浮层隐藏*/
             $scope.redPackerClose = function () {

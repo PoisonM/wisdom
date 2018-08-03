@@ -115,7 +115,7 @@ define(['appCustomer'], function(app){
                     })
                         /*好货推荐*/
                     .state('recommendation', {
-                        url: '/recommendation',
+                        url: '/recommendation/:productPrefecture',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'recommendationCtrl',
                         resolve: {

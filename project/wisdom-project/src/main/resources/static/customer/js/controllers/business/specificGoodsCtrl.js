@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('specificGoodsCtrl',
                     orderBy:$scope.param.orderBy,
                     orderType:$scope.param.orderType,
                     requestData:{
-                        secondType:$scope.param.secondType
+                        productClassId:$scope.param.productClassId
                     }
                 };
                 GetOfflineProductList.save($scope.PageParamDTO,function(data){
@@ -36,7 +36,7 @@ angular.module('controllers',[]).controller('specificGoodsCtrl',
                     productList:{},
                     orderBy:"",
                     orderType:"",
-                    secondType:$stateParams.id
+                    productClassId:$stateParams.id
                 };
                 $scope.getInfo();
             });

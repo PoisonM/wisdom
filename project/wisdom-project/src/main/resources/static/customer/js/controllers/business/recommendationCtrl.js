@@ -21,7 +21,7 @@ angular.module('controllers',[]).controller('recommendationCtrl',
                     orderBy:$scope.param.orderBy,
                     orderType:$scope.param.orderType,
                     requestData:{
-                        productPrefecture:""
+                        productPrefecture:$scope.param.productPrefecture
                     }
                 };
                 GetOfflineProductList.save($scope.PageParamDTO,function(data){
@@ -44,7 +44,8 @@ angular.module('controllers',[]).controller('recommendationCtrl',
                     productList:{},
                     orderBy:"",
                     orderType:"",
-                    picFlag:false/*空白页面的显示*/
+                    picFlag:false,/*空白页面的显示*/
+                    productPrefecture:$stateParams.productPrefecture
                 };
                 $scope.getInfo();
             });
