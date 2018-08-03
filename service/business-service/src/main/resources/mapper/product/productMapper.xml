@@ -13,6 +13,7 @@
 		<result column="price" property="price" jdbcType="REAL" />
 		<result column="status" property="status" jdbcType="VARCHAR" />
 		<result column="second_type" property="secondType" jdbcType="VARCHAR" />
+		<result column="product_class_id" property="productClassId" jdbcType="VARCHAR" />
 		<result column="product_prefecture" property="productPrefecture" jdbcType="VARCHAR" />
 		<result column="product_amount" property="productAmount" jdbcType="VARCHAR" />
 	</resultMap>
@@ -29,7 +30,7 @@
 	</resultMap>
 
 	<sql id="Base_Product_List">
-		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,product_prefecture,p.product_amount
+		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,product_prefecture,p.product_amount,p.product_class_id
 	</sql>
 
 	<select id="getBusinessProductInfo"
@@ -58,6 +59,9 @@
 		</if>
 		<if test="requestData.secondType != null and requestData.secondType != ''">
 			AND p.second_type = #{requestData.secondType}
+		</if>
+		<if test="requestData.productClassId != null and requestData.productClassId != ''">
+			AND p.product_class_id = #{requestData.productClassId}
 		</if>
 		<if test="requestData.brand != null and requestData.brand != ''">
 			AND p.brand = #{requestData.brand}
@@ -145,6 +149,9 @@
 		<if test="requestData.type != null and requestData.type != ''">
 			AND p.type = #{requestData.type}
 		</if>
+		<if test="requestData.productClassId != null and requestData.productClassId != ''">
+			AND p.product_class_id = #{requestData.productClassId}
+		</if>
 		<if test="requestData.brand != null and requestData.brand != ''">
 			AND p.brand LIKE "%${requestData.brand}%"
 		</if>
@@ -170,6 +177,9 @@
 		</if>
 		<if test="requestData.type != null and requestData.type != ''">
 			AND p.type = #{requestData.type}
+		</if>
+		<if test="requestData.productClassId != null and requestData.productClassId != ''">
+			AND p.product_class_id = #{requestData.productClassId}
 		</if>
 		<if test="requestData.brand != null and requestData.brand != ''">
 			AND p.brand LIKE "%${requestData.brand}%"
@@ -216,6 +226,9 @@
 		<if test="secondType != ''and secondType != null">
 			,second_type=#{secondType}
 		</if>
+		<if test="productClassId != ''and productClassId != null">
+			,product_class_id=#{productClassId}
+		</if>
 		<if test="productAmount != ''and productAmount != null">
 			,product_amount=#{productAmount}
 		</if>
@@ -254,6 +267,7 @@
 		status,
 		create_date,
 		second_type,
+		product_class_id,
 		product_prefecture,
 		product_amount,
 		teacher_name
@@ -269,6 +283,7 @@
 		#{status},
 		#{createDate},
 		#{secondType},
+		#{productClassId},
 		#{productPrefecture},
 		#{productAmount},
 		#{teacherName}

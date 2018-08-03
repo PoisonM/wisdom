@@ -32,7 +32,14 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;已抢光
                 </a>
             </div>
-        <div style="position:fixed;width:100%;">
+
+
+        <!--空页面-->
+        <div ng-if="seckillList.length<=0">
+            <img src="images/sad.png" style="width: 142px;height: 147px;margin:auto;margin-top: 181px">
+            <p style="font-family: PingFang-SC-Medium;font-size: 14px;color:#4A4A4A;letter-spacing: 0.33px;text-align: center;margin-top: 77px">敬请期待秒杀活动</p>
+        </div>
+        <div style="position:fixed;width:100%;" ng-if="seckillList.length>0">
             <img src="images/line.png" style="width: 100%">
         </div>
     </ion-content>

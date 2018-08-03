@@ -111,6 +111,9 @@ define(['appManagement'], function (app) {
         .factory('updateProductClass',['$resource',function ($resource){
             return $resource(product + 'updateProductClass');
         }])
+        .factory('getProductClassListById',['$resource',function ($resource){
+            return $resource(product + 'getProductClassListById');
+        }])
 
 
         /*输入定单号*/

@@ -39,7 +39,11 @@ public class ProductDTO<T> {
      */
     @JSONField(name = "secondType")
     private String secondType;
-
+    /**
+     * 产品的详细分类Id
+     */
+    @JSONField(name = "productClassId")
+    private String productClassId;
 
     /**
      * 产品的详细分类名称
@@ -237,5 +241,13 @@ public class ProductDTO<T> {
 
     public void setProductPrefecture(String productPrefecture) {
         this.productPrefecture = productPrefecture;
+    }
+
+    public String getProductClassId() {
+        return productClassId;
+    }
+
+    public void setProductClassId(String productClassId) {
+        this.productClassId = productClassId;
     }
 }

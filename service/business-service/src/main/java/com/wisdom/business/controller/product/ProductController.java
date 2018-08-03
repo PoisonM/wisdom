@@ -419,7 +419,38 @@ public class ProductController {
 		return responseDTO;
 	}
 
-
+	/**
+	 * 根据id类目信息
+	 * @return
+	 */
+	@RequestMapping(value = "getProductClassListById", method = {RequestMethod.POST, RequestMethod.GET})
+	public
+	@ResponseBody
+	ResponseDTO<ProductClassDTO> getProductClassListById(@RequestParam String id) {
+		long startTime = System.currentTimeMillis();
+		logger.info("根据id类目信息==={}开始" , startTime);
+		ResponseDTO responseDTO = new ResponseDTO<>();
+		try {
+			ProductClassDTO productClassDTO = new ProductClassDTO();
+			productClassDTO.setId(id);
+			List<ProductClassDTO> productClassDTOS = productService.getProductClassList(productClassDTO);
+			if(productClassDTOS.size()>0){
+				productClassDTO = productClassDTOS.get(0);
+				responseDTO.setResponseData(productClassDTO);
+				responseDTO.setResult(StatusConstant.SUCCESS);
+			}else{
+				responseDTO.setErrorInfo("未查出结果");
+				responseDTO.setResult(StatusConstant.FAILURE);
+			}
+		} catch (Exception e) {
+			logger.info("根据id类目信息,异常信息为==={}" +e.getMessage(), e);
+			e.printStackTrace();
+			responseDTO.setErrorInfo("查询类目信息失败");
+			responseDTO.setResult(StatusConstant.FAILURE);
+		}
+		logger.info("根据id类目信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+		return responseDTO;
+	}
 
 	/**
 	 * 获取一级类目

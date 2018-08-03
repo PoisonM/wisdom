@@ -1,6 +1,10 @@
 angular.module('controllers',[]).controller('uploadingParticularsCtrl',
-    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','FindProductById','ImageUploadToOSS','$http','UpdateProductByParameters','ManagementUtil',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,FindProductById,ImageUploadToOSS,$http,UpdateProductByParameters,ManagementUtil) {
+    ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout'
+        ,'FindProductById','ImageUploadToOSS','$http','UpdateProductByParameters'
+        ,'ManagementUtil','getProductClassListById','getOneProductClassList','getTwoProductClassList',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout
+                  ,FindProductById,ImageUploadToOSS,$http,UpdateProductByParameters
+                  ,ManagementUtil,getProductClassListById,getOneProductClassList,getTwoProductClassList) {
             $scope.flag = false;
             $scope.flagDel = false;
             var postage = document.querySelector("#postage");
@@ -12,6 +16,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                 serveTextArr.push(serveText[i].innerHTML)
             }
             $scope.param ={
+                twoCheck:"",
                 productName:"",
                 brand:"",
                 secondType:"",
@@ -19,9 +24,38 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                     senderAddress:""
                 }
             }
-
+            $scope.checkTwoFlag = false;
+            $scope.checkTwoFlagFn = function () {
+                $scope.checkTwoFlag = true;
+            }
+            //获取一级类目列表
+            getOneProductClassList.save({}, function (data) {
+                if (data.result == Global.SUCCESS) {
+                    $scope.mum = false;
+                    $scope.oneClassList = data.responseData
+                }
+            })
             $scope.param.secondType="";
+            /*查询二级类目数据*/
+            $scope.checkTwo=function (bar,level) {
+                if(level == "one"){
+                    $scope.checkTwoFlag = true
+                    getTwoProductClassList.get({productClassId: bar}, function (data) {
+                        $scope.mum = false;
+                        $scope.twoClassLiat = data.responseData;
+                        if(data.responseData == null){
+                            item = ""
+                        }
+                    })
+                }else {
+                    $scope.ProductDTO.productClassId = JSON.parse(item).id;
+                    $scope.ProductDTO.secondType = JSON.parse(item).productClassName
+                }
+
+            }
+
  /*展示*/
+
             FindProductById.get({
                 productId:$stateParams.productId
             },function(data){
@@ -32,7 +66,21 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                     $scope.param.productName=$scope.uploadingPar.productName;
                     $scope.param.brand=$scope.uploadingPar.brand;
                     $scope.param.secondType=$scope.uploadingPar.secondType;
+                    $scope.param.twoId=data.responseData.productClassId;
+                    $scope.param.twoCheck = $scope.param.secondType+","+$scope.param.twoId
+                    getProductClassListById.get({
+                        id:$scope.param.twoId
+                    },function (data) {
+                        $scope.param.oneId = data.responseData.parentId
+                        getTwoProductClassList.get({productClassId: $scope.param.oneId}, function (data) {
+                            $scope.mum = false;
+                            $scope.twoClassLiat = data.responseData;
+                            if(data.responseData == null){
+                                item = ""
+                            }
+                        })
 
+                    })
                    if(data.responseData.productDetail){
                        pic(data,"#particulars_viewPic","detailPic");
                        pic(data,"#list_viewPic","listPic");

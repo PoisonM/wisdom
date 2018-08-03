@@ -33,9 +33,20 @@
 
                         </div>
                         <div class="name_row">
-                            <label for="classify">分类:</label>
-                            <input type="text" id="classify" class="product_type uploading_product_name_search name"  ng-model="uploadingPar.secondType">
+                            <label>分类:</label>
+                            <select ng-change="checkTwo(param.oneId,'one')" ng-model="param.oneId" class="product_type types">
+                                <option value="">请选择</option>
+                                <option ng-repeat="item in oneClassList" value="{{item.productClassId}}">{{item.productClassName}}</option>
+                            </select>
+                            <select ng-if="checkTwoFlag" ng-model="item"  data-ceshi="{{param.twoCheck}}" ng-change="checkTwo(param.twoCheck,'two')" class="product_type types">
+                                <option value="">请选择</option>
+                                <option ng-repeat="twoItem in twoClassLiat" value="{{item}}">{{twoItem.productClassName}}</option>
+                            </select>
 
+
+                            <select ng-if="!checkTwoFlag"class="product_type types" ng-click="checkTwoFlagFn()">
+                                <option value="param.secondType">{{param.secondType}}</option>
+                            </select>
                         </div>
                         <div class="name_row">
                             <label for="state">状态:</label>
@@ -140,8 +151,8 @@
                                 <option value="3">分销返利专区</option>
                                 <option value="4">限时秒杀专区</option>
                                 <option value="5">跨境直购专区</option>
+                                <option value="7">好货推荐专区</option>
                                 <option value="6">特价专区</option>
-                                <option value="6">好货推荐专区</option>
                             </select>
                         </div>
                         <div class="save">
