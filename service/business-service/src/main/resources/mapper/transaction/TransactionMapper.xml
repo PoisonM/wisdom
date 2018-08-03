@@ -230,7 +230,7 @@
         <if test="status== ''or status==null">
             and bor.status!='del'
         </if>
-        <if test="type != ''or type!=null">
+        <if test="type!= '' and type!=null">
             and bor.type = #{type}
         </if>
         AND
