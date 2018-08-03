@@ -1,0 +1,111 @@
+<div  ng-click="bgAll()">
+    <nav-bar index1="2" index2="24"></nav-bar>
+    <div class="main_content">
+        <enjoy-menu></enjoy-menu>
+        <div class="content_box">
+            <div class="mum" ng-show="mum" style="height:888px;">
+                <div class="m-load2">
+                    <div class="line">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="circlebg"></div>
+                </div>
+            </div>
+            <div class="product_content_right">
+                <div class="rightCenter">
+
+
+
+                    <div  class="product_searchEara" align="right" style="float: left;width:15%;margin-top:50px;line-height:31px;">
+                        <input align="right"  type="button" value="新建分类" class="search_btn" ng-click="showAddOneProductClass()">
+                    </div>
+
+
+                    <div class="table_lis" style="margin-top:140px;">
+
+                        <table class="table  text-center ">
+                            <!--<thead>
+                            <tr id="product_lis_title1 IncomeListTitle2" >
+                                <th class="text-center" >分类名称</th>
+                                <th class="text-center" colspan="3" style="width:20%;">添加二级分类</th>
+                                <th class="text-center" colspan="3" style="width:20%;">修改</th>
+                                <th class="text-center" colspan="3" style="width:20%;">删除</th>
+                            </tr>
+                            </thead>-->
+                            <tbody class="tbodyCla" ng-repeat="item in oneClassLiat">
+                            <tr>
+                                <td ng-click="void();$event.stopPropagation()">{{item.productClassName}}</td>
+
+                                <td ng-click="void();$event.stopPropagation()" colspan="3" style="
+    text-align: left;
+">
+                                    <a ng-click="details(item.productClassId);$event.stopPropagation()" class="orderBtn" >查看</a>
+                                    <a ng-click="showAddTwoProductClass(item.productClassId,item.productClassName);$event.stopPropagation()" class="orderBtn" >添加二级分类</a>
+                                    &nbsp;
+                                    <a ng-click="showUpdateClass(item.id,item.productClassName);$event.stopPropagation()" class="orderBtn" >修改</a>
+                                    &nbsp;
+                                    <a ng-if="item.sort != 1" ng-click="upClass(item.id);$event.stopPropagation()" class="orderBtn" >上移</a>
+                                    &nbsp;
+                                    <a ng-click="downClass(item.id);$event.stopPropagation()" class="orderBtn">下移</a>
+                                    &nbsp;
+                                    <a ng-click="delClass(item.id);$event.stopPropagation()" class="orderBtn" >删除</a>
+                                </td>
+                            </tr>
+                            <!--点击查看出现的下级内容-->
+                            <tr ng-repeat="twoItem in twoList" ng-if="item.productClassId == showFlag">
+                                <td><img src="{{twoItem.url}}" style="max-width:100%;" /></td>
+                                <td>
+                                    {{twoItem.productClassName}}
+                                </td>
+
+                                <td ng-click="void();$event.stopPropagation()" colspan="3" style="
+    text-align: left;
+">
+                                    <a ng-if="twoItem.sort != 1" ng-click="upClass(twoItem.id);$event.stopPropagation()" class="orderBtn" >上移</a>
+                                    &nbsp;
+                                    <a ng-click="downClass(twoItem.id);$event.stopPropagation()" class="orderBtn">下移</a>
+                                    &nbsp;
+                                    <a ng-click="delClass(twoItem.id);$event.stopPropagation()" class="orderBtn" >删除</a>
+                                </td>
+
+                            </tr>
+
+                            <!--修改一级类目-->
+                            <div ng-if="showUpdateOneName" class="name_row uploading_product_name">
+                                <label for="oneName">
+                                    一级类目名称修改为:
+                                </label>
+                                <input type="text" id="UpdateOneName" class="uploading_product_name_search name" ng-model="oneClassName">
+                                <button class="save_btn" ng-click="updateClass(oneClassName)">确认修改</button>
+                            </div>
+                            <!--添加一级类目-->
+                            <div ng-if="showAddOneName" class="name_row uploading_product_name">
+                                <label for="oneName">
+                                    一级类目名称:
+                                </label>
+                                <input type="text" id="oneName" class="uploading_product_name_search name" ng-model="className" style="width: auto">
+                                <button class="save_btn" ng-click="addOneProductClass(className)">确认添加</button>
+                            </div>
+                            <!--添加二级类目-->
+                            <div ng-if="showAddTwoName" class="name_row uploading_product_name">
+                                <label for="twoName">
+                                    为"{{parentName}}"添加二级类目
+                                </label>
+                                <input type="text" id="twoName" class="uploading_product_name_search name" ng-model="twoClassName" style="width: auto">
+                                <input onchange="angular.element(this).scope().img_upload(this.files)" type="file">
+
+                                <button class="save_btn" ng-click="addTwoProductClass(parentId,twoClassName,url)">确认添加</button>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

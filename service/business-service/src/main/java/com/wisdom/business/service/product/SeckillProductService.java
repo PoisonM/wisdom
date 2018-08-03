@@ -333,6 +333,7 @@ public class SeckillProductService {
         String fieldId = JedisUtils.get("seckillproductOrder:"+orderId);
         if(StringUtils.isNotNull(fieldId)){
             JedisUtils.del("seckillproductOrder:"+orderId);
+            JedisUtils.del("seckillProductInfo:"+orderId);
             String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId+":"+orderId);
             int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
             JedisUtils.del("seckillproductOrderNum:" + fieldId+":"+orderId);

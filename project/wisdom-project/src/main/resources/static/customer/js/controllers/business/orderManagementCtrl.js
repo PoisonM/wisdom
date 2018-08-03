@@ -54,6 +54,9 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                     else if(item.type=="training")
                                     {
                                         window.location.href = "orderPay.do?productType=training&random="+Math.random();
+                                    }else if(item.type=="seckill")
+                                    {
+                                        window.location.href = "orderPay.do?productType=seckill&random="+Math.random();
                                     }
 
                                 }else if(data.result==Global.FAILURE){
