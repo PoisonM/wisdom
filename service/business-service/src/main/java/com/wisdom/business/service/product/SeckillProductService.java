@@ -18,16 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 微商城秒杀服务层
@@ -145,11 +143,16 @@ public class SeckillProductService {
      * 秒杀 查询缓存中的库存量
      * */
     public int getProductAmout(String fieldId){
-        String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId);
+        int orderNumrds = 0;
+        Set<String> ordeNumStr = JedisUtils.vagueSearch("seckillproductOrderNum:" + fieldId+":");
+        for(String orderNum : ordeNumStr){
+            if(StringUtils.isNotNull(orderNum)){
+                orderNumrds += Integer.parseInt(orderNum);
+            }
+        }
         String productAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
-        int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
-        if (StringUtils.isNotNull(productAmountStr) && Integer.parseInt(productAmountStr)-ordeNum>0) {
-            return Integer.parseInt(productAmountStr)-ordeNum;
+        if (StringUtils.isNotNull(productAmountStr) && (Integer.parseInt(productAmountStr)-orderNumrds)>0) {
+            return Integer.parseInt(productAmountStr)-orderNumrds;
         }
         return 0;
     }
@@ -326,22 +329,19 @@ public class SeckillProductService {
         String fieldId = JedisUtils.get("seckillproductOrder:"+orderId);
         if(StringUtils.isNotNull(fieldId)){
             JedisUtils.del("seckillproductOrder:"+orderId);
-            String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId);
+            String ordeNumStr = JedisUtils.get("seckillproductOrderNum:" + fieldId+":"+orderId);
             int ordeNum = StringUtils.isNotNull(ordeNumStr)?Integer.parseInt(ordeNumStr):0;
-            OrderProductRelationDTO orderProduct = transactionMapper.getOrderProductByOrderId(orderId);
-            int stockNum = ordeNum-orderProduct.getProductNum();
-            JedisUtils.set("seckillproductOrderNum:"+fieldId,(stockNum<0?0:stockNum)+"",productInfoCacheSeconds);
+            JedisUtils.del("seckillproductOrderNum:" + fieldId+":"+orderId);
             SeckillProductDTO seckillProductDTO = seckillProductMapper.findSeckillProductInfoById(fieldId);
             int saleNum = seckillProductDTO.getProductAmount()+ordeNum;
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setId(Integer.parseInt(fieldId));
             seckillActivityFieldDTO.setProductAmount(saleNum);
             seckillActivityFieldDTO.setUpdateTime(new Date());
-
             String proAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
             int proAmount = StringUtils.isNotNull(proAmountStr)?Integer.parseInt(proAmountStr):0;
             int validityTime = (int)(seckillProductDTO.getActivityEndTime().getTime()-new Date().getTime());
-            JedisUtils.set("seckillproductAmount:" + fieldId,(proAmount-orderProduct.getProductNum())+"",validityTime/1000);
+            JedisUtils.set("seckillproductAmount:" + fieldId,(proAmount-ordeNum)+"",validityTime/1000);
             seckillProductMapper.updateSeckillActivityFieldById(seckillActivityFieldDTO);
         }
     }
