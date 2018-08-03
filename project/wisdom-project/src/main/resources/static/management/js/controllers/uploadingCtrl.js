@@ -1,6 +1,8 @@
 angular.module('controllers',[]).controller('uploadingCtrl',
     ['$scope','$interval','$rootScope','$stateParams','$state','Global','$timeout','ImageUploadToOSS',"$http",'AddOfflineProduct','$filter','ManagementUtil',
-        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,ImageUploadToOSS,$http,AddOfflineProduct,$filter,ManagementUtil) {
+        'getProductClassListById','getOneProductClassList','getTwoProductClassList',
+        function ($scope,$interval,$rootScope,$stateParams,$state,Global,$timeout,ImageUploadToOSS,$http,AddOfflineProduct,$filter,ManagementUtil
+        ,getProductClassListById,getOneProductClassList,getTwoProductClassList) {
            var status = document.querySelector(".status");
             var postage = document.querySelector("#postage");
             var service = document.querySelectorAll(".service input[type='checkbox']");
@@ -21,6 +23,7 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                 productPrefecture:"",
                 productAmount:"",
                 createDate:$filter("date")(Date.parse(new Date()),"yyyy-MM-dd HH:mm:ss"),
+                productClassId:"",
                 productDetail:{
                     listPic:[],
                     detailPic:[],
@@ -31,6 +34,46 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                     productMarketPrice:""
                 }
             };
+
+            //获取一级类目列表
+            getOneProductClassList.save({}, function (data) {
+                if (data.result == Global.SUCCESS) {
+                    $scope.mum = false;
+                    $scope.oneClassList = data.responseData
+                }
+
+            })
+           /*根据id获取类目*/
+           /* getProductClassListById.get({
+                id:$scope.ProductDTO.productClassId
+            },function(data){
+                if (data.result == Global.SUCCESS) {
+                    $scope.mum = false;
+                    $scope.productlCass = data.responseData
+                }
+            })*/
+
+           /*查询二级类目数据*/
+            $scope.checkTwo=function (item,level) {
+                if(level == "one"){
+                    getTwoProductClassList.get({productClassId: JSON.parse(item).productClassId}, function (data) {
+                        $scope.mum = false;
+                        $scope.twoClassLiat = data.responseData;
+                        if(data.responseData == null){
+                            item = ""
+                        }
+                    })
+                }else {
+                    $scope.ProductDTO.productClassId = JSON.parse(item).id
+                    $scope.ProductDTO.secondType = JSON.parse(item).productClassName
+                }
+
+            }
+            /*查询二级类目数据*/
+            $scope.queryAddressByCode=function (item) {
+                alert("111");
+            }
+
             $scope.upload=function(){
                 if($scope.hintPic1 ==""||$scope.hintPic2 ==""||$scope.hintPic3==""){
                     $scope.mess = true;

@@ -27,13 +27,27 @@
                             </select>-->
 
                         </div>
-                        <div class="name_row uploading_product_name">
-                            <label for="classify">分类:</label>
-                            <input type="text" id="classify" class="uploading_product_name_search name" ng-model="ProductDTO.secondType">
-                            <!--<select id="classify" class="product_type types">
-                                <option>面膜</option>
-                                <option>洗面奶</option>
+                        <div class="name_row uploading_product_name" style="width: 600px">
+                            <label >分类:</label>
+                            <!--<input type="text" id="classify" class="uploading_product_name_search name" ng-model="ProductDTO.secondType">-->
+                            <select ng-change="checkTwo(item,'one')" ng-model="item" class="product_type types">
+                                <option value="">请选择</option>
+                                    <option ng-repeat="item in oneClassList" value="{{item}}">{{item.productClassName}}</option>
+                            </select>
+                            <select ng-model="twoItem"  ng-change="checkTwo(twoItem,'two')" class="product_type types">
+                                <option value="">请选择</option>
+                                <option ng-repeat="twoItem in twoClassLiat" value="{{twoItem}}">{{twoItem.productClassName}}</option>
+                            </select>
+
+                           <!-- <select  class="wid_80" ng-model="addData.provinceSelect"  ng-change="queryAddressByCode(addData.provinceSelect,'province')">
+                                <option value="">请选择</option>
+                                <option ng-repeat="provinceItem in provinceList" value="{{provinceItem.code}}">{{provinceItem.name}}</option>
+                            </select>
+                            <select  class="input_Style1 wid_80" ng-model="addData.citySelect" ng-change="queryAddressByCode(addData.citySelect,'city')">
+                                <option value="">请选择</option>
+                                <option ng-repeat="cityItem in cityList" value="{{cityItem.code}}">{{cityItem.name}}</option>
                             </select>-->
+
                         </div>
                         <div class="name_row">
                             <label for="status">状态:</label>
@@ -138,6 +152,7 @@
                                 <option value="3">分销返利专区</option>
                                 <option value="4">限时秒杀专区</option>
                                 <option value="5">跨境直购专区</option>
+                                <option value="7">好货推荐专区</option>
                                 <option value="6">特价专区</option>
                             </select>
                         </div>
