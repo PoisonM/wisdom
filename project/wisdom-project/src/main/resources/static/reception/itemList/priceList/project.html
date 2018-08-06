@@ -37,7 +37,7 @@
     </div>
     <!--商品-->
     <div class="projectGoods">
-        <ul>
+        <ul ng-if="threeList.length != 0">
             <li ng-repeat="item in threeList" ng-click="goProjectDetails(item.id)">
                 <div class="imgDiv">
                     <img ng-src="{{item.projectUrl}}">
@@ -62,6 +62,9 @@
                 </div>
             </li>
         </ul>
+        <div ng-if="threeList.length == 0">
+            <img src="images/blank_page.png" alt="" style="width: 30%;height: 30%;display: block;margin: 120px auto;">
+        </div>
     </div>
 </div>
 
