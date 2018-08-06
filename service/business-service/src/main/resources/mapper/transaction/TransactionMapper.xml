@@ -217,13 +217,26 @@
 
     <select id="getBusinessOrderListByUserIdAndStatus"
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
-        select bor.order_id businessOrderId,bpr.product_id businessProductId,opr.product_num businessProductNum,
-        opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.status productStatus,bpr.product_prefecture,bpr.`name` businessProductName,bpr.price businessProductPrice,bor.status status,
-        bor.update_date updateDate,bor.type type
-        from
-        business_order bor, order_product_relation opr, business_product bpr
-        where
-        bor.order_id=opr.business_order_id and bor.sys_user_id=#{userId}
+        SELECT
+        bor.order_id businessOrderId,
+        bpr.product_id businessProductId,
+        opr.product_num businessProductNum,
+        opr.product_spec productSpec,
+        bpr.first_url businessProductFirstUrl,
+        bpr. STATUS productStatus,
+        bpr.product_prefecture,
+        bpr.`name` businessProductName,
+        bpr.price businessProductPrice,
+        bor. STATUS STATUS,
+        bor.update_date updateDate,
+        bor.type type,
+        pr.amount payAmount
+        FROM
+        business_order bor LEFT join order_product_relation opr ON bor.order_id = opr.business_order_id
+        LEFT JOIN business_product bpr ON opr.business_product_id = bpr.product_id
+        LEFT JOIN pay_record pr ON bor.order_id = pr.order_id
+        WHERE
+        bor.sys_user_id=#{userId}
         <if test="status!= '' and status!=null">
             and bor.status=#{status}
         </if>
@@ -233,8 +246,7 @@
         <if test="type!= '' and type!=null">
             and bor.type = #{type}
         </if>
-        AND
-        opr.business_product_id=bpr.product_id
+        GROUP BY bor.id
         ORDER BY
         bor.update_date DESC
     </select>

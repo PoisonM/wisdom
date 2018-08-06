@@ -155,6 +155,19 @@ public class BusinessOrderDTO implements Serializable{
     @JSONField(name = "fieldId")
     private String fieldId;
 
+    //实际支付价格
+    @JSONField(name = "payAmount")
+    private float payAmount;
+
+
+    public float getPayAmount() {
+        return payAmount;
+    }
+
+    public void setPayAmount(float payAmount) {
+        this.payAmount = payAmount;
+    }
+
     public String getId() {
         return id;
     }

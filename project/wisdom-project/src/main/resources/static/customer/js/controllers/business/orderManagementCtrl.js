@@ -9,6 +9,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                 $scope.param.orderList=[];
                 $scope.param.orderType = type;
                 GetBusinessOrderList.get({status:$scope.param.orderType},function(data){
+                    console.log(data)
                     $ionicLoading.hide();
                     BusinessUtil.checkResponseData(data,"orderManagement&"+$scope.param.orderType);
                     $scope.param.orderList = data.responseData;

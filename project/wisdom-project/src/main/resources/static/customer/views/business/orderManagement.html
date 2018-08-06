@@ -83,7 +83,9 @@
                          style="border-radius: 0;min-width: 2rem;min-height: 2rem">
                     <h2 style="margin-left:1.2rem;font-size:0.29rem;color: #333333">{{item.businessProductName}}</h2>
                     <p style="color:#999999;margin-left:1.2rem;margin-top:0.2rem;">{{item.businessProductSpec}}</p>
-                    <p style="color: #ff4a59;margin-left: 1.2rem;margin-top: 0.54rem;font-size: 0.4rem;">￥{{item.businessProductPrice}}</p>
+                    orderManagement
+                    <p ng-if="item.type == 'secKill'" style="color: #ff4a59;margin-left: 1.2rem;margin-top: 0.54rem;font-size: 0.4rem;">￥{{item.payAmount}}</p>
+                    <p ng-if="item.type != 'secKill'"  style="color: #ff4a59;margin-left: 1.2rem;margin-top: 0.54rem;font-size: 0.4rem;">￥{{item.businessProductPrice}}</p>
                 </a>
                 <a class="item">
                 <span class="item-note" style="color: #A4A4A4">共{{item.businessProductNum}}件商品，合计：

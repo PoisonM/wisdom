@@ -665,6 +665,7 @@ public class BusinessOrderController {
             {
                 businessOrderDTO.setTransactionId(payRecordDTOS.get(0).getTransactionId());
                 businessOrderDTO.setPayDate(payRecordDTOS.get(0).getPayDate());
+                businessOrderDTO.setPayAmount(payRecordDTOS.get(0).getAmount());
             }
 
             //todo 根据orderId获取发货时间
