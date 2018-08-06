@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',"GetProductNumFromBuyCart",'IsLogin',
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',"GetProductNumFromBuyCart",'IsLogin','$timeout',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart,IsLogin) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart,IsLogin,$timeout) {
             document.title = '美享99触屏版';
            /* $rootScope.title = "美享99触屏版";*/
             $scope.param = {
@@ -87,6 +87,17 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 /*点击首页浮层 取消让浮层隐藏*/
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
+            };
+            var showToast = function (content) {
+                $ionicLoading.show({
+                    template: content
+                });
+            };
+
+            var hideToast = function () {
+                $timeout(function () {
+                    $ionicLoading.hide();
+                }, 1000);
             };
             $scope.loginCart = function(){
                 IsLogin.save(function(data){
