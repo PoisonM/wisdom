@@ -49,11 +49,11 @@
                                     &nbsp;
                                     <a ng-click="showUpdateClass(item.id,item.productClassName);$event.stopPropagation()" class="orderBtn" >修改</a>
                                     &nbsp;
-                                    <a ng-if="item.sort != 1" ng-click="upClass(item.id);$event.stopPropagation()" class="orderBtn" >上移</a>
+                                    <a ng-if="item.sort != 1" ng-click="upClass(item.id,'one');$event.stopPropagation()" class="orderBtn" >上移</a>
                                     &nbsp;
-                                    <a ng-click="downClass(item.id);$event.stopPropagation()" class="orderBtn">下移</a>
+                                    <a ng-click="downClass(item.id,'one');$event.stopPropagation()" class="orderBtn">下移</a>
                                     &nbsp;
-                                    <a ng-click="delClass(item.id);$event.stopPropagation()" class="orderBtn" >删除</a>
+                                    <a ng-click="delClass(item.id,'one');$event.stopPropagation()" class="orderBtn" >删除</a>
                                 </td>
                             </tr>
                             <!--点击查看出现的下级内容-->
@@ -66,11 +66,11 @@
                                 <td ng-click="void();$event.stopPropagation()" colspan="3" style="
     text-align: left;
 ">
-                                    <a ng-if="twoItem.sort != 1" ng-click="upClass(twoItem.id);$event.stopPropagation()" class="orderBtn" >上移</a>
+                                    <a ng-if="twoItem.sort != 1" ng-click="upClass(twoItem.id,'two');$event.stopPropagation()" class="orderBtn" >上移</a>
                                     &nbsp;
-                                    <a ng-click="downClass(twoItem.id);$event.stopPropagation()" class="orderBtn">下移</a>
+                                    <a ng-click="downClass(twoItem.id,'two');$event.stopPropagation()" class="orderBtn">下移</a>
                                     &nbsp;
-                                    <a ng-click="delClass(twoItem.id);$event.stopPropagation()" class="orderBtn" >删除</a>
+                                    <a ng-click="delClass(twoItem.id,'two');$event.stopPropagation()" class="orderBtn" >删除</a>
                                 </td>
 
                             </tr>
@@ -99,7 +99,9 @@
                                 <input type="text" id="twoName" class="uploading_product_name_search name" ng-model="twoClassName" style="width: auto">
                                 <input onchange="angular.element(this).scope().img_upload(this.files)" type="file">
 
-                                <button class="save_btn" ng-click="addTwoProductClass(parentId,twoClassName,url)">确认添加</button>
+                                <button class="save_btn" ng-click="addTwoProductClass(parentId,twoClassName,url)" style="background-color: red;
+    width: 100px;
+    height: 30px;">确认添加</button>
                             </div>
                             </tbody>
                         </table>

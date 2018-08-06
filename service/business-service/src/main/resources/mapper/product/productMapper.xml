@@ -16,6 +16,8 @@
 		<result column="product_class_id" property="productClassId" jdbcType="VARCHAR" />
 		<result column="product_prefecture" property="productPrefecture" jdbcType="VARCHAR" />
 		<result column="product_amount" property="productAmount" jdbcType="VARCHAR" />
+		<result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+		<result column="product_class_id" property="productClassId" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<resultMap id="BusinessOrderResultMap" type="com.wisdom.common.dto.transaction.BusinessOrderDTO" >
@@ -30,7 +32,7 @@
 	</resultMap>
 
 	<sql id="Base_Product_List">
-		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,product_prefecture,p.product_amount,p.product_class_id
+		p.id,p.name,p.product_id,p.brand,p.type,p.description,p.first_url,p.price,p.status,p.create_date,p.second_type,product_prefecture,p.product_amount,p.teacher_name,p.product_class_id
 	</sql>
 
 	<select id="getBusinessProductInfo"
@@ -165,7 +167,7 @@
 		SELECT
 		<include refid="Base_Product_List"/>
 		FROM business_product p
-		WHERE 1=1
+		WHERE 1=1 AND p.type != "training" AND p.type != "special"
 		<if test="requestData.productName != null and requestData.productName != ''">
 			AND p.name LIKE "%${requestData.productName}%"
 		</if>
