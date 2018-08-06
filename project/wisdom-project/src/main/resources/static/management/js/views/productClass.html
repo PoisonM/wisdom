@@ -81,7 +81,9 @@
                                     一级类目名称修改为:
                                 </label>
                                 <input type="text" id="UpdateOneName" class="uploading_product_name_search name" ng-model="oneClassName">
-                                <button class="save_btn" ng-click="updateClass(oneClassName)">确认修改</button>
+                                <button class="save_btn" ng-click="updateClass(oneClassName)" style="background-color: red;
+    width: 100px;
+    height: 30px;">确认修改</button>
                             </div>
                             <!--添加一级类目-->
                             <div ng-if="showAddOneName" class="name_row uploading_product_name">
@@ -89,7 +91,9 @@
                                     一级类目名称:
                                 </label>
                                 <input type="text" id="oneName" class="uploading_product_name_search name" ng-model="className" style="width: auto">
-                                <button class="save_btn" ng-click="addOneProductClass(className)">确认添加</button>
+                                <button class="save_btn" ng-click="addOneProductClass(className)" style="background-color: red;
+    width: 100px;
+    height: 30px;">确认添加</button>
                             </div>
                             <!--添加二级类目-->
                             <div ng-if="showAddTwoName" class="name_row uploading_product_name">
