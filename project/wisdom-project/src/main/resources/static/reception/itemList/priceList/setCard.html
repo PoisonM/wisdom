@@ -1,6 +1,6 @@
 <!--商品-->
 <div class="setCardGoods">
-    <ul>
+    <ul  ng-if="cardList.length != 0">
         <li ng-repeat="item in cardList" ng-if="item.rechargeCardType != '0'" ng-click="goCardDetails(item.id)">
             <div class="imgDiv">
                 <img ng-src="{{item.imageUrl}}" alt="">
@@ -19,5 +19,8 @@
             </div>
         </li>
     </ul>
+    <div ng-if="cardList.length == 0">
+        <img src="images/blank_page.png" alt="" style="width: 30%;height: 30%;display: block;margin: 120px auto;">
+    </div>
 </div>
 

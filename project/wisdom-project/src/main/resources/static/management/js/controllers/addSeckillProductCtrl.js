@@ -53,6 +53,19 @@ angular.module('controllers',[]).controller('addSeckillProductCtrl',
                 $scope.SeckillActivityDTO.productDTOList =[];
             }
 
+    /*        $scope.changeSessionTime = function(index){
+
+                var startId = 'start_time_' + index;
+                var startTime = $("#"+startId).val();
+                var endId = 'end_time_' + index;
+                var endTime = $("#"+endId).val();
+                var start = new Date(startTime);
+                var end = new Date(endTime);
+                if(start.getTime()>end.getTime()){
+                    alert("failure");
+                }
+            }
+*/
             $scope.submit = function(){
 
                 $scope.SeckillActivityDTO.activityName = $("#activityName").val();
@@ -77,8 +90,14 @@ angular.module('controllers',[]).controller('addSeckillProductCtrl',
                 }else{
                      for(var i=0; i< $scope.SeckillActivityDTO.sessionList.length;i++){
                             if($scope.SeckillActivityDTO.sessionList[i].startTimeString==""||$scope.SeckillActivityDTO.sessionList[i].endTimeString==""){
-                                    $scope.mess = true;
+                                $scope.mess = true;
+                                return;
+                             }else{
+                                 if (new Date($scope.SeckillActivityDTO.sessionList[i].endTimeString).getTime() < new Date($scope.SeckillActivityDTO.sessionList[i].startTimeString).getTime()) {
+
+                                    $rootScope.simpleAlert.alert("error", "场次开始时间不能大于结束时间!", 30000);
                                     return;
+                                 }
                              }
                         }
 
@@ -90,13 +109,17 @@ angular.module('controllers',[]).controller('addSeckillProductCtrl',
                 }
                 if($scope.SeckillActivityDTO.favorablePrice!= undefined  && $scope.SeckillActivityDTO.activityNum!=undefined){
                             AddSecKillActivity.save($scope.SeckillActivityDTO,function(data){
+                                if(data.result==Global.SUCCESS){
                                     if(data.responseData == "success"){
                                         alert("新增成功!");
                                         $state.go("secKillProduct");
                                     }else{
                                         alert("新增失败，请稍后重试！")
                                     }
-                                })
+                                }else{
+                                    alert(data.errorInfo);
+                                }
+                            })
                 }
 
 

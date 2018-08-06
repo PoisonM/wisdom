@@ -22,6 +22,7 @@ angular.module('controllers',[]).controller('secKillProductCtrl',
                 $scope.PageParamVoDTO ={
                     pageNo:$scope.pageNo,
                     pageSize:$scope.pageSize,
+                    pageStartNo:$scope.pageStartNo,
                     requestData:{
                         activityNo: $("#activityNo").val(),
                         startTime:$("#startTime").val(),
