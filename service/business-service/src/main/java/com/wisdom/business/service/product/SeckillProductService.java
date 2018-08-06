@@ -73,13 +73,17 @@ public class SeckillProductService {
             }else if(nowTime.getTime() >= productDTO.getActivityEndTime().getTime()){
                 productDTO.setStatus(2);
             }else if(productDTO.getActivityStartTime().getTime()>=nowTime.getTime()){
-                productDTO.setStatus(1);
-                Calendar endCalendar = Calendar.getInstance();
-                endCalendar.setTime(nowTime);
-                endCalendar.set(Calendar.HOUR_OF_DAY, productDTO.getFieldEndTime().getHours());//时
-                endCalendar.set(Calendar.MINUTE, productDTO.getFieldStartTime().getMinutes());//分
-                endCalendar.set(Calendar.SECOND, productDTO.getFieldStartTime().getSeconds());//秒
-                productDTO.setCountdown((endCalendar.getTime().getTime()-new Date().getTime())/1000);
+                if(null !=productDTO.getFieldStartTime()){
+                    productDTO.setStatus(1);
+                    Calendar endCalendar = Calendar.getInstance();
+                    endCalendar.setTime(productDTO.getActivityStartTime());
+                    endCalendar.set(Calendar.HOUR_OF_DAY, productDTO.getFieldEndTime().getHours());//时
+                    endCalendar.set(Calendar.MINUTE, productDTO.getFieldStartTime().getMinutes());//分
+                    endCalendar.set(Calendar.SECOND, productDTO.getFieldStartTime().getSeconds());//秒
+                    productDTO.setCountdown((endCalendar.getTime().getTime()-new Date().getTime())/1000);
+                }else{
+                    productDTO.setStatus(2);
+                }
             }else{
                 if(null != productDTO.getFieldStartTime()){
                     if(DateUtils.compTime(nowTime,productDTO.getFieldStartTime()) && DateUtils.compTime(productDTO.getFieldEndTime(),nowTime)){
