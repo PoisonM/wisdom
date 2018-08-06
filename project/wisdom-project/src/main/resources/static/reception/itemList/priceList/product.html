@@ -53,7 +53,7 @@
     </div>
     <!--商品-->
     <div class="productGoods" >
-        <ul>
+        <ul ng-if="product3List.length != 0">
             <li ng-click="goProductDetails(items.id)" ng-repeat="items in product3List">
                 <div class="imgDiv">
                     <img ng-src="{{items.productUrl}}" alt="">
@@ -68,6 +68,9 @@
                 </div>
             </li>
         </ul>
+        <div ng-if="product3List.length == 0">
+            <img src="images/blank_page.png" alt="" style="width: 30%;height: 30%;display: block;margin: 120px auto;">
+        </div>
     </div>
     <!--点击导航栏的任意商品出现相对应的弹框-->
     <div ng-show="param.productAppear" class="productAppear" >

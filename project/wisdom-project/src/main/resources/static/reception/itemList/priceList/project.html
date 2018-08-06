@@ -37,7 +37,7 @@
     </div>
     <!--商品-->
     <div class="projectGoods">
-        <ul>
+        <ul ng-if="threeList.length != 0">
             <li ng-repeat="item in threeList" ng-click="goProjectDetails(item.id)">
                 <div class="imgDiv">
                     <img ng-src="{{item.projectUrl}}">
@@ -51,7 +51,7 @@
                         <span class="cards bff6666" ng-if="item.cardType=='2'">季卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='3'">半年卡</span>
                         <span class="cards bff6666" ng-if="item.cardType=='4'">年卡</span>
-                        <span class="cards bff6666" ng-if="item.cardType=='5'">长期</span>
+                        <span class="cards bff6666" ng-if="item.cardType=='5'">疗程卡</span>
                         &nbsp;
                         <span class="money cff6666 fs39">
                             ￥<span>{{item.marketPrice}}</span>
@@ -62,6 +62,9 @@
                 </div>
             </li>
         </ul>
+        <div ng-if="threeList.length == 0">
+            <img src="images/blank_page.png" alt="" style="width: 30%;height: 30%;display: block;margin: 120px auto;">
+        </div>
     </div>
 </div>
 
