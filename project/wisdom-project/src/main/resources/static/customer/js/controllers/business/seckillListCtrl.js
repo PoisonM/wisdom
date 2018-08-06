@@ -27,9 +27,10 @@ seckill.directive('timerBtn', function() { // 倒计时按钮
         replace: true,
         scope: {
             startTime: '=startTime',
+            remindMe: '=remindMe',
             getData: '&getData'
         },
-        template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'活动倒计时:\' +showTime : \'\'" ng-click="getData()"></span>',
+        template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="remindMe == 0 ? \'距离活动结束还剩:\' +showTime : \'距离活动开始还剩:\' +showTime " ng-click="getData()"></span>',
         controller: function($scope, $interval) {
             var formatTime = function(sys_second) {
                 if (sys_second > 0) {
@@ -50,7 +51,7 @@ seckill.directive('timerBtn', function() { // 倒计时按钮
                     if (second < 0) {
                         second = 0;
                     }
-                    return  (hour < 10 ? "0" + hour : hour) + "小时 " + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
+                    return  (day >0?((day < 10 ? "0" + day : day) + "天"):"") + (hour < 10 ? "0" + hour : hour) + "小时" + (minute < 10 ? "0" + minute : minute) + "分钟" + (second < 10 ? "0" + second : second)+"秒";
                 }
             }
 

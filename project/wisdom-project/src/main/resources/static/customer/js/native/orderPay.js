@@ -275,6 +275,7 @@ var orderPayInit = function(){
 
 $('#payButton').attr('disabled',"true");//添加disabled属性
 var confirmPay = function(){
+    $('#payButton').attr('disabled',"disabled");//添加disabled属性
     if(receiveOrderAddressId==""&&(productType=='offline'||productType=='special'||productType=='seckill'))
     {
         alert("请先选择收货地址");

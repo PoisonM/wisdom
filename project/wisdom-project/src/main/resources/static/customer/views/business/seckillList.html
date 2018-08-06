@@ -9,7 +9,10 @@
                 <img ng-src="{{item2.firstUrl}}"
                      style="width: 1.5rem;height: 2.0rem;border-radius: 0; min-height: 2rem; min-width: 2rem;">
                 <h2 style="margin-left:1.5rem ;font-size: 12px;font-size: 12px;color: #FF6666;letter-spacing: 0.25px;line-height: 12px;"
-                    get-data="getData()" timer-btn start-time="item2.countdown" ng-if="item2.status == 0">
+                    get-data="getData()" timer-btn remind-me="item2.status" start-time="item2.countdown" ng-if="item2.status == 0">
+                </h2>
+                <h2 style="margin-left:1.5rem ;font-size: 12px;font-size: 12px;color: #FF6666;letter-spacing: 0.25px;line-height: 12px;"
+                     ng-if="item2.status == 1" get-data="getData()" timer-btn remind-me="item2.status" start-time="item2.countdown">
                 </h2>
                 <h2 style="margin-left:1.5rem;font-size: 14px;margin-top: 10px">{{item2.productName}}</h2>
                 <br>
