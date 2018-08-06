@@ -69,13 +69,14 @@ public class SeckillProductController {
         ResponseDTO<PageParamVoDTO<List<SeckillActivityDTO>>> responseDTO = new ResponseDTO<>();
         SeckillActivityDTO seckillActivityDTO = new SeckillActivityDTO();
         seckillActivityDTO = pageParamVoDTO.getRequestData();
-        int pageNo = pageParamVoDTO.getPageNo();
+        int pageNo = (pageParamVoDTO.getPageNo()-1)*pageParamVoDTO.getPageSize();
         int pageSize = pageParamVoDTO.getPageSize();
-        seckillActivityDTO.setPageNo(pageNo - 1);
+        seckillActivityDTO.setPageNo(pageNo);
         seckillActivityDTO.setPageSize(pageSize);
         logger.info("获取某个商品的基本信息==={}开始", startTime);
         PageParamVoDTO<List<SeckillActivityDTO>> page = seckillProductService.findSeckillActivitylist(seckillActivityDTO);
         logger.info("获取某个商品的基本信息,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        page.setPageNo(pageParamVoDTO.getPageNo());
         responseDTO.setResponseData(page);
         responseDTO.setResult(StatusConstant.SUCCESS);
         return responseDTO;
