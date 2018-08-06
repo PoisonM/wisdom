@@ -12,6 +12,7 @@ angular.module('controllers',[]).controller('searchPageCtrl',
                     record:false,
                     productShow:false
                 };
+                $("#searchbox").focus();
             $scope.search=function () {
                 $scope.PageParamDTO ={
                     pageNo:0,
@@ -51,17 +52,18 @@ angular.module('controllers',[]).controller('searchPageCtrl',
                        template: '<span style="font-size:16px;color: #4A4A4A;"> 你确定清空历史搜索记录</span>',
                        buttons: [
                            {
+                               text: '否'
+                           },
+                           {
                                onTap: function() {
                                    localStorage.removeItem("historyText");
                                    $scope.param.commodityArray=[];
                                    $scope.param.record=false;
                                },
-                               text: '是'
-                           },
-                           {
-                               text: '否',
+                               text: '是',
                                type: 'button-assertive'
                            }
+
                        ]
 
                    });
