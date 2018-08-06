@@ -4,8 +4,8 @@
 angular.module('controllers',[]).controller('newlywedsCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading','Global',
         function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading,Global) {
-
-            $rootScope.title = "新人专享";
+            document.title = '新人专享';
+            /*$rootScope.title = "新人专享";*/
             $scope.param={
                 productList:{},
                 productPrefecture:$stateParams.productPrefecture

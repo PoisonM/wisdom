@@ -5,7 +5,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
                   LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart) {
-            $rootScope.title = "美享99触屏版";
+            document.title = '美享99触屏版';
+           /* $rootScope.title = "美享99触屏版";*/
             $scope.param = {
                 bannerList:{},
                 productList:{},//特殊商品
