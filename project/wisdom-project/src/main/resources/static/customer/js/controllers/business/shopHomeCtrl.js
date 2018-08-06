@@ -64,8 +64,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
              $state.go("areaPage",{productPrefecture:productPrefecture})
            };
            /*点击分销进入分销页面*/
-           $scope.distributionArea=function () {
-             $state.go("distributionArea")
+           $scope.distributionArea=function (productPrefecture) {
+             $state.go("distributionArea",{productPrefecture:productPrefecture})
            };
            /*点击拼团专区 砍价专区 进入到空页面*/
            $scope.area=function () {

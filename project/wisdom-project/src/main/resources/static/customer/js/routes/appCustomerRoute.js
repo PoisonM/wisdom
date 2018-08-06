@@ -89,7 +89,7 @@ define(['appCustomer'], function(app){
                     })
                     /*分销页面*/
                     .state('distributionArea', {
-                        url: '/distributionArea',
+                        url: '/distributionArea/:productPrefecture',
                         templateProvider: function() { return lazyDeferred.promise; },
                         controller: 'distributionAreaCtrl',
                         resolve: {

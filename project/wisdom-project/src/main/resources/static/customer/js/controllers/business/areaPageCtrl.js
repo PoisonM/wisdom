@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/7/26.
  */
 angular.module('controllers',[]).controller('areaPageCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading,Global) {
            
           $scope.getInfo=function () {
               $ionicLoading.show({
@@ -28,8 +28,10 @@ angular.module('controllers',[]).controller('areaPageCtrl',
               };
               GetOfflineProductList.save($scope.PageParamDTO,function(data){
                   $ionicLoading.hide();
-                  $scope.param.productList=data.responseData;
-
+                  if(data.result==Global.SUCCESS&&data.responseData!=null)
+                  {
+                      $scope.param.productList=data.responseData;
+                  }
               });
           };
 

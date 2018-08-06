@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/7/26.
  */
 angular.module('controllers',[]).controller('distributionAreaCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading,Global) {
 
             $scope.getInfo=function () {
                 $ionicLoading.show({
@@ -22,13 +22,15 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
                     orderBy:$scope.param.orderBy,
                     orderType:$scope.param.orderType,
                     requestData:{
-                        productPrefecture:""
+                        productPrefecture:$scope.param.productPrefecture
                     }
                 };
                 GetOfflineProductList.save($scope.PageParamDTO,function(data){
                     $ionicLoading.hide();
-                    console.log(data);
-                    $scope.param.productList=data.responseData;
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $scope.param.productList=data.responseData;
+                    }
                 });
             };
             $scope.$on('$ionicView.enter', function() {
@@ -36,7 +38,8 @@ angular.module('controllers',[]).controller('distributionAreaCtrl',
                     Horizontal:true,
                     productList:{},
                     orderBy:"",
-                    orderType:""
+                    orderType:"",
+                    productPrefecture:$stateParams.productPrefecture
                 };
                 $scope.getInfo();
             });

@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/7/27.
  */
 angular.module('controllers',[]).controller('classificationCtrl',
-    ['$scope','$rootScope','$stateParams','$state',"$ionicLoading","GetOneProductClassList","GetTwoProductClassList",
-        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetOneProductClassList,GetTwoProductClassList) {
+    ['$scope','$rootScope','$stateParams','$state',"$ionicLoading","GetOneProductClassList","GetTwoProductClassList",'Global',
+        function ($scope,$rootScope,$stateParams,$state,$ionicLoading,GetOneProductClassList,GetTwoProductClassList,Global) {
             $scope.getInfo=function () {
                 $ionicLoading.show({
                     content: 'Loading',
@@ -14,13 +14,19 @@ angular.module('controllers',[]).controller('classificationCtrl',
                 });
                 GetOneProductClassList.get(function (data) {
                     $ionicLoading.hide();
-                    $scope.param.firstList=data.responseData;
+                    if(data.result==Global.SUCCESS&&data.responseData!=null)
+                    {
+                        $scope.param.firstList=data.responseData;
+                    }
                     $scope.checkBox(0,$scope.param.firstList[0].productClassId)
                 });
                 $scope.checkBox=function(index,productClassId) {
                     $scope.param.selection=index;
                     GetTwoProductClassList.get({productClassId:productClassId},function (data) {
-                        $scope.param.twoList=data.responseData;
+                        if(data.result==Global.SUCCESS&&data.responseData!=null)
+                        {
+                            $scope.param.twoList=data.responseData;
+                        }
                     })
                 };
             };

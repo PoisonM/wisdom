@@ -2,8 +2,8 @@
  * Created by Administrator on 2018/7/25.
  */
 angular.module('controllers',[]).controller('newlywedsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading) {
+    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading,Global) {
 
             $rootScope.title = "新人专享";
             $scope.param={
@@ -30,8 +30,10 @@ angular.module('controllers',[]).controller('newlywedsCtrl',
             };
             GetOfflineProductList.save($scope.PageParamDTO,function(data){
                 $ionicLoading.hide();
-                console.log(data);
-                $scope.param.productList=data.responseData;
+                if(data.result==Global.SUCCESS&&data.responseData!=null)
+                {
+                    $scope.param.productList=data.responseData;
+                }
             })
             });
         }]);
