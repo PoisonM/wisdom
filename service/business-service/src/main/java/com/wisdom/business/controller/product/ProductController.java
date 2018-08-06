@@ -293,6 +293,10 @@ public class ProductController {
 		try {
 			if("4".equals(productDTO.getProductPrefecture())){
 				productDTO.setType("seckill");
+			}else if("seckill".equals(productDTO.getType())){
+				if(!"4".equals(productDTO.getProductPrefecture())){
+					productDTO.setType("offline");
+				}
 			}
 			productService.updateProductByParameters(productDTO);
 			responseDTO.setResult(StatusConstant.SUCCESS);
