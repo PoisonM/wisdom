@@ -5,6 +5,7 @@ import com.wisdom.business.util.UserUtils;
 import com.wisdom.common.constant.StatusConstant;
 import com.wisdom.common.dto.account.PageParamVoDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
+import com.wisdom.common.dto.product.SeckillActivityFieldDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
 import com.wisdom.common.dto.system.ResponseDTO;
 import com.wisdom.common.dto.user.UserInfoDTO;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -122,8 +124,31 @@ public class SeckillProductController {
         seckillActivityDTO.setCreateBy(userInfoDTO.getId());
         ResponseDTO<String> responseDTO = new ResponseDTO<>();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdfA = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+        try {
+            if(seckillActivityDTO.getEndTime().getTime()<seckillActivityDTO.getStartTime().getTime()){
+                responseDTO.setErrorInfo("活动结束日期不能小于开始日期！");
+                responseDTO.setResult(StatusConstant.FAILURE);
+                return responseDTO;
+            }
+            for (SeckillActivityFieldDTO seckillActivityField : seckillActivityDTO.getSessionList()) {
+                if (sdf.parse(seckillActivityField.getEndTimeString()).getTime()<sdf.parse(seckillActivityField.getStartTimeString()).getTime()) {
+                    responseDTO.setErrorInfo("活动场次结束日期不能小于开始日期！");
+                    responseDTO.setResult(StatusConstant.FAILURE);
+                    return responseDTO;
+                }
+            }
+
+        }catch (Exception e){
+            logger.info(e.getMessage());
+            responseDTO.setErrorInfo("新增异常！");
+            responseDTO.setResult(StatusConstant.FAILURE);
+            return responseDTO;
+        }
+
         long startTime = System.currentTimeMillis();
-        logger.info("更新秒杀活动状态==={}开始", startTime);
+        logger.info("新增秒杀活动状态==={}开始", startTime);
         try {
             String result = seckillProductService.addSeckillActivity(seckillActivityDTO);
             responseDTO.setResponseData(result);
@@ -131,7 +156,7 @@ public class SeckillProductController {
             logger.info(e.getMessage());
             responseDTO.setResponseData("failure");
         }
-        logger.info("更新秒杀活动状态,耗时{}毫秒", (System.currentTimeMillis() - startTime));
+        logger.info("新增秒杀活动状态,耗时{}毫秒", (System.currentTimeMillis() - startTime));
 
 
         responseDTO.setResult(StatusConstant.SUCCESS);

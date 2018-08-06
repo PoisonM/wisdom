@@ -68,13 +68,15 @@
 			</if>
 			<if test='activityStatus == "0"'>
 				AND sa.start_time &gt; #{activityStatusTimeString}
+				AND sa.is_enable = '1'
 			</if>
 			<if test='activityStatus == "1"'>
 				AND sa.end_time &gt;= #{activityStatusTimeString}
 				AND sa.start_time &lt;= #{activityStatusTimeString}
+				AND sa.is_enable = '1'
 			</if>
 			<if test='activityStatus == "2"'>
-				AND sa.end_time &lt;= #{activityStatusTimeString}
+				AND (sa.end_time &lt;= #{activityStatusTimeString} or sa.is_enable = '0')
 			</if>
 		</where>
 		ORDER BY sa.create_time desc
