@@ -4,19 +4,19 @@
         .popup-title{color: #FF6666}
         .popup-body{text-align: center;line-height: 16px}
     </style>
-    <ion-content>
+    <ion-content >
       <!--搜索-->
         <div style="height: 56px;width: 100%;line-height: 56px;padding: 13px;position: relative；background:#FFFFFF;
 box-shadow: 0 2px 4px 0 rgba(199,199,199,0.50);">
                 <div style="height: 30px;position: relative;width:78.7%;">
                     <i class="icon ion-ios-search placeholder-icon"  style="position: absolute;left: 20px;top: -10px;font-size: 20px"></i>
-                    <input type="text" style="width:100%;background: #EBEBEC;border: 0 solid #CCCCCC;border-radius: 58px;padding-left:50px;" placeholder="补水五件套" ng-model="param.productName" ng-focus="checkInput()">
+                    <input type="text" style="width:100%;background: #EBEBEC;border: 0 solid #CCCCCC;border-radius: 58px;padding-left:50px;" placeholder="补水五件套" ng-model="param.productName" ng-focus="checkInput()" id="searchbox">
                 </div>
             <span style="font-family: PingFang-SC-Medium;font-size: 16px;color: #FF6666;letter-spacing: -0.47px;line-height: 22px;position: absolute;right: 20px;top: 19px" ng-click="search()">搜索</span>
         </div>
         <!--历史记录-->
         <div class="list"  ng-if="!param.productShow">
-            <p class="item" style="font-family: PingFang-SC-Regular;font-size: 14px;color: #9B9B9B;letter-spacing: 0;line-height: 16px;" ng-if="param.record">历史索索记录</p>
+            <p class="item" style="font-family: PingFang-SC-Regular;font-size: 14px;color: #9B9B9B;letter-spacing: 0;line-height: 16px;" ng-if="param.record">历史搜索记录</p>
             <div style="margin-bottom: 170px" ng-if="param.record">
                 <p style="font-family: PingFang-SC-Regular;font-size: 14px;color: #4A4A4A;letter-spacing: 0;line-height: 16px;" class="item" ng-repeat="item in param.commodityArray track by $index" >{{item}}</p>
             </div>
@@ -39,7 +39,7 @@ border: 1px solid #CCCCCC;border-radius: 7px;;margin: auto;position: relative" n
         </div>
         <!--空页面-->
         <div ng-if="param.productShow&&param.productList<=0">
-            <img src="images/sad.png" style="width: 142px;height: 147px;margin:auto;margin-top: 181px">
+            <img src="images/sad.png" style="width: 142px;height: 147px;margin:auto;margin-top: 125px">
             <p style="font-family: PingFang-SC-Medium;font-size: 14px;color:#4A4A4A;letter-spacing: 0.33px;text-align: center;margin-top: 77px">臣妾搜不到啊...换个关键词试试吧</p>
         </div>
     </ion-content>

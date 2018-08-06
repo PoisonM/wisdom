@@ -1,11 +1,12 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',"GetProductNumFromBuyCart",
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',"GetProductNumFromBuyCart",'IsLogin','$timeout',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart) {
-            $rootScope.title = "美享99触屏版";
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart,IsLogin,$timeout) {
+            document.title = '美享99触屏版';
+           /* $rootScope.title = "美享99触屏版";*/
             $scope.param = {
                 bannerList:{},
                 productList:{},//特殊商品
@@ -17,7 +18,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 redPackerBox:true,
                 checkType:"0",
                 floating:[],
-                productUnPaidNum : "0",
+                productUnPaidNum : "0"
             };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -64,8 +65,8 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
              $state.go("areaPage",{productPrefecture:productPrefecture})
            };
            /*点击分销进入分销页面*/
-           $scope.distributionArea=function () {
-             $state.go("distributionArea")
+           $scope.distributionArea=function (productPrefecture) {
+             $state.go("distributionArea",{productPrefecture:productPrefecture})
            };
            /*点击拼团专区 砍价专区 进入到空页面*/
            $scope.area=function () {
@@ -87,5 +88,26 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
             };
+            var showToast = function (content) {
+                $ionicLoading.show({
+                    template: content
+                });
+            };
 
+            var hideToast = function () {
+                $timeout(function () {
+                    $ionicLoading.hide();
+                }, 1000);
+            };
+            $scope.loginCart = function(){
+                IsLogin.save(function(data){
+                    if(data.responseData=="failure"){
+                        showToast("请先登录账号");
+                        hideToast();
+                        $state.go("login");
+                    }else{
+                        $state.go("buyCart");
+                    }
+                })
+            };
         }]);

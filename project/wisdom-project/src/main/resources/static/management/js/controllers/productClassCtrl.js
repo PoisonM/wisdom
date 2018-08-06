@@ -43,6 +43,10 @@ angular.module('controllers', []).controller('productClassCtrl',
                 }
 
             })
+            /*点击空白,隐藏查看*/
+            $scope.bgAll = function () {
+                $scope.showFlag = false;
+            }
             /*点击添加一级类目按钮*/
             $scope.showAddOneProductClass = function () {
                 $scope.showAddOneName = true;
@@ -157,6 +161,9 @@ angular.module('controllers', []).controller('productClassCtrl',
                 $scope.mum = true;
                 getTwoProductClassList.get({productClassId: productClassId}, function (data) {
                     $scope.mum = false;
+                    if(null == data .responseData){
+                        alert("无下级");
+                    }
                     $scope.twoList = data.responseData;
                 })
             }

@@ -2,10 +2,10 @@
  * Created by Administrator on 2018/7/25.
  */
 angular.module('controllers',[]).controller('newlywedsCtrl',
-    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading',
-        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading) {
-
-            $rootScope.title = "新人专享";
+    ['$scope','$rootScope','$stateParams','$state','GetOfflineProductList','$ionicLoading','Global',
+        function ($scope,$rootScope,$stateParams,$state,GetOfflineProductList,$ionicLoading,Global) {
+            document.title = '新人专享';
+            /*$rootScope.title = "新人专享";*/
             $scope.param={
                 productList:{},
                 productPrefecture:$stateParams.productPrefecture
@@ -30,8 +30,10 @@ angular.module('controllers',[]).controller('newlywedsCtrl',
             };
             GetOfflineProductList.save($scope.PageParamDTO,function(data){
                 $ionicLoading.hide();
-                console.log(data);
-                $scope.param.productList=data.responseData;
+                if(data.result==Global.SUCCESS&&data.responseData!=null)
+                {
+                    $scope.param.productList=data.responseData;
+                }
             })
             });
         }]);
