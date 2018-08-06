@@ -4,6 +4,7 @@ var systemService = '/system-service/';
 var weixinService = '/weixin/';
 var  mine='/beauty/mine/';
 PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
+    var loseNum = "0";
         return {
             request: function(config){
                 config.headers = config.headers || {};
@@ -34,8 +35,14 @@ PADWeb.factory('httpInterceptor', ["$q", "$injector",function($q) {
             },
             response: function (res) {
                 if(res.data.errorInfo=="0x00006"){
-                    alert("登录已经失效,请重新登录")
-                    window.location.href = window.location.href.split("pad-web")[0]+"pad-web/login"
+                    if(loseNum >= 1){
+                        return
+                    }else {
+                        loseNum++
+                        alert("登录已经失效,请重新登录")
+                        window.location.href = window.location.href.split("pad-web")[0]+"pad-web/login"
+                    }
+
                 }
                 return res;
             },
