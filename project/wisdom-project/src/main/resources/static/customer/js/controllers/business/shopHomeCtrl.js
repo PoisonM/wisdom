@@ -1,10 +1,10 @@
 angular.module('controllers',[]).controller('shopHomeCtrl',
     ['$scope','$rootScope','$stateParams','$state','GetHomeBannerList','GetOfflineProductList','$ionicSlideBoxDelegate',
         '$ionicLoading','GetBusinessOrderByProductId','Global','$ionicPopup',
-        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',"GetProductNumFromBuyCart",
+        'LoginGlobal','BusinessUtil','CheckTripleMonthBonus','GetTripleMonthBonus','FindProductById','FindProductBargainPriceTimeById','GetUserInfoByOpenId','GetRankingsList',"GetProductNumFromBuyCart",'IsLogin',
         function ($scope,$rootScope,$stateParams,$state,GetHomeBannerList,GetOfflineProductList,$ionicSlideBoxDelegate,
                   $ionicLoading,GetBusinessOrderByProductId,Global,$ionicPopup,
-                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart) {
+                  LoginGlobal,BusinessUtil,CheckTripleMonthBonus,GetTripleMonthBonus,FindProductById,FindProductBargainPriceTimeById,GetUserInfoByOpenId,GetRankingsList,GetProductNumFromBuyCart,IsLogin) {
             document.title = '美享99触屏版';
            /* $rootScope.title = "美享99触屏版";*/
             $scope.param = {
@@ -18,7 +18,7 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
                 redPackerBox:true,
                 checkType:"0",
                 floating:[],
-                productUnPaidNum : "0",
+                productUnPaidNum : "0"
             };
             $scope.$on('$ionicView.enter', function(){
                 $ionicLoading.show({
@@ -88,5 +88,15 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
             $scope.redPackerClose = function () {
               $scope.param.redPackerBox=false;
             };
-
+            $scope.loginCart = function(){
+                IsLogin.save(function(data){
+                    if(data.responseData=="failure"){
+                        showToast("请先登录账号");
+                        hideToast();
+                        $state.go("login");
+                    }else{
+                        $state.go("buyCart");
+                    }
+                })
+            };
         }]);
