@@ -31,6 +31,8 @@ angular.module('controllers', []).controller('productClassCtrl',
             /*点击修改一级类目按钮*/
             $scope.oneClassId = "";
             $scope.oneClassName = "";
+            /**/
+            $scope.productClassId = "";
 
 
             var a = [];
@@ -43,6 +45,38 @@ angular.module('controllers', []).controller('productClassCtrl',
                 }
 
             })
+            $scope.getOneProductClassListMethod = function () {
+                getOneProductClassList.save({}, function (data) {
+                    if (data.result == Global.SUCCESS) {
+                        $scope.mum = false;
+                        $scope.oneClassLiat = data.responseData
+                    }
+
+                })
+            }
+            /*$scope.getOneProductClassList.save({}, function (data) {
+                if (data.result == Global.SUCCESS) {
+                    $scope.mum = false;
+                    $scope.oneClassLiat = data.responseData
+                }
+
+            })*/
+            /*获取二级类目*/
+            $scope.getTwoProductClassListMethod = function () {
+                getTwoProductClassList.get({productClassId: $scope.productClassId}, function (data) {
+                    if(null == data .responseData){
+                        alert("无下级");
+                    }
+                    $scope.twoList = data.responseData;
+                })
+            }
+            /*$scope.getTwoProductClassList.get({productClassId: productClassId}, function (data) {
+                $scope.mum = false;
+                if(null == data .responseData){
+                    alert("无下级");
+                }
+                $scope.twoList = data.responseData;
+            })*/
             /*点击空白,隐藏查看*/
             $scope.bgAll = function () {
                 $scope.showFlag = false;
@@ -83,6 +117,8 @@ angular.module('controllers', []).controller('productClassCtrl',
                     } else {
                         alert("成功");
                         $scope.showAddOneName = false;
+                        // $scope.getOneProductClassList();
+                        $scope.getOneProductClassListMethod();
                     }
                 })
             }
@@ -98,12 +134,14 @@ angular.module('controllers', []).controller('productClassCtrl',
                     } else {
                         alert("成功");
                         $scope.showAddTwoName = false;
+                        // $scope.getTwoProductClassList($scope.productClassId);
+                        $scope.getTwoProductClassListMethod();
                     }
                 })
             }
 
             /*上移*/
-            $scope.upClass = function (id) {
+            $scope.upClass = function (id,oneAndTwo) {
                 upOrDownProductClass.get({
                     id: id,
                     upAndDown: "up"
@@ -112,11 +150,18 @@ angular.module('controllers', []).controller('productClassCtrl',
                         alert(data.errorInfo);
                     } else {
                         alert("上移成功");
+                        if('one'== oneAndTwo){
+                            // $scope.getOneProductClassList();
+                            $scope.getOneProductClassListMethod();
+                        }else {
+                            // $scope.getTwoProductClassList($scope.productClassId);
+                            $scope.getTwoProductClassListMethod();
+                        }
                     }
                 })
             }
             /*下移*/
-            $scope.downClass = function (id) {
+            $scope.downClass = function (id,oneAndTwo) {
                 upOrDownProductClass.get({
                     id: id,
                     upAndDown: "down"
@@ -125,6 +170,13 @@ angular.module('controllers', []).controller('productClassCtrl',
                         alert(data.errorInfo);
                     } else {
                         alert("下移成功");
+                        if('one'== oneAndTwo){
+                            // $scope.getOneProductClassList();
+                            $scope.getOneProductClassListMethod();
+                        }else {
+                            // $scope.getTwoProductClassList($scope.productClassId);
+                            $scope.getTwoProductClassListMethod();
+                        }
                     }
                 })
             }
@@ -138,6 +190,8 @@ angular.module('controllers', []).controller('productClassCtrl',
                         alert(data.errorInfo);
                     } else {
                         alert("成功");
+                        // $scope.getOneProductClassList();
+                        $scope.getOneProductClassListMethod();
                     }
                 })
             }
@@ -150,6 +204,13 @@ angular.module('controllers', []).controller('productClassCtrl',
                         alert(data.errorInfo);
                     } else {
                         alert("成功");
+                        if('one'== oneAndTwo){
+                            // $scope.getOneProductClassList();
+                            $scope.getOneProductClassListMethod();
+                        }else {
+                            // $scope.getTwoProductClassList($scope.productClassId);
+                            $scope.getTwoProductClassListMethod();
+                        }
                     }
                 })
             }
@@ -158,6 +219,7 @@ angular.module('controllers', []).controller('productClassCtrl',
             $scope.showFlag = ""
             $scope.details = function (productClassId) {
                 $scope.showFlag = productClassId;
+                $scope.productClassId = productClassId;
                 $scope.mum = true;
                 getTwoProductClassList.get({productClassId: productClassId}, function (data) {
                     $scope.mum = false;

@@ -28,8 +28,7 @@ angular.module('controllers',[]).controller('homeCtrl',
                             brand:"",
                             secondType:"",
                             productName: $scope.productsName,
-                            productId:$scope.productsId,
-                            type:"offline"
+                            productId:$scope.productsId
                         },
                         isExportExcel:"N"
                     };
