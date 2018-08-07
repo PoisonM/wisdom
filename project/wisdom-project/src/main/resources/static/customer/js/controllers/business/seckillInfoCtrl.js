@@ -175,12 +175,8 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
                 SeckillInfo.get({activtyId:$stateParams.id+""},function (data){
                     $ionicLoading.hide();
-                    if($scope.param.product.status != 0){
-                        // alert("本活动还没有开始");
-                        // $state.go("seckillList");
-                        // return
+                    if(data.status != 0){
                         $("#buyButton").attr('disabled','disabled').css("background","#444");
-
                     }
                     $scope.param.product = data;
                     $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
