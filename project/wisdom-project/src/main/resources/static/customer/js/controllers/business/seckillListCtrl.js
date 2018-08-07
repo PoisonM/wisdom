@@ -13,8 +13,10 @@ var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
                 })
 
                 $scope.seckillInfo = function (item) {
-                    if(item.status == 0){
+                    if(item.status == 0 || item.status == 1){
                         $state.go("seckillInfo",{id:item.fieldId});
+                    }else if(item.status == 2 || item.status == 3){
+                        alert("亲，本轮秒杀已结束，下次敬请期待！");
                     }
                 }
             });

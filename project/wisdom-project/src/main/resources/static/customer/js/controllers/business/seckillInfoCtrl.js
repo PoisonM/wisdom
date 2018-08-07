@@ -175,10 +175,12 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
 
                 SeckillInfo.get({activtyId:$stateParams.id+""},function (data){
                     $ionicLoading.hide();
-                    if(null == data.countdown || data.countdown <=0){
-                        alert("本活动还没有开始");
-                        $state.go("seckillList");
-                        return
+                    if($scope.param.product.status != 0){
+                        // alert("本活动还没有开始");
+                        // $state.go("seckillList");
+                        // return
+                        $("#buyButton").attr('disabled','disabled').css("background","#444");
+
                     }
                     $scope.param.product = data;
                     $scope.param.checkFlag = $scope.param.product.productDetail.spec[0];
@@ -208,7 +210,7 @@ seckillInfo.directive('timerBtn', function() { // 倒计时按钮
             startTime: '=startTime',
             getData: '&getData'
         },
-        template: '<p class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="startTime > 0 ? \'距离活动结束:\' +showTime : \'\'" ng-click="getData()"></p>',
+        template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="remindMe == 0 ? \'距离活动结束还剩:\' +showTime : \'距离活动开始还剩:\' +showTime " ng-click="getData()"></span>',
         controller: function($scope, $interval) {
             var formatTime = function(sys_second) {
                 if (sys_second > 0) {
