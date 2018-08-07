@@ -1,8 +1,7 @@
 var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
     ['$scope','$rootScope','$stateParams','$state','SeckillList',
         function ($scope,$rootScope,$stateParams,$state,SeckillList) {
-            document.title = '秒杀专区';
-            /*$rootScope.title = "秒杀专区";*/
+            $rootScope.title = "秒杀专区";
             $scope.$on('$ionicView.enter', function(){
                 $scope.PageParamVoDTO ={
                     pageNo:$scope.pageNo,
