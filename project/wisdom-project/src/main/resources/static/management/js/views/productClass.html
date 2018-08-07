@@ -22,7 +22,7 @@
 
 
                     <div  class="product_searchEara" align="right" style="float: left;width:15%;margin-top:50px;line-height:31px;">
-                        <input align="right"  type="button" value="新建分类" class="search_btn" ng-click="showAddOneProductClass()">
+                        <input align="right"  type="button" value="新建分类" class="search_btn" ng-click="showAddOneProductClass()" style="width: 120px;margin-top: 10px;">
                     </div>
 
 
@@ -77,13 +77,11 @@
 
                             <!--修改一级类目-->
                             <div ng-if="showUpdateOneName" class="name_row uploading_product_name">
-                                <label for="oneName">
+                                <label for="oneName" style="width: 200px;margin-left: 20px;">
                                     一级类目名称修改为:
                                 </label>
                                 <input type="text" id="UpdateOneName" class="uploading_product_name_search name" ng-model="oneClassName">
-                                <button class="save_btn" ng-click="updateClass(oneClassName)" style="background-color: red;
-    width: 100px;
-    height: 30px;">确认修改</button>
+                                <button class="save_btn" ng-click="updateClass(oneClassName)" style="background-color: red;width: 100px;height: 30px;margin-left: 386px;">确认修改</button>
                             </div>
                             <!--添加一级类目-->
                             <div ng-if="showAddOneName" class="name_row uploading_product_name">
@@ -91,21 +89,17 @@
                                     一级类目名称:
                                 </label>
                                 <input type="text" id="oneName" class="uploading_product_name_search name" ng-model="className" style="width: auto">
-                                <button class="save_btn" ng-click="addOneProductClass(className)" style="background-color: red;
-    width: 96px;
-    height: 30px;">确认添加</button>
+                                <button class="save_btn" ng-click="addOneProductClass(className)" style="background-color: red;width: 96px;height: 30px;">确认添加</button>
                             </div>
                             <!--添加二级类目-->
                             <div ng-if="showAddTwoName" class="name_row uploading_product_name">
-                                <label for="twoName">
-                                    为"{{parentName}}"添加二级类目
+                                <label for="twoName" style="width: 200px;margin-left: 20px;">
+                                    为"{{parentName}}"添加二级类目:
                                 </label>
-                                <input type="text" id="twoName" class="uploading_product_name_search name" ng-model="twoClassName" style="width: auto">
-                                <input onchange="angular.element(this).scope().img_upload(this.files)" type="file">
-
-                                <button class="save_btn" ng-click="addTwoProductClass(parentId,twoClassName,url)" style="background-color: red;
-    width: 100px;
-    height: 30px;">确认添加</button>
+                                <input type="text" id="twoName" class="uploading_product_name_search name" ng-model="twoClassName" style="width: auto;margin-left: 100px;">
+                                <input onchange="angular.element(this).scope().img_upload(this.files)" type="file" style="margin-left: 178px;margin-top: 20px;">
+                                <img ng-src="{{url}}" class="hintPic" ng-show="url!=''?true:false" style="width: 27%;height: 100%;margin: 2px;">
+                                <button class="save_btn" ng-click="addTwoProductClass(parentId,twoClassName,url)" style="background-color: red;width: 100px;height: 30px;margin-left: 337px;">确认添加</button>
                             </div>
                             </tbody>
                         </table>
