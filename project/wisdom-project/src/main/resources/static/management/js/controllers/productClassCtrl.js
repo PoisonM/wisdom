@@ -39,9 +39,11 @@ angular.module('controllers', []).controller('productClassCtrl',
 
             //获取一级类目列表
             getOneProductClassList.save({}, function (data) {
+                $scope.mum = false;
                 if (data.result == Global.SUCCESS) {
-                    $scope.mum = false;
                     $scope.oneClassLiat = data.responseData
+                }else {
+                    alert(data.errorInfo);
                 }
 
             })
@@ -196,7 +198,7 @@ angular.module('controllers', []).controller('productClassCtrl',
                 })
             }
             /*删除*/
-            $scope.delClass = function (id) {
+            $scope.delClass = function (id,oneAndTwo) {
                 delProductClassById.get({
                     id: id
                 }, function (data) {
