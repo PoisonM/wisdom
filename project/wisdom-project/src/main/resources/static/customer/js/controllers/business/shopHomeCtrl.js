@@ -31,7 +31,6 @@ angular.module('controllers',[]).controller('shopHomeCtrl',
 
                 GetRankingsList.save(function(data){
                     $scope.rankingsList = data.responseData;
-
                 });
                 /*底部切换初始默认为首页*/
                 $scope.param.checkType="0";
