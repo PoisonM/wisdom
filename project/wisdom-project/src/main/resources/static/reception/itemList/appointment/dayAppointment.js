@@ -947,7 +947,9 @@ PADWeb.controller("dayAppointmentCtrl", function ($scope, $state
             pageNo: 1,
             pageSize: 100
         }, function (data) {
-            $scope.param.selectCustomersObject.data = data.responseData.info;
+            if(data.errorInfo =="" || data.errorInfo ==null){
+                $scope.param.selectCustomersObject.data = data.responseData.info;
+            }
         })
     }
     $scope.selectCustomersCtrl = function () {
