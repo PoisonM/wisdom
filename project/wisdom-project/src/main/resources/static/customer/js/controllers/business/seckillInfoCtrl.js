@@ -204,6 +204,7 @@ seckillInfo.directive('timerBtn', function() { // 倒计时按钮
         replace: true,
         scope: {
             startTime: '=startTime',
+            remindMe: '=remindMe',
             getData: '&getData'
         },
         template: '<span class="btn btn-danger" ng-disabled="startTime> 0" ng-bind="remindMe == 0 ? \'距离活动结束还剩:\' +showTime : \'距离活动开始还剩:\' +showTime " ng-click="getData()"></span>',
