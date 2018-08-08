@@ -230,11 +230,12 @@
         bor. STATUS STATUS,
         bor.update_date updateDate,
         bor.type type,
-        pr.amount payAmount
+        sa.favorable_price payAmount
+
         FROM
         business_order bor LEFT join order_product_relation opr ON bor.order_id = opr.business_order_id
         LEFT JOIN business_product bpr ON opr.business_product_id = bpr.product_id
-        LEFT JOIN pay_record pr ON bor.order_id = pr.order_id
+        LEFT JOIN seckill_activity sa On sa.product_id = bpr.product_id
         WHERE
         bor.sys_user_id=#{userId}
         <if test="status!= '' and status!=null">

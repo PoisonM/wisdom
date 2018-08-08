@@ -40,7 +40,8 @@
                 </a>
                 <a class="item">
                 <span class="item-note" style="color: #A4A4A4">共{{item.businessProductNum}}件商品，合计：
-                    <span style="color:#ff4a59;font-size: 0.3rem">￥{{item.payAmount}}</span>（含运费￥0.00）
+                    <span ng-if="item.status != 'seckill'" style="color:#ff4a59;font-size: 0.3rem">￥{{item.businessProductNum * item.businessProductPrice}}</span>（含运费￥0.00）
+                    <span ng-if="item.status == 'seckill'" style="color:#ff4a59;font-size: 0.3rem">￥{{item.businessProductNum *item.payAmount}}</span>（含运费￥0.00）
                 </span>
                 </a>
                 <a class="item" style="height:52px">
