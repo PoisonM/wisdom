@@ -196,7 +196,7 @@ var orderPayInit = function(){
                         $('#needPayOrderList').html(needPayOrderListHtml);
 
                         $.each(needPayOrderList,function(index,value){
-                            totalPrice = totalPrice + parseInt(value.productNum)*parseInt(value.productPrice);
+                            totalPrice = totalPrice + parseFloat(value.productNum)*parseFloat(value.productPrice);
                             trainingProductId = value.productId;
                             orderIds.push(needPayOrderList[index].orderId);
                         })
