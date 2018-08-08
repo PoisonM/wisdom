@@ -26,7 +26,9 @@ angular.module('controllers',[]).controller('classificationCtrl',
                         if(data.result==Global.SUCCESS&&data.responseData!=null)
                         {
                             $scope.param.twoList=data.responseData;
-                        }
+                        }/*else {
+                            $scope.param.twoList=""
+                        }*/
                     })
                 };
             };
