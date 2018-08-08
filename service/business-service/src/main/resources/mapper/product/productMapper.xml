@@ -219,6 +219,9 @@
 		<if test="firstUrl != ''and firstUrl != null">
 			,first_url=#{firstUrl}
 		</if>
+		<if test="type != ''and type != null">
+			,type=#{type}
+		</if>
 		<if test="price != ''and price != null">
 			,price=#{price}
 		</if>
