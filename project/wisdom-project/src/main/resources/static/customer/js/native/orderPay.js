@@ -191,7 +191,7 @@ var orderPayInit = function(){
                                 ' <p style="margin-left:1.2rem;font-size:1.2rem;color: #ff4a59"> ￥'+ value.productPrice +'<span style="color:#333333;float: right;font-size:15px">X'+ value.productNum +'</span> </p>' +
                                 ' </div> </div> <p class="item"><span style="margin-left:1rem;font-size: 15px;color: #000033">运费</span><span style="float:right;font-size: 15px;color: #333333">快递：￥0</span></p> ' +
                                 '<p class="item"> <span style="float: right;font-size: 13px;color: #333333">共' + value.productNum +'件商品 小计：<span style="font-size:20px;color:#ff4a59">' +
-                                '￥'+ parseInt(value.productNum)*parseInt(value.productPrice)+'</span> </span> </p> </div>';
+                                '￥'+ parseFloat(value.productNum)*parseFloat(value.productPrice)+'</span> </span> </p> </div>';
                         })
                         $('#needPayOrderList').html(needPayOrderListHtml);
 
