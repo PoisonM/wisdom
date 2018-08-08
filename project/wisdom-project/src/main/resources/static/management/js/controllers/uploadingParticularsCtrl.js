@@ -44,12 +44,12 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                         $scope.mum = false;
                         $scope.twoClassLiat = data.responseData;
                         if(data.responseData == null){
-                            item = ""
+                            bar = ""
                         }
                     })
                 }else {
-                    $scope.ProductDTO.productClassId = JSON.parse(item).id;
-                    $scope.ProductDTO.secondType = JSON.parse(item).productClassName
+                    $scope.productClassId = JSON.parse(bar).id;
+                    $scope.uploadingPar.secondType = JSON.parse(bar).productClassName
                 }
 
             }
@@ -393,6 +393,7 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                     }
                     /*传给服务器的值*/
                     var ProductDTO = {
+                        productClassId:$scope.productClassId,
                         id:$stateParams.id,
                         productName:$scope.uploadingPar.productName,
                         productId:$stateParams.productId,
