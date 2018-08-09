@@ -498,12 +498,12 @@ public class WeixinTemplateMessageUtil {
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(keyword1);
+		templateData.setValue(keyword2);
 		m.put("keyword1", templateData);
 
 		templateData = new TemplateData();
 		templateData.setColor("#000000");
-		templateData.setValue(keyword2);
+		templateData.setValue(keyword1);
 		m.put("keyword2", templateData);
 
 		templateData = new TemplateData();
