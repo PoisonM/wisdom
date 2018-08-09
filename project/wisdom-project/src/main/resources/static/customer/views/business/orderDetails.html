@@ -24,7 +24,11 @@
                 <p style="color: #ff4a59;margin-left: 1.2rem;margin-top: 0.54rem;font-size: 0.4rem;">￥{{param.orderDetailInfo.businessProductPrice}}</p>
             </a>
             <p class="item" ><span style="color:#333333;font-size:0.3rem;float: left;margin-left: 0.2rem;margin-top: 0.1rem">运费（快递）</span> <span style="float: right;margin-right: 0.2rem">￥0.00</span></p>
-            <p class="item" ><span style="color:#333333;font-size:0.3rem;float: left;margin-left: 0.2rem;margin-top: 0.1rem">实付款（含运费）</span> <span style="float: right;margin-right: 0.2rem;color: #ff4a59;font-weight: 600">￥{{param.orderDetailInfo.payAmount}}</span></p>
+            <p class="item" >
+                <span style="color:#333333;font-size:0.3rem;float: left;margin-left: 0.2rem;margin-top: 0.1rem">实付款（含运费）</span>
+                <span ng-if="param.orderDetailInfo.type != 'seckill'" style="float: right;margin-right: 0.2rem;color: #ff4a59;font-weight: 600">￥{{param.orderDetailInfo.businessProductPrice*param.orderDetailInfo.businessProductNum}}</span>
+                <span ng-if="param.orderDetailInfo.type == 'seckill'" style="float: right;margin-right: 0.2rem;color: #ff4a59;font-weight: 600">￥{{param.orderDetailInfo.payAmount*param.orderDetailInfo.businessProductNum}}</span>
+            </p>
         </div>
         <!--流水-->
         <div class="list" style="width: 100%;background: white;font-size: 14px;color: #666666;padding: 0.3rem">
