@@ -51,7 +51,7 @@
                                     &nbsp;
                                     <a ng-if="item.sort != 1" ng-click="upClass(item.id,'one');$event.stopPropagation()" class="orderBtn" >上移</a>
                                     &nbsp;
-                                    <a ng-click="downClass(item.id,'one');$event.stopPropagation()" class="orderBtn">下移</a>
+                                    <a ng-if="item.sort != oneClassLiat.length" ng-click="downClass(item.id,'one');$event.stopPropagation()" class="orderBtn">下移</a>
                                     &nbsp;
                                     <a ng-click="delClass(item.id,'one');$event.stopPropagation()" class="orderBtn" >删除</a>
                                 </td>
