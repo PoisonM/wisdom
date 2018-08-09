@@ -257,6 +257,8 @@ public class SeckillProductService {
         Date activityNoDate = new Date();
         activityNo.append(sdf1.format(activityNoDate).replaceAll("-","")).append(activityNoDate.getTime()/1000);
         seckillActivityDTO.setActivityNo(activityNo.toString());
+        int activityId = seckillProductMapper.addSeckillActivity(seckillActivityDTO);
+
         for(SeckillActivityFieldDTO seckillActivityField : seckillActivityDTO.getSessionList()){
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setActivityId(seckillActivityDTO.getId());
