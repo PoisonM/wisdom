@@ -29,7 +29,7 @@
         </div>
 
         <div class="list" ng-repeat="item in param.orderList">
-            <div ng-if="$index==0" style="padding-top:48px" ng-hide="item.type != 'seckill'&& item.payAmount == 0 ">
+            <div ng-if="$index==0" style="padding-top:48px">
                 <a class="item" style="color: #333333;font-size: 0.28rem">美享专供<span ng-if="item.status=='6'" style="float: right;color: #ff4a59">订单关闭</span></a>
                 <a class="item item-avatar" style="min-height: 3rem" ng-click="goDetails(item.businessOrderId)">
                     <img ng-src="{{item.businessProductFirstUrl}}"
