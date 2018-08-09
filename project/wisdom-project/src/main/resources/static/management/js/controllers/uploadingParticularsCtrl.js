@@ -415,7 +415,8 @@ angular.module('controllers',[]).controller('uploadingParticularsCtrl',
                             listPic:$scope.uploadingPar.productDetail.listPic,
                             senderAddress:$scope.uploadingPar.productDetail.senderAddress,
                             productId:$stateParams.productId,
-                            productMarketPrice:$scope.uploadingPar.productDetail.productMarketPrice
+                            productMarketPrice:$scope.uploadingPar.productDetail.productMarketPrice,
+                            productSalesVolume:$scope.uploadingPar.productDetail.productSalesVolume
                         }
                     };
                     UpdateProductByParameters.save(ProductDTO,function(data){

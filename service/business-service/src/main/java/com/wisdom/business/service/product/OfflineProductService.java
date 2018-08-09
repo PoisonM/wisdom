@@ -48,7 +48,7 @@ public class OfflineProductService {
             productDTO.setProductDetail(offlineProductDTO);
             if(offlineProductDTO!=null)
             {
-                int sell = Integer.parseInt(sellNum) * 8;
+                int sell = (Integer.parseInt(sellNum) * 8) + Integer.parseInt(offlineProductDTO.getProductSalesVolume());
                 offlineProductDTO.setProductSalesVolume(sell+"");
             }
         }
@@ -66,7 +66,7 @@ public class OfflineProductService {
             if(null != offlineProductDTO){
                 offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
                 //sellNum真是销量乘一个基数
-                int sell = Integer.parseInt(sellNum) * 8;
+                int sell = (Integer.parseInt(sellNum) * 8) + Integer.parseInt(offlineProductDTO.getProductSalesVolume());
                 offlineProductDTO.setProductSalesVolume(sell+"");
                 productDTO.setSellNum(sell+"");
             }
