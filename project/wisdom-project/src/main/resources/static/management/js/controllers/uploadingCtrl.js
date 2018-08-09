@@ -31,7 +31,8 @@ angular.module('controllers',[]).controller('uploadingCtrl',
                     spec:[],
                     services:[],
                     senderAddress:"深圳地区发货",
-                    productMarketPrice:""
+                    productMarketPrice:"",
+                    productSalesVolume:""
                 }
             };
 

@@ -87,7 +87,10 @@ public class ProductService {
             OfflineProductDTO offlineProductDTO = mongoTemplate.findOne(query, OfflineProductDTO.class,"offlineProduct");
             if(null != offlineProductDTO){
                 offlineProductDTO.setNowTime(DateUtils.formatDateTime(new Date()));
-                offlineProductDTO.setProductSalesVolume(Integer.parseInt(sellNum)*8+"");
+                if(null == offlineProductDTO.getProductSalesVolume() || "".equals(offlineProductDTO.getProductSalesVolume())){
+                    offlineProductDTO.setProductSalesVolume("0");
+                }
+                offlineProductDTO.setProductSalesVolume((Integer.parseInt(sellNum)*8+Integer.parseInt(offlineProductDTO.getProductSalesVolume())+""));
             }
             productDTO.setSellNum(sellNum);
             productDTO.setProductDetail(offlineProductDTO);
