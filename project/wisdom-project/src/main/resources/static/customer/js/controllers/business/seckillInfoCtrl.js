@@ -1,8 +1,8 @@
 var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
     ['$scope','$location','$rootScope','$stateParams','$state','$ionicPopup',
-        '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis',
+        '$ionicSlideBoxDelegate','$ionicLoading',"$interval",'$timeout','IsLogin','SeckillInfo','CreateSeckillOrder','Global','PutNeedPayOrderListToRedis','BusinessUtil',
         function ($scope,$location,$rootScope,$stateParams,$state,$ionicPopup,
-                  $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global,PutNeedPayOrderListToRedis) {
+                  $ionicSlideBoxDelegate,$ionicLoading,$interval,$timeout,IsLogin,SeckillInfo,CreateSeckillOrder,Global,PutNeedPayOrderListToRedis,BusinessUtil) {
             $scope.authentication_flag = false;
             $rootScope.title = "秒杀详情";
             $scope.model=false;
@@ -67,6 +67,7 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                                 type:$scope.param.product.productType,
                                 fieldId:$scope.param.product.fieldId+"",
                                 },function (data) {
+                                BusinessUtil.checkResponseData(data,"seckillInfoCtrl/"+$scope.param.product.fieldId);
                                 if(data.result==Global.FAILURE)
                                 {
                                     showToast("交易失败");
