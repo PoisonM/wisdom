@@ -86,8 +86,6 @@ angular.module('controllers', []).controller('productClassCtrl',
             /*点击空白,隐藏*/
             $scope.bgAll = function () {
                 $scope.showFlag = false;
-                $scope.showAddTwoName = false;
-                $scope.showUpdateOneName = false;
             }
             /*点击添加一级类目按钮*/
             $scope.showAddOneProductClass = function () {
