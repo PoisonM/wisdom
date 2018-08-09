@@ -27,7 +27,7 @@
             <p class="item" >
                 <span style="color:#333333;font-size:0.3rem;float: left;margin-left: 0.2rem;margin-top: 0.1rem">实付款（含运费）</span>
                 <span ng-if="param.orderDetailInfo.type != 'seckill'" style="float: right;margin-right: 0.2rem;color: #ff4a59;font-weight: 600">￥{{param.orderDetailInfo.businessProductPrice*param.orderDetailInfo.businessProductNum}}</span>
-                <span ng-if="param.orderDetailInfo.type == 'seckill'" style="float: right;margin-right: 0.2rem;color: #ff4a59;font-weight: 600">￥{{param.orderDetailInfo.payAmount*param.orderDetailInfo.businessProductNum}}</span>
+                <span ng-if="param.orderDetailInfo.type == 'seckill'" style="float: right;margin-right: 0.2rem;color: #ff4a59;font-weight: 600">￥{{param.orderDetailInfo.payAmount}}</span>
             </p>
         </div>
         <!--流水-->
