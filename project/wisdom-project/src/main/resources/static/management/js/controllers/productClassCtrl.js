@@ -86,7 +86,6 @@ angular.module('controllers', []).controller('productClassCtrl',
             /*点击空白,隐藏*/
             $scope.bgAll = function () {
                 $scope.showFlag = false;
-                $scope.showAddOneName = false;
                 $scope.showAddTwoName = false;
                 $scope.showUpdateOneName = false;
             }
