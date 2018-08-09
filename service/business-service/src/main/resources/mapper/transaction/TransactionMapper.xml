@@ -100,7 +100,8 @@
         status,
         create_date,
         update_date,
-        user_order_address_id
+        user_order_address_id,
+        seckill_id
         ) VALUES (
         #{id},
         #{sysUserId},
@@ -109,7 +110,8 @@
         #{status},
         #{createDate},
         #{updateDate},
-        #{userOrderAddressId}
+        #{userOrderAddressId},
+        #{seckillId}
         )
     </insert>
 
@@ -119,14 +121,13 @@
         business_order_id,
         business_product_id,
         product_num,
-        seckill_id,
         product_spec
         ) VALUES (
         #{id},
         #{businessOrderId},
         #{businessProductId},
         #{productNum},
-        #{seckillId},
+
         #{productSpec}
         )
     </insert>
