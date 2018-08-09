@@ -29,7 +29,7 @@
         </div>
 
         <div class="list" ng-repeat="item in param.orderList">
-            <div ng-if="$index==0" style="padding-top:48px">
+            <div ng-if="$index==0" style="padding-top:48px" ng-hide="item.type != 'seckill'&& item.payAmount == 0 ">
                 <a class="item" style="color: #333333;font-size: 0.28rem">美享专供<span ng-if="item.status=='6'" style="float: right;color: #ff4a59">订单关闭</span></a>
                 <a class="item item-avatar" style="min-height: 3rem" ng-click="goDetails(item.businessOrderId)">
                     <img ng-src="{{item.businessProductFirstUrl}}"
@@ -41,7 +41,7 @@
                 <a class="item">
                 <span class="item-note" style="color: #A4A4A4">共{{item.businessProductNum}}件商品，合计：
                     <span ng-if="item.type != 'seckill'" style="color:#ff4a59;font-size: 0.3rem">￥{{item.businessProductNum * item.businessProductPrice}}</span>
-                    <span ng-if="item.type == 'seckill'" style="color:#ff4a59;font-size: 0.3rem">￥{{item.businessProductNum *item.payAmount}}</span>（含运费￥0.00）
+                    <span ng-if="item.type == 'seckill'" style="color:#ff4a59;font-size: 0.3rem">￥{{item.payAmount}}</span>（含运费￥0.00）
                 </span>
                 </a>
                 <a class="item" style="height:52px">
@@ -84,7 +84,6 @@
                          style="border-radius: 0;min-width: 2rem;min-height: 2rem">
                     <h2 style="margin-left:1.2rem;font-size:0.29rem;color: #333333">{{item.businessProductName}}</h2>
                     <p style="color:#999999;margin-left:1.2rem;margin-top:0.2rem;">{{item.businessProductSpec}}</p>
-                    orderManagement
                     <p style="color: #ff4a59;margin-left: 1.2rem;margin-top: 0.54rem;font-size: 0.4rem;">￥{{item.businessProductPrice}}</p>
                 </a>
                 <a class="item">
