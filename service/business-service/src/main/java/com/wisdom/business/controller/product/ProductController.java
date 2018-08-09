@@ -675,7 +675,9 @@ public class ProductController {
 			//判断有没有父级,有则是二级分类
 			if(!"".equals(productClassDTO.getParentId()) && null != productClassDTO.getParentId()){
 				//查询条件,放入父级id
-				sort.setParentId(productClassDTO.getParentId());
+				sort.setParentId(productClassDTO.getParentId());sort.setRank("2");
+			}else {
+				sort.setRank("1");
 			}
 
 			int bannerRank = productClassDTO.getSort();
