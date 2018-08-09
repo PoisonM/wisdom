@@ -12,25 +12,9 @@ angular.module('controllers',[]).controller('searchPageCtrl',
                     record:false,
                     productShow:false
                 };
+
                 $("#searchbox").focus();
-            $scope.search=function () {
-                $scope.PageParamDTO ={
-                    pageNo:0,
-                    pageSize:100,
-                    requestData:{
-                        productPrefecture:"",
-                        productName:$scope.param.productName
-                    }
-                };
-                GetOfflineProductList.save($scope.PageParamDTO,function (data) {
-                   $scope.param.productList=data.responseData;
-                    $scope.param.productShow=true;
-                });
-                if($scope.param.productName!=""){
-                    $scope.param.commodityArray.push($scope.param.productName);
-                    localStorage.setItem('historyText',JSON.stringify($scope.param.commodityArray));
-                }
-            };
+
             /*点击商品进入商品详情*/
             $scope.enterDetails=function(item){
                 $state.go("offlineProductDetail",{productId:item})
@@ -70,4 +54,23 @@ angular.module('controllers',[]).controller('searchPageCtrl',
 
                }
             });
+            $scope.search=function () {
+                console.log(1);
+                $scope.PageParamDTO ={
+                    pageNo:0,
+                    pageSize:100,
+                    requestData:{
+                        productPrefecture:"",
+                        productName:$scope.param.productName
+                    }
+                };
+                GetOfflineProductList.save($scope.PageParamDTO,function (data) {
+                    $scope.param.productList=data.responseData;
+                    $scope.param.productShow=true;
+                });
+                if($scope.param.productName!=""){
+                    $scope.param.commodityArray.push($scope.param.productName);
+                    localStorage.setItem('historyText',JSON.stringify($scope.param.commodityArray));
+                }
+            };
         }]);
