@@ -43,7 +43,6 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
             };
 
             $scope.goPay = function(){
-                $scope.loginCart();
                 /*根据商品状态来判断商品是否为下架商品*/
                 if($scope.model){
                     if($scope.param.checkFlag=="")
@@ -144,17 +143,6 @@ var seckillInfo = angular.module('controllers',[]).controller('seckillInfoCtrl',
                     $ionicLoading.hide();
                 }, 1000);
             };
-
-            $scope.loginCart = function(){
-                IsLogin.save(function(data){
-                    if(data.responseData=="failure"){
-                        showToast("请先登录账号");
-                        hideToast();
-                        $state.go("login",{redirectUrl:$location.url()})
-                    }
-                })
-            };
-
             $scope.$on('$ionicView.enter', function(){
                 $scope.param = {
                     product:{},
