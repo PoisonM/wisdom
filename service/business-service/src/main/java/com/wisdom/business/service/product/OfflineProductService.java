@@ -48,7 +48,7 @@ public class OfflineProductService {
             productDTO.setProductDetail(offlineProductDTO);
             if(offlineProductDTO!=null)
             {
-                int sell = (Integer.parseInt(sellNum) * 8) + Integer.parseInt(offlineProductDTO.getProductSalesVolume());
+                int sell = (Integer.parseInt(sellNum) * 8) + Integer.parseInt(null == offlineProductDTO.getProductSalesVolume()?"0":offlineProductDTO.getProductSalesVolume());
                 offlineProductDTO.setProductSalesVolume(sell+"");
             }
         }
