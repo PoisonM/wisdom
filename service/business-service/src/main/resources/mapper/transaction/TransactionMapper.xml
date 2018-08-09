@@ -391,15 +391,12 @@
             resultType="com.wisdom.common.dto.transaction.BusinessOrderDTO">
         select bor.id,bor.sys_user_id sysUserId,bor.order_id businessOrderId,bpr.product_id businessProductId,bpr.product_amount productAmount,opr.product_num businessProductNum,
         opr.product_spec productSpec,bpr.first_url businessProductFirstUrl,bpr.`name` businessProductName,
-        bpr.price businessProductPrice,bor.status status, bor.create_date createDate from
-        business_order bor, order_product_relation opr, business_product bpr
-        where
-        bor.order_id=opr.business_order_id
-        and
-        opr.business_product_id=bpr.product_id
-        and
+        bpr.price businessProductPrice,bor.status status, bor.create_date createDate,sa.favorable_price payAmount,bor.type
+        from business_order bor left join  order_product_relation opr on  bor.order_id=opr.business_order_id
+        left join business_product bpr on  opr.business_product_id=bpr.product_id
+        left join seckill_activity sa on bpr.product_id = sa.product_id
         <if test="orderId != null and orderId != ''">
-            bor.order_id=#{orderId}
+          where  bor.order_id=#{orderId}
         </if>
     </select>
 
