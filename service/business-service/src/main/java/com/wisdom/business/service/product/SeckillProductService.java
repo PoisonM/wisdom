@@ -263,12 +263,19 @@ public class SeckillProductService {
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setActivityId(seckillActivityDTO.getId());
             seckillActivityFieldDTO.setCreateTime(new Date());
+            try {
+                seckillActivityFieldDTO.setStartTime(sdf.parse(seckillActivityField.getStartTimeString()));
+                seckillActivityFieldDTO.setEndTime(sdf.parse(seckillActivityField.getEndTimeString()));
+            }catch (Exception e){
+
+            }
             seckillActivityFieldDTO.setProductAmount(0);
             seckillProductMapper.addSeckillActivityField(seckillActivityFieldDTO);
             StringBuilder sb = new StringBuilder();
-            sb.append("seckillproductAmount:").append(String.valueOf(seckillActivityFieldDTO.getId()));
             long secondsLeftToday = 86400 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
             JedisUtils.set(sb.toString(),String.valueOf(seckillActivityDTO.getActivityNum()),(int)secondsLeftToday);
+            logger.info("key值={}",sb.toString());
+            logger.info("缓存值={}",sb.toString());
         }
 
         return "success";
