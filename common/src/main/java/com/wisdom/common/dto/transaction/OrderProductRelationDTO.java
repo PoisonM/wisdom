@@ -23,6 +23,17 @@ public class OrderProductRelationDTO {
     @JSONField(name = "productSpec")
     private String productSpec;
 
+    @JSONField(name = "seckillId")
+    private String seckillId;
+
+    public String getSeckillId() {
+        return seckillId;
+    }
+
+    public void setSeckillId(String seckillId) {
+        this.seckillId = seckillId;
+    }
+
     public String getId() {
         return id;
     }
