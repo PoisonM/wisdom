@@ -83,9 +83,8 @@ public class SeckillProductService {
                     offlineProductDTO.setNowTime(DateUtils.formatDateTime(nowTime));
                     seckillproductDTO.setProductDetail(offlineProductDTO);
                 }
-                long secondsLeftToday = 86400000 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
-                int validityTime = (int)(secondsLeftToday-seckillproductDTO.getActivityStartTime().getTime());
-                JedisUtils.setObject("seckillProductInfo:"+fieldId,seckillproductDTO,validityTime/1000);
+                long secondsLeftToday = 86400 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
+                JedisUtils.setObject("seckillProductInfo:"+fieldId,seckillproductDTO,(int)secondsLeftToday);
             }else{
                 return null;
             }
