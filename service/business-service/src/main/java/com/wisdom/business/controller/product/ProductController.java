@@ -676,6 +676,9 @@ public class ProductController {
 			if(!"".equals(productClassDTO.getParentId()) && null != productClassDTO.getParentId()){
 				//查询条件,放入父级id
 				sort.setParentId(productClassDTO.getParentId());
+				sort.setRank("2");
+			}else {
+				sort.setRank("1");
 			}
 
 			int bannerRank = productClassDTO.getSort();

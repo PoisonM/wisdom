@@ -44,13 +44,17 @@ angular.module('controllers', []).controller('productClassCtrl',
                     $scope.oneClassLiat = data.responseData
                 }else {
                     alert(data.errorInfo);
+                    $scope.oneClassLiat = data.responseData
                 }
 
             })
             $scope.getOneProductClassListMethod = function () {
                 getOneProductClassList.save({}, function (data) {
+                    $scope.mum = false;
                     if (data.result == Global.SUCCESS) {
-                        $scope.mum = false;
+                        $scope.oneClassLiat = data.responseData
+                    }else {
+                        alert(data.errorInfo);
                         $scope.oneClassLiat = data.responseData
                     }
 
@@ -79,9 +83,11 @@ angular.module('controllers', []).controller('productClassCtrl',
                 }
                 $scope.twoList = data.responseData;
             })*/
-            /*点击空白,隐藏查看*/
+            /*点击空白,隐藏*/
             $scope.bgAll = function () {
                 $scope.showFlag = false;
+                $scope.showAddTwoName = false;
+                $scope.showUpdateOneName = false;
             }
             /*点击添加一级类目按钮*/
             $scope.showAddOneProductClass = function () {
