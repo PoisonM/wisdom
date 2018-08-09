@@ -21,7 +21,7 @@ PADWeb.controller('loginCtrl', function ($scope,$rootScope,$state,$stateParams, 
             return false
         }else {
             $scope.param.codeFlag = false
-            $scope.param.timeContent = 5
+            $scope.param.timeContent = 60
             if($scope.param.phone == ""){
                 alert("请输入手机号")
                 return
