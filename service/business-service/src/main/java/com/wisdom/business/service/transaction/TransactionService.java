@@ -200,7 +200,6 @@ public class TransactionService {
         orderProductRelationDTO.setBusinessProductId(businessOrderDTO.getBusinessProductId());
         orderProductRelationDTO.setProductNum(businessOrderDTO.getBusinessProductNum());
         orderProductRelationDTO.setProductSpec(businessOrderDTO.getProductSpec());
-        orderProductRelationDTO.setSeckillId(businessOrderDTO.getFieldId());
         transactionMapper.createOrderProductRelation(orderProductRelationDTO);
         return businessOrderDTO.getBusinessOrderId();
     }
