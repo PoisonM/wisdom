@@ -7,8 +7,6 @@ import com.wisdom.common.dto.product.OfflineProductDTO;
 import com.wisdom.common.dto.product.SeckillActivityDTO;
 import com.wisdom.common.dto.product.SeckillActivityFieldDTO;
 import com.wisdom.common.dto.product.SeckillProductDTO;
-import com.wisdom.common.dto.transaction.BusinessOrderDTO;
-import com.wisdom.common.dto.transaction.OrderProductRelationDTO;
 import com.wisdom.common.persistence.Page;
 import com.wisdom.common.util.DateUtils;
 import com.wisdom.common.util.FrontUtils;
@@ -18,14 +16,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 微商城秒杀服务层
@@ -38,20 +38,10 @@ public class SeckillProductService {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * 预约详情缓存时常，20分钟
-     */
-    private int productInfoCacheSeconds = 12000;
-
-    private int productAmountCacheSeconds = 86400000;
-
-
     @Autowired
     private SeckillProductMapper seckillProductMapper;
     @Autowired
     private MongoTemplate mongoTemplate;
-    @Autowired
-    private TransactionMapper transactionMapper;
 
     /**
      * 查询所有商品
@@ -93,20 +83,24 @@ public class SeckillProductService {
                     offlineProductDTO.setNowTime(DateUtils.formatDateTime(nowTime));
                     seckillproductDTO.setProductDetail(offlineProductDTO);
                 }
-                int validityTime = (int)(seckillproductDTO.getActivityEndTime().getTime()-seckillproductDTO.getActivityStartTime().getTime());
+                long secondsLeftToday = 86400000 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
+                int validityTime = (int)(secondsLeftToday-seckillproductDTO.getActivityStartTime().getTime());
                 JedisUtils.setObject("seckillProductInfo:"+fieldId,seckillproductDTO,validityTime/1000);
             }else{
                 return null;
             }
         }
-        //这里有个弊端带付款后更新缓存信息
+        //库存
         seckillproductDTO.setStockNum( getProductAmout(fieldId));
+        //活动开始时间
         seckillproductDTO.setCountdown(-1);
+        // 活动状态
         cheachSeckillStatus(seckillproductDTO);
+        //倒计时
         if(0 == seckillproductDTO.getStatus()){
             if(null != seckillproductDTO.getFieldEndTime()){
                 Calendar endCalendar = Calendar.getInstance();
-                endCalendar.setTime(new Date());
+                endCalendar.setTime(nowTime);
                 endCalendar.set(Calendar.HOUR_OF_DAY, seckillproductDTO.getFieldEndTime().getHours());//时
                 endCalendar.set(Calendar.MINUTE, seckillproductDTO.getFieldEndTime().getMinutes());//分
                 endCalendar.set(Calendar.SECOND, seckillproductDTO.getFieldEndTime().getSeconds());//秒
@@ -147,6 +141,12 @@ public class SeckillProductService {
             }
         }
         String productAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
+        if(StringUtils.isNull(productAmountStr)){
+            SeckillProductDTO seckillProductDTO = seckillProductMapper.findSeckillProductInfoById(fieldId);
+            productAmountStr = seckillProductDTO.getActivityNum()+"";
+            long secondsLeftToday = 86400 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
+            JedisUtils.set("seckillproductAmount:" + fieldId,productAmountStr,(int)secondsLeftToday);
+        }
         if (StringUtils.isNotNull(productAmountStr) && (Integer.parseInt(productAmountStr)-orderNumrds)>0) {
             return Integer.parseInt(productAmountStr)-orderNumrds;
         }
@@ -258,29 +258,16 @@ public class SeckillProductService {
         Date activityNoDate = new Date();
         activityNo.append(sdf1.format(activityNoDate).replaceAll("-","")).append(activityNoDate.getTime()/1000);
         seckillActivityDTO.setActivityNo(activityNo.toString());
-        int activityId = seckillProductMapper.addSeckillActivity(seckillActivityDTO);
-
         for(SeckillActivityFieldDTO seckillActivityField : seckillActivityDTO.getSessionList()){
             SeckillActivityFieldDTO seckillActivityFieldDTO = new SeckillActivityFieldDTO();
             seckillActivityFieldDTO.setActivityId(seckillActivityDTO.getId());
             seckillActivityFieldDTO.setCreateTime(new Date());
-            long msc = 2592000;
-            try {
-                seckillActivityFieldDTO.setStartTime(sdf.parse(seckillActivityField.getStartTimeString()));
-                seckillActivityFieldDTO.setEndTime(sdf.parse(seckillActivityField.getEndTimeString()));
-                msc = (sdfEnd.parse(sbStart.toString()).getTime()-(new Date()).getTime())/1000;
-            }catch (Exception e){
-
-            }
-            int ms = (int)Integer.parseInt(String.valueOf(msc));
             seckillActivityFieldDTO.setProductAmount(0);
             seckillProductMapper.addSeckillActivityField(seckillActivityFieldDTO);
             StringBuilder sb = new StringBuilder();
             sb.append("seckillproductAmount:").append(String.valueOf(seckillActivityFieldDTO.getId()));
-            JedisUtils.set(sb.toString(),String.valueOf(seckillActivityDTO.getActivityNum()),ms);
-
-            logger.info("key值={}",sb.toString());
-            logger.info("缓存值={}",sb.toString());
+            long secondsLeftToday = 86400 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
+            JedisUtils.set(sb.toString(),String.valueOf(seckillActivityDTO.getActivityNum()),(int)secondsLeftToday);
         }
 
         return "success";
@@ -375,8 +362,8 @@ public class SeckillProductService {
             seckillActivityFieldDTO.setUpdateTime(new Date());
             String proAmountStr = JedisUtils.get("seckillproductAmount:" + fieldId);
             int proAmount = StringUtils.isNotNull(proAmountStr)?Integer.parseInt(proAmountStr):0;
-            int validityTime = (int)(seckillProductDTO.getActivityEndTime().getTime()-new Date().getTime());
-            JedisUtils.set("seckillproductAmount:" + fieldId,(proAmount-ordeNum)+"",validityTime/1000);
+            long secondsLeftToday = 86400 - DateUtils.getFragmentInSeconds(Calendar.getInstance(), Calendar.DATE);
+            JedisUtils.set("seckillproductAmount:" + fieldId,(proAmount-ordeNum)+"",(int)secondsLeftToday);
             seckillProductMapper.updateSeckillActivityFieldById(seckillActivityFieldDTO);
         }
     }
