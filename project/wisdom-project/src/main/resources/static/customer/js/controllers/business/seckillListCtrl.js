@@ -1,6 +1,6 @@
 var seckill = angular.module('controllers',[]).controller('seckillListCtrl',
-    ['$scope','$rootScope','$stateParams','$state','SeckillList',
-        function ($scope,$rootScope,$stateParams,$state,SeckillList) {
+    ['$scope','$window','$rootScope','$stateParams','$state','SeckillList',
+        function ($scope,$window,$rootScope,$stateParams,$state,SeckillList) {
             $rootScope.title = "秒杀专区";
             $scope.$on('$ionicView.enter', function(){
                 $scope.PageParamVoDTO ={
@@ -61,7 +61,7 @@ seckill.directive('timerBtn', function() { // 倒计时按钮
                 $scope.showTime = formatTime($scope.startTime);
                 if($scope.startTime < 1) {
                     $interval.cancel(timer);
-                    $window.location.reload();
+                    location.reload();
                 };
             }, 1000);
 

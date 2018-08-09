@@ -237,7 +237,7 @@ seckillInfo.directive('timerBtn', function() { // 倒计时按钮
                 $scope.showTime = formatTime($scope.startTime);
                 if($scope.startTime < 1) {
                     $interval.cancel(timer);
-                    $window.location.reload();
+                    location.reload();
                 };
             }, 1000);
 

@@ -34,7 +34,7 @@ angular.module('controllers',[]).controller('orderManagementCtrl',
                                 productId:item.businessProductId,
                                 productName:item.businessProductName,
                                 productNum:item.businessProductNum,
-                                productPrice:item.businessProductPrice,
+                                productPrice:item.type == "seckill"?item.payAmount:item.businessProductPrice,
                                 productSpec:item.productSpec,
                                 productPrefecture:item.productPrefecture,
                                 productStatus:item.productStatus
